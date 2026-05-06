@@ -33,5 +33,6 @@ export interface PokemonListItem {
   name: string;
   types: string[];
   image: string;
+  shinyImage?: string;
   category?: string;
 }

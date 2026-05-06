@@ -10,15 +10,18 @@ export interface TeamMember {
 
 interface TeamState {
   team: TeamMember[];
+  isShinyMode: boolean;
   addMember: (pokemon: Omit<TeamMember, 'moves'>) => void;
   removeMember: (id: number) => void;
   reorderTeam: (startIndex: number, endIndex: number) => void;
   setMoves: (pokemonId: number, moves: any[]) => void;
   setTeam: (team: TeamMember[]) => void;
+  toggleShinyMode: () => void;
 }
 
 export const useTeamStore = create<TeamState>((set) => ({
   team: [],
+  isShinyMode: false,
   setTeam: (team) => set({ team }),
   addMember: (pokemon) => set((state) => {
     if (state.team.length >= 6) return state;
@@ -38,5 +41,6 @@ export const useTeamStore = create<TeamState>((set) => ({
   }),
   setMoves: (pokemonId, moves) => set((state) => ({
     team: state.team.map(p => p.id === pokemonId ? { ...p, moves } : p)
-  }))
+  })),
+  toggleShinyMode: () => set((state) => ({ isShinyMode: !state.isShinyMode }))
 }));

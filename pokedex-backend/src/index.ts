@@ -225,6 +225,7 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
           name: formattedName,
           types: d.types.map((t: any) => t.type.name),
           image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d.id}.png`,
+          shinyImage: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${d.id}.png`,
           category: category
         });
       } catch (err) {
@@ -290,6 +291,7 @@ const resolvers = {
           name: p.name,
           types: p.types.map((t: any) => t.name),
           image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
+          shinyImage: p.shinyImageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${p.pokedexNumber}.png`,
           category: p.category
         });
 

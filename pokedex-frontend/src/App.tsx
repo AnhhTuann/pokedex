@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import {
   AppBar, Toolbar, Typography, Container, Box, Grid, Button,
   ButtonGroup, IconButton, Tooltip, Skeleton, Alert, useTheme,
-  Stack
+  Stack, FormControlLabel, Switch
 } from '@mui/material';
 import {
   WbSunny, DarkMode, Favorite,
@@ -19,11 +19,12 @@ import TeamBuilder from './components/TeamBuilder';
 import { PokemonListItem } from './types';
 import { useMyPokedex } from './lib/MyPokedexContext';
 import { useColorMode } from './main';
+import { useTeamStore } from './lib/teamStore';
 
 const GET_POKEMON_LIST = gql`
   query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!]) {
     pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids) {
-      results { id name types image category }
+      results { id name types image shinyImage category }
       totalCount
     }
   }
@@ -35,6 +36,7 @@ export default function App() {
   const theme = useTheme();
   const { toggleColorMode } = useColorMode();
   const isDark = theme.palette.mode === 'dark';
+  const { isShinyMode, toggleShinyMode } = useTeamStore();
 
   const [search, setSearch]           = useState('');
   const [typeFilter, setTypeFilter]   = useState('');
@@ -165,8 +167,17 @@ export default function App() {
       {/* ── Main ── */}
       <Container maxWidth="xl" sx={{ pt: 4, px: { xs: 2, sm: 3 } }}>
 
-        {/* View Mode Toggle */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        {/* View Mode Toggle & Global Shiny Switch */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 3,
+            mb: 3
+          }}
+        >
           <ButtonGroup variant="outlined" size="medium">
             {([
               { key: 'all',       label: 'All',                icon: <AutoAwesome sx={{ fontSize: 16 }} /> },
@@ -186,6 +197,62 @@ export default function App() {
               </Button>
             ))}
           </ButtonGroup>
+
+          {/* Premium Glowing Global Shiny Mode Toggle Switch */}
+          <FormControlLabel
+            id="global-shiny-toggle"
+            control={
+              <Switch
+                checked={isShinyMode}
+                onChange={toggleShinyMode}
+                color="secondary"
+                sx={{
+                  "& .MuiSwitch-thumb": {
+                    bgcolor: isShinyMode ? "#f59e0b" : undefined,
+                    boxShadow: isShinyMode ? "0 0 10px #f59e0b" : undefined,
+                  }
+                }}
+              />
+            }
+            label={
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+                <AutoAwesome
+                  sx={{
+                    fontSize: 16,
+                    color: isShinyMode ? "#f59e0b" : "text.disabled",
+                    animation: isShinyMode ? "spin 3s linear infinite" : undefined,
+                    "@keyframes spin": {
+                      "100%": { transform: "rotate(360deg)" }
+                    }
+                  }}
+                />
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: 1.5,
+                    color: isShinyMode ? "secondary.main" : "text.secondary"
+                  }}
+                >
+                  Shiny Mode
+                </Typography>
+              </Stack>
+            }
+            sx={{
+              ml: 0,
+              px: 2,
+              py: 0.5,
+              borderRadius: "20px",
+              bgcolor: isShinyMode ? (isDark ? "rgba(245, 158, 11, 0.1)" : "rgba(245, 158, 11, 0.05)") : "transparent",
+              border: `1px solid ${isShinyMode ? "rgba(245, 158, 11, 0.3)" : "rgba(0, 0, 0, 0.08)"}`,
+              transition: "all 0.3s ease",
+              "&:hover": {
+                bgcolor: isShinyMode ? (isDark ? "rgba(245, 158, 11, 0.15)" : "rgba(245, 158, 11, 0.08)") : "rgba(0, 0, 0, 0.03)",
+              }
+            }}
+          />
         </Box>
 
         {/* Count */}

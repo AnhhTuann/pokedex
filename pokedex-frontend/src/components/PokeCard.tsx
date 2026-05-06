@@ -16,6 +16,7 @@ import { Favorite, FavoriteBorderOutlined } from "@mui/icons-material";
 import { motion } from "motion/react";
 import { PokemonListItem } from "../types";
 import { useMyPokedex } from "../lib/MyPokedexContext";
+import { useTeamStore } from "../lib/teamStore";
 
 // Type → palette color mapping
 const TYPE_COLORS: Record<string, string> = {
@@ -56,6 +57,7 @@ export default function PokeCard({
 }: PokeCardProps) {
   const theme = useTheme();
   const { isFavorite, toggleFavorite } = useMyPokedex();
+  const { isShinyMode } = useTeamStore();
   const isFav = isFavorite(pokemon.id);
   const primaryColor = TYPE_COLORS[pokemon.types[0]] || "#9ca3af";
 
@@ -142,7 +144,7 @@ export default function PokeCard({
           >
             <Box
               component="img"
-              src={pokemon.image}
+              src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
               alt={pokemon.name}
               loading="lazy"
               sx={{
@@ -150,6 +152,8 @@ export default function PokeCard({
                 height: 90,
                 objectFit: "contain",
                 filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.25))",
+                transition: "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
+                transform: isShinyMode ? "scale(1.05)" : "scale(1)",
               }}
             />
           </Box>
