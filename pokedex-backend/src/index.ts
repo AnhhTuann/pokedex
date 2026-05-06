@@ -148,7 +148,108 @@ const resolvers = {
         }
       });
 
-      if (!p) return null;
+      if (!p) {
+        try {
+          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+          if (!res.ok) return null;
+          const d = await res.json();
+
+          let speciesId = id;
+          if (d.species && d.species.url) {
+            const speciesUrlParts = d.species.url.split('/').filter(Boolean);
+            speciesId = parseInt(speciesUrlParts[speciesUrlParts.length - 1], 10);
+          }
+
+          const baseP = await prisma.pokemon.findUnique({
+            where: { pokedexNumber: speciesId },
+            include: {
+              types: true,
+              evolvesTo: {
+                include: { toPokemon: { include: { types: true } } }
+              },
+              evolvesFrom: {
+                include: { fromPokemon: { include: { types: true } } }
+              }
+            }
+          });
+
+          const evolutions: any[] = [];
+          if (baseP) {
+            if (baseP.evolvesFrom.length > 0) {
+              const fromP = baseP.evolvesFrom[0].fromPokemon;
+              evolutions.push({
+                id: fromP.pokedexNumber,
+                name: fromP.name,
+                types: fromP.types.map((t: any) => t.name),
+                image: fromP.imageUrl
+              });
+            }
+            evolutions.push({
+              id: baseP.pokedexNumber,
+              name: baseP.name,
+              types: baseP.types.map((t: any) => t.name),
+              image: baseP.imageUrl
+            });
+            baseP.evolvesTo.forEach((evo: any) => {
+              evolutions.push({
+                id: evo.toPokemon.pokedexNumber,
+                name: evo.toPokemon.name,
+                types: evo.toPokemon.types.map((t: any) => t.name),
+                image: evo.toPokemon.imageUrl
+              });
+            });
+          }
+
+          const matchups = [
+            { type: "fire", multiplier: 2.0 },
+            { type: "water", multiplier: 0.5 },
+            { type: "grass", multiplier: 0.5 }
+          ];
+
+          let parts = d.name.split('-');
+          let baseName = parts[0];
+          let formName = parts.slice(1).join(' ');
+          baseName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+
+          let formattedName = d.name;
+          if (formName === 'alola') formattedName = `Alolan ${baseName}`;
+          else if (formName === 'galar') formattedName = `Galarian ${baseName}`;
+          else if (formName === 'hisui') formattedName = `Hisuian ${baseName}`;
+          else if (formName === 'paldea') formattedName = `Paldean ${baseName}`;
+          else if (formName === 'gmax') formattedName = `Gigantamax ${baseName}`;
+          else if (formName === 'mega') formattedName = `Mega ${baseName}`;
+          else if (formName === 'mega-x') formattedName = `Mega ${baseName} X`;
+          else if (formName === 'mega-y') formattedName = `Mega ${baseName} Y`;
+          else {
+            formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+          }
+
+          return {
+            id: d.id,
+            name: formattedName,
+            types: d.types.map((t: any) => t.type.name),
+            image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            shinyImage: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || null,
+            height: d.height,
+            weight: d.weight,
+            stats: d.stats.map((s: any) => ({
+              name: s.stat.name,
+              value: s.base_stat
+            })),
+            abilities: d.abilities.map((a: any) => a.ability.name),
+            description: `An alternative form of ${baseName}.`,
+            flavorTexts: [],
+            gameVersions: d.game_indices ? d.game_indices.slice(0, 12).map((gi: any) => gi.version.name) : [],
+            evolutions,
+            matchups,
+            cry: d.cries?.latest || null,
+            moves: []
+          };
+        } catch (err) {
+          console.error("Error fetching form from PokeAPI fallback:", err);
+          return null;
+        }
+      }
 
       // Map Evolutions (from -> current -> to)
       const evolutions: any[] = [];

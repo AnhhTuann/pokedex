@@ -409,15 +409,17 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                     {altForms.map((form) => (
                       <Tooltip key={form.id} title={`${form.name} • ${form.types.map((t: string) => t.toUpperCase()).join(' / ')}`}>
                         <Box
+                          onClick={() => { if (onSelect) onSelect(form.id); }}
                           sx={{
                             width: 64, height: 64, borderRadius: '50%',
                             background: alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15),
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             border: `2px solid ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.4)}`,
-                            transition: 'transform 0.2s, box-shadow 0.2s',
-                            cursor: 'default',
+                            transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
+                            cursor: 'pointer',
                             '&:hover': {
-                              transform: 'scale(1.1)',
+                              transform: 'scale(1.15)',
+                              borderColor: TYPE_COLORS[form.types[0]] || '#6366f1',
                               boxShadow: `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3)}`
                             }
                           }}
