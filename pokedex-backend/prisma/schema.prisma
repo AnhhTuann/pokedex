@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// PHASE 1: CORE POKEDEX MODELS
+// ==========================================
+
+model Pokemon {
+  id             Int       @id @default(autoincrement())
+  pokedexNumber  Int       @unique
+  name           String    @unique
+  height         Int?
+  weight         Int?
+  baseExperience Int?
+  imageUrl       String?   // Official artwork
+  shinyImageUrl  String?   // Shiny official artwork
+
+  // Base Stats
+  hp             Int
+  attack         Int
+  defense        Int
+  specialAttack  Int
+  specialDefense Int
+  speed          Int
+
+  // Relations
+  types          Type[]
+  abilities      Ability[]
+
+  // Phase 2 Relations
+  favoritedBy    User[]
+}
+
+model Type {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  pokemons Pokemon[]
+}
+
+model Ability {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  pokemons Pokemon[]
+}
+
+// ==========================================
+// PHASE 2: MY POKEDEX (USER DATA)
+// ==========================================
+
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  email        String    @unique
+  passwordHash String
+
+  favorites    Pokemon[] 
+}
