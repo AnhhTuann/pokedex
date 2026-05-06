@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { X, ChevronRight, Zap, Volume2, Sparkles } from 'lucide-react';
+import {
+  Dialog, DialogContent, Box, Typography, Chip, Button, Stack,
+  LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme
+} from '@mui/material';
+import { Close, Sparkles, ChevronRight, AutoAwesome } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
-import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!) {
     pokemon(id: $id) {
-      id
-      name
-      types
-      image
-      height
-      weight
-      description
-      stats {
-        name
-        value
-      }
-      evolutions {
-        id
-        name
-        types
-        image
-      }
-      matchups {
-        type
-        multiplier
-      }
+      id name types image shinyImage height weight description
+      stats { name value }
+      abilities
+      evolutions { id name types image }
+      matchups { type multiplier }
       gameVersions
     }
   }
 `;
+
+const TYPE_COLORS: Record<string, string> = {
+  normal: '#9ca3af',   fire: '#f97316',    water: '#3b82f6',
+  electric: '#eab308', grass: '#22c55e',   ice: '#06b6d4',
+  fighting: '#ef4444', poison: '#a855f7',  ground: '#d97706',
+  flying: '#818cf8',   psychic: '#ec4899', bug: '#84cc16',
+  rock: '#78716c',     ghost: '#7c3aed',   dragon: '#1d4ed8',
+  dark: '#374151',     steel: '#6b7280',   fairy: '#f472b6',
+};
+
+const STAT_COLORS = ['#6366f1','#ef4444','#3b82f6','#8b5cf6','#06b6d4','#f59e0b'];
 
 interface PokeDetailProps {
   id: number | null;
@@ -41,244 +38,267 @@ interface PokeDetailProps {
 }
 
 export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
+  const theme = useTheme();
   const { addMember, team, removeMember } = useTeamStore();
   const [showShiny, setShowShiny] = useState(false);
-  const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
-  
+
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { id },
-    skip: !id,
+    variables: { id }, skip: !id,
   });
 
-  // reset states when pokemon changes
-  useEffect(() => {
-    setShowShiny(false);
-    setSelectedVersion(null);
-  }, [id]);
+  useEffect(() => { setShowShiny(false); }, [id]);
 
   if (!id) return null;
 
-  const details = data?.pokemon;
-  const inTeam = team.some(p => p.id === id);
-
-  const flavorTextObj = null;
-  const displayDescription = details?.description || "No description available.";
-
-  const playCry = () => {
-    // Hidden as cry is missing from schema
-  };
+  const p = data?.pokemon;
+  const inTeam = team.some(m => m.id === id);
+  const primaryColor = TYPE_COLORS[p?.types?.[0]] || '#6366f1';
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60"
-        />
-        
-        <motion.div
-          layoutId={`pokemon-card-${id}`}
-          className="w-full max-w-4xl bg-white dark:bg-slate-900 shadow-2xl rounded-[32px] overflow-hidden relative z-10 grid grid-cols-1 md:grid-cols-12 max-h-[90vh] overflow-y-auto"
+    <Dialog
+      open={!!id}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 5,
+          overflow: 'hidden',
+          background: theme.palette.background.paper,
+          maxHeight: '90vh',
+        }
+      }}
+    >
+      {/* ── Header / Left panel gradient ── */}
+      <Box
+        sx={{
+          background: `linear-gradient(135deg, ${alpha(primaryColor, 0.25)} 0%, ${alpha(primaryColor, 0.05)} 100%)`,
+          p: 3,
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 3,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        {/* Pokemon image */}
+        <Box
+          sx={{
+            width: { xs: 120, sm: 160 }, height: { xs: 120, sm: 160 }, flexShrink: 0,
+            borderRadius: '50%',
+            background: alpha(primaryColor, 0.15),
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: p?.shinyImage ? 'pointer' : 'default',
+            border: showShiny ? `3px solid #eab308` : 'none',
+            transition: 'border 0.3s',
+          }}
+          onClick={() => p?.shinyImage && setShowShiny(s => !s)}
         >
-          <button 
-            onClick={onClose}
-            className="absolute top-6 right-6 z-20 w-10 h-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm bg-white dark:bg-slate-800"
-            id="close-modal"
-          >
-            <X className="w-5 h-5 text-slate-400" />
-          </button>
+          {loading ? (
+            <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: 'action.hover' }} />
+          ) : (
+            <Box
+              component="img"
+              src={showShiny ? p?.shinyImage : p?.image}
+              alt={p?.name}
+              sx={{ width: '80%', height: '80%', objectFit: 'contain', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
+            />
+          )}
+        </Box>
 
-          {/* Left Side: Artwork */}
-          <div className="md:col-span-5 bg-slate-50 dark:bg-slate-950 p-12 flex flex-col justify-center items-center relative overflow-hidden">
-            <div className="absolute top-8 left-8 flex items-center gap-2 font-mono text-[10px] font-bold text-slate-300">
-               <div className="w-2 h-2 rounded-full bg-indigo-500" />
-               POKEMON SOURCE ASSET
-            </div>
-            
-            <div className="absolute top-8 right-16">
-               <button
-                 onClick={() => inTeam ? removeMember(id!) : addMember(details)}
-                 className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-colors shadow-sm ${inTeam ? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}
-               >
-                 {inTeam ? 'Remove from Team' : 'Add to Team'}
-               </button>
-            </div>
-            
-            <motion.div className="w-full aspect-square bg-white dark:bg-slate-900 rounded-full shadow-inner flex items-center justify-center p-8 relative">
-              <motion.img
-                key={showShiny ? 'shiny' : 'default'}
-                src={details?.image}
-                alt={details?.name}
-                loading="lazy"
-                className="w-full h-full object-contain relative z-10 drop-shadow-xl"
-                initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
-                animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                transition={{ type: 'spring', damping: 20 }}
+        {/* Name / Types / Actions */}
+        <Box flex={1}>
+          <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={3} sx={{ textTransform: 'uppercase' }}>
+            #{id.toString().padStart(3, '0')}
+          </Typography>
+          <Typography variant="h4" fontWeight={900} sx={{ textTransform: 'capitalize', color: 'text.primary', letterSpacing: -1, lineHeight: 1.1, my: 0.5 }}>
+            {p?.name || 'Loading…'}
+          </Typography>
+
+          <Stack direction="row" spacing={0.75} flexWrap="wrap" mb={2}>
+            {p?.types?.map((t: string) => (
+              <Chip
+                key={t}
+                label={t}
+                size="small"
+                sx={{ bgcolor: alpha(TYPE_COLORS[t] || '#9ca3af', 0.85), color: '#fff', fontWeight: 800, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase' }}
               />
-              {details?.cry && (
-                <button 
-                  onClick={playCry}
-                  className="absolute bottom-0 right-0 p-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full shadow-lg transition-transform hover:scale-110 z-20"
-                  title="Play Cry"
-                >
-                  <Volume2 className="w-5 h-5" />
-                </button>
+            ))}
+            {p?.shinyImage && (
+              <Tooltip title="Toggle Shiny ✨">
+                <Chip
+                  icon={<AutoAwesome sx={{ fontSize: 12, color: showShiny ? '#eab308 !important' : undefined }} />}
+                  label="Shiny"
+                  size="small"
+                  variant={showShiny ? 'filled' : 'outlined'}
+                  onClick={() => setShowShiny(s => !s)}
+                  sx={{ cursor: 'pointer', fontWeight: 700, ...(showShiny ? { bgcolor: '#eab308', color: '#000' } : {}) }}
+                />
+              </Tooltip>
+            )}
+          </Stack>
+
+          <Stack direction="row" spacing={1.5}>
+            <Button
+              size="small"
+              variant={inTeam ? 'outlined' : 'contained'}
+              color={inTeam ? 'error' : 'primary'}
+              onClick={() => inTeam ? removeMember(id) : addMember(p)}
+              disabled={!p}
+              sx={{ borderRadius: 6, fontWeight: 800, fontSize: 11 }}
+            >
+              {inTeam ? 'Remove from Team' : 'Add to Team'}
+            </Button>
+          </Stack>
+        </Box>
+
+        <IconButton onClick={onClose} id="close-modal" size="small" sx={{ color: 'text.secondary', alignSelf: 'flex-start' }}>
+          <Close />
+        </IconButton>
+      </Box>
+
+      {/* ── Content ── */}
+      <DialogContent sx={{ p: 3 }}>
+        {loading && <LinearProgress sx={{ borderRadius: 2, mb: 2 }} />}
+        {error && <Typography color="error">Failed to load: {error.message}</Typography>}
+
+        {p && (
+          <Stack spacing={3}>
+            {/* Physical */}
+            <Stack direction="row" spacing={4}>
+              <Box>
+                <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={2} textTransform="uppercase">Height</Typography>
+                <Typography variant="h6" fontWeight={800}>{((p.height || 0) / 10).toFixed(1)} m</Typography>
+              </Box>
+              <Box>
+                <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={2} textTransform="uppercase">Weight</Typography>
+                <Typography variant="h6" fontWeight={800}>{((p.weight || 0) / 10).toFixed(1)} kg</Typography>
+              </Box>
+              {p.abilities?.length > 0 && (
+                <Box>
+                  <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={2} textTransform="uppercase">Abilities</Typography>
+                  <Stack direction="row" spacing={0.75} flexWrap="wrap" mt={0.5}>
+                    {p.abilities.map((a: string) => (
+                      <Chip key={a} label={a.replace('-', ' ')} size="small" variant="outlined" sx={{ fontSize: 10, fontWeight: 700, textTransform: 'capitalize' }} />
+                    ))}
+                  </Stack>
+                </Box>
               )}
-              {details?.shinyImage && (
-                <button
-                  onClick={() => setShowShiny(!showShiny)}
-                  className={`absolute top-0 left-0 p-3 rounded-full shadow-lg transition-transform hover:scale-110 z-20 ${showShiny ? 'bg-yellow-400 text-yellow-900' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-yellow-500 dark:hover:text-yellow-400'}`}
-                  title="Toggle Shiny"
-                >
-                  <Sparkles className="w-5 h-5" />
-                </button>
-              )}
-            </motion.div>
+            </Stack>
 
-            <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end opacity-20 dark:opacity-40">
-               <div className="text-4xl font-black italic text-slate-900 dark:text-slate-100">#{id.toString().padStart(3, '0')}</div>
-               <div className="text-right">
-                 <p className="text-[8px] font-mono font-black uppercase tracking-tighter text-slate-900 dark:text-slate-100">AUTHENTICITY GUARANTEED</p>
-                 <p className="text-[8px] font-mono font-black uppercase tracking-tighter text-indigo-600 dark:text-indigo-400">SOURCE: POKEAPI-GQL</p>
-               </div>
-            </div>
-          </div>
+            <Divider />
 
-          {/* Right Side: Data */}
-          <div className="md:col-span-7 p-12 space-y-8 overflow-y-auto max-h-[90vh] bg-white dark:bg-slate-900">
-            <div className="space-y-4">
-               <div className="flex gap-2">
-                 {details?.types?.map((t: string) => (
-                   <span key={t} className="text-[10px] font-bold uppercase py-1 px-3 bg-indigo-600 text-white rounded-full">
-                     {t}
-                   </span>
-                 ))}
-               </div>
-               <h2 className="text-5xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">
-                 {details?.name || 'Loading...'}
-               </h2>
-            </div>
+            {/* Base Stats */}
+            <Box>
+              <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                Base Stats
+              </Typography>
+              <Stack spacing={1.5}>
+                {p.stats?.map((stat: any, i: number) => (
+                  <Box key={stat.name}>
+                    <Stack direction="row" justifyContent="space-between" mb={0.5}>
+                      <Typography variant="caption" fontWeight={700} textTransform="uppercase" letterSpacing={1.5} color="text.secondary">
+                        {stat.name.replace('-', ' ')}
+                      </Typography>
+                      <Typography variant="caption" fontWeight={900} color="text.primary">{stat.value}</Typography>
+                    </Stack>
+                    <LinearProgress
+                      variant="determinate"
+                      value={Math.min(100, (stat.value / 255) * 100)}
+                      sx={{
+                        height: 6, borderRadius: 3,
+                        bgcolor: alpha(STAT_COLORS[i % STAT_COLORS.length], 0.15),
+                        '& .MuiLinearProgress-bar': { bgcolor: STAT_COLORS[i % STAT_COLORS.length], borderRadius: 3 },
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
 
-            {loading ? (
-              <div className="space-y-4 pt-10">
-                <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-full animate-pulse" />
-                <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-5/6 animate-pulse" />
-                <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-4/6 animate-pulse" />
-              </div>
-            ) : error ? (
-              <div className="text-red-500">
-                Failed to load Pokemon details: {error.message}
-              </div>
-            ) : (
+            {/* Type Matchups */}
+            {p.matchups?.length > 0 && (
               <>
-                <div className="space-y-3">
-                  <p className="text-sm font-medium leading-relaxed uppercase tracking-tight text-slate-500 dark:text-slate-400 italic border-l-4 border-indigo-500 pl-4 py-1">
-                    {displayDescription}
-                  </p>
-                </div>
-
-                <div className="flex gap-10">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">WEIGHT</div>
-                    <div className="text-lg font-black text-slate-800 dark:text-white">{(details?.weight / 10).toFixed(1)} kg</div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">HEIGHT</div>
-                    <div className="text-lg font-black text-slate-800 dark:text-white">{(details?.height / 10).toFixed(1)} m</div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 pt-4">
-                  {details?.stats?.map((stat: any) => (
-                    <div key={stat.name} className="space-y-2">
-                      <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                        <span>{stat.name.replace('-', ' ')}</span>
-                        <span className="text-slate-900 dark:text-white">{stat.value}</span>
-                      </div>
-                      <div className="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${Math.min(100, (stat.value / 255) * 100)}%` }}
-                          className="h-full bg-indigo-500"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                 <div className="pt-8 flex items-center justify-between">
-                   <div className="space-y-1">
-                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ABILITIES</div>
-                     <div className="flex gap-4 text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
-                       {details?.abilities?.map((a: string) => <span key={a}>{a.replace('-', ' ')}</span>)}
-                     </div>
-                   </div>
-                </div>
-
-                {details?.matchups && details.matchups.length > 0 && (
-                  <div className="pt-8">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">MATCHUPS (WEAKNESS & RESISTANCE)</div>
-                    <div className="flex flex-wrap gap-2">
-                      {details.matchups.map((m: any) => (
-                        <div key={m.type} className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${m.multiplier > 1 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : m.multiplier < 1 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700'}`}>
-                          <span>{m.type}</span>
-                          <span className="opacity-60">{m.multiplier}x</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {details?.gameVersions && details.gameVersions.length > 0 && (
-                  <div className="pt-8">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">APPEARS IN</div>
-                    <div className="flex flex-wrap gap-2">
-                      {details.gameVersions.slice(0, 10).map((v: string) => (
-                        <span key={v} className="text-[9px] font-bold uppercase text-slate-500 bg-slate-100 dark:bg-slate-800 dark:text-slate-400 px-2 py-1 rounded-md">
-                          {v.replace('-', ' ')}
-                        </span>
-                      ))}
-                      {details.gameVersions.length > 10 && (
-                        <span className="text-[9px] font-bold uppercase text-slate-400 px-2 py-1">
-                          +{details.gameVersions.length - 10} MORE
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-
-                {details?.evolutions && details.evolutions.length > 0 && (
-                  <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">EVOLUTION CHAIN</div>
-                    <div className="flex items-center gap-4">
-                      {details.evolutions.map((evo: any, idx: number) => (
-                        <React.Fragment key={evo.id}>
-                          <button
-                            onClick={() => {
-                              if (onSelect && evo.id !== details.id) {
-                                onSelect(evo.id);
-                              }
-                            }}
-                            className={`w-16 h-16 rounded-full flex items-center justify-center bg-slate-50 dark:bg-slate-800 border-2 transition-all ${evo.id === details.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 cursor-default' : 'border-slate-100 dark:border-slate-700 hover:border-indigo-300 hover:scale-110 cursor-pointer'}`}>
-                            <img src={evo.image} alt={evo.name} loading="lazy" className="w-12 h-12 object-contain" />
-                          </button>
-                          {idx < details.evolutions.length - 1 && (
-                            <ChevronRight className="w-4 h-4 text-slate-300 dark:text-slate-600" />
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <Divider />
+                <Box>
+                  <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                    Type Matchups
+                  </Typography>
+                  <Stack direction="row" flexWrap="wrap" gap={0.75}>
+                    {p.matchups.map((m: any) => (
+                      <Chip
+                        key={m.type}
+                        label={`${m.type} ${m.multiplier}×`}
+                        size="small"
+                        sx={{
+                          fontWeight: 800, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase',
+                          bgcolor: m.multiplier > 1 ? alpha('#ef4444', 0.15) : alpha('#22c55e', 0.15),
+                          color: m.multiplier > 1 ? '#ef4444' : '#22c55e',
+                          border: `1px solid ${m.multiplier > 1 ? alpha('#ef4444', 0.3) : alpha('#22c55e', 0.3)}`,
+                        }}
+                      />
+                    ))}
+                  </Stack>
+                </Box>
               </>
             )}
-          </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
+
+            {/* Game Versions */}
+            {p.gameVersions?.length > 0 && (
+              <>
+                <Divider />
+                <Box>
+                  <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                    Appears In
+                  </Typography>
+                  <Stack direction="row" flexWrap="wrap" gap={0.75}>
+                    {p.gameVersions.slice(0, 12).map((v: string) => (
+                      <Chip key={v} label={v.replace(/-/g, ' ')} size="small" variant="outlined" sx={{ fontSize: 9, fontWeight: 700, textTransform: 'capitalize' }} />
+                    ))}
+                    {p.gameVersions.length > 12 && (
+                      <Chip label={`+${p.gameVersions.length - 12} more`} size="small" sx={{ fontSize: 9, fontWeight: 700 }} />
+                    )}
+                  </Stack>
+                </Box>
+              </>
+            )}
+
+            {/* Evolutions */}
+            {p.evolutions?.length > 0 && (
+              <>
+                <Divider />
+                <Box>
+                  <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                    Evolution Chain
+                  </Typography>
+                  <Stack direction="row" alignItems="center" spacing={1.5} flexWrap="wrap">
+                    {p.evolutions.map((evo: any, idx: number) => (
+                      <React.Fragment key={evo.id}>
+                        <Tooltip title={evo.name}>
+                          <Box
+                            onClick={() => { if (onSelect && evo.id !== p.id) onSelect(evo.id); }}
+                            sx={{
+                              width: 64, height: 64, borderRadius: '50%',
+                              background: alpha(TYPE_COLORS[evo.types?.[0]] || '#6366f1', 0.15),
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              cursor: evo.id !== p.id ? 'pointer' : 'default',
+                              border: `2px solid ${evo.id === p.id ? '#6366f1' : 'transparent'}`,
+                              transition: 'transform 0.2s, border 0.2s',
+                              '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
+                            }}
+                          >
+                            <Box component="img" src={evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                          </Box>
+                        </Tooltip>
+                        {idx < p.evolutions.length - 1 && <ChevronRight sx={{ color: 'text.disabled' }} />}
+                      </React.Fragment>
+                    ))}
+                  </Stack>
+                </Box>
+              </>
+            )}
+          </Stack>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

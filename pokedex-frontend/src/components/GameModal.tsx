@@ -1,171 +1,144 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { X, Play, RefreshCw } from 'lucide-react';
+import {
+  Dialog, DialogContent, Box, Typography, TextField, Button,
+  IconButton, Stack, alpha, useTheme, CircularProgress
+} from '@mui/material';
+import { Close, Refresh, EmojiEvents, SentimentDissatisfied } from '@mui/icons-material';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON_DETAIL } from './PokeDetail';
+import { motion } from 'motion/react';
 
-interface GameModalProps {
-  onClose: () => void;
-}
+interface GameModalProps { onClose: () => void; }
 
 export default function GameModal({ onClose }: GameModalProps) {
+  const theme = useTheme();
   const [targetId, setTargetId] = useState<number | null>(null);
   const [guess, setGuess] = useState('');
-  const [isRevealed, setIsRevealed] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [status, setStatus] = useState<'playing' | 'won' | 'lost'>('playing');
 
-  const { data, loading } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { id: targetId },
-    skip: !targetId,
-  });
+  const { data, loading } = useQuery(GET_POKEMON_DETAIL, { variables: { id: targetId }, skip: !targetId });
+  const pokemon = data?.pokemon;
 
-  const generateNew = () => {
+  const newRound = () => {
     setTargetId(Math.floor(Math.random() * 151) + 1);
-    setIsRevealed(false);
-    setGuess('');
-    setStatus('playing');
+    setGuess(''); setRevealed(false); setStatus('playing');
   };
 
-  useEffect(() => {
-    generateNew();
-  }, []);
-
-  const pokemon = data?.pokemon;
+  useEffect(() => { newRound(); }, []);
 
   const handleGuess = (e: React.FormEvent) => {
     e.preventDefault();
     if (!pokemon) return;
-    
     if (guess.toLowerCase().trim() === pokemon.name.toLowerCase()) {
-      setIsRevealed(true);
-      setStatus('won');
-      if (pokemon.cry) {
-        const audio = new Audio(pokemon.cry);
-        audio.volume = 0.5;
-        audio.play().catch(e => console.error("Audio playback failed", e));
-      }
+      setRevealed(true); setStatus('won');
     } else {
       setStatus('lost');
     }
   };
 
-  const handleGiveUp = () => {
-    setIsRevealed(true);
-    setStatus('lost');
-    if (pokemon?.cry) {
-      const audio = new Audio(pokemon.cry);
-      audio.volume = 0.5;
-      audio.play().catch(e => console.error("Audio ", e));
-    }
-  };
-
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="absolute inset-0 bg-slate-900/80 backdrop-blur-md"
-        />
-        
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="w-full max-w-2xl bg-white dark:bg-slate-900 shadow-2xl rounded-[32px] overflow-hidden relative z-10 flex flex-col"
-        >
-          <div className="flex justify-between items-center p-6 border-b border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                <Play className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-              </div>
-              <div>
-                <h2 className="text-xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Who's That Pokemon?</h2>
-              </div>
-            </div>
-            <button 
-              onClick={onClose}
-              className="w-10 h-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm"
+    <Dialog
+      open
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      slotProps={{ paper: { sx: { borderRadius: 5, overflow: 'hidden' } } }}
+    >
+      <Box sx={{ background: `linear-gradient(135deg, ${alpha('#6366f1', 0.15)} 0%, ${alpha('#ec4899', 0.08)} 100%)`, p: 3 }}>
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: -0.5 }}>
+            🎮 Who's That Pokémon?
+          </Typography>
+          <IconButton onClick={onClose} size="small"><Close /></IconButton>
+        </Stack>
+      </Box>
+
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pt: 4, pb: 4, gap: 3 }}>
+        {/* Silhouette */}
+        <Box sx={{ width: 200, height: 200, borderRadius: '50%', bgcolor: alpha(theme.palette.primary.main, 0.08), display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          {loading || !pokemon ? (
+            <CircularProgress color="primary" />
+          ) : (
+            <Box
+              component="img"
+              src={pokemon.image}
+              alt="???"
+              sx={{
+                width: 150, height: 150, objectFit: 'contain',
+                filter: revealed ? 'drop-shadow(0 8px 24px rgba(99,102,241,0.4))' : 'brightness(0)',
+                transition: 'filter 1s ease',
+              }}
+            />
+          )}
+          {revealed && pokemon && (
+            <motion.div
+              initial={{ scale: 0, rotate: -15 }}
+              animate={{ scale: 1, rotate: 10 }}
+              style={{
+                position: 'absolute', top: 4, right: 4,
+                background: '#6366f1', color: '#fff',
+                fontWeight: 900, fontSize: 10, textTransform: 'uppercase' as const,
+                letterSpacing: 1, padding: '4px 10px', borderRadius: 20,
+              }}
             >
-              <X className="w-5 h-5 text-slate-400" />
-            </button>
-          </div>
+              {pokemon.name}!
+            </motion.div>
+          )}
+        </Box>
 
-          <div className="p-12 flex flex-col items-center">
-            {loading || !pokemon ? (
-              <div className="w-64 h-64 border-4 border-dashed border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center animate-pulse">
-                <span className="text-slate-400 font-bold tracking-widest text-sm">LOADING...</span>
-              </div>
+        {/* Input or Result */}
+        {!revealed ? (
+          <Box component="form" onSubmit={handleGuess} sx={{ width: '100%', maxWidth: 360 }}>
+            <Stack spacing={1.5}>
+              <TextField
+                value={guess}
+                onChange={e => setGuess(e.target.value)}
+                placeholder="Enter Pokémon name…"
+                fullWidth autoFocus
+                size="medium"
+                error={status === 'lost'}
+                helperText={status === 'lost' ? 'Wrong! Try again.' : ''}
+                slotProps={{ input: { sx: { borderRadius: 3, fontWeight: 700 } } }}
+              />
+              <Stack direction="row" spacing={1}>
+                <Button type="submit" variant="contained" fullWidth size="large" sx={{ borderRadius: 3, fontWeight: 800, fontSize: 14 }}>
+                  Guess!
+                </Button>
+                <Button variant="outlined" color="inherit" onClick={() => { setRevealed(true); setStatus('lost'); }} sx={{ borderRadius: 3, fontWeight: 700, px: 3 }}>
+                  Give Up
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        ) : (
+          <Stack sx={{ alignItems: 'center' }} spacing={2}>
+            {status === 'won' ? (
+              <Stack sx={{ alignItems: 'center' }} spacing={0.5}>
+                <EmojiEvents sx={{ fontSize: 48, color: '#eab308' }} />
+                <Typography variant="h5" sx={{ fontWeight: 900, color: '#eab308' }}>You got it!</Typography>
+              </Stack>
             ) : (
-              <>
-                <div className="relative w-64 h-64 mb-8">
-                  <div className="absolute inset-0 bg-indigo-50 dark:bg-slate-800 rounded-full animate-ping opacity-20" />
-                  <img 
-                    src={pokemon.image} 
-                    alt="Mystery Pokemon" 
-                    className={`w-full h-full object-contain relative z-10 transition-all duration-1000 ${isRevealed ? 'drop-shadow-2xl' : 'brightness-0 drop-shadow-md'}`}
-                  />
-                  {isRevealed && (
-                    <motion.div 
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="absolute -right-4 -top-4 bg-indigo-600 text-white font-black text-2xl uppercase tracking-tighter py-2 px-6 rounded-full shadow-xl rotate-12 z-20"
-                    >
-                      IT'S {pokemon.name}!
-                    </motion.div>
-                  )}
-                </div>
-
-                {!isRevealed ? (
-                  <form onSubmit={handleGuess} className="w-full max-w-sm space-y-4">
-                    <input
-                      type="text"
-                      value={guess}
-                      onChange={(e) => setGuess(e.target.value)}
-                      placeholder="Enter Pokemon name..."
-                      className={`w-full px-6 py-4 bg-slate-50 dark:bg-slate-800 border-2 ${status === 'lost' ? 'border-red-400 focus:border-red-500' : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500'} rounded-2xl outline-none font-bold text-center uppercase tracking-widest text-slate-900 dark:text-white transition-colors`}
-                      autoFocus
-                    />
-                    <div className="flex gap-2">
-                       <button 
-                         type="submit"
-                         className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black uppercase tracking-widest transition-colors shadow-md"
-                       >
-                         Guess
-                       </button>
-                       <button 
-                         type="button"
-                         onClick={handleGiveUp}
-                         className="px-6 py-4 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-2xl font-black uppercase tracking-widest transition-colors"
-                       >
-                         Pass
-                       </button>
-                    </div>
-                  </form>
-                ) : (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center space-y-6 w-full max-w-sm"
-                  >
-                    <div className={`text-2xl font-black uppercase tracking-tighter ${status === 'won' ? 'text-green-500' : 'text-red-500'}`}>
-                      {status === 'won' ? 'You got it right!' : 'Better luck next time!'}
-                    </div>
-                    <button 
-                      onClick={generateNew}
-                      className="w-full flex items-center justify-center gap-2 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-lg"
-                    >
-                      <RefreshCw className="w-5 h-5" /> Play Again
-                    </button>
-                  </motion.div>
-                )}
-              </>
+              <Stack sx={{ alignItems: 'center' }} spacing={0.5}>
+                <SentimentDissatisfied sx={{ fontSize: 48, color: 'text.disabled' }} />
+                <Typography variant="h6" sx={{ fontWeight: 700 }} color="text.secondary">Better luck next time!</Typography>
+                <Typography variant="body2" sx={{ textTransform: 'capitalize', fontWeight: 700 }} color="text.disabled">
+                  It was: {pokemon?.name}
+                </Typography>
+              </Stack>
             )}
-          </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
+            <Button
+              variant="contained"
+              startIcon={<Refresh />}
+              onClick={newRound}
+              size="large"
+              sx={{ borderRadius: 3, fontWeight: 800, mt: 1, px: 4 }}
+            >
+              Play Again
+            </Button>
+          </Stack>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

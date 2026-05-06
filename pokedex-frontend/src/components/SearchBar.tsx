@@ -1,44 +1,84 @@
 import React from 'react';
-import { Search } from 'lucide-react';
+import {
+  Box, TextField, InputAdornment, MenuItem, Select,
+  FormControl, InputLabel, SelectChangeEvent, Stack, useTheme
+} from '@mui/material';
+import { Search } from '@mui/icons-material';
 
 interface SearchBarProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (v: string) => void;
   typeValue: string;
-  onTypeChange: (value: string) => void;
+  onTypeChange: (v: string) => void;
+  genValue?: number | null;
+  onGenChange?: (v: number | null) => void;
 }
 
 const POKEMON_TYPES = [
-  'Normal', 'Fire', 'Water', 'Electric', 'Grass', 'Ice', 'Fighting', 'Poison', 
-  'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'
+  'Normal','Fire','Water','Electric','Grass','Ice','Fighting','Poison',
+  'Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'
 ];
 
-export default function SearchBar({ value, onChange, typeValue, onTypeChange }: SearchBarProps) {
+const GENERATIONS = [
+  { value: 'all', label: 'All Gens' },
+  { value: 1, label: 'Gen 1 · Kanto' },
+  { value: 2, label: 'Gen 2 · Johto' },
+  { value: 3, label: 'Gen 3 · Hoenn' },
+  { value: 4, label: 'Gen 4 · Sinnoh' },
+  { value: 5, label: 'Gen 5 · Unova' },
+  { value: 6, label: 'Gen 6 · Kalos' },
+];
+
+export default function SearchBar({ value, onChange, typeValue, onTypeChange, genValue, onGenChange }: SearchBarProps) {
+  const theme = useTheme();
+
+  const selectSx = {
+    borderRadius: 3,
+    '& .MuiOutlinedInput-root': { borderRadius: 3 },
+  };
+
+  const handleGenChange = (e: SelectChangeEvent<number | string>) => {
+    const val = e.target.value;
+    onGenChange?.(val === 'all' ? null : Number(val));
+  };
+
   return (
-    <div className="flex gap-4">
-      <div className="relative group flex-1">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors duration-300">
-          <Search className="w-6 h-6" />
-        </div>
-        <input
-          type="text"
-          placeholder="SEARCH BY NAME OR ID..."
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full h-14 pl-14 pr-4 bg-white border-2 border-slate-200 rounded-2xl shadow-sm focus:border-indigo-500 outline-none transition-colors text-lg font-medium placeholder:text-slate-400"
-        />
-      </div>
-      
-      <select 
-        value={typeValue}
-        onChange={(e) => onTypeChange(e.target.value)}
-        className="h-14 px-4 bg-white border-2 border-slate-200 rounded-2xl shadow-sm focus:border-indigo-500 outline-none text-lg font-medium uppercase text-slate-600 cursor-pointer min-w-[200px]"
-      >
-        <option value="">A L L  T Y P E S</option>
-        {POKEMON_TYPES.map(t => (
-          <option key={t} value={t.toLowerCase()}>{t}</option>
-        ))}
-      </select>
-    </div>
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      {/* Search text */}
+      <TextField
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="Search by name or #..."
+        size="small"
+        fullWidth
+        InputProps={{
+          startAdornment: <InputAdornment position="start"><Search sx={{ color: 'text.disabled', fontSize: 20 }} /></InputAdornment>,
+          sx: { borderRadius: 3 },
+        }}
+        sx={{ minWidth: 140 }}
+      />
+
+      {/* Type filter */}
+      <FormControl size="small" sx={{ ...selectSx, minWidth: 130 }}>
+        <InputLabel>Type</InputLabel>
+        <Select value={typeValue} onChange={e => onTypeChange(e.target.value)} label="Type" sx={{ borderRadius: 3 }}>
+          <MenuItem value=""><em>All Types</em></MenuItem>
+          {POKEMON_TYPES.map(t => <MenuItem key={t} value={t.toLowerCase()}>{t}</MenuItem>)}
+        </Select>
+      </FormControl>
+
+      {/* Generation filter */}
+      <FormControl size="small" sx={{ ...selectSx, minWidth: 145 }}>
+        <InputLabel>Generation</InputLabel>
+        <Select
+          value={genValue ?? 'all'}
+          onChange={handleGenChange}
+          label="Generation"
+          sx={{ borderRadius: 3 }}
+        >
+          {GENERATIONS.map(g => <MenuItem key={g.value} value={g.value}>{g.label}</MenuItem>)}
+        </Select>
+      </FormControl>
+    </Stack>
   );
 }

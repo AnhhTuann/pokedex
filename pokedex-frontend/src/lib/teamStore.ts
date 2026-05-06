@@ -14,10 +14,12 @@ interface TeamState {
   removeMember: (id: number) => void;
   reorderTeam: (startIndex: number, endIndex: number) => void;
   setMoves: (pokemonId: number, moves: any[]) => void;
+  setTeam: (team: TeamMember[]) => void;
 }
 
 export const useTeamStore = create<TeamState>((set) => ({
   team: [],
+  setTeam: (team) => set({ team }),
   addMember: (pokemon) => set((state) => {
     if (state.team.length >= 6) return state;
     if (state.team.find(p => p.id === pokemon.id)) return state;

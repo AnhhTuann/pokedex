@@ -7,29 +7,29 @@ const POKEMON_COUNT = 151; // Gen 1
 async function main() {
   console.log(`Starting seeding ${POKEMON_COUNT} Pokemon...`);
 
+  // Step 1: Seed Pokemon, Types, Abilities, GameVersions
   for (let i = 1; i <= POKEMON_COUNT; i++) {
     try {
       console.log(`Fetching Pokemon #${i}...`);
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
-      if (!res.ok) {
-        console.error(`Failed to fetch Pokemon #${i}`);
-        continue;
-      }
+      if (!res.ok) continue;
       const data = await res.json();
 
-      // Extract types
       const types = data.types.map((t: any) => ({
         where: { name: t.type.name },
         create: { name: t.type.name },
       }));
 
-      // Extract abilities
       const abilities = data.abilities.map((a: any) => ({
         where: { name: a.ability.name },
         create: { name: a.ability.name },
       }));
 
-      // Extract stats
+      const gameVersions = data.game_indices.map((gi: any) => ({
+        where: { name: gi.version.name },
+        create: { name: gi.version.name },
+      }));
+
       const stats = data.stats.reduce((acc: any, s: any) => {
         const statName = s.stat.name;
         if (statName === 'hp') acc.hp = s.base_stat;
@@ -41,12 +41,15 @@ async function main() {
         return acc;
       }, {});
 
-      // Upsert Pokemon
-      const pokemon = await prisma.pokemon.upsert({
+      await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
-        update: {},
+        update: {
+          generation: 1,
+          gameVersions: { connectOrCreate: gameVersions }
+        },
         create: {
           pokedexNumber: data.id,
+          generation: 1,
           name: data.name,
           height: data.height,
           weight: data.weight,
@@ -59,22 +62,92 @@ async function main() {
           specialAttack: stats.specialAttack,
           specialDefense: stats.specialDefense,
           speed: stats.speed,
-          types: {
-            connectOrCreate: types,
-          },
-          abilities: {
-            connectOrCreate: abilities,
-          },
+          types: { connectOrCreate: types },
+          abilities: { connectOrCreate: abilities },
+          gameVersions: { connectOrCreate: gameVersions }
         },
       });
 
-      console.log(`✅ Seeded: ${pokemon.name}`);
     } catch (error) {
       console.error(`Error seeding Pokemon #${i}:`, error);
     }
   }
 
-  console.log('Seeding finished.');
+  // Step 2: Seed Evolutions
+  console.log('Seeding evolutions...');
+  for (let i = 1; i <= POKEMON_COUNT; i++) {
+    try {
+      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+      if (!speciesRes.ok) continue;
+      const speciesData = await speciesRes.json();
+      
+      const chainUrl = speciesData.evolution_chain?.url;
+      if (!chainUrl) continue;
+
+      const chainRes = await fetch(chainUrl);
+      if (!chainRes.ok) continue;
+      const chainData = await chainRes.json();
+
+      // Recursive function to parse chain
+      const parseChain = async (node: any) => {
+        const fromId = parseInt(node.species.url.split('/').filter(Boolean).pop()!);
+        
+        for (const evolvesTo of node.evolves_to) {
+          const toId = parseInt(evolvesTo.species.url.split('/').filter(Boolean).pop()!);
+          
+          // Only link if both exist in our Gen 1 DB (id <= 151)
+          if (fromId <= POKEMON_COUNT && toId <= POKEMON_COUNT) {
+            await prisma.evolution.upsert({
+              where: {
+                fromPokemonId_toPokemonId: {
+                  fromPokemonId: fromId,
+                  toPokemonId: toId
+                }
+              },
+              update: {},
+              create: {
+                fromPokemonId: fromId,
+                toPokemonId: toId
+              }
+            });
+            console.log(`Evolves: ${fromId} -> ${toId}`);
+          }
+          
+          await parseChain(evolvesTo);
+        }
+      };
+
+      await parseChain(chainData.chain);
+
+    } catch (error) {
+      console.error(`Error seeding evolutions for #${i}:`, error);
+    }
+  }
+
+  // Step 3: Mock User Team
+  console.log('Seeding mock team...');
+  const team = await prisma.team.upsert({
+    where: { userId: 1 },
+    update: {},
+    create: {
+      userId: 1,
+      name: "Ash Ketchum's Team",
+    }
+  });
+
+  // Add Pikachu, Bulbasaur, Charmander, Squirtle if not exists
+  const mockTeamIds = [25, 1, 4, 7];
+  for (let i = 0; i < mockTeamIds.length; i++) {
+    await prisma.teamSlot.upsert({
+      where: {
+        teamId_slotOrder: { teamId: team.id, slotOrder: i + 1 }
+      },
+      update: { pokemonId: mockTeamIds[i] },
+      create: { teamId: team.id, slotOrder: i + 1, pokemonId: mockTeamIds[i] }
+    });
+  }
+
+  console.log('Seeding finished completely!');
 }
 
 main()

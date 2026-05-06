@@ -14,6 +14,7 @@ datasource db {
 model Pokemon {
   id             Int       @id @default(autoincrement())
   pokedexNumber  Int       @unique
+  generation     Int       @default(1)
   name           String    @unique
   height         Int?
   weight         Int?
@@ -32,9 +33,17 @@ model Pokemon {
   // Relations
   types          Type[]
   abilities      Ability[]
+  gameVersions   GameVersion[]
+
+  // Evolutions
+  evolvesTo      Evolution[] @relation("EvolvesFrom")
+  evolvesFrom    Evolution[] @relation("EvolvesTo")
 
   // Phase 2 Relations
-  favoritedBy    User[]
+  userPokemons   UserPokemon[]
+
+  // Phase 3 Relations
+  teamSlots      TeamSlot[]
 }
 
 model Type {
@@ -49,8 +58,25 @@ model Ability {
   pokemons Pokemon[]
 }
 
+model GameVersion {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  pokemons Pokemon[]
+}
+
+model Evolution {
+  id             Int     @id @default(autoincrement())
+  fromPokemonId  Int
+  toPokemonId    Int
+  
+  fromPokemon    Pokemon @relation("EvolvesFrom", fields: [fromPokemonId], references: [pokedexNumber])
+  toPokemon      Pokemon @relation("EvolvesTo", fields: [toPokemonId], references: [pokedexNumber])
+
+  @@unique([fromPokemonId, toPokemonId])
+}
+
 // ==========================================
-// PHASE 2: MY POKEDEX (USER DATA)
+// PHASE 2 & 3: USER DATA & TEAM BUILDER
 // ==========================================
 
 model User {
@@ -59,5 +85,33 @@ model User {
   email        String    @unique
   passwordHash String
 
-  favorites    Pokemon[] 
+  userPokemons UserPokemon[]
+  team         Team?
+}
+
+model UserPokemon {
+  userId    Int
+  pokemonId Int
+  user      User    @relation(fields: [userId], references: [id])
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+
+  @@id([userId, pokemonId])
+}
+
+model Team {
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique // 1 team per user
+  user      User       @relation(fields: [userId], references: [id])
+  slots     TeamSlot[]
+}
+
+model TeamSlot {
+  teamId    Int
+  pokemonId Int
+  slotOrder Int      // Position 1 to 6
+  
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  pokemon   Pokemon  @relation(fields: [pokemonId], references: [pokedexNumber])
+
+  @@id([teamId, slotOrder])
 }

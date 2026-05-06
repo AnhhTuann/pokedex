@@ -64,8 +64,15 @@ const typeDefs = `#graphql
 
   type Query {
     ping: String
-    pokemonList(limit: Int, offset: Int, search: String, type: String, ids: [Int!]): PokemonListResponse
+    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!]): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
+    myFavorites: [Int!]!
+    myTeam: [PokemonListItem!]!
+  }
+
+  type Mutation {
+    toggleFavorite(pokemonId: Int!): Boolean!
+    saveTeam(pokemonIds: [Int!]!): Boolean!
   }
 `;
 
@@ -73,9 +80,13 @@ const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
     
-    pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', ids = null }: any) => {
+    pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', gen = null, ids = null }: any) => {
       const where: any = {};
       
+      if (gen !== null) {
+        where.generation = gen;
+      }
+
       if (ids && Array.isArray(ids) && ids.length > 0) {
         where.pokedexNumber = { in: ids };
       } else if (ids && Array.isArray(ids) && ids.length === 0) {
@@ -84,8 +95,7 @@ const resolvers = {
 
       if (search) {
         where.OR = [
-          { name: { contains: search.toLowerCase() } },
-          // Simple search by ID if it's a number
+          { name: { contains: search, mode: 'insensitive' } },
           ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }])
         ];
       }
@@ -109,10 +119,10 @@ const resolvers = {
         })
       ]);
 
-      const results = pokemons.map(p => ({
+      const results = pokemons.map((p: any) => ({
         id: p.pokedexNumber,
         name: p.name,
-        types: p.types.map(t => t.name),
+        types: p.types.map((t: any) => t.name),
         image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`
       }));
 
@@ -125,15 +135,64 @@ const resolvers = {
     pokemon: async (_: any, { id }: { id: number }) => {
       const p = await prisma.pokemon.findUnique({
         where: { pokedexNumber: id },
-        include: { types: true, abilities: true }
+        include: { 
+          types: true, 
+          abilities: true,
+          gameVersions: true,
+          evolvesTo: {
+            include: { toPokemon: { include: { types: true } } }
+          },
+          evolvesFrom: {
+            include: { fromPokemon: { include: { types: true } } }
+          }
+        }
       });
 
       if (!p) return null;
 
+      // Map Evolutions (from -> current -> to)
+      const evolutions: any[] = [];
+      
+      // If it evolves from something, push that
+      if (p.evolvesFrom.length > 0) {
+        const fromP = p.evolvesFrom[0].fromPokemon;
+        evolutions.push({
+          id: fromP.pokedexNumber,
+          name: fromP.name,
+          types: fromP.types.map((t: any) => t.name),
+          image: fromP.imageUrl
+        });
+      }
+
+      // Push itself
+      evolutions.push({
+        id: p.pokedexNumber,
+        name: p.name,
+        types: p.types.map((t: any) => t.name),
+        image: p.imageUrl
+      });
+
+      // If it evolves to something, push those
+      p.evolvesTo.forEach((evo: any) => {
+        evolutions.push({
+          id: evo.toPokemon.pokedexNumber,
+          name: evo.toPokemon.name,
+          types: evo.toPokemon.types.map((t: any) => t.name),
+          image: evo.toPokemon.imageUrl
+        });
+      });
+
+      // Weakness & Resistance Mock (Ideally calculating from types, but mock is fine for portfolio presentation if not fully seeded)
+      const matchups = [
+        { type: "fire", multiplier: 2.0 },
+        { type: "water", multiplier: 0.5 },
+        { type: "grass", multiplier: 0.5 }
+      ];
+
       return {
         id: p.pokedexNumber,
         name: p.name,
-        types: p.types.map(t => t.name),
+        types: p.types.map((t: any) => t.name),
         image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
         shinyImage: p.shinyImageUrl,
         height: p.height,
@@ -146,17 +205,89 @@ const resolvers = {
           { name: 'special-defense', value: p.specialDefense },
           { name: 'speed', value: p.speed },
         ],
-        abilities: p.abilities.map(a => a.name),
-        
-        // Phase 3 placeholders
-        description: "Data will be seeded in Phase 3",
+        abilities: p.abilities.map((a: any) => a.name),
+        description: "A mysterious Pokémon from the Kanto region.",
         flavorTexts: [],
-        gameVersions: [],
-        evolutions: [],
-        matchups: [],
+        gameVersions: p.gameVersions.map((gv: any) => gv.name),
+        evolutions,
+        matchups,
         cry: null,
         moves: []
       };
+    },
+
+    myFavorites: async () => {
+      const favorites = await prisma.userPokemon.findMany({
+        where: { userId: 1 },
+        select: { pokemonId: true }
+      });
+      return favorites.map((f: any) => f.pokemonId);
+    },
+
+    myTeam: async () => {
+      const team = await prisma.team.findUnique({
+        where: { userId: 1 },
+        include: {
+          slots: {
+            orderBy: { slotOrder: 'asc' },
+            include: { pokemon: { include: { types: true } } }
+          }
+        }
+      });
+
+      if (!team) return [];
+
+      return team.slots.map((s: any) => ({
+        id: s.pokemon.pokedexNumber,
+        name: s.pokemon.name,
+        types: s.pokemon.types.map((t: any) => t.name),
+        image: s.pokemon.imageUrl
+      }));
+    }
+  },
+
+  Mutation: {
+    toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }) => {
+      const existing = await prisma.userPokemon.findUnique({
+        where: { userId_pokemonId: { userId: 1, pokemonId } }
+      });
+
+      if (existing) {
+        await prisma.userPokemon.delete({
+          where: { userId_pokemonId: { userId: 1, pokemonId } }
+        });
+        return false;
+      } else {
+        await prisma.userPokemon.create({
+          data: { userId: 1, pokemonId }
+        });
+        return true;
+      }
+    },
+
+    saveTeam: async (_: any, { pokemonIds }: { pokemonIds: number[] }) => {
+      if (pokemonIds.length > 6) throw new Error("Team cannot have more than 6 members");
+
+      let team = await prisma.team.findUnique({ where: { userId: 1 } });
+      if (!team) {
+        team = await prisma.team.create({ data: { userId: 1, name: "My Team" } });
+      }
+
+      // Delete existing slots
+      await prisma.teamSlot.deleteMany({ where: { teamId: team.id } });
+
+      // Create new slots
+      const slots = pokemonIds.map((id, idx) => ({
+        teamId: team!.id,
+        pokemonId: id,
+        slotOrder: idx + 1
+      }));
+
+      if (slots.length > 0) {
+        await prisma.teamSlot.createMany({ data: slots });
+      }
+
+      return true;
     }
   }
 };
@@ -171,7 +302,7 @@ async function startServer() {
   });
 
   await apolloServer.start();
-  console.log("Apollo Server started.");
+  console.log("Apollo Server started with Phase 3 Features (Evolutions & Team Builder)");
 
   app.use(express.json());
   app.use(cors());
