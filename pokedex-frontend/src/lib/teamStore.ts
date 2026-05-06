@@ -11,17 +11,20 @@ export interface TeamMember {
 interface TeamState {
   team: TeamMember[];
   isShinyMode: boolean;
+  selectedVersion: string;
   addMember: (pokemon: Omit<TeamMember, 'moves'>) => void;
   removeMember: (id: number) => void;
   reorderTeam: (startIndex: number, endIndex: number) => void;
   setMoves: (pokemonId: number, moves: any[]) => void;
   setTeam: (team: TeamMember[]) => void;
   toggleShinyMode: () => void;
+  setSelectedVersion: (version: string) => void;
 }
 
 export const useTeamStore = create<TeamState>((set) => ({
   team: [],
   isShinyMode: false,
+  selectedVersion: "ALL",
   setTeam: (team) => set({ team }),
   addMember: (pokemon) => set((state) => {
     if (state.team.length >= 6) return state;
@@ -42,5 +45,6 @@ export const useTeamStore = create<TeamState>((set) => ({
   setMoves: (pokemonId, moves) => set((state) => ({
     team: state.team.map(p => p.id === pokemonId ? { ...p, moves } : p)
   })),
-  toggleShinyMode: () => set((state) => ({ isShinyMode: !state.isShinyMode }))
+  toggleShinyMode: () => set((state) => ({ isShinyMode: !state.isShinyMode })),
+  setSelectedVersion: (version) => set({ selectedVersion: version })
 }));

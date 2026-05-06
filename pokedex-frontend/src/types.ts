@@ -35,4 +35,5 @@ export interface PokemonListItem {
   image: string;
   shinyImage?: string;
   category?: string;
+  regionalNumber?: number | null;
 }

@@ -17,6 +17,7 @@ const typeDefs = `#graphql
     minLevel: Int
     trigger: String
     category: String
+    regionalNumber: Int
   }
 
   type PokemonListResponse {
@@ -79,11 +80,12 @@ const typeDefs = `#graphql
     moves: [Move!]
     megaEvolutions: [PokemonVariety!]
     alternativeForms: [PokemonVariety!]
+    locations(version: String): [String!]
   }
 
   type Query {
     ping: String
-    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!]): PokemonListResponse
+    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], version: String): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
     myTeam: [PokemonListItem!]!
@@ -245,32 +247,73 @@ const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
     
-    pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', gen = null, ids = null }: any) => {
-      const where: any = {};
+    pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, version = null }: any) => {
+      if (ids && Array.isArray(ids) && ids.length === 0) {
+        return { results: [], totalCount: 0 };
+      }
+
+      if (version && version !== 'ALL') {
+        const dexEntries = await prisma.dexEntry.findMany({
+          where: {
+            regionName: version.toLowerCase(),
+            pokemon: {
+              isDefault: true,
+              ...(gen !== null ? { generation: gen } : {}),
+              ...(ids && Array.isArray(ids) && ids.length > 0 ? { pokedexNumber: { in: ids } } : {}),
+              ...(search ? {
+                OR: [
+                  { name: { contains: search.toLowerCase() } },
+                  ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }])
+                ]
+              } : {}),
+              ...(type ? { types: { some: { name: type.toLowerCase() } } } : {})
+            }
+          },
+          orderBy: {
+            entryNumber: 'asc'
+          },
+          include: {
+            pokemon: {
+              include: { types: true }
+            }
+          }
+        });
+
+        const slicedEntries = dexEntries.slice(offset, offset + limit);
+        const results = slicedEntries.map(entry => ({
+          id: entry.pokemon.pokedexNumber,
+          name: entry.pokemon.name,
+          types: entry.pokemon.types.map((t: any) => t.name),
+          image: entry.pokemon.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.pokemon.pokedexNumber}.png`,
+          shinyImage: entry.pokemon.shinyImageUrl,
+          category: entry.pokemon.category,
+          regionalNumber: entry.entryNumber
+        }));
+
+        return {
+          results,
+          totalCount: dexEntries.length
+        };
+      }
+
+      const where: any = {
+        isDefault: true
+      };
       
       if (gen !== null) {
         where.generation = gen;
       }
-
       if (ids && Array.isArray(ids) && ids.length > 0) {
         where.pokedexNumber = { in: ids };
-      } else if (ids && Array.isArray(ids) && ids.length === 0) {
-        return { results: [], totalCount: 0 };
       }
-
       if (search) {
         where.OR = [
-          { name: { contains: search, mode: 'insensitive' } },
+          { name: { contains: search.toLowerCase() } },
           ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }])
         ];
       }
-
       if (type) {
-        where.types = {
-          some: {
-            name: type.toLowerCase()
-          }
-        };
+        where.types = { some: { name: type.toLowerCase() } };
       }
 
       const [totalCount, pokemons] = await Promise.all([
@@ -291,13 +334,22 @@ const resolvers = {
           name: p.name,
           types: p.types.map((t: any) => t.name),
           image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
-          shinyImage: p.shinyImageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${p.pokedexNumber}.png`,
-          category: p.category
+          shinyImage: p.shinyImageUrl,
+          category: p.category,
+          regionalNumber: null
         });
 
         const altForms = (await getAlternativeForms(p.pokedexNumber)) || [];
         for (const alt of altForms) {
-          results.push(alt);
+          results.push({
+            id: alt.id,
+            name: alt.name,
+            types: alt.types,
+            image: alt.image,
+            shinyImage: alt.shinyImage,
+            category: alt.category,
+            regionalNumber: null
+          });
         }
       }
 
@@ -313,7 +365,6 @@ const resolvers = {
         include: { 
           types: true, 
           abilities: true,
-          gameVersions: true,
           varieties: true,
           evolvesTo: {
             include: { toPokemon: { include: { types: true } } }
@@ -534,7 +585,7 @@ const resolvers = {
         abilities: p.abilities.map((a: any) => a.name),
         description: p.description || "A mysterious Pokémon from the Kanto region.",
         flavorTexts: [],
-        gameVersions: p.gameVersions.map((gv: any) => gv.name),
+        gameVersions: p.gameVersions,
         evolutions,
         matchups,
         cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${p.pokedexNumber}.ogg`,
@@ -624,6 +675,50 @@ const resolvers = {
       }
 
       return true;
+    }
+  },
+
+  PokemonDetail: {
+    locations: async (parent: any, { version }: { version?: string }) => {
+      const pId = parent.id;
+      
+      // Query encounters from database
+      let encounters = await prisma.encounter.findMany({
+        where: { pokemonId: pId }
+      });
+      
+      // Live fallback to PokeAPI if encounters are not seeded yet
+      if (encounters.length === 0) {
+        try {
+          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pId}/encounters`);
+          if (res.ok) {
+            const data = await res.json();
+            const fetchedList = [];
+            for (const item of data) {
+              const locName = item.location_area.name;
+              for (const vd of item.version_details) {
+                const verName = vd.version.name;
+                fetchedList.push({
+                  pokemonId: pId,
+                  locationName: locName,
+                  versionName: verName
+                });
+              }
+            }
+            encounters = fetchedList;
+          }
+        } catch (err) {
+          console.error("Error fetching fallback encounters:", err);
+        }
+      }
+      
+      if (!version || version === 'ALL') {
+        const uniqueNames = Array.from(new Set(encounters.map((e: any) => e.locationName)));
+        return uniqueNames;
+      }
+      
+      const filtered = encounters.filter((e: any) => e.versionName.toLowerCase() === version.toLowerCase());
+      return filtered.map((e: any) => e.locationName);
     }
   }
 };

@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Đổi số này thành 1025 nếu muốn cào TOÀN BỘ các Gen
-const POKEMON_COUNT = 1025;
+const POKEMON_COUNT = 386;
 
 // Tự động phân loại Thế hệ dựa vào Pokédex ID
 const getGeneration = (id: number): number => {
@@ -51,10 +51,13 @@ async function main() {
       if (!res.ok) continue;
       const data = await res.json();
 
+      const isDefault = data.is_default ?? true;
+
       const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
       let category: string | null = null;
       let description: string | null = null;
       let speciesData: any = null;
+      let dexEntriesData: { regionName: string; entryNumber: number }[] = [];
       if (speciesRes.ok) {
         speciesData = await speciesRes.json();
         const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
@@ -70,6 +73,14 @@ async function main() {
             .replace(/\s+/g, " ")
             .trim();
         }
+
+        const pokedexNumbers = speciesData.pokedex_numbers || [];
+        dexEntriesData = pokedexNumbers
+          .filter((pn: any) => pn.pokedex?.name !== 'national')
+          .map((pn: any) => ({
+            regionName: pn.pokedex.name,
+            entryNumber: pn.entry_number
+          }));
       }
 
 
@@ -83,10 +94,7 @@ async function main() {
         create: { name: a.ability.name },
       }));
 
-      const gameVersions = data.game_indices.map((gi: any) => ({
-        where: { name: gi.version.name },
-        create: { name: gi.version.name },
-      }));
+      const gameVersions = data.game_indices.map((gi: any) => gi.version.name);
 
       const stats = data.stats.reduce((acc: any, s: any) => {
         const statName = s.stat.name;
@@ -128,18 +136,47 @@ async function main() {
 
       const gen = getGeneration(data.id);
 
-      // Clean up old moves to allow clean re-seeding
+      // Clean up old moves & encounters to allow clean re-seeding
       const existingP = await prisma.pokemon.findUnique({ where: { pokedexNumber: data.id } });
       if (existingP) {
         await prisma.pokemonMove.deleteMany({ where: { pokemonId: data.id } });
+        await prisma.encounter.deleteMany({ where: { pokemonId: data.id } });
+      }
+
+      // Fetch Encounters (Locations)
+      console.log(`Fetching Encounters for Pokemon #${data.id}...`);
+      const encountersRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${data.id}/encounters`);
+      const encountersData: any[] = [];
+      if (encountersRes.ok) {
+        try {
+          const encs = await encountersRes.json();
+          for (const item of encs) {
+            const locName = item.location_area.name;
+            for (const vd of item.version_details) {
+              const verName = vd.version.name;
+              encountersData.push({
+                locationName: locName,
+                versionName: verName
+              });
+            }
+          }
+        } catch (err) {
+          console.error("Error parsing encounters JSON:", err);
+        }
       }
 
       await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
         update: {
           generation: gen,
-          gameVersions: { connectOrCreate: gameVersions },
+          gameVersions: gameVersions,
+          isDefault: isDefault,
+          dexEntries: {
+            deleteMany: {},
+            create: dexEntriesData
+          },
           moves: { create: movesData },
+          encounters: { create: encountersData },
           category: category,
           description: description
         },
@@ -162,8 +199,13 @@ async function main() {
           speed: stats.speed,
           types: { connectOrCreate: types },
           abilities: { connectOrCreate: abilities },
-          gameVersions: { connectOrCreate: gameVersions },
+          gameVersions: gameVersions,
+          isDefault: isDefault,
+          dexEntries: {
+            create: dexEntriesData
+          },
           moves: { create: movesData },
+          encounters: { create: encountersData },
           category: category,
           description: description
         },

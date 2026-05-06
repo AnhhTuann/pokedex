@@ -32,11 +32,13 @@ model Pokemon {
   specialAttack  Int
   specialDefense Int
   speed          Int
+  isDefault      Boolean   @default(true)
 
   // Relations
   types          Type[]
   abilities      Ability[]
-  gameVersions   GameVersion[]
+  gameVersions   String[]
+  dexEntries     DexEntry[]
   varieties      PokemonVariety[]
 
   // Evolutions
@@ -49,6 +51,7 @@ model Pokemon {
   // Phase 3 Relations
   teamSlots      TeamSlot[]
   moves          PokemonMove[]
+  encounters     Encounter[]
 }
 
 model Type {
@@ -58,12 +61,6 @@ model Type {
 }
 
 model Ability {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  pokemons Pokemon[]
-}
-
-model GameVersion {
   id       Int       @id @default(autoincrement())
   name     String    @unique
   pokemons Pokemon[]
@@ -159,4 +156,27 @@ model PokemonVariety {
   types          String[]
 
   pokemon        Pokemon  @relation(fields: [pokemonId], references: [pokedexNumber], onDelete: Cascade)
+}
+
+model Encounter {
+  id           Int      @id @default(autoincrement())
+  pokemonId    Int
+  locationName String
+  versionName  String
+
+  pokemon      Pokemon  @relation(fields: [pokemonId], references: [pokedexNumber], onDelete: Cascade)
+
+  @@index([pokemonId])
+  @@index([versionName])
+}
+
+model DexEntry {
+  id          Int      @id @default(autoincrement())
+  pokemonId   Int
+  regionName  String
+  entryNumber Int
+  pokemon     Pokemon  @relation(fields: [pokemonId], references: [id], onDelete: Cascade)
+
+  @@unique([pokemonId, regionName])
+  @@index([regionName])
 }

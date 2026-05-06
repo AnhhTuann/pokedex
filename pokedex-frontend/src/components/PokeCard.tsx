@@ -169,7 +169,9 @@ export default function PokeCard({
                 textTransform: "uppercase",
               }}
             >
-              #{pokemon.id.toString().padStart(4, "0")}
+              #{pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
+                ? pokemon.regionalNumber.toString().padStart(3, "0")
+                : pokemon.id.toString().padStart(4, "0")}
             </Typography>
 
             {/* Name */}

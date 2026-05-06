@@ -9,7 +9,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 
 export const GET_POKEMON_DETAIL = gql`
-  query GetPokemonDetail($id: Int!) {
+  query GetPokemonDetail($id: Int!, $version: String) {
     pokemon(id: $id) {
       id name types image shinyImage height weight description cry category
       stats { name value }
@@ -20,6 +20,7 @@ export const GET_POKEMON_DETAIL = gql`
       moves { name type power accuracy damageClass learnMethod levelLearnedAt }
       megaEvolutions { id name types image shinyImage isMega isAlternative }
       alternativeForms { id name types image shinyImage isMega isAlternative }
+      locations(version: $version)
     }
   }
 `;
@@ -43,7 +44,7 @@ interface PokeDetailProps {
 
 export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const theme = useTheme();
-  const { addMember, team, removeMember, isShinyMode } = useTeamStore();
+  const { addMember, team, removeMember, isShinyMode, selectedVersion } = useTeamStore();
   const [showShiny, setShowShiny] = useState(false);
   const [moveTab, setMoveTab] = useState(0);
 
@@ -70,7 +71,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   }, [id]);
 
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { id }, skip: !id,
+    variables: { id, version: selectedVersion }, skip: !id,
   });
 
   useEffect(() => {
@@ -505,25 +506,101 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               </>
             )}
 
-            {/* Game Versions */}
-            {p.gameVersions?.length > 0 && (
-              <>
-                <Divider />
-                <Box>
-                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                    Appears In
-                  </Typography>
-                  <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
-                    {p.gameVersions.slice(0, 12).map((v: string) => (
-                      <Chip key={v} label={v.replace(/-/g, ' ')} size="small" variant="outlined" sx={{ fontSize: 9, fontWeight: 700, textTransform: 'capitalize' }} />
-                    ))}
-                    {p.gameVersions.length > 12 && (
-                      <Chip label={`+${p.gameVersions.length - 12} more`} size="small" sx={{ fontSize: 9, fontWeight: 700 }} />
+            {/* Locations & Habitat Section (Replaces Appears In) */}
+            <>
+              <Divider />
+              <Box>
+                <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
+                  Locations & Habitat
+                </Typography>
+                
+                {selectedVersion === 'ALL' ? (
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 2.5,
+                      borderRadius: '12px',
+                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.01)',
+                      border: '1px dashed rgba(255, 255, 255, 0.15)',
+                      textAlign: 'center'
+                    }}
+                  >
+                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                      Please select a specific game version in the top navigation bar to filter exact capture locations.
+                    </Typography>
+                    <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 0.5 }}>
+                      Currently showing {p.locations?.length || 0} unique capture areas across all game versions.
+                    </Typography>
+                    {p.locations && p.locations.length > 0 && (
+                      <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75, justifyContent: 'center', mt: 2 }}>
+                        {p.locations.slice(0, 8).map((loc: string) => (
+                          <Chip
+                            key={loc}
+                            label={loc.replace(/-/g, ' ')}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: 9, fontWeight: 700, textTransform: 'capitalize' }}
+                          />
+                        ))}
+                        {p.locations.length > 8 && (
+                          <Chip
+                            label={`+${p.locations.length - 8} more areas`}
+                            size="small"
+                            sx={{ fontSize: 9, fontWeight: 700 }}
+                          />
+                        )}
+                      </Stack>
                     )}
-                  </Stack>
-                </Box>
-              </>
-            )}
+                  </Paper>
+                ) : (
+                  <Box>
+                    {(!p.locations || p.locations.length === 0) ? (
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          p: 2,
+                          borderRadius: '12px',
+                          bgcolor: theme.palette.mode === 'dark' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(239, 68, 68, 0.02)',
+                          border: '1px solid rgba(239, 68, 68, 0.15)',
+                          textAlign: 'center'
+                        }}
+                      >
+                        <Typography variant="body2" color="error.main" sx={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: 1 }}>
+                          Not Obtainable in Version: {selectedVersion}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+                          This Pokémon cannot be found wild in the {selectedVersion} game version. Must be traded or evolved.
+                        </Typography>
+                      </Paper>
+                    ) : (
+                      <Box>
+                        <Typography variant="caption" color="primary.main" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, mb: 1, display: 'block' }}>
+                          Found in Version: {selectedVersion} ({p.locations.length} Areas)
+                        </Typography>
+                        <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
+                          {p.locations.map((loc: string) => (
+                            <Chip
+                              key={loc}
+                              label={loc.replace(/-/g, ' ')}
+                              size="small"
+                              variant="filled"
+                              sx={{
+                                fontSize: 9,
+                                fontWeight: 800,
+                                textTransform: 'capitalize',
+                                bgcolor: alpha(primaryColor, 0.15),
+                                color: primaryColor,
+                                border: `1px solid ${alpha(primaryColor, 0.3)}`
+                              }}
+                            />
+                          ))}
+                        </Stack>
+                      </Box>
+                    )}
+                  </Box>
+                )}
+              </Box>
+            </>
 
             {/* Evolutions */}
             {p.evolutions?.length > 0 && (
