@@ -91,18 +91,20 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
                 </div>
 
                 {/* Radar Chart */}
-                <div className="w-full h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-                      <PolarGrid strokeOpacity={0.2} />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 'bold' }} />
-                      <PolarRadiusAxis angle={30} domain={[0, 255]} tick={false} axisLine={false} />
-                      <Radar name={p1.name} dataKey={p1.name} stroke="#4f46e5" fill="#4f46e5" fillOpacity={0.5} />
-                      <Radar name={p2.name} dataKey={p2.name} stroke="#db2777" fill="#db2777" fillOpacity={0.5} />
-                      <Tooltip contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
-                      <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase' }} />
-                    </RadarChart>
-                  </ResponsiveContainer>
+                <div className="w-full min-h-[300px] h-[300px] relative">
+                  {chartData.length > 0 && (
+                    <ResponsiveContainer width="99%" height="100%">
+                      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+                        <PolarGrid strokeOpacity={0.2} />
+                        <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 'bold' }} />
+                        <PolarRadiusAxis angle={30} domain={[0, 255]} tick={false} axisLine={false} />
+                        <Radar name={p1.name} dataKey={p1.name} stroke="#4f46e5" fill="#4f46e5" fillOpacity={0.5} />
+                        <Radar name={p2.name} dataKey={p2.name} stroke="#db2777" fill="#db2777" fillOpacity={0.5} />
+                        <Tooltip contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
+                        <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase' }} />
+                      </RadarChart>
+                    </ResponsiveContainer>
+                  )}
                 </div>
 
                 {/* P2 */}
