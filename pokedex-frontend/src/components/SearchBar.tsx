@@ -27,6 +27,9 @@ const GENERATIONS = [
   { value: 4, label: 'Gen 4 · Sinnoh' },
   { value: 5, label: 'Gen 5 · Unova' },
   { value: 6, label: 'Gen 6 · Kalos' },
+  { value: 7, label: 'Gen 7 · Alola' },
+  { value: 8, label: 'Gen 8 · Galar' },
+  { value: 9, label: 'Gen 9 · Paldea' },
 ];
 
 export default function SearchBar({ value, onChange, typeValue, onTypeChange, genValue, onGenChange }: SearchBarProps) {
