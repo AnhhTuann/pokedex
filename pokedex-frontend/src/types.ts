@@ -13,6 +13,7 @@ export interface Pokemon {
   }[];
   abilities?: string[];
   description?: string;
+  category?: string;
 }
 
 export interface PokemonListItem {
@@ -20,4 +21,5 @@ export interface PokemonListItem {
   name: string;
   types: string[];
   image: string;
+  category?: string;
 }

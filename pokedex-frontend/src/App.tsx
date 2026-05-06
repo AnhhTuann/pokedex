@@ -23,7 +23,7 @@ import { useColorMode } from './main';
 const GET_POKEMON_LIST = gql`
   query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!]) {
     pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids) {
-      results { id name types image }
+      results { id name types image category }
       totalCount
     }
   }

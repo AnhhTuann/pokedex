@@ -11,7 +11,7 @@ import { useTeamStore } from '../lib/teamStore';
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!) {
     pokemon(id: $id) {
-      id name types image shinyImage height weight description cry
+      id name types image shinyImage height weight description cry category
       stats { name value }
       abilities
       evolutions { id name types image shinyImage minLevel trigger }
@@ -192,6 +192,11 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
             <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'capitalize', color: 'text.primary', letterSpacing: -1, lineHeight: 1.1, mt: 0.5 }}>
               {p?.name || 'Loading…'}
             </Typography>
+            {p?.category && (
+              <Typography variant="subtitle1" color="text.secondary" sx={{ fontStyle: 'italic', mt: 0.5, lineHeight: 1.2 }}>
+                {p.category}
+              </Typography>
+            )}
           </Box>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>

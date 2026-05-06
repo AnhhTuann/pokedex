@@ -51,6 +51,17 @@ async function main() {
       if (!res.ok) continue;
       const data = await res.json();
 
+      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+      let category: string | null = null;
+      if (speciesRes.ok) {
+        const speciesData = await speciesRes.json();
+        const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+        if (genusObj) {
+          category = genusObj.genus;
+        }
+      }
+
+
       const types = data.types.map((t: any) => ({
         where: { name: t.type.name },
         create: { name: t.type.name },
@@ -117,7 +128,8 @@ async function main() {
         update: {
           generation: gen,
           gameVersions: { connectOrCreate: gameVersions },
-          moves: { create: movesData }
+          moves: { create: movesData },
+          category: category
         },
         create: {
           pokedexNumber: data.id,
@@ -139,7 +151,8 @@ async function main() {
           types: { connectOrCreate: types },
           abilities: { connectOrCreate: abilities },
           gameVersions: { connectOrCreate: gameVersions },
-          moves: { create: movesData }
+          moves: { create: movesData },
+          category: category
         },
       });
 

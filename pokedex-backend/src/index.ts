@@ -16,6 +16,7 @@ const typeDefs = `#graphql
     shinyImage: String
     minLevel: Int
     trigger: String
+    category: String
   }
 
   type PokemonListResponse {
@@ -54,6 +55,7 @@ const typeDefs = `#graphql
     types: [String!]!
     image: String!
     shinyImage: String
+    category: String
     height: Int
     weight: Int
     stats: [Stat!]
@@ -208,7 +210,8 @@ const resolvers = {
         id: p.pokedexNumber,
         name: p.name,
         types: p.types.map((t: any) => t.name),
-        image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`
+        image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
+        category: p.category
       }));
 
       return {
@@ -246,6 +249,20 @@ const resolvers = {
           if (d.species && d.species.url) {
             const speciesUrlParts = d.species.url.split('/').filter(Boolean);
             speciesId = parseInt(speciesUrlParts[speciesUrlParts.length - 1], 10);
+          }
+
+          let category: string | null = null;
+          try {
+            const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
+            if (speciesRes.ok) {
+              const speciesData = await speciesRes.json();
+              const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+              if (genusObj) {
+                category = genusObj.genus;
+              }
+            }
+          } catch (e) {
+            console.error("Error fetching fallback species:", e);
           }
 
           const baseP = await prisma.pokemon.findUnique({
@@ -293,6 +310,7 @@ const resolvers = {
             types: d.types.map((t: any) => t.type.name),
             image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
             shinyImage: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || null,
+            category,
             height: d.height,
             weight: d.weight,
             stats: d.stats.map((s: any) => ({
@@ -329,6 +347,7 @@ const resolvers = {
         types: p.types.map((t: any) => t.name),
         image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
         shinyImage: p.shinyImageUrl,
+        category: p.category,
         height: p.height,
         weight: p.weight,
         stats: [

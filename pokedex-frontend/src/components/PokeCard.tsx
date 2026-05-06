@@ -182,6 +182,22 @@ export default function PokeCard({
               {pokemon.name}
             </Typography>
 
+            {/* Category */}
+            {pokemon.category && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  fontStyle: "italic",
+                  mb: 1,
+                  display: "block",
+                  lineHeight: 1.2,
+                }}
+              >
+                {pokemon.category}
+              </Typography>
+            )}
+
             {/* Types */}
             <Box
               sx={{

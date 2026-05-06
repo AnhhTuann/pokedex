@@ -21,6 +21,8 @@ model Pokemon {
   baseExperience Int?
   imageUrl       String?   // Official artwork
   shinyImageUrl  String?   // Shiny official artwork
+  category       String?
+
 
   // Base Stats
   hp             Int
