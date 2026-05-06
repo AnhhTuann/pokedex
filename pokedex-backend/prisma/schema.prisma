@@ -44,6 +44,7 @@ model Pokemon {
 
   // Phase 3 Relations
   teamSlots      TeamSlot[]
+  moves          PokemonMove[]
 }
 
 model Type {
@@ -114,4 +115,31 @@ model TeamSlot {
   pokemon   Pokemon  @relation(fields: [pokemonId], references: [pokedexNumber])
 
   @@id([teamId, slotOrder])
+}
+
+// ==========================================
+// PHASE 4: MOVESET DETAILS
+// ==========================================
+
+model Move {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  power       Int?
+  accuracy    Int?
+  type        String
+  damageClass String
+  
+  pokemonMoves PokemonMove[]
+}
+
+model PokemonMove {
+  pokemonId      Int
+  moveId         Int
+  learnMethod    String
+  levelLearnedAt Int
+
+  pokemon Pokemon @relation(fields: [pokemonId], references: [pokedexNumber], onDelete: Cascade)
+  move    Move    @relation(fields: [moveId], references: [id], onDelete: Cascade)
+
+  @@id([pokemonId, moveId, learnMethod])
 }

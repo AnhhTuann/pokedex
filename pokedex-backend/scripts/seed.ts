@@ -18,10 +18,32 @@ const getGeneration = (id: number): number => {
   return 9;
 };
 
+const moveCache = new Map<string, any>();
+
+async function getMoveDetails(name: string, url: string) {
+  if (moveCache.has(name)) return moveCache.get(name);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const details = {
+      name: data.name,
+      power: data.power,
+      accuracy: data.accuracy,
+      type: data.type.name,
+      damageClass: data.damage_class?.name || "status"
+    };
+    moveCache.set(name, details);
+    return details;
+  } catch (err) {
+    return null;
+  }
+}
+
 async function main() {
   console.log(`Starting seeding ${POKEMON_COUNT} Pokemon...`);
 
-  // Step 1: Seed Pokemon, Types, Abilities, GameVersions
+  // Step 1: Seed Pokemon, Types, Abilities, GameVersions, Moves
   for (let i = 1; i <= POKEMON_COUNT; i++) {
     try {
       console.log(`Fetching Pokemon #${i}...`);
@@ -55,13 +77,47 @@ async function main() {
         return acc;
       }, {});
 
+      // Extract and fetch moves
+      const movesData = [];
+      for (const m of data.moves) {
+        const latestDetail = m.version_group_details[m.version_group_details.length - 1];
+        if (!latestDetail) continue;
+
+        const moveDetails = await getMoveDetails(m.move.name, m.move.url);
+        if (moveDetails) {
+          movesData.push({
+            learnMethod: latestDetail.move_learn_method.name,
+            levelLearnedAt: latestDetail.level_learned_at,
+            move: {
+              connectOrCreate: {
+                where: { name: moveDetails.name },
+                create: {
+                  name: moveDetails.name,
+                  power: moveDetails.power,
+                  accuracy: moveDetails.accuracy,
+                  type: moveDetails.type,
+                  damageClass: moveDetails.damageClass
+                }
+              }
+            }
+          });
+        }
+      }
+
       const gen = getGeneration(data.id);
+
+      // Clean up old moves to allow clean re-seeding
+      const existingP = await prisma.pokemon.findUnique({ where: { pokedexNumber: data.id } });
+      if (existingP) {
+        await prisma.pokemonMove.deleteMany({ where: { pokemonId: data.id } });
+      }
 
       await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
         update: {
           generation: gen,
           gameVersions: { connectOrCreate: gameVersions },
+          moves: { create: movesData }
         },
         create: {
           pokedexNumber: data.id,
@@ -83,8 +139,10 @@ async function main() {
           types: { connectOrCreate: types },
           abilities: { connectOrCreate: abilities },
           gameVersions: { connectOrCreate: gameVersions },
+          moves: { create: movesData }
         },
       });
+
     } catch (error) {
       console.error(`Error seeding Pokemon #${i}:`, error);
     }

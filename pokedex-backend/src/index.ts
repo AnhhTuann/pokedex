@@ -36,6 +36,8 @@ const typeDefs = `#graphql
     power: Int
     accuracy: Int
     damageClass: String
+    learnMethod: String
+    levelLearnedAt: Int
   }
 
   type FlavorText {
@@ -144,6 +146,9 @@ const resolvers = {
           },
           evolvesFrom: {
             include: { fromPokemon: { include: { types: true } } }
+          },
+          moves: {
+            include: { move: true }
           }
         }
       });
@@ -313,7 +318,15 @@ const resolvers = {
         evolutions,
         matchups,
         cry: null,
-        moves: []
+        moves: p.moves.map((pm: any) => ({
+          name: pm.move.name,
+          type: pm.move.type,
+          power: pm.move.power,
+          accuracy: pm.move.accuracy,
+          damageClass: pm.move.damageClass,
+          learnMethod: pm.learnMethod,
+          levelLearnedAt: pm.levelLearnedAt
+        }))
       };
     },
 

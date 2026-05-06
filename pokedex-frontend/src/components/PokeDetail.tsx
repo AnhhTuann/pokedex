@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Dialog, DialogContent, Box, Typography, Chip, Button, Stack,
-  LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme
+  LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme,
+  Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from '@mui/material';
 import { Close, ChevronRight, AutoAwesome } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
@@ -16,6 +17,7 @@ export const GET_POKEMON_DETAIL = gql`
       evolutions { id name types image }
       matchups { type multiplier }
       gameVersions
+      moves { name type power accuracy damageClass learnMethod levelLearnedAt }
     }
   }
 `;
@@ -41,6 +43,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const theme = useTheme();
   const { addMember, team, removeMember } = useTeamStore();
   const [showShiny, setShowShiny] = useState(false);
+  const [moveTab, setMoveTab] = useState(0);
 
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
     variables: { id }, skip: !id,
@@ -429,6 +432,90 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                       </Tooltip>
                     ))}
                   </Stack>
+                </Box>
+              </>
+            )}
+
+            {/* Moveset Details */}
+            {p.moves?.length > 0 && (
+              <>
+                <Divider />
+                <Box>
+                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
+                    Moveset
+                  </Typography>
+                  <Tabs
+                    value={moveTab}
+                    onChange={(_, val) => setMoveTab(val)}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    sx={{
+                      minHeight: 36, mb: 2,
+                      '& .MuiTab-root': { minHeight: 36, py: 0.5, fontWeight: 800, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1 },
+                    }}
+                  >
+                    <Tab label="Level Up" />
+                    <Tab label="Machine" />
+                    <Tab label="Egg" />
+                    <Tab label="Tutor" />
+                  </Tabs>
+
+                  <TableContainer component={Paper} elevation={0} sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 3, overflow: 'hidden' }}>
+                    <Table size="small">
+                      <TableHead sx={{ bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
+                        <TableRow>
+                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Level</TableCell>
+                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Move</TableCell>
+                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Type</TableCell>
+                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Cat.</TableCell>
+                          <TableCell align="right" sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Pwr</TableCell>
+                          <TableCell align="right" sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Acc</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {p.moves
+                          .filter((m: any) => {
+                            if (moveTab === 0) return m.learnMethod === 'level-up';
+                            if (moveTab === 1) return m.learnMethod === 'machine';
+                            if (moveTab === 2) return m.learnMethod === 'egg';
+                            return m.learnMethod === 'tutor';
+                          })
+                          .sort((a: any, b: any) => (a.levelLearnedAt || 0) - (b.levelLearnedAt || 0))
+                          .map((m: any, i: number) => {
+                            const isPhysical = m.damageClass === 'physical';
+                            const isSpecial = m.damageClass === 'special';
+                            
+                            return (
+                              <TableRow key={`${m.name}-${i}`} sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: 'action.hover' } }}>
+                                <TableCell sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12 }}>
+                                  {m.learnMethod === 'level-up' && m.levelLearnedAt > 0 ? m.levelLearnedAt : '—'}
+                                </TableCell>
+                                <TableCell sx={{ fontWeight: 800, textTransform: 'capitalize', fontSize: 13 }}>
+                                  {m.name.replace('-', ' ')}
+                                </TableCell>
+                                <TableCell>
+                                  <Chip label={m.type} size="small" sx={{ height: 20, fontSize: 9, fontWeight: 900, textTransform: 'uppercase', bgcolor: TYPE_COLORS[m.type] || '#9ca3af', color: '#fff' }} />
+                                </TableCell>
+                                <TableCell>
+                                  <Chip
+                                    label={m.damageClass}
+                                    size="small"
+                                    sx={{
+                                      height: 20, fontSize: 9, fontWeight: 900, textTransform: 'uppercase',
+                                      bgcolor: isPhysical ? alpha('#ef4444', 0.15) : isSpecial ? alpha('#3b82f6', 0.15) : alpha('#9ca3af', 0.15),
+                                      color: isPhysical ? '#ef4444' : isSpecial ? '#3b82f6' : 'text.secondary',
+                                      border: `1px solid ${isPhysical ? alpha('#ef4444', 0.3) : isSpecial ? alpha('#3b82f6', 0.3) : alpha('#9ca3af', 0.3)}`,
+                                    }}
+                                  />
+                                </TableCell>
+                                <TableCell align="right" sx={{ fontWeight: 700, fontSize: 12 }}>{m.power || '—'}</TableCell>
+                                <TableCell align="right" sx={{ fontWeight: 700, fontSize: 12 }}>{m.accuracy || '—'}</TableCell>
+                              </TableRow>
+                            );
+                          })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Box>
               </>
             )}
