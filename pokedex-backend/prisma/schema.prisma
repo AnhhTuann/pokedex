@@ -36,6 +36,7 @@ model Pokemon {
   types          Type[]
   abilities      Ability[]
   gameVersions   GameVersion[]
+  varieties      PokemonVariety[]
 
   // Evolutions
   evolvesTo      Evolution[] @relation("EvolvesFrom")
@@ -144,4 +145,17 @@ model PokemonMove {
   move    Move    @relation(fields: [moveId], references: [id], onDelete: Cascade)
 
   @@id([pokemonId, moveId, learnMethod])
+}
+
+model PokemonVariety {
+  id             Int      @id
+  pokemonId      Int
+  name           String   @unique
+  imageUrl       String?
+  shinyImageUrl  String?
+  isMega         Boolean  @default(false)
+  isAlternative  Boolean  @default(false)
+  types          String[]
+
+  pokemon        Pokemon  @relation(fields: [pokemonId], references: [pokedexNumber], onDelete: Cascade)
 }

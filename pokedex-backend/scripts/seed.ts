@@ -53,8 +53,9 @@ async function main() {
 
       const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
       let category: string | null = null;
+      let speciesData: any = null;
       if (speciesRes.ok) {
-        const speciesData = await speciesRes.json();
+        speciesData = await speciesRes.json();
         const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
         if (genusObj) {
           category = genusObj.genus;
@@ -155,6 +156,68 @@ async function main() {
           category: category
         },
       });
+
+      // Seed Varieties (Mega & Alternative Forms)
+      if (speciesData && speciesData.varieties) {
+        // Clean up old varieties for this pokemon to allow clean re-seeding
+        await prisma.pokemonVariety.deleteMany({ where: { pokemonId: data.id } });
+
+        const nonDefault = speciesData.varieties.filter((v: any) => !v.is_default);
+        for (const v of nonDefault) {
+          try {
+            const detailRes = await fetch(v.pokemon.url);
+            if (!detailRes.ok) continue;
+            const d = await detailRes.json();
+
+            const isMega = v.pokemon.name.includes("-mega");
+            const isAlternative = !isMega;
+
+            let parts = d.name.split('-');
+            let base = parts[0];
+            let form = parts.slice(1).join(' ');
+            base = base.charAt(0).toUpperCase() + base.slice(1);
+
+            let formattedName = d.name;
+            if (form === 'alola') formattedName = `Alolan ${base}`;
+            else if (form === 'galar') formattedName = `Galarian ${base}`;
+            else if (form === 'hisui') formattedName = `Hisuian ${base}`;
+            else if (form === 'paldea') formattedName = `Paldean ${base}`;
+            else if (form === 'gmax') formattedName = `Gigantamax ${base}`;
+            else if (form === 'mega') formattedName = `Mega ${base}`;
+            else if (form === 'mega-x') formattedName = `Mega ${base} X`;
+            else if (form === 'mega-y') formattedName = `Mega ${base} Y`;
+            else {
+              formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+            }
+
+            const typesList = d.types.map((t: any) => t.type.name);
+
+            await prisma.pokemonVariety.upsert({
+              where: { id: d.id },
+              update: {
+                name: d.name,
+                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
+                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
+                isMega,
+                isAlternative,
+                types: typesList
+              },
+              create: {
+                id: d.id,
+                pokemonId: data.id,
+                name: d.name,
+                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
+                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
+                isMega,
+                isAlternative,
+                types: typesList
+              }
+            });
+          } catch (varError) {
+            console.error(`Error seeding variety ${v.pokemon.name} for Pokemon #${data.id}:`, varError);
+          }
+        }
+      }
 
     } catch (error) {
       console.error(`Error seeding Pokemon #${i}:`, error);

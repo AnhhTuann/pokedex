@@ -18,6 +18,8 @@ export const GET_POKEMON_DETAIL = gql`
       matchups { type multiplier }
       gameVersions
       moves { name type power accuracy damageClass learnMethod levelLearnedAt }
+      megaEvolutions { id name types image shinyImage isMega isAlternative }
+      alternativeForms { id name types image shinyImage isMega isAlternative }
     }
   }
 `;
@@ -50,72 +52,8 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
     variables: { id }, skip: !id,
   });
 
-  const [altForms, setAltForms] = useState<any[]>([]);
-
   useEffect(() => {
     setShowShiny(false);
-    if (!id) {
-      setAltForms([]);
-      return;
-    }
-
-    setAltForms([]);
-    fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error();
-        return res.json();
-      })
-      .then(async (speciesData) => {
-        const varieties = speciesData.varieties || [];
-        const nonDefault = varieties.filter((v: any) => !v.is_default);
-
-        if (nonDefault.length === 0) {
-          setAltForms([]);
-          return;
-        }
-
-        const detailsPromises = nonDefault.map(async (v: any) => {
-          try {
-            const detailRes = await fetch(v.pokemon.url);
-            if (!detailRes.ok) return null;
-            const d = await detailRes.json();
-
-            let parts = d.name.split('-');
-            let base = parts[0];
-            let form = parts.slice(1).join(' ');
-            base = base.charAt(0).toUpperCase() + base.slice(1);
-
-            let formattedName = d.name;
-            if (form === 'alola') formattedName = `Alolan ${base}`;
-            else if (form === 'galar') formattedName = `Galarian ${base}`;
-            else if (form === 'hisui') formattedName = `Hisuian ${base}`;
-            else if (form === 'paldea') formattedName = `Paldean ${base}`;
-            else if (form === 'gmax') formattedName = `Gigantamax ${base}`;
-            else if (form === 'mega') formattedName = `Mega ${base}`;
-            else if (form === 'mega-x') formattedName = `Mega ${base} X`;
-            else if (form === 'mega-y') formattedName = `Mega ${base} Y`;
-            else {
-              formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
-            }
-
-            return {
-              id: d.id,
-              name: formattedName,
-              types: d.types.map((t: any) => t.type.name),
-              image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || '',
-              shinyImage: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || d.sprites?.front_default || ''
-            };
-          } catch {
-            return null;
-          }
-        });
-
-        const results = await Promise.all(detailsPromises);
-        setAltForms(results.filter((r) => r !== null));
-      })
-      .catch(() => {
-        setAltForms([]);
-      });
   }, [id]);
 
   if (!id) return null;
@@ -457,8 +395,119 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               </>
             )}
 
-            {/* Alternative Forms */}
-            {altForms.length > 0 && (
+            {/* Mega Evolution Cards */}
+            {p.megaEvolutions && p.megaEvolutions.length > 0 && (
+              <>
+                <Divider />
+                <Box>
+                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 2, display: 'block' }}>
+                    Mega Evolution
+                  </Typography>
+                  <Stack direction="row" spacing={2.5} sx={{ alignItems: 'stretch', flexWrap: 'wrap', gap: 2 }}>
+                    {p.megaEvolutions.map((form: any) => {
+                      let bgGradient = `linear-gradient(135deg, ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.08)} 0%, ${alpha(TYPE_COLORS[form.types[1] || form.types[0]] || '#6366f1', 0.15)} 100%)`;
+                      let borderColor = alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3);
+                      let glowShadow = `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15)}`;
+
+                      if (form.name.toLowerCase().includes('charizard-mega-x') || form.name.toLowerCase().includes('mega charizard x')) {
+                        bgGradient = 'linear-gradient(135deg, #101c2a 0%, #1a3c40 100%)';
+                        borderColor = '#00e5ff';
+                        glowShadow = '0 0 15px rgba(0, 229, 255, 0.4)';
+                      } else if (form.name.toLowerCase().includes('charizard-mega-y') || form.name.toLowerCase().includes('mega charizard y')) {
+                        bgGradient = 'linear-gradient(135deg, #2b1111 0%, #4a2111 100%)';
+                        borderColor = '#ff3d00';
+                        glowShadow = '0 0 15px rgba(255, 61, 0, 0.4)';
+                      }
+
+                      return (
+                        <Box
+                          key={form.id}
+                          onClick={() => { if (onSelect) onSelect(form.id); }}
+                          sx={{
+                            flex: '1 1 200px',
+                            minWidth: 200,
+                            maxWidth: { xs: '100%', sm: 260 },
+                            borderRadius: '16px',
+                            background: bgGradient,
+                            border: `2px solid ${borderColor}`,
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            boxShadow: glowShadow,
+                            transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s, border-color 0.25s',
+                            '&:hover': {
+                              transform: 'translateY(-6px)',
+                              boxShadow: form.name.toLowerCase().includes('mega-x') ? '0 8px 25px rgba(0, 229, 255, 0.7)' : form.name.toLowerCase().includes('mega-y') ? '0 8px 25px rgba(255, 61, 0, 0.7)' : `0 8px 25px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.5)}`,
+                              borderColor: form.name.toLowerCase().includes('mega-x') ? '#00e5ff' : form.name.toLowerCase().includes('mega-y') ? '#ff3d00' : TYPE_COLORS[form.types[0]] || '#6366f1',
+                            }
+                          }}
+                        >
+                          <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
+                            <Chip
+                              label="MEGA"
+                              size="small"
+                              sx={{
+                                height: 16,
+                                fontSize: 8,
+                                fontWeight: 900,
+                                bgcolor: form.name.toLowerCase().includes('mega-x') ? '#00e5ff' : form.name.toLowerCase().includes('mega-y') ? '#ff3d00' : 'primary.main',
+                                color: '#fff'
+                              }}
+                            />
+                          </Box>
+
+                          <Box
+                            component="img"
+                            src={showShiny && form.shinyImage ? form.shinyImage : form.image}
+                            alt={form.name}
+                            sx={{ width: 100, height: 100, objectFit: 'contain', my: 1, filter: 'drop-shadow(0px 6px 10px rgba(0,0,0,0.15))' }}
+                          />
+
+                          <Typography
+                            variant="subtitle2"
+                            sx={{
+                              fontWeight: 900,
+                              fontSize: 13,
+                              color: 'text.primary',
+                              textAlign: 'center',
+                              textTransform: 'capitalize',
+                              mb: 1
+                            }}
+                          >
+                            {form.name.replace(/-/g, ' ')}
+                          </Typography>
+
+                          <Stack direction="row" spacing={0.5}>
+                            {form.types.map((type: string) => (
+                              <Chip
+                                key={type}
+                                label={type}
+                                size="small"
+                                sx={{
+                                  height: 18,
+                                  fontSize: 8,
+                                  fontWeight: 900,
+                                  textTransform: 'uppercase',
+                                  bgcolor: TYPE_COLORS[type] || '#9ca3af',
+                                  color: '#fff'
+                                }}
+                              />
+                            ))}
+                          </Stack>
+                        </Box>
+                      );
+                    })}
+                  </Stack>
+                </Box>
+              </>
+            )}
+
+            {/* Alternative Forms Section */}
+            {p.alternativeForms && p.alternativeForms.length > 0 && (
               <>
                 <Divider />
                 <Box>
@@ -466,7 +515,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                     Alternative Forms
                   </Typography>
                   <Stack direction="row" spacing={2.5} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                    {altForms.map((form) => (
+                    {p.alternativeForms.map((form: any) => (
                       <Box key={form.id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
                         <Tooltip title={`${form.name} • ${form.types.map((t: string) => t.toUpperCase()).join(' / ')}`}>
                           <Box

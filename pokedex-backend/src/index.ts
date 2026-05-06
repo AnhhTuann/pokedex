@@ -49,6 +49,16 @@ const typeDefs = `#graphql
     text: String!
   }
 
+  type PokemonVariety {
+    id: Int!
+    name: String!
+    types: [String!]!
+    image: String!
+    shinyImage: String
+    isMega: Boolean!
+    isAlternative: Boolean!
+  }
+
   type PokemonDetail {
     id: Int!
     name: String!
@@ -67,6 +77,8 @@ const typeDefs = `#graphql
     matchups: [TypeMatchup!]
     cry: String
     moves: [Move!]
+    megaEvolutions: [PokemonVariety!]
+    alternativeForms: [PokemonVariety!]
   }
 
   type Query {
@@ -300,6 +312,7 @@ const resolvers = {
           types: true, 
           abilities: true,
           gameVersions: true,
+          varieties: true,
           evolvesTo: {
             include: { toPokemon: { include: { types: true } } }
           },
@@ -325,6 +338,9 @@ const resolvers = {
           }
 
           let category: string | null = null;
+          let megaEvolutions: any[] = [];
+          let alternativeForms: any[] = [];
+
           try {
             const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
             if (speciesRes.ok) {
@@ -332,6 +348,56 @@ const resolvers = {
               const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
               if (genusObj) {
                 category = genusObj.genus;
+              }
+
+              const varieties = speciesData.varieties || [];
+              const nonDefault = varieties.filter((v: any) => !v.is_default);
+
+              for (const v of nonDefault) {
+                try {
+                  const detailRes = await fetch(v.pokemon.url);
+                  if (!detailRes.ok) continue;
+                  const dVar = await detailRes.json();
+
+                  const isMega = v.pokemon.name.includes("-mega");
+                  const isAlternative = !isMega;
+
+                  let parts = dVar.name.split('-');
+                  let base = parts[0];
+                  let form = parts.slice(1).join(' ');
+                  base = base.charAt(0).toUpperCase() + base.slice(1);
+
+                  let formattedName = dVar.name;
+                  if (form === 'alola') formattedName = `Alolan ${base}`;
+                  else if (form === 'galar') formattedName = `Galarian ${base}`;
+                  else if (form === 'hisui') formattedName = `Hisuian ${base}`;
+                  else if (form === 'paldea') formattedName = `Paldean ${base}`;
+                  else if (form === 'gmax') formattedName = `Gigantamax ${base}`;
+                  else if (form === 'mega') formattedName = `Mega ${base}`;
+                  else if (form === 'mega-x') formattedName = `Mega ${base} X`;
+                  else if (form === 'mega-y') formattedName = `Mega ${base} Y`;
+                  else {
+                    formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+                  }
+
+                  const item = {
+                    id: dVar.id,
+                    name: formattedName,
+                    types: dVar.types.map((t: any) => t.type.name),
+                    image: dVar.sprites?.other?.['official-artwork']?.front_default || dVar.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dVar.id}.png`,
+                    shinyImage: dVar.sprites?.other?.['official-artwork']?.front_shiny || dVar.sprites?.front_shiny || null,
+                    isMega,
+                    isAlternative
+                  };
+
+                  if (isMega) {
+                    megaEvolutions.push(item);
+                  } else {
+                    alternativeForms.push(item);
+                  }
+                } catch (errVar) {
+                  console.error("Error fetching variety detail inside fallback:", errVar);
+                }
               }
             }
           } catch (e) {
@@ -397,7 +463,9 @@ const resolvers = {
             evolutions,
             matchups,
             cry: d.cries?.latest || null,
-            moves: []
+            moves: [],
+            megaEvolutions,
+            alternativeForms
           };
         } catch (err) {
           console.error("Error fetching form from PokeAPI fallback:", err);
@@ -413,6 +481,26 @@ const resolvers = {
         { type: "water", multiplier: 0.5 },
         { type: "grass", multiplier: 0.5 }
       ];
+
+      const megaEvolutions = (p.varieties || []).filter((v: any) => v.isMega).map((v: any) => ({
+        id: v.id,
+        name: v.name,
+        types: v.types,
+        image: v.imageUrl,
+        shinyImage: v.shinyImageUrl,
+        isMega: v.isMega,
+        isAlternative: v.isAlternative
+      }));
+
+      const alternativeForms = (p.varieties || []).filter((v: any) => v.isAlternative).map((v: any) => ({
+        id: v.id,
+        name: v.name,
+        types: v.types,
+        image: v.imageUrl,
+        shinyImage: v.shinyImageUrl,
+        isMega: v.isMega,
+        isAlternative: v.isAlternative
+      }));
 
       return {
         id: p.pokedexNumber,
@@ -446,7 +534,9 @@ const resolvers = {
           damageClass: pm.move.damageClass,
           learnMethod: pm.learnMethod,
           levelLearnedAt: pm.levelLearnedAt
-        }))
+        })),
+        megaEvolutions,
+        alternativeForms
       };
     },
 
