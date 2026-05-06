@@ -38,16 +38,24 @@ const typeDefs = `#graphql
     damageClass: String
   }
 
+  type FlavorText {
+    version: String!
+    text: String!
+  }
+
   type PokemonDetail {
     id: Int!
     name: String!
     types: [String!]!
     image: String!
+    shinyImage: String
     height: Int
     weight: Int
     stats: [Stat!]
     abilities: [String!]
     description: String
+    flavorTexts: [FlavorText!]
+    gameVersions: [String!]
     evolutions: [PokemonListItem!]
     matchups: [TypeMatchup!]
     cry: String
@@ -55,6 +63,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
+    ping: String
     pokemonList(limit: Int, offset: Int, search: String, type: String, ids: [Int!]): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
   }
@@ -86,6 +95,7 @@ const detailCache = new Map<number, any>();
 
 const resolvers = {
   Query: {
+    ping: () => "pong!",
     pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', ids = null }: any) => {
       await loadCache();
       
@@ -165,9 +175,19 @@ const resolvers = {
         const speciesData = speciesRes && speciesRes.ok ? await speciesRes.json() : null;
 
         let description = '';
+        let flavorTexts: any[] = [];
         if (speciesData) {
           const flavorEntry = speciesData.flavor_text_entries?.find((entry: any) => entry.language.name === 'en');
           description = flavorEntry ? flavorEntry.flavor_text.replace(/[\n\f\r]/g, ' ') : '';
+          
+          if (speciesData.flavor_text_entries) {
+            flavorTexts = speciesData.flavor_text_entries
+              .filter((e: any) => e.language.name === 'en')
+              .map((e: any) => ({
+                version: e.version.name,
+                text: e.flavor_text.replace(/[\n\f\r]/g, ' ')
+              }));
+          }
         }
 
         // Fetch evolutions
@@ -228,16 +248,22 @@ const resolvers = {
 
         const cry = data.cries?.latest || null;
 
+        const gameVersions = data.game_indices ? data.game_indices.map((g: any) => g.version.name) : [];
+        const shinyImage = data.sprites?.other?.['official-artwork']?.front_shiny || null;
+
         const result = {
           id: data.id,
           name: data.name,
           types: data.types.map((t: any) => t.type.name),
           image: data.sprites.other['official-artwork'].front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`,
+          shinyImage,
           height: data.height,
           weight: data.weight,
           stats: data.stats.map((s: any) => ({ name: s.stat.name, value: s.base_stat })),
           abilities: data.abilities.map((a: any) => a.ability.name),
           description,
+          flavorTexts,
+          gameVersions,
           evolutions,
           matchups,
           cry,
@@ -291,11 +317,15 @@ async function startServer() {
     resolvers,
   });
 
+  console.log("Starting Apollo Server with schema containing shinyImage:", typeDefs.includes('shinyImage'));
+
   await apolloServer.start();
   console.log("SERVER BOOTSTRAP V2: MATCHUPS PRESENT");
 
   app.use(express.json());
   app.use(cors());
+
+  app.get('/api/ping', (req, res) => res.send('pong from edited server!'));
 
   app.use('/graphql', expressMiddleware(apolloServer));
 

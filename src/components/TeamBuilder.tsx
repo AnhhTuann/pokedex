@@ -42,6 +42,7 @@ export default function TeamBuilder() {
                   className="flex gap-4 min-w-max px-2"
                 >
                   {team.map((pokemon, index) => (
+                    // @ts-ignore
                     <Draggable key={pokemon.id.toString()} draggableId={pokemon.id.toString()} index={index}>
                       {(provided, snapshot) => (
                         <div

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ChevronRight, Zap, Volume2 } from 'lucide-react';
+import { X, ChevronRight, Zap, Volume2, Sparkles } from 'lucide-react';
 import { gql, useQuery } from '@apollo/client';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
@@ -23,6 +23,7 @@ export const GET_POKEMON_DETAIL = gql`
       evolutions {
         id
         name
+        types
         image
       }
     }
@@ -36,15 +37,27 @@ interface PokeDetailProps {
 
 export default function PokeDetail({ id, onClose }: PokeDetailProps) {
   const { addMember, team, removeMember } = useTeamStore();
+  const [showShiny, setShowShiny] = useState(false);
+  const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
+  
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
     variables: { id },
     skip: !id,
   });
 
+  // reset states when pokemon changes
+  useEffect(() => {
+    setShowShiny(false);
+    setSelectedVersion(null);
+  }, [id]);
+
   if (!id) return null;
 
   const details = data?.pokemon;
   const inTeam = team.some(p => p.id === id);
+
+  const flavorTextObj = null;
+  const displayDescription = details?.description || "No description available.";
 
   const playCry = () => {
     if (details?.cry) {
@@ -95,13 +108,14 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
             
             <motion.div className="w-full aspect-square bg-white dark:bg-slate-900 rounded-full shadow-inner flex items-center justify-center p-8 relative">
               <motion.img
-                src={details?.image}
+                key={showShiny ? 'shiny' : 'default'}
+                src={showShiny ? (details?.shinyImage || details?.image) : details?.image}
                 alt={details?.name}
                 loading="lazy"
-                className="w-full h-full object-contain relative z-10"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                className="w-full h-full object-contain relative z-10 drop-shadow-xl"
+                initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                transition={{ type: 'spring', damping: 20 }}
               />
               {details?.cry && (
                 <button 
@@ -110,6 +124,15 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                   title="Play Cry"
                 >
                   <Volume2 className="w-5 h-5" />
+                </button>
+              )}
+              {details?.shinyImage && (
+                <button
+                  onClick={() => setShowShiny(!showShiny)}
+                  className={`absolute top-0 left-0 p-3 rounded-full shadow-lg transition-transform hover:scale-110 z-20 ${showShiny ? 'bg-yellow-400 text-yellow-900' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-yellow-500 dark:hover:text-yellow-400'}`}
+                  title="Toggle Shiny"
+                >
+                  <Sparkles className="w-5 h-5" />
                 </button>
               )}
             </motion.div>
@@ -145,12 +168,31 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                 <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-4/6 animate-pulse" />
               </div>
             ) : error ? (
-              <div className="text-red-500">Failed to load Pokemon details.</div>
+              <div className="text-red-500">
+                Failed to load Pokemon details: {error.message}
+              </div>
             ) : (
               <>
-                <p className="text-sm font-medium leading-relaxed uppercase tracking-tight text-slate-500 dark:text-slate-400 italic border-l-4 border-indigo-500 pl-4 py-1">
-                  {details?.description || "No description available."}
-                </p>
+                <div className="space-y-3">
+                  <p className="text-sm font-medium leading-relaxed uppercase tracking-tight text-slate-500 dark:text-slate-400 italic border-l-4 border-indigo-500 pl-4 py-1">
+                    {displayDescription}
+                  </p>
+                  
+                  {details?.flavorTexts && details.flavorTexts.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-2 pl-4">
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Pokedex Entry:</span>
+                      <select 
+                        className="text-[10px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded px-2 py-1 outline-none appearance-none cursor-pointer border border-transparent hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+                        value={selectedVersion || details.flavorTexts[0].version}
+                        onChange={(e) => setSelectedVersion(e.target.value)}
+                      >
+                        {Array.from(new Set(details.flavorTexts.map((f: any) => f.version))).map((ver: any) => (
+                          <option key={ver} value={ver}>{ver.replace('-', ' ')}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex gap-10">
                   <div>
@@ -190,7 +232,7 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                    </div>
                 </div>
 
-                {details?.matchups && details.matchups.length > 0 && (
+                 {details?.matchups && details.matchups.length > 0 && (
                   <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">MATCHUPS</div>
                      <div className="flex flex-wrap gap-2">
@@ -202,6 +244,19 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                            </span>
                          )
                        })}
+                     </div>
+                  </div>
+                )}
+
+                {details?.gameVersions && details.gameVersions.length > 0 && (
+                  <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
+                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">VERSION HISTORY</div>
+                     <div className="flex flex-wrap gap-2">
+                       {details.gameVersions.map((version: string) => (
+                         <span key={version} className="px-2 py-1 text-[8px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-sm">
+                           {version.replace('-', ' ')}
+                         </span>
+                       ))}
                      </div>
                   </div>
                 )}
