@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Đổi số này thành 1025 nếu muốn cào TOÀN BỘ các Gen
-const POKEMON_COUNT = 151;
+const POKEMON_COUNT = 1025;
 
 // Tự động phân loại Thế hệ dựa vào Pokédex ID
 const getGeneration = (id: number): number => {

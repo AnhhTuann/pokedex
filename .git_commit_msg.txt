@@ -1,11 +1,1 @@
-feat: Phase 3 and Full MUI v9 Migration
-
-Phase 3 backend:
-- Add Evolution self-relation, GameVersion, Team, TeamSlot to Prisma schema
-- Update seed.ts to fetch game_indices and evolution chains from PokeAPI
-- GraphQL: add myTeam query and saveTeam mutation with DB persistence
-
-Frontend MUI v9 migration:
-- Remove right sidebar, move Mini Game to AppBar icon button
-- Full rewrite of all components with MUI v9 Grid, Card, Dialog, Chip
-- Fix MUI v9 breaking changes: Grid size prop, slotProps, sx layout props
+chore: update seed.ts with dynamic generation categorization and fix team seeding
