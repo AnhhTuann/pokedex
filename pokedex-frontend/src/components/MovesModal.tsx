@@ -262,7 +262,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
               const moveColor = TYPE_COLORS[m.type] || '#9ca3af';
 
               return (
-                <Grid item xs={12} sm={6} md={4} key={m.name}>
+                <Grid key={m.name} size={{ xs: 12, sm: 6, md: 4 }}>
                   <Card
                     onClick={() => handleToggleMove(m)}
                     sx={{
