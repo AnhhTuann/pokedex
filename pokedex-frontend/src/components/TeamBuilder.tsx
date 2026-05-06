@@ -60,7 +60,7 @@ export default function TeamBuilder() {
 
   return (
     <>
-      <Paper
+       <Paper
         elevation={8}
         sx={{
           position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1200,
@@ -70,15 +70,17 @@ export default function TeamBuilder() {
           backdropFilter: 'blur(20px)',
         }}
       >
-        <Box sx={{ maxWidth: 1400, mx: 'auto', px: 3, py: 2 }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} sx={{ alignItems: { xs: 'flex-start', md: 'center' } }}>
+        <Box sx={{ maxWidth: 1400, mx: 'auto', px: { xs: 2, md: 3 }, py: { xs: 2, md: 2.5 } }}>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} sx={{ alignItems: { xs: 'stretch', md: 'center' } }}>
 
             {/* Slots */}
             <Box
               sx={{
+                width: '100%',
                 flex: 1,
                 overflow: 'auto',
-                pb: 1, // Add bottom padding to give space for horizontal scrollbar
+                pt: 2.5, // Generous top padding to ensure red badge is never clipped
+                pb: 1.5,
                 '&::-webkit-scrollbar': {
                   height: '6px',
                 },
@@ -104,7 +106,7 @@ export default function TeamBuilder() {
                       spacing={1.5}
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      sx={{ minWidth: 'max-content' }}
+                      sx={{ minWidth: 'max-content', pt: 1, pb: 1, px: 1 }}
                     >
                       {team.map((p, idx) => (
                         // @ts-ignore
@@ -181,10 +183,10 @@ export default function TeamBuilder() {
             </Box>
 
             {/* Coverage + Save */}
-            <Stack spacing={1.5} sx={{ minWidth: 240, flexShrink: 0 }}>
+            <Stack spacing={1.5} sx={{ width: { xs: '100%', md: 'auto' }, minWidth: { md: 240 }, flexShrink: 0 }}>
               {team.length > 0 && (
                 <Box>
-                  <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', mb: 0.5 }}>
+                  <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', mb: 0.5, justifyContent: { xs: 'center', md: 'flex-start' } }}>
                     {[...teamTypes].map(t => (
                       <Chip key={t} label={t} size="small"
                         sx={{ height: 18, fontSize: 9, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase',
@@ -193,7 +195,7 @@ export default function TeamBuilder() {
                     ))}
                   </Stack>
                   {missing.length > 0 && (
-                    <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700 }}>
+                    <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, display: 'block', textAlign: { xs: 'center', md: 'left' } }}>
                       Missing: {missing.slice(0, 4).join(', ')}{missing.length > 4 ? ` +${missing.length - 4}` : ''}
                     </Typography>
                   )}
@@ -205,9 +207,9 @@ export default function TeamBuilder() {
                 disabled={saving || team.length === 0}
                 onClick={handleSave}
                 startIcon={<Save />}
-                size="small"
+                size="medium"
                 id="save-team-btn"
-                sx={{ borderRadius: 3, fontWeight: 800 }}
+                sx={{ borderRadius: 3, fontWeight: 800, py: 1, width: '100%' }}
               >
                 {saveSuccess ? 'Saved! ✓' : saving ? 'Saving…' : 'Save Team'}
               </Button>
