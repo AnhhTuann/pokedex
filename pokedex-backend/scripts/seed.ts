@@ -2,7 +2,21 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const POKEMON_COUNT = 151; // Gen 1
+// Đổi số này thành 1025 nếu muốn cào TOÀN BỘ các Gen
+const POKEMON_COUNT = 151;
+
+// Tự động phân loại Thế hệ dựa vào Pokédex ID
+const getGeneration = (id: number): number => {
+  if (id <= 151) return 1;
+  if (id <= 251) return 2;
+  if (id <= 386) return 3;
+  if (id <= 493) return 4;
+  if (id <= 649) return 5;
+  if (id <= 721) return 6;
+  if (id <= 809) return 7;
+  if (id <= 905) return 8;
+  return 9;
+};
 
 async function main() {
   console.log(`Starting seeding ${POKEMON_COUNT} Pokemon...`);
@@ -41,15 +55,17 @@ async function main() {
         return acc;
       }, {});
 
+      const gen = getGeneration(data.id);
+
       await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
         update: {
-          generation: 1,
+          generation: gen,
           gameVersions: { connectOrCreate: gameVersions }
         },
         create: {
           pokedexNumber: data.id,
-          generation: 1,
+          generation: gen,
           name: data.name,
           height: data.height,
           weight: data.weight,
@@ -131,7 +147,6 @@ async function main() {
     update: {},
     create: {
       userId: 1,
-      name: "Ash Ketchum's Team",
     }
   });
 
