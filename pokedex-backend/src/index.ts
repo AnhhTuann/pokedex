@@ -13,6 +13,8 @@ const typeDefs = `#graphql
     name: String!
     types: [String!]!
     image: String!
+    minLevel: Int
+    trigger: String
   }
 
   type PokemonListResponse {
@@ -77,6 +79,84 @@ const typeDefs = `#graphql
     saveTeam(pokemonIds: [Int!]!): Boolean!
   }
 `;
+
+const evolutionChainCache = new Map<number, any>();
+
+async function getFullEvolutionChain(pokemonId: number) {
+  if (evolutionChainCache.has(pokemonId)) {
+    return evolutionChainCache.get(pokemonId);
+  }
+
+  try {
+    const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    if (!speciesRes.ok) return null;
+    const speciesData = await speciesRes.json();
+    const chainUrl = speciesData.evolution_chain?.url;
+    if (!chainUrl) return null;
+
+    const chainRes = await fetch(chainUrl);
+    if (!chainRes.ok) return null;
+    const chainData = await chainRes.json();
+
+    const chainList: { name: string; minLevel: number | null; trigger: string | null }[] = [];
+
+    const traverse = (node: any) => {
+      const details = node.evolution_details?.[0];
+      chainList.push({
+        name: node.species.name,
+        minLevel: details?.min_level || null,
+        trigger: details?.trigger?.name || null
+      });
+      for (const next of node.evolves_to) {
+        traverse(next);
+      }
+    };
+
+    traverse(chainData.chain);
+
+    const result = [];
+    for (const item of chainList) {
+      let dbP = await prisma.pokemon.findFirst({
+        where: { name: { equals: item.name, mode: 'insensitive' } },
+        include: { types: true }
+      });
+
+      if (dbP) {
+        result.push({
+          id: dbP.pokedexNumber,
+          name: dbP.name,
+          types: dbP.types.map((t: any) => t.name),
+          image: dbP.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dbP.pokedexNumber}.png`,
+          minLevel: item.minLevel,
+          trigger: item.trigger
+        });
+      } else {
+        try {
+          const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${item.name.toLowerCase()}`);
+          if (pokeRes.ok) {
+            const pokeData = await pokeRes.json();
+            result.push({
+              id: pokeData.id,
+              name: item.name,
+              types: pokeData.types.map((t: any) => t.type.name),
+              image: pokeData.sprites?.other?.['official-artwork']?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokeData.id}.png`,
+              minLevel: item.minLevel,
+              trigger: item.trigger
+            });
+          }
+        } catch (err) {
+          console.error(`Error fetching fallback details for ${item.name}:`, err);
+        }
+      }
+    }
+    
+    evolutionChainCache.set(pokemonId, result);
+    return result;
+  } catch (err) {
+    console.error("Error getting full evolution chain:", err);
+    return null;
+  }
+}
 
 const resolvers = {
   Query: {
@@ -178,32 +258,7 @@ const resolvers = {
             }
           });
 
-          const evolutions: any[] = [];
-          if (baseP) {
-            if (baseP.evolvesFrom.length > 0) {
-              const fromP = baseP.evolvesFrom[0].fromPokemon;
-              evolutions.push({
-                id: fromP.pokedexNumber,
-                name: fromP.name,
-                types: fromP.types.map((t: any) => t.name),
-                image: fromP.imageUrl
-              });
-            }
-            evolutions.push({
-              id: baseP.pokedexNumber,
-              name: baseP.name,
-              types: baseP.types.map((t: any) => t.name),
-              image: baseP.imageUrl
-            });
-            baseP.evolvesTo.forEach((evo: any) => {
-              evolutions.push({
-                id: evo.toPokemon.pokedexNumber,
-                name: evo.toPokemon.name,
-                types: evo.toPokemon.types.map((t: any) => t.name),
-                image: evo.toPokemon.imageUrl
-              });
-            });
-          }
+          const evolutions = (await getFullEvolutionChain(id)) || [];
 
           const matchups = [
             { type: "fire", multiplier: 2.0 },
@@ -256,37 +311,7 @@ const resolvers = {
         }
       }
 
-      // Map Evolutions (from -> current -> to)
-      const evolutions: any[] = [];
-      
-      // If it evolves from something, push that
-      if (p.evolvesFrom.length > 0) {
-        const fromP = p.evolvesFrom[0].fromPokemon;
-        evolutions.push({
-          id: fromP.pokedexNumber,
-          name: fromP.name,
-          types: fromP.types.map((t: any) => t.name),
-          image: fromP.imageUrl
-        });
-      }
-
-      // Push itself
-      evolutions.push({
-        id: p.pokedexNumber,
-        name: p.name,
-        types: p.types.map((t: any) => t.name),
-        image: p.imageUrl
-      });
-
-      // If it evolves to something, push those
-      p.evolvesTo.forEach((evo: any) => {
-        evolutions.push({
-          id: evo.toPokemon.pokedexNumber,
-          name: evo.toPokemon.name,
-          types: evo.toPokemon.types.map((t: any) => t.name),
-          image: evo.toPokemon.imageUrl
-        });
-      });
+      const evolutions = (await getFullEvolutionChain(p.pokedexNumber)) || [];
 
       // Weakness & Resistance Mock (Ideally calculating from types, but mock is fine for portfolio presentation if not fully seeded)
       const matchups = [
@@ -317,7 +342,7 @@ const resolvers = {
         gameVersions: p.gameVersions.map((gv: any) => gv.name),
         evolutions,
         matchups,
-        cry: null,
+        cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${p.pokedexNumber}.ogg`,
         moves: p.moves.map((pm: any) => ({
           name: pm.move.name,
           type: pm.move.type,

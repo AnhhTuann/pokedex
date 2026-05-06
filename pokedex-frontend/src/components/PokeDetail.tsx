@@ -4,17 +4,17 @@ import {
   LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme,
   Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from '@mui/material';
-import { Close, ChevronRight, AutoAwesome } from '@mui/icons-material';
+import { Close, ChevronRight, AutoAwesome, VolumeUp } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!) {
     pokemon(id: $id) {
-      id name types image shinyImage height weight description
+      id name types image shinyImage height weight description cry
       stats { name value }
       abilities
-      evolutions { id name types image }
+      evolutions { id name types image minLevel trigger }
       matchups { type multiplier }
       gameVersions
       moves { name type power accuracy damageClass learnMethod levelLearnedAt }
@@ -44,6 +44,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const { addMember, team, removeMember } = useTeamStore();
   const [showShiny, setShowShiny] = useState(false);
   const [moveTab, setMoveTab] = useState(0);
+
 
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
     variables: { id }, skip: !id,
@@ -123,6 +124,13 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const primaryColor = TYPE_COLORS[p?.types?.[0]] || '#6366f1';
   const totalStats = p?.stats?.reduce((acc: number, s: any) => acc + s.value, 0) || 0;
 
+  const playCry = () => {
+    if (!p?.cry) return;
+    const audio = new Audio(p.cry);
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+  };
+
   return (
     <Dialog
       open={!!id}
@@ -131,7 +139,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
       fullWidth
       sx={{
         '& .MuiDialog-paper': {
-          borderRadius: 4,
+          borderRadius: 2,
           overflow: 'hidden',
           background: theme.palette.background.paper,
           maxHeight: '90vh',
@@ -206,6 +214,18 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                 />
               </Tooltip>
             )}
+            {p?.cry && (
+              <Tooltip title="Play Cry 🔊">
+                <Chip
+                  icon={<VolumeUp sx={{ fontSize: 12 }} />}
+                  label="Cry"
+                  size="small"
+                  variant="outlined"
+                  onClick={playCry}
+                  sx={{ cursor: 'pointer', fontWeight: 700 }}
+                />
+              </Tooltip>
+            )}
           </Box>
 
           <Box sx={{ mt: 1 }}>
@@ -232,8 +252,8 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
         sx={{
           p: 3,
           overflowY: 'auto',
-          borderBottomLeftRadius: '32px',
-          borderBottomRightRadius: '32px',
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
           '&::-webkit-scrollbar': {
             width: '6px',
           },
@@ -392,7 +412,20 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                             <Box component="img" src={evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
                           </Box>
                         </Tooltip>
-                        {idx < p.evolutions.length - 1 && <ChevronRight sx={{ color: 'text.disabled' }} />}
+                        {idx < p.evolutions.length - 1 && (
+                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 48, mx: 0.5 }}>
+                            <ChevronRight sx={{ color: 'text.disabled', fontSize: 20 }} />
+                            {p.evolutions[idx + 1]?.minLevel ? (
+                              <Typography variant="caption" sx={{ fontSize: 9, fontWeight: 800, color: 'text.secondary', mt: -0.25, whiteSpace: 'nowrap' }}>
+                                Lv. {p.evolutions[idx + 1].minLevel}
+                              </Typography>
+                            ) : p.evolutions[idx + 1]?.trigger ? (
+                              <Typography variant="caption" sx={{ fontSize: 8, fontWeight: 800, color: 'text.disabled', textTransform: 'capitalize', mt: -0.25, whiteSpace: 'nowrap' }}>
+                                {p.evolutions[idx + 1].trigger.replace('-', ' ')}
+                              </Typography>
+                            ) : null}
+                          </Box>
+                        )}
                       </React.Fragment>
                     ))}
                   </Stack>

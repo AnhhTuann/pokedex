@@ -132,13 +132,25 @@ export default function TeamBuilder() {
                                   size="small"
                                   onClick={e => { e.stopPropagation(); removeMember(p.id); }}
                                   sx={{
-                                    position: 'absolute', top: -8, right: -8, width: 20, height: 20,
-                                    bgcolor: 'error.main', color: '#fff', fontSize: 12, opacity: 0,
-                                    '&:hover': { bgcolor: 'error.dark' },
-                                    '.MuiBox-root:hover &': { opacity: 1 },
+                                    position: 'absolute',
+                                    top: -6,
+                                    right: -6,
+                                    width: 18,
+                                    height: 18,
+                                    bgcolor: 'error.main',
+                                    color: '#fff',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    '&:hover': {
+                                      bgcolor: 'error.dark',
+                                      transform: 'scale(1.15)',
+                                    },
                                   }}
                                 >
-                                  ×
+                                  <Close sx={{ fontSize: 11 }} />
                                 </IconButton>
                               </Tooltip>
                             </Box>
