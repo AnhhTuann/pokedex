@@ -15,7 +15,6 @@ export const GET_POKEMON_DETAIL = gql`
       height
       weight
       description
-      abilities
       stats {
         name
         value
@@ -60,11 +59,7 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
   const displayDescription = details?.description || "No description available.";
 
   const playCry = () => {
-    if (details?.cry) {
-      const audio = new Audio(details.cry);
-      audio.volume = 0.5;
-      audio.play().catch(e => console.error("Audio playback failed", e));
-    }
+    // Hidden as cry is missing from schema
   };
 
   return (
@@ -109,7 +104,7 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
             <motion.div className="w-full aspect-square bg-white dark:bg-slate-900 rounded-full shadow-inner flex items-center justify-center p-8 relative">
               <motion.img
                 key={showShiny ? 'shiny' : 'default'}
-                src={showShiny ? (details?.shinyImage || details?.image) : details?.image}
+                src={details?.image}
                 alt={details?.name}
                 loading="lazy"
                 className="w-full h-full object-contain relative z-10 drop-shadow-xl"
@@ -177,21 +172,6 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                   <p className="text-sm font-medium leading-relaxed uppercase tracking-tight text-slate-500 dark:text-slate-400 italic border-l-4 border-indigo-500 pl-4 py-1">
                     {displayDescription}
                   </p>
-                  
-                  {details?.flavorTexts && details.flavorTexts.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-2 pl-4">
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Pokedex Entry:</span>
-                      <select 
-                        className="text-[10px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded px-2 py-1 outline-none appearance-none cursor-pointer border border-transparent hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
-                        value={selectedVersion || details.flavorTexts[0].version}
-                        onChange={(e) => setSelectedVersion(e.target.value)}
-                      >
-                        {Array.from(new Set(details.flavorTexts.map((f: any) => f.version))).map((ver: any) => (
-                          <option key={ver} value={ver}>{ver.replace('-', ' ')}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex gap-10">
@@ -223,7 +203,7 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                   ))}
                 </div>
 
-                <div className="pt-8 flex items-center justify-between">
+                 <div className="pt-8 flex items-center justify-between">
                    <div className="space-y-1">
                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ABILITIES</div>
                      <div className="flex gap-4 text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
@@ -232,34 +212,8 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                    </div>
                 </div>
 
-                 {details?.matchups && details.matchups.length > 0 && (
-                  <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
-                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">MATCHUPS</div>
-                     <div className="flex flex-wrap gap-2">
-                       {details.matchups.map((m: any) => {
-                         const bg = m.multiplier > 1 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : m.multiplier < 1 && m.multiplier > 0 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400';
-                         return (
-                           <span key={m.type} className={`text-[10px] font-bold uppercase py-1 px-2 rounded-md flex items-center gap-1 ${bg}`}>
-                             {m.type} <span className="opacity-75">x{m.multiplier}</span>
-                           </span>
-                         )
-                       })}
-                     </div>
-                  </div>
-                )}
+                {/* Matchups and Game Versions removed as they are missing from schema */}
 
-                {details?.gameVersions && details.gameVersions.length > 0 && (
-                  <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
-                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">VERSION HISTORY</div>
-                     <div className="flex flex-wrap gap-2">
-                       {details.gameVersions.map((version: string) => (
-                         <span key={version} className="px-2 py-1 text-[8px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-sm">
-                           {version.replace('-', ' ')}
-                         </span>
-                       ))}
-                     </div>
-                  </div>
-                )}
 
                 {details?.evolutions && details.evolutions.length > 0 && (
                   <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
