@@ -2,6 +2,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { MyPokedexProvider } from './lib/MyPokedexContext';
+import { ThemeProvider } from './lib/ThemeContext';
 import App from './App.tsx';
 import './index.css';
 
@@ -34,9 +35,11 @@ const client = new ApolloClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
-      <MyPokedexProvider>
-        <App />
-      </MyPokedexProvider>
+      <ThemeProvider>
+        <MyPokedexProvider>
+          <App />
+        </MyPokedexProvider>
+      </ThemeProvider>
     </ApolloProvider>
   </StrictMode>,
 );

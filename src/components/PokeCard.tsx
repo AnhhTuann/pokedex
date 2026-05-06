@@ -30,9 +30,11 @@ interface PokeCardProps {
   onClick: () => void;
   index: number;
   key?: number | string;
+  isCompareMode?: boolean;
+  isSelectedForCompare?: boolean;
 }
 
-export default function PokeCard({ pokemon, onClick, index }: PokeCardProps) {
+export default function PokeCard({ pokemon, onClick, index, isCompareMode, isSelectedForCompare }: PokeCardProps) {
   const primaryType = pokemon.types[0] || 'normal';
   const styles = typeStyles[primaryType] || typeStyles.normal;
   const { isFavorite, toggleFavorite } = useMyPokedex();
@@ -40,12 +42,13 @@ export default function PokeCard({ pokemon, onClick, index }: PokeCardProps) {
 
   return (
     <motion.div
+      layoutId={`pokemon-card-${pokemon.id}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
       whileHover={{ y: -8 }}
       onClick={onClick}
-      className="group cursor-pointer relative"
+      className={`group cursor-pointer relative ${isCompareMode ? (isSelectedForCompare ? 'ring-4 ring-indigo-500 rounded-3xl scale-105 transition-all' : 'opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all') : ''}`}
       id={`pokemon-card-${pokemon.id}`}
     >
       <div className={`${styles.bg} rounded-3xl p-6 border-b-8 ${styles.border} flex flex-col items-center transition-all duration-300 shadow-sm hover:shadow-md h-full relative`}>

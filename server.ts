@@ -25,6 +25,19 @@ const typeDefs = `#graphql
     value: Int!
   }
 
+  type TypeMatchup {
+    type: String!
+    multiplier: Float!
+  }
+
+  type Move {
+    name: String!
+    type: String!
+    power: Int
+    accuracy: Int
+    damageClass: String
+  }
+
   type PokemonDetail {
     id: Int!
     name: String!
@@ -36,6 +49,9 @@ const typeDefs = `#graphql
     abilities: [String!]
     description: String
     evolutions: [PokemonListItem!]
+    matchups: [TypeMatchup!]
+    cry: String
+    moves: [Move!]
   }
 
   type Query {
@@ -65,6 +81,8 @@ async function loadCache() {
     console.error("Failed to load pokemon cache", e);
   }
 }
+
+const detailCache = new Map<number, any>();
 
 const resolvers = {
   Query: {
@@ -132,6 +150,9 @@ const resolvers = {
       };
     },
     pokemon: async (_: any, { id }: { id: number }) => {
+      if (detailCache.has(id)) {
+        return detailCache.get(id);
+      }
       try {
         const [pokemonRes, speciesRes] = await Promise.all([
           fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),
@@ -182,7 +203,32 @@ const resolvers = {
           }
         }
 
-        return {
+        // Fetch matchups
+        const typeUrls = data.types.map((t: any) => t.type.url);
+        const typeDefRes = await Promise.all(typeUrls.map((url: string) => fetch(url).then(r => r.json())));
+        
+        const multiplierMap = new Map<string, number>();
+        // initialize standard types to 1
+        const allTypes = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
+        allTypes.forEach(t => multiplierMap.set(t, 1));
+
+        typeDefRes.forEach((typeData: any) => {
+          const relation = typeData.damage_relations;
+          relation.double_damage_from.forEach((t: any) => multiplierMap.set(t.name, (multiplierMap.get(t.name) || 1) * 2));
+          relation.half_damage_from.forEach((t: any) => multiplierMap.set(t.name, (multiplierMap.get(t.name) || 1) * 0.5));
+          relation.no_damage_from.forEach((t: any) => multiplierMap.set(t.name, (multiplierMap.get(t.name) || 1) * 0));
+        });
+
+        const matchups = [];
+        for (const [type, multiplier] of Array.from(multiplierMap.entries())) {
+          if (multiplier !== 1) {
+            matchups.push({ type, multiplier });
+          }
+        }
+
+        const cry = data.cries?.latest || null;
+
+        const result = {
           id: data.id,
           name: data.name,
           types: data.types.map((t: any) => t.type.name),
@@ -192,11 +238,45 @@ const resolvers = {
           stats: data.stats.map((s: any) => ({ name: s.stat.name, value: s.base_stat })),
           abilities: data.abilities.map((a: any) => a.ability.name),
           description,
-          evolutions
+          evolutions,
+          matchups,
+          cry,
+          rawMoves: data.moves // Added rawMoves
         };
+        
+        detailCache.set(id, result);
+        return result;
       } catch (e) {
         console.error("Failed to fetch pokemon", e);
         return null;
+      }
+    }
+  },
+  PokemonDetail: {
+    moves: async (parent: any) => {
+      if (!parent.rawMoves || parent.rawMoves.length === 0) return [];
+      
+      // Limit to 40 moves to respect API limits and performance
+      const topMoves = parent.rawMoves.slice(0, 40);
+      
+      try {
+        const movesData = await Promise.all(topMoves.map(async (m: any) => {
+          const res = await fetch(m.move.url);
+          if (!res.ok) return null;
+          const detail = await res.json();
+          return {
+            name: detail.name,
+            type: detail.type.name,
+            power: detail.power,
+            accuracy: detail.accuracy,
+            damageClass: detail.damage_class?.name
+          };
+        }));
+        
+        return movesData.filter(Boolean);
+      } catch (e) {
+        console.error("Failed to fetch moves", e);
+        return [];
       }
     }
   }
@@ -212,6 +292,7 @@ async function startServer() {
   });
 
   await apolloServer.start();
+  console.log("SERVER BOOTSTRAP V2: MATCHUPS PRESENT");
 
   app.use(express.json());
   app.use(cors());
