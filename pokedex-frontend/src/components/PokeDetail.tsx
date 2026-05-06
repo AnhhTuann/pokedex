@@ -43,7 +43,7 @@ interface PokeDetailProps {
 
 export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const theme = useTheme();
-  const { addMember, team, removeMember } = useTeamStore();
+  const { addMember, team, removeMember, isShinyMode } = useTeamStore();
   const [showShiny, setShowShiny] = useState(false);
   const [moveTab, setMoveTab] = useState(0);
 
@@ -74,8 +74,8 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   });
 
   useEffect(() => {
-    setShowShiny(false);
-  }, [id]);
+    setShowShiny(isShinyMode);
+  }, [id, isShinyMode]);
 
   if (!id) return null;
 
