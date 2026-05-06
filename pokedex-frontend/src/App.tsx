@@ -84,15 +84,51 @@ export default function App() {
           borderBottom: `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Toolbar sx={{ gap: 2, flexWrap: 'wrap', py: 1 }}>
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 900, letterSpacing: -0.5, color: 'text.primary', mr: 1, whiteSpace: 'nowrap', fontSize: { xs: '1rem', sm: '1.25rem' } }}
-          >
-            🔴 POKÉDEX
-          </Typography>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: 1.5,
+            py: { xs: 1.5, md: 1 },
+            alignItems: { xs: 'stretch', md: 'center' }
+          }}
+        >
+          {/* Top row: Title and mobile action buttons on narrow viewports */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: { xs: '100%', md: 'auto' } }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 900, letterSpacing: -0.5, color: 'text.primary', whiteSpace: 'nowrap', fontSize: { xs: '1.1rem', sm: '1.25rem' } }}
+            >
+              🔴 POKÉDEX
+            </Typography>
 
-          <Box sx={{ flex: 1, minWidth: 200 }}>
+            {/* Buttons (Show on mobile next to Title) */}
+            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                <Tooltip title="Who's That Pokémon? 🎮">
+                  <IconButton
+                    id="open-game-btn-mobile"
+                    onClick={() => setGameOpen(true)}
+                    sx={{
+                      bgcolor: isDark ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.08)',
+                      color: 'primary.main',
+                      '&:hover': { bgcolor: 'primary.main', color: '#fff' },
+                    }}
+                  >
+                    <SportsEsports fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={isDark ? 'Light mode' : 'Dark mode'}>
+                  <IconButton onClick={toggleColorMode} sx={{ color: 'text.secondary' }} size="small">
+                    {isDark ? <WbSunny fontSize="small" /> : <DarkMode fontSize="small" />}
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+            </Box>
+          </Box>
+
+          {/* SearchBar wrapper (full width on mobile, flexible on desktop) */}
+          <Box sx={{ flex: 1, minWidth: { xs: '100%', md: 200 } }}>
             <SearchBar
               value={search}         onChange={setSearch}
               typeValue={typeFilter} onTypeChange={setTypeFilter}
@@ -100,26 +136,29 @@ export default function App() {
             />
           </Box>
 
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Tooltip title="Who's That Pokémon? 🎮">
-              <IconButton
-                id="open-game-btn"
-                onClick={() => setGameOpen(true)}
-                sx={{
-                  bgcolor: isDark ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.08)',
-                  color: 'primary.main',
-                  '&:hover': { bgcolor: 'primary.main', color: '#fff' },
-                }}
-              >
-                <SportsEsports />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={isDark ? 'Light mode' : 'Dark mode'}>
-              <IconButton onClick={toggleColorMode} sx={{ color: 'text.secondary' }}>
-                {isDark ? <WbSunny /> : <DarkMode />}
-              </IconButton>
-            </Tooltip>
-          </Stack>
+          {/* Buttons (Show on desktop next to searchbar) */}
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <Tooltip title="Who's That Pokémon? 🎮">
+                <IconButton
+                  id="open-game-btn"
+                  onClick={() => setGameOpen(true)}
+                  sx={{
+                    bgcolor: isDark ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.08)',
+                    color: 'primary.main',
+                    '&:hover': { bgcolor: 'primary.main', color: '#fff' },
+                  }}
+                >
+                  <SportsEsports />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={isDark ? 'Light mode' : 'Dark mode'}>
+                <IconButton onClick={toggleColorMode} sx={{ color: 'text.secondary' }}>
+                  {isDark ? <WbSunny /> : <DarkMode />}
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          </Box>
         </Toolbar>
       </AppBar>
 

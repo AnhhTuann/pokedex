@@ -13,6 +13,7 @@ const typeDefs = `#graphql
     name: String!
     types: [String!]!
     image: String!
+    shinyImage: String
     minLevel: Int
     trigger: String
   }
@@ -114,7 +115,7 @@ async function getFullEvolutionChain(pokemonId: number) {
 
     traverse(chainData.chain);
 
-    const result = [];
+     const result = [];
     for (const item of chainList) {
       let dbP = await prisma.pokemon.findFirst({
         where: { name: { equals: item.name, mode: 'insensitive' } },
@@ -127,6 +128,7 @@ async function getFullEvolutionChain(pokemonId: number) {
           name: dbP.name,
           types: dbP.types.map((t: any) => t.name),
           image: dbP.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dbP.pokedexNumber}.png`,
+          shinyImage: dbP.shinyImageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${dbP.pokedexNumber}.png`,
           minLevel: item.minLevel,
           trigger: item.trigger
         });
@@ -140,6 +142,7 @@ async function getFullEvolutionChain(pokemonId: number) {
               name: item.name,
               types: pokeData.types.map((t: any) => t.type.name),
               image: pokeData.sprites?.other?.['official-artwork']?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokeData.id}.png`,
+              shinyImage: pokeData.sprites?.other?.['official-artwork']?.front_shiny || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${pokeData.id}.png`,
               minLevel: item.minLevel,
               trigger: item.trigger
             });

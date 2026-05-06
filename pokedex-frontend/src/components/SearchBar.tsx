@@ -46,7 +46,14 @@ export default function SearchBar({ value, onChange, typeValue, onTypeChange, ge
   };
 
   return (
-    <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+    <Stack
+      direction={{ xs: 'column', sm: 'row' }}
+      spacing={1.5}
+      sx={{
+        alignItems: 'center',
+        width: '100%',
+      }}
+    >
       {/* Search text */}
       <TextField
         value={value}
@@ -60,30 +67,40 @@ export default function SearchBar({ value, onChange, typeValue, onTypeChange, ge
             sx: { borderRadius: 3 },
           }
         }}
-        sx={{ minWidth: 140 }}
+        sx={{ flex: { xs: 'none', sm: 2 }, minWidth: { xs: '100%', sm: 160 } }}
       />
 
-      {/* Type filter */}
-      <FormControl size="small" sx={{ ...selectSx, minWidth: 130 }}>
-        <InputLabel>Type</InputLabel>
-        <Select value={typeValue} onChange={e => onTypeChange(e.target.value)} label="Type" sx={{ borderRadius: 3 }}>
-          <MenuItem value=""><em>All Types</em></MenuItem>
-          {POKEMON_TYPES.map(t => <MenuItem key={t} value={t.toLowerCase()}>{t}</MenuItem>)}
-        </Select>
-      </FormControl>
+      {/* Filters Container */}
+      <Stack direction="row" spacing={1.5} sx={{ flex: { xs: 'none', sm: 3 }, width: '100%' }}>
+        {/* Type filter */}
+        <FormControl size="small" sx={{ ...selectSx, flex: 1, minWidth: 0 }}>
+          <InputLabel id="type-select-label">Type</InputLabel>
+          <Select
+            labelId="type-select-label"
+            value={typeValue}
+            onChange={e => onTypeChange(e.target.value)}
+            label="Type"
+            sx={{ borderRadius: 3 }}
+          >
+            <MenuItem value=""><em>All Types</em></MenuItem>
+            {POKEMON_TYPES.map(t => <MenuItem key={t} value={t.toLowerCase()}>{t}</MenuItem>)}
+          </Select>
+        </FormControl>
 
-      {/* Generation filter */}
-      <FormControl size="small" sx={{ ...selectSx, minWidth: 145 }}>
-        <InputLabel>Generation</InputLabel>
-        <Select
-          value={genValue ?? 'all'}
-          onChange={handleGenChange}
-          label="Generation"
-          sx={{ borderRadius: 3 }}
-        >
-          {GENERATIONS.map(g => <MenuItem key={g.value} value={g.value}>{g.label}</MenuItem>)}
-        </Select>
-      </FormControl>
+        {/* Generation filter */}
+        <FormControl size="small" sx={{ ...selectSx, flex: 1, minWidth: 0 }}>
+          <InputLabel id="gen-select-label">Generation</InputLabel>
+          <Select
+            labelId="gen-select-label"
+            value={genValue ?? 'all'}
+            onChange={handleGenChange}
+            label="Generation"
+            sx={{ borderRadius: 3 }}
+          >
+            {GENERATIONS.map(g => <MenuItem key={g.value} value={g.value}>{g.label}</MenuItem>)}
+          </Select>
+        </FormControl>
+      </Stack>
     </Stack>
   );
 }

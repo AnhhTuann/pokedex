@@ -14,7 +14,7 @@ export const GET_POKEMON_DETAIL = gql`
       id name types image shinyImage height weight description cry
       stats { name value }
       abilities
-      evolutions { id name types image minLevel trigger }
+      evolutions { id name types image shinyImage minLevel trigger }
       matchups { type multiplier }
       gameVersions
       moves { name type power accuracy damageClass learnMethod levelLearnedAt }
@@ -102,7 +102,8 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               id: d.id,
               name: formattedName,
               types: d.types.map((t: any) => t.type.name),
-              image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || ''
+              image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || '',
+              shinyImage: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || d.sprites?.front_default || ''
             };
           } catch {
             return null;
@@ -410,7 +411,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                                 '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
                               }}
                             >
-                              <Box component="img" src={evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                              <Box component="img" src={showShiny && evo.shinyImage ? evo.shinyImage : evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
                             </Box>
                           </Tooltip>
                           <Typography
@@ -479,7 +480,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                               }
                             }}
                           >
-                            <Box component="img" src={form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                            <Box component="img" src={showShiny && form.shinyImage ? form.shinyImage : form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
                           </Box>
                         </Tooltip>
                         <Typography
