@@ -25,6 +25,11 @@ export const GET_POKEMON_DETAIL = gql`
         types
         image
       }
+      matchups {
+        type
+        multiplier
+      }
+      gameVersions
     }
   }
 `;
@@ -32,9 +37,10 @@ export const GET_POKEMON_DETAIL = gql`
 interface PokeDetailProps {
   id: number | null;
   onClose: () => void;
+  onSelect?: (id: number) => void;
 }
 
-export default function PokeDetail({ id, onClose }: PokeDetailProps) {
+export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const { addMember, team, removeMember } = useTeamStore();
   const [showShiny, setShowShiny] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
@@ -212,7 +218,37 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                    </div>
                 </div>
 
-                {/* Matchups and Game Versions removed as they are missing from schema */}
+                {details?.matchups && details.matchups.length > 0 && (
+                  <div className="pt-8">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">MATCHUPS (WEAKNESS & RESISTANCE)</div>
+                    <div className="flex flex-wrap gap-2">
+                      {details.matchups.map((m: any) => (
+                        <div key={m.type} className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${m.multiplier > 1 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : m.multiplier < 1 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700'}`}>
+                          <span>{m.type}</span>
+                          <span className="opacity-60">{m.multiplier}x</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {details?.gameVersions && details.gameVersions.length > 0 && (
+                  <div className="pt-8">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">APPEARS IN</div>
+                    <div className="flex flex-wrap gap-2">
+                      {details.gameVersions.slice(0, 10).map((v: string) => (
+                        <span key={v} className="text-[9px] font-bold uppercase text-slate-500 bg-slate-100 dark:bg-slate-800 dark:text-slate-400 px-2 py-1 rounded-md">
+                          {v.replace('-', ' ')}
+                        </span>
+                      ))}
+                      {details.gameVersions.length > 10 && (
+                        <span className="text-[9px] font-bold uppercase text-slate-400 px-2 py-1">
+                          +{details.gameVersions.length - 10} MORE
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
 
 
                 {details?.evolutions && details.evolutions.length > 0 && (
@@ -221,9 +257,15 @@ export default function PokeDetail({ id, onClose }: PokeDetailProps) {
                     <div className="flex items-center gap-4">
                       {details.evolutions.map((evo: any, idx: number) => (
                         <React.Fragment key={evo.id}>
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center bg-slate-50 dark:bg-slate-800 border-2 ${evo.id === details.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-slate-100 dark:border-slate-700'}`}>
+                          <button
+                            onClick={() => {
+                              if (onSelect && evo.id !== details.id) {
+                                onSelect(evo.id);
+                              }
+                            }}
+                            className={`w-16 h-16 rounded-full flex items-center justify-center bg-slate-50 dark:bg-slate-800 border-2 transition-all ${evo.id === details.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 cursor-default' : 'border-slate-100 dark:border-slate-700 hover:border-indigo-300 hover:scale-110 cursor-pointer'}`}>
                             <img src={evo.image} alt={evo.name} loading="lazy" className="w-12 h-12 object-contain" />
-                          </div>
+                          </button>
                           {idx < details.evolutions.length - 1 && (
                             <ChevronRight className="w-4 h-4 text-slate-300 dark:text-slate-600" />
                           )}

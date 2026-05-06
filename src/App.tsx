@@ -57,7 +57,7 @@ export default function App() {
     }
   };
 
-  const { data, loading, error } = useQuery<{ pokemonList: { results: PokemonListItem[], totalCount: number } }>(GET_POKEMON_LIST, {
+  const { data, loading, error, fetchMore } = useQuery<{ pokemonList: { results: PokemonListItem[], totalCount: number } }>(GET_POKEMON_LIST, {
     variables: {
       limit: 24,
       offset: 0,
@@ -68,6 +68,16 @@ export default function App() {
   });
 
   const pokemonList = data?.pokemonList?.results || [];
+  const totalCount = data?.pokemonList?.totalCount || 0;
+  const hasMore = pokemonList.length > 0 && pokemonList.length < totalCount;
+
+  const loadMore = () => {
+    fetchMore({
+      variables: {
+        offset: pokemonList.length
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-slate-50 dark:bg-slate-950 transition-colors pb-32 xl:pb-0">
@@ -160,6 +170,17 @@ export default function App() {
                 )}
               </div>
             )}
+
+            {!loading && hasMore && (
+              <div className="flex justify-center pt-8">
+                <button
+                  onClick={loadMore}
+                  className="px-8 py-4 bg-white dark:bg-slate-800 border-2 border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400 rounded-full font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-slate-900 transition-colors shadow-sm"
+                >
+                  Load More
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -223,7 +244,7 @@ export default function App() {
       </main>
 
       {/* Detail Modal */}
-      <PokeDetail id={selectedId} onClose={() => setSelectedId(null)} />
+      <PokeDetail id={selectedId} onClose={() => setSelectedId(null)} onSelect={(id) => setSelectedId(id)} />
 
       {/* Compare Modal */}
       <CompareModal 
