@@ -163,6 +163,71 @@ async function getFullEvolutionChain(pokemonId: number) {
   }
 }
 
+const alternativeFormsCache = new Map<number, any[]>();
+
+async function getAlternativeForms(pokemonId: number) {
+  if (alternativeFormsCache.has(pokemonId)) {
+    return alternativeFormsCache.get(pokemonId);
+  }
+
+  try {
+    const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    if (!speciesRes.ok) return [];
+    const speciesData = await speciesRes.json();
+    const varieties = speciesData.varieties || [];
+    const nonDefault = varieties.filter((v: any) => !v.is_default);
+
+    const forms = [];
+    for (const v of nonDefault) {
+      try {
+        const detailRes = await fetch(v.pokemon.url);
+        if (!detailRes.ok) continue;
+        const d = await detailRes.json();
+
+        let parts = d.name.split('-');
+        let base = parts[0];
+        let form = parts.slice(1).join(' ');
+        base = base.charAt(0).toUpperCase() + base.slice(1);
+
+        let formattedName = d.name;
+        if (form === 'alola') formattedName = `Alolan ${base}`;
+        else if (form === 'galar') formattedName = `Galarian ${base}`;
+        else if (form === 'hisui') formattedName = `Hisuian ${base}`;
+        else if (form === 'paldea') formattedName = `Paldean ${base}`;
+        else if (form === 'gmax') formattedName = `Gigantamax ${base}`;
+        else if (form === 'mega') formattedName = `Mega ${base}`;
+        else if (form === 'mega-x') formattedName = `Mega ${base} X`;
+        else if (form === 'mega-y') formattedName = `Mega ${base} Y`;
+        else {
+          formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+        }
+
+        let category: string | null = null;
+        const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+        if (genusObj) {
+          category = genusObj.genus;
+        }
+
+        forms.push({
+          id: d.id,
+          name: formattedName,
+          types: d.types.map((t: any) => t.type.name),
+          image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d.id}.png`,
+          category: category
+        });
+      } catch (err) {
+        console.error(`Error fetching alternative form detail for ${v.pokemon.name}:`, err);
+      }
+    }
+
+    alternativeFormsCache.set(pokemonId, forms);
+    return forms;
+  } catch (err) {
+    console.error(`Error fetching alternative forms for species ${pokemonId}:`, err);
+    return [];
+  }
+}
+
 const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
@@ -206,13 +271,21 @@ const resolvers = {
         })
       ]);
 
-      const results = pokemons.map((p: any) => ({
-        id: p.pokedexNumber,
-        name: p.name,
-        types: p.types.map((t: any) => t.name),
-        image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
-        category: p.category
-      }));
+      const results: any[] = [];
+      for (const p of pokemons) {
+        results.push({
+          id: p.pokedexNumber,
+          name: p.name,
+          types: p.types.map((t: any) => t.name),
+          image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
+          category: p.category
+        });
+
+        const altForms = await getAlternativeForms(p.pokedexNumber);
+        for (const alt of altForms) {
+          results.push(alt);
+        }
+      }
 
       return {
         results,
