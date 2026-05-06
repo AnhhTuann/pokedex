@@ -177,9 +177,9 @@ async function getFullEvolutionChain(pokemonId: number) {
 
 const alternativeFormsCache = new Map<number, any[]>();
 
-async function getAlternativeForms(pokemonId: number) {
+async function getAlternativeForms(pokemonId: number): Promise<any[]> {
   if (alternativeFormsCache.has(pokemonId)) {
-    return alternativeFormsCache.get(pokemonId);
+    return alternativeFormsCache.get(pokemonId) || [];
   }
 
   try {
@@ -293,7 +293,7 @@ const resolvers = {
           category: p.category
         });
 
-        const altForms = await getAlternativeForms(p.pokedexNumber);
+        const altForms = (await getAlternativeForms(p.pokedexNumber)) || [];
         for (const alt of altForms) {
           results.push(alt);
         }
