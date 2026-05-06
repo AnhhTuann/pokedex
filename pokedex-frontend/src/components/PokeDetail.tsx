@@ -3,7 +3,7 @@ import {
   Dialog, DialogContent, Box, Typography, Chip, Button, Stack,
   LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme
 } from '@mui/material';
-import { Close, Sparkles, ChevronRight, AutoAwesome } from '@mui/icons-material';
+import { Close, ChevronRight, AutoAwesome } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 
@@ -46,13 +46,79 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
     variables: { id }, skip: !id,
   });
 
-  useEffect(() => { setShowShiny(false); }, [id]);
+  const [altForms, setAltForms] = useState<any[]>([]);
+
+  useEffect(() => {
+    setShowShiny(false);
+    if (!id) {
+      setAltForms([]);
+      return;
+    }
+
+    setAltForms([]);
+    fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(async (speciesData) => {
+        const varieties = speciesData.varieties || [];
+        const nonDefault = varieties.filter((v: any) => !v.is_default);
+
+        if (nonDefault.length === 0) {
+          setAltForms([]);
+          return;
+        }
+
+        const detailsPromises = nonDefault.map(async (v: any) => {
+          try {
+            const detailRes = await fetch(v.pokemon.url);
+            if (!detailRes.ok) return null;
+            const d = await detailRes.json();
+
+            let parts = d.name.split('-');
+            let base = parts[0];
+            let form = parts.slice(1).join(' ');
+            base = base.charAt(0).toUpperCase() + base.slice(1);
+
+            let formattedName = d.name;
+            if (form === 'alola') formattedName = `Alolan ${base}`;
+            else if (form === 'galar') formattedName = `Galarian ${base}`;
+            else if (form === 'hisui') formattedName = `Hisuian ${base}`;
+            else if (form === 'paldea') formattedName = `Paldean ${base}`;
+            else if (form === 'gmax') formattedName = `Gigantamax ${base}`;
+            else if (form === 'mega') formattedName = `Mega ${base}`;
+            else if (form === 'mega-x') formattedName = `Mega ${base} X`;
+            else if (form === 'mega-y') formattedName = `Mega ${base} Y`;
+            else {
+              formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+            }
+
+            return {
+              id: d.id,
+              name: formattedName,
+              types: d.types.map((t: any) => t.type.name),
+              image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || ''
+            };
+          } catch {
+            return null;
+          }
+        });
+
+        const results = await Promise.all(detailsPromises);
+        setAltForms(results.filter((r) => r !== null));
+      })
+      .catch(() => {
+        setAltForms([]);
+      });
+  }, [id]);
 
   if (!id) return null;
 
   const p = data?.pokemon;
   const inTeam = team.some(m => m.id === id);
   const primaryColor = TYPE_COLORS[p?.types?.[0]] || '#6366f1';
+  const totalStats = p?.stats?.reduce((acc: number, s: any) => acc + s.value, 0) || 0;
 
   return (
     <Dialog
@@ -60,9 +126,9 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
       onClose={onClose}
       maxWidth="md"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 5,
+      sx={{
+        '& .MuiDialog-paper': {
+          borderRadius: 4,
           overflow: 'hidden',
           background: theme.palette.background.paper,
           maxHeight: '90vh',
@@ -106,15 +172,17 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
         </Box>
 
         {/* Name / Types / Actions */}
-        <Box flex={1}>
-          <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={3} sx={{ textTransform: 'uppercase' }}>
-            #{id.toString().padStart(3, '0')}
-          </Typography>
-          <Typography variant="h4" fontWeight={900} sx={{ textTransform: 'capitalize', color: 'text.primary', letterSpacing: -1, lineHeight: 1.1, my: 0.5 }}>
-            {p?.name || 'Loading…'}
-          </Typography>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box>
+            <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
+              #{id.toString().padStart(3, '0')}
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'capitalize', color: 'text.primary', letterSpacing: -1, lineHeight: 1.1, mt: 0.5 }}>
+              {p?.name || 'Loading…'}
+            </Typography>
+          </Box>
 
-          <Stack direction="row" spacing={0.75} flexWrap="wrap" mb={2}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
             {p?.types?.map((t: string) => (
               <Chip
                 key={t}
@@ -135,20 +203,20 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                 />
               </Tooltip>
             )}
-          </Stack>
+          </Box>
 
-          <Stack direction="row" spacing={1.5}>
+          <Box sx={{ mt: 1 }}>
             <Button
               size="small"
               variant={inTeam ? 'outlined' : 'contained'}
               color={inTeam ? 'error' : 'primary'}
               onClick={() => inTeam ? removeMember(id) : addMember(p)}
               disabled={!p}
-              sx={{ borderRadius: 6, fontWeight: 800, fontSize: 11 }}
+              sx={{ borderRadius: 6, fontWeight: 800, fontSize: 11, px: 2, py: 0.75 }}
             >
               {inTeam ? 'Remove from Team' : 'Add to Team'}
             </Button>
-          </Stack>
+          </Box>
         </Box>
 
         <IconButton onClick={onClose} id="close-modal" size="small" sx={{ color: 'text.secondary', alignSelf: 'flex-start' }}>
@@ -157,7 +225,29 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
       </Box>
 
       {/* ── Content ── */}
-      <DialogContent sx={{ p: 3 }}>
+      <DialogContent
+        sx={{
+          p: 3,
+          overflowY: 'auto',
+          borderBottomLeftRadius: '32px',
+          borderBottomRightRadius: '32px',
+          '&::-webkit-scrollbar': {
+            width: '6px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'transparent',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
+            borderRadius: '10px',
+            '&:hover': {
+              background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+            }
+          },
+          scrollbarWidth: 'thin',
+          scrollbarColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.15) transparent',
+        }}
+      >
         {loading && <LinearProgress sx={{ borderRadius: 2, mb: 2 }} />}
         {error && <Typography color="error">Failed to load: {error.message}</Typography>}
 
@@ -166,17 +256,17 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
             {/* Physical */}
             <Stack direction="row" spacing={4}>
               <Box>
-                <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={2} textTransform="uppercase">Height</Typography>
-                <Typography variant="h6" fontWeight={800}>{((p.height || 0) / 10).toFixed(1)} m</Typography>
+                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>Height</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>{((p.height || 0) / 10).toFixed(1)} m</Typography>
               </Box>
               <Box>
-                <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={2} textTransform="uppercase">Weight</Typography>
-                <Typography variant="h6" fontWeight={800}>{((p.weight || 0) / 10).toFixed(1)} kg</Typography>
+                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>Weight</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>{((p.weight || 0) / 10).toFixed(1)} kg</Typography>
               </Box>
               {p.abilities?.length > 0 && (
                 <Box>
-                  <Typography variant="caption" color="text.disabled" fontWeight={700} letterSpacing={2} textTransform="uppercase">Abilities</Typography>
-                  <Stack direction="row" spacing={0.75} flexWrap="wrap" mt={0.5}>
+                  <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>Abilities</Typography>
+                  <Stack direction="row" spacing={0.75} sx={{ flexWrap: 'wrap', mt: 0.5 }}>
                     {p.abilities.map((a: string) => (
                       <Chip key={a} label={a.replace('-', ' ')} size="small" variant="outlined" sx={{ fontSize: 10, fontWeight: 700, textTransform: 'capitalize' }} />
                     ))}
@@ -189,18 +279,18 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
 
             {/* Base Stats */}
             <Box>
-              <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+              <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
                 Base Stats
               </Typography>
               <Stack spacing={1.5}>
                 {p.stats?.map((stat: any, i: number) => (
                   <Box key={stat.name}>
-                    <Stack direction="row" justifyContent="space-between" mb={0.5}>
-                      <Typography variant="caption" fontWeight={700} textTransform="uppercase" letterSpacing={1.5} color="text.secondary">
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                      <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.5 }}>
                         {stat.name.replace('-', ' ')}
                       </Typography>
-                      <Typography variant="caption" fontWeight={900} color="text.primary">{stat.value}</Typography>
-                    </Stack>
+                      <Typography variant="caption" color="text.primary" sx={{ fontWeight: 900 }}>{stat.value}</Typography>
+                    </Box>
                     <LinearProgress
                       variant="determinate"
                       value={Math.min(100, (stat.value / 255) * 100)}
@@ -213,6 +303,16 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                   </Box>
                 ))}
               </Stack>
+
+              {/* Total Stats Row */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, pt: 1.5, borderTop: `1px dashed ${alpha(theme.palette.divider, 0.4)}` }}>
+                <Typography variant="caption" color="text.primary" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1.5 }}>
+                  Total
+                </Typography>
+                <Typography variant="subtitle2" color="primary.main" sx={{ fontWeight: 900 }}>
+                  {totalStats}
+                </Typography>
+              </Box>
             </Box>
 
             {/* Type Matchups */}
@@ -220,10 +320,10 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               <>
                 <Divider />
                 <Box>
-                  <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
                     Type Matchups
                   </Typography>
-                  <Stack direction="row" flexWrap="wrap" gap={0.75}>
+                  <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
                     {p.matchups.map((m: any) => (
                       <Chip
                         key={m.type}
@@ -247,10 +347,10 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               <>
                 <Divider />
                 <Box>
-                  <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
                     Appears In
                   </Typography>
-                  <Stack direction="row" flexWrap="wrap" gap={0.75}>
+                  <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
                     {p.gameVersions.slice(0, 12).map((v: string) => (
                       <Chip key={v} label={v.replace(/-/g, ' ')} size="small" variant="outlined" sx={{ fontSize: 9, fontWeight: 700, textTransform: 'capitalize' }} />
                     ))}
@@ -267,10 +367,10 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               <>
                 <Divider />
                 <Box>
-                  <Typography variant="overline" fontWeight={800} color="text.disabled" letterSpacing={3} mb={1.5} display="block">
+                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
                     Evolution Chain
                   </Typography>
-                  <Stack direction="row" alignItems="center" spacing={1.5} flexWrap="wrap">
+                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
                     {p.evolutions.map((evo: any, idx: number) => (
                       <React.Fragment key={evo.id}>
                         <Tooltip title={evo.name}>
@@ -291,6 +391,40 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                         </Tooltip>
                         {idx < p.evolutions.length - 1 && <ChevronRight sx={{ color: 'text.disabled' }} />}
                       </React.Fragment>
+                    ))}
+                  </Stack>
+                </Box>
+              </>
+            )}
+
+            {/* Alternative Forms */}
+            {altForms.length > 0 && (
+              <>
+                <Divider />
+                <Box>
+                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
+                    Alternative Forms
+                  </Typography>
+                  <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
+                    {altForms.map((form) => (
+                      <Tooltip key={form.id} title={`${form.name} • ${form.types.map((t: string) => t.toUpperCase()).join(' / ')}`}>
+                        <Box
+                          sx={{
+                            width: 64, height: 64, borderRadius: '50%',
+                            background: alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15),
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            border: `2px solid ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.4)}`,
+                            transition: 'transform 0.2s, box-shadow 0.2s',
+                            cursor: 'default',
+                            '&:hover': {
+                              transform: 'scale(1.1)',
+                              boxShadow: `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3)}`
+                            }
+                          }}
+                        >
+                          <Box component="img" src={form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                        </Box>
+                      </Tooltip>
                     ))}
                   </Stack>
                 </Box>

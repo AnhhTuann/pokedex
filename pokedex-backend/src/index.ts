@@ -270,7 +270,7 @@ const resolvers = {
 
       let team = await prisma.team.findUnique({ where: { userId: 1 } });
       if (!team) {
-        team = await prisma.team.create({ data: { userId: 1, name: "My Team" } });
+        team = await prisma.team.create({ data: { userId: 1 } });
       }
 
       // Delete existing slots

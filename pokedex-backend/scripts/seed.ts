@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -46,12 +46,12 @@ async function main() {
 
       const stats = data.stats.reduce((acc: any, s: any) => {
         const statName = s.stat.name;
-        if (statName === 'hp') acc.hp = s.base_stat;
-        if (statName === 'attack') acc.attack = s.base_stat;
-        if (statName === 'defense') acc.defense = s.base_stat;
-        if (statName === 'special-attack') acc.specialAttack = s.base_stat;
-        if (statName === 'special-defense') acc.specialDefense = s.base_stat;
-        if (statName === 'speed') acc.speed = s.base_stat;
+        if (statName === "hp") acc.hp = s.base_stat;
+        if (statName === "attack") acc.attack = s.base_stat;
+        if (statName === "defense") acc.defense = s.base_stat;
+        if (statName === "special-attack") acc.specialAttack = s.base_stat;
+        if (statName === "special-defense") acc.specialDefense = s.base_stat;
+        if (statName === "speed") acc.speed = s.base_stat;
         return acc;
       }, {});
 
@@ -61,7 +61,7 @@ async function main() {
         where: { pokedexNumber: data.id },
         update: {
           generation: gen,
-          gameVersions: { connectOrCreate: gameVersions }
+          gameVersions: { connectOrCreate: gameVersions },
         },
         create: {
           pokedexNumber: data.id,
@@ -70,8 +70,10 @@ async function main() {
           height: data.height,
           weight: data.weight,
           baseExperience: data.base_experience,
-          imageUrl: data.sprites?.other?.['official-artwork']?.front_default || null,
-          shinyImageUrl: data.sprites?.other?.['official-artwork']?.front_shiny || null,
+          imageUrl:
+            data.sprites?.other?.["official-artwork"]?.front_default || null,
+          shinyImageUrl:
+            data.sprites?.other?.["official-artwork"]?.front_shiny || null,
           hp: stats.hp,
           attack: stats.attack,
           defense: stats.defense,
@@ -80,23 +82,24 @@ async function main() {
           speed: stats.speed,
           types: { connectOrCreate: types },
           abilities: { connectOrCreate: abilities },
-          gameVersions: { connectOrCreate: gameVersions }
+          gameVersions: { connectOrCreate: gameVersions },
         },
       });
-
     } catch (error) {
       console.error(`Error seeding Pokemon #${i}:`, error);
     }
   }
 
   // Step 2: Seed Evolutions
-  console.log('Seeding evolutions...');
+  console.log("Seeding evolutions...");
   for (let i = 1; i <= POKEMON_COUNT; i++) {
     try {
-      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+      const speciesRes = await fetch(
+        `https://pokeapi.co/api/v2/pokemon-species/${i}`,
+      );
       if (!speciesRes.ok) continue;
       const speciesData = await speciesRes.json();
-      
+
       const chainUrl = speciesData.evolution_chain?.url;
       if (!chainUrl) continue;
 
@@ -106,48 +109,51 @@ async function main() {
 
       // Recursive function to parse chain
       const parseChain = async (node: any) => {
-        const fromId = parseInt(node.species.url.split('/').filter(Boolean).pop()!);
-        
+        const fromId = parseInt(
+          node.species.url.split("/").filter(Boolean).pop()!,
+        );
+
         for (const evolvesTo of node.evolves_to) {
-          const toId = parseInt(evolvesTo.species.url.split('/').filter(Boolean).pop()!);
-          
+          const toId = parseInt(
+            evolvesTo.species.url.split("/").filter(Boolean).pop()!,
+          );
+
           // Only link if both exist in our Gen 1 DB (id <= 151)
           if (fromId <= POKEMON_COUNT && toId <= POKEMON_COUNT) {
             await prisma.evolution.upsert({
               where: {
                 fromPokemonId_toPokemonId: {
                   fromPokemonId: fromId,
-                  toPokemonId: toId
-                }
+                  toPokemonId: toId,
+                },
               },
               update: {},
               create: {
                 fromPokemonId: fromId,
-                toPokemonId: toId
-              }
+                toPokemonId: toId,
+              },
             });
             console.log(`Evolves: ${fromId} -> ${toId}`);
           }
-          
+
           await parseChain(evolvesTo);
         }
       };
 
       await parseChain(chainData.chain);
-
     } catch (error) {
       console.error(`Error seeding evolutions for #${i}:`, error);
     }
   }
 
   // Step 3: Mock User Team
-  console.log('Seeding mock team...');
+  console.log("Seeding mock team...");
   const team = await prisma.team.upsert({
     where: { userId: 1 },
     update: {},
     create: {
       userId: 1,
-    }
+    },
   });
 
   // Add Pikachu, Bulbasaur, Charmander, Squirtle if not exists
@@ -155,14 +161,14 @@ async function main() {
   for (let i = 0; i < mockTeamIds.length; i++) {
     await prisma.teamSlot.upsert({
       where: {
-        teamId_slotOrder: { teamId: team.id, slotOrder: i + 1 }
+        teamId_slotOrder: { teamId: team.id, slotOrder: i + 1 },
       },
       update: { pokemonId: mockTeamIds[i] },
-      create: { teamId: team.id, slotOrder: i + 1, pokemonId: mockTeamIds[i] }
+      create: { teamId: team.id, slotOrder: i + 1, pokemonId: mockTeamIds[i] },
     });
   }
 
-  console.log('Seeding finished completely!');
+  console.log("Seeding finished completely!");
 }
 
 main()

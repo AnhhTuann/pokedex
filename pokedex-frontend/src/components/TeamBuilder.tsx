@@ -71,10 +71,31 @@ export default function TeamBuilder() {
         }}
       >
         <Box sx={{ maxWidth: 1400, mx: 'auto', px: 3, py: 2 }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} alignItems={{ xs: 'flex-start', md: 'center' }}>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} sx={{ alignItems: { xs: 'flex-start', md: 'center' } }}>
 
             {/* Slots */}
-            <Box flex={1} overflow="auto">
+            <Box
+              sx={{
+                flex: 1,
+                overflow: 'auto',
+                pb: 1, // Add bottom padding to give space for horizontal scrollbar
+                '&::-webkit-scrollbar': {
+                  height: '6px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: 'transparent',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
+                  borderRadius: '10px',
+                  '&:hover': {
+                    background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+                  }
+                },
+                scrollbarWidth: 'thin',
+                scrollbarColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.15) transparent',
+              }}
+            >
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="team" direction="horizontal">
                   {(provided) => (
@@ -136,7 +157,7 @@ export default function TeamBuilder() {
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                           }}
                         >
-                          <Typography fontSize={10} fontWeight={700} color="text.disabled" textTransform="uppercase" letterSpacing={1}>
+                          <Typography color="text.disabled" sx={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
                             #{team.length + i + 1}
                           </Typography>
                         </Box>
@@ -151,7 +172,7 @@ export default function TeamBuilder() {
             <Stack spacing={1.5} sx={{ minWidth: 240, flexShrink: 0 }}>
               {team.length > 0 && (
                 <Box>
-                  <Stack direction="row" spacing={0.5} flexWrap="wrap" mb={0.5}>
+                  <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', mb: 0.5 }}>
                     {[...teamTypes].map(t => (
                       <Chip key={t} label={t} size="small"
                         sx={{ height: 18, fontSize: 9, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase',
@@ -160,7 +181,7 @@ export default function TeamBuilder() {
                     ))}
                   </Stack>
                   {missing.length > 0 && (
-                    <Typography variant="caption" color="text.disabled" fontWeight={700}>
+                    <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700 }}>
                       Missing: {missing.slice(0, 4).join(', ')}{missing.length > 4 ? ` +${missing.length - 4}` : ''}
                     </Typography>
                   )}

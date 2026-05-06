@@ -46,7 +46,7 @@ export default function SearchBar({ value, onChange, typeValue, onTypeChange, ge
   };
 
   return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
+    <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
       {/* Search text */}
       <TextField
         value={value}
@@ -54,9 +54,11 @@ export default function SearchBar({ value, onChange, typeValue, onTypeChange, ge
         placeholder="Search by name or #..."
         size="small"
         fullWidth
-        InputProps={{
-          startAdornment: <InputAdornment position="start"><Search sx={{ color: 'text.disabled', fontSize: 20 }} /></InputAdornment>,
-          sx: { borderRadius: 3 },
+        slotProps={{
+          input: {
+            startAdornment: <InputAdornment position="start"><Search sx={{ color: 'text.disabled', fontSize: 20 }} /></InputAdornment>,
+            sx: { borderRadius: 3 },
+          }
         }}
         sx={{ minWidth: 140 }}
       />
