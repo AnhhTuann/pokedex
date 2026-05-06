@@ -1,0 +1,189 @@
+import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, ChevronRight, Zap } from 'lucide-react';
+import { gql, useQuery } from '@apollo/client';
+import { useMyPokedex } from '../lib/MyPokedexContext';
+
+export const GET_POKEMON_DETAIL = gql`
+  query GetPokemonDetail($id: Int!) {
+    pokemon(id: $id) {
+      id
+      name
+      types
+      image
+      height
+      weight
+      description
+      abilities
+      stats {
+        name
+        value
+      }
+      evolutions {
+        id
+        name
+        image
+      }
+    }
+  }
+`;
+
+interface PokeDetailProps {
+  id: number | null;
+  onClose: () => void;
+}
+
+export default function PokeDetail({ id, onClose }: PokeDetailProps) {
+  const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
+    variables: { id },
+    skip: !id,
+  });
+
+  if (!id) return null;
+
+  const details = data?.pokemon;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+        />
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="w-full max-w-4xl bg-white shadow-2xl rounded-[32px] overflow-hidden relative z-10 grid grid-cols-1 md:grid-cols-12 max-h-[90vh] overflow-y-auto"
+        >
+          <button 
+            onClick={onClose}
+            className="absolute top-6 right-6 z-20 w-10 h-10 flex items-center justify-center border border-slate-200 rounded-full hover:bg-slate-50 transition-colors shadow-sm bg-white"
+            id="close-modal"
+          >
+            <X className="w-5 h-5 text-slate-400" />
+          </button>
+
+          {/* Left Side: Artwork */}
+          <div className="md:col-span-5 bg-slate-50 p-12 flex flex-col justify-center items-center relative overflow-hidden">
+            <div className="absolute top-8 left-8 flex items-center gap-2 font-mono text-[10px] font-bold text-slate-300">
+               <div className="w-2 h-2 rounded-full bg-indigo-500" />
+               POKEMON SOURCE ASSET
+            </div>
+            
+            <motion.div className="w-full aspect-square bg-white rounded-full shadow-inner flex items-center justify-center p-8">
+              <motion.img
+                src={details?.image}
+                alt={details?.name}
+                className="w-full h-full object-contain relative z-10"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              />
+            </motion.div>
+
+            <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end opacity-20">
+               <div className="text-4xl font-black italic text-slate-900">#{id.toString().padStart(3, '0')}</div>
+               <div className="text-right">
+                 <p className="text-[8px] font-mono font-black uppercase tracking-tighter">AUTHENTICITY GUARANTEED</p>
+                 <p className="text-[8px] font-mono font-black uppercase tracking-tighter text-indigo-600">SOURCE: POKEAPI-GQL</p>
+               </div>
+            </div>
+          </div>
+
+          {/* Right Side: Data */}
+          <div className="md:col-span-7 p-12 space-y-8 overflow-y-auto max-h-[90vh]">
+            <div className="space-y-4">
+               <div className="flex gap-2">
+                 {details?.types?.map((t: string) => (
+                   <span key={t} className="text-[10px] font-bold uppercase py-1 px-3 bg-indigo-600 text-white rounded-full">
+                     {t}
+                   </span>
+                 ))}
+               </div>
+               <h2 className="text-5xl font-black uppercase tracking-tighter text-slate-900">
+                 {details?.name || 'Loading...'}
+               </h2>
+            </div>
+
+            {loading ? (
+              <div className="space-y-4 pt-10">
+                <div className="h-4 bg-slate-100 rounded w-full animate-pulse" />
+                <div className="h-4 bg-slate-100 rounded w-5/6 animate-pulse" />
+                <div className="h-4 bg-slate-100 rounded w-4/6 animate-pulse" />
+              </div>
+            ) : error ? (
+              <div className="text-red-500">Failed to load Pokemon details.</div>
+            ) : (
+              <>
+                <p className="text-sm font-medium leading-relaxed uppercase tracking-tight text-slate-500 italic border-l-4 border-indigo-500 pl-4 py-1">
+                  {details?.description || "No description available."}
+                </p>
+
+                <div className="flex gap-10">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">WEIGHT</div>
+                    <div className="text-lg font-black text-slate-800">{(details?.weight / 10).toFixed(1)} kg</div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">HEIGHT</div>
+                    <div className="text-lg font-black text-slate-800">{(details?.height / 10).toFixed(1)} m</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 pt-4">
+                  {details?.stats?.map((stat: any) => (
+                    <div key={stat.name} className="space-y-2">
+                      <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        <span>{stat.name.replace('-', ' ')}</span>
+                        <span className="text-slate-900">{stat.value}</span>
+                      </div>
+                      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${Math.min(100, (stat.value / 255) * 100)}%` }}
+                          className="h-full bg-indigo-500"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-8 flex items-center justify-between">
+                   <div className="space-y-1">
+                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ABILITIES</div>
+                     <div className="flex gap-4 text-xs font-bold uppercase text-slate-700">
+                       {details?.abilities?.map((a: string) => <span key={a}>{a.replace('-', ' ')}</span>)}
+                     </div>
+                   </div>
+                </div>
+
+                {details?.evolutions && details.evolutions.length > 0 && (
+                  <div className="pt-8 border-t border-slate-100">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">EVOLUTION CHAIN</div>
+                    <div className="flex items-center gap-4">
+                      {details.evolutions.map((evo: any, idx: number) => (
+                        <React.Fragment key={evo.id}>
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center bg-slate-50 border-2 ${evo.id === details.id ? 'border-indigo-500 bg-indigo-50' : 'border-slate-100'}`}>
+                            <img src={evo.image} alt={evo.name} className="w-12 h-12 object-contain" />
+                          </div>
+                          {idx < details.evolutions.length - 1 && (
+                            <ChevronRight className="w-4 h-4 text-slate-300" />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Network, Database, Layers, Zap } from 'lucide-react';
 
-const Node = ({ x, y, label, icon: Icon, active, secondary }: { x: number, y: number, label: string, icon: any, active?: boolean, secondary?: boolean }) => (
+const Node = ({ x, y, label, icon: Icon, active, secondary, ...props }: { x: number, y: number, label: string, icon: any, active?: boolean, secondary?: boolean, key?: string | number }) => (
   <motion.g
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}

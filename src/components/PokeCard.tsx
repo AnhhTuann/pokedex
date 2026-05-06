@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Heart } from 'lucide-react';
 import { PokemonListItem } from '../types';
+import { useMyPokedex } from '../lib/MyPokedexContext';
 
 const typeStyles: Record<string, { bg: string, border: string, badge: string, circle: string }> = {
   normal: { bg: 'bg-slate-50', border: 'border-slate-400', badge: 'bg-slate-400', circle: 'bg-slate-200' },
@@ -33,6 +35,8 @@ interface PokeCardProps {
 export default function PokeCard({ pokemon, onClick, index }: PokeCardProps) {
   const primaryType = pokemon.types[0] || 'normal';
   const styles = typeStyles[primaryType] || typeStyles.normal;
+  const { isFavorite, toggleFavorite } = useMyPokedex();
+  const isFav = isFavorite(pokemon.id);
 
   return (
     <motion.div
@@ -41,10 +45,19 @@ export default function PokeCard({ pokemon, onClick, index }: PokeCardProps) {
       transition={{ duration: 0.4, delay: index * 0.05 }}
       whileHover={{ y: -8 }}
       onClick={onClick}
-      className="group cursor-pointer"
+      className="group cursor-pointer relative"
       id={`pokemon-card-${pokemon.id}`}
     >
-      <div className={`${styles.bg} rounded-3xl p-6 border-b-8 ${styles.border} flex flex-col items-center transition-all duration-300 shadow-sm hover:shadow-md h-full`}>
+      <div className={`${styles.bg} rounded-3xl p-6 border-b-8 ${styles.border} flex flex-col items-center transition-all duration-300 shadow-sm hover:shadow-md h-full relative`}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(pokemon.id);
+          }}
+          className="absolute top-4 right-4 z-20 p-2 hover:bg-black/5 rounded-full transition-colors"
+        >
+          <Heart className={`w-5 h-5 ${isFav ? 'fill-red-500 text-red-500' : 'text-slate-300'}`} />
+        </button>
         <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-4 shadow-inner relative overflow-hidden">
           <div className={`w-24 h-24 rounded-full ${styles.circle} absolute opacity-50`} />
           <motion.img
