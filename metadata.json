@@ -1,0 +1,6 @@
+{
+  "name": "Modern Pokedex Project",
+  "description": "A minimalist, high-performance Pokedex featuring a ReactJS frontend, PokeAPI data, and a GraphQL-inspired architecture visualization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
