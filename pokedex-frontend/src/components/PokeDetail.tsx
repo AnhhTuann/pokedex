@@ -396,24 +396,42 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                   <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
                     {p.evolutions.map((evo: any, idx: number) => (
                       <React.Fragment key={evo.id}>
-                        <Tooltip title={evo.name}>
-                          <Box
-                            onClick={() => { if (onSelect && evo.id !== p.id) onSelect(evo.id); }}
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
+                          <Tooltip title={evo.name}>
+                            <Box
+                              onClick={() => { if (onSelect && evo.id !== p.id) onSelect(evo.id); }}
+                              sx={{
+                                width: 64, height: 64, borderRadius: '50%',
+                                background: alpha(TYPE_COLORS[evo.types?.[0]] || '#6366f1', 0.15),
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                cursor: evo.id !== p.id ? 'pointer' : 'default',
+                                border: `2px solid ${evo.id === p.id ? '#6366f1' : 'transparent'}`,
+                                transition: 'transform 0.2s, border 0.2s',
+                                '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
+                              }}
+                            >
+                              <Box component="img" src={evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                            </Box>
+                          </Tooltip>
+                          <Typography
+                            variant="caption"
                             sx={{
-                              width: 64, height: 64, borderRadius: '50%',
-                              background: alpha(TYPE_COLORS[evo.types?.[0]] || '#6366f1', 0.15),
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              cursor: evo.id !== p.id ? 'pointer' : 'default',
-                              border: `2px solid ${evo.id === p.id ? '#6366f1' : 'transparent'}`,
-                              transition: 'transform 0.2s, border 0.2s',
-                              '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
+                              fontSize: 10,
+                              fontWeight: 800,
+                              color: evo.id === p.id ? 'primary.main' : 'text.secondary',
+                              textTransform: 'capitalize',
+                              textAlign: 'center',
+                              maxWidth: 76,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap'
                             }}
                           >
-                            <Box component="img" src={evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
-                          </Box>
-                        </Tooltip>
+                            {evo.name}
+                          </Typography>
+                        </Box>
                         {idx < p.evolutions.length - 1 && (
-                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 48, mx: 0.5 }}>
+                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 48, mx: 0.5, mt: -2 }}>
                             <ChevronRight sx={{ color: 'text.disabled', fontSize: 20 }} />
                             {p.evolutions[idx + 1]?.minLevel ? (
                               <Typography variant="caption" sx={{ fontSize: 9, fontWeight: 800, color: 'text.secondary', mt: -0.25, whiteSpace: 'nowrap' }}>
@@ -441,28 +459,46 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                   <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
                     Alternative Forms
                   </Typography>
-                  <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Stack direction="row" spacing={2.5} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     {altForms.map((form) => (
-                      <Tooltip key={form.id} title={`${form.name} • ${form.types.map((t: string) => t.toUpperCase()).join(' / ')}`}>
-                        <Box
-                          onClick={() => { if (onSelect) onSelect(form.id); }}
+                      <Box key={form.id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
+                        <Tooltip title={`${form.name} • ${form.types.map((t: string) => t.toUpperCase()).join(' / ')}`}>
+                          <Box
+                            onClick={() => { if (onSelect) onSelect(form.id); }}
+                            sx={{
+                              width: 64, height: 64, borderRadius: '50%',
+                              background: alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15),
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              border: `2px solid ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.4)}`,
+                              transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
+                              cursor: 'pointer',
+                              '&:hover': {
+                                transform: 'scale(1.15)',
+                                borderColor: TYPE_COLORS[form.types[0]] || '#6366f1',
+                                boxShadow: `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3)}`
+                              }
+                            }}
+                          >
+                            <Box component="img" src={form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                          </Box>
+                        </Tooltip>
+                        <Typography
+                          variant="caption"
                           sx={{
-                            width: 64, height: 64, borderRadius: '50%',
-                            background: alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15),
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            border: `2px solid ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.4)}`,
-                            transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-                            cursor: 'pointer',
-                            '&:hover': {
-                              transform: 'scale(1.15)',
-                              borderColor: TYPE_COLORS[form.types[0]] || '#6366f1',
-                              boxShadow: `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3)}`
-                            }
+                            fontSize: 10,
+                            fontWeight: 800,
+                            color: 'text.secondary',
+                            textTransform: 'capitalize',
+                            textAlign: 'center',
+                            maxWidth: 80,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
                           }}
                         >
-                          <Box component="img" src={form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
-                        </Box>
-                      </Tooltip>
+                          {form.name.replace(/-/g, ' ').replace(new RegExp(p.name, 'i'), '').trim() || form.name}
+                        </Typography>
+                      </Box>
                     ))}
                   </Stack>
                 </Box>
@@ -493,7 +529,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                     <Tab label="Tutor" />
                   </Tabs>
 
-                  <TableContainer component={Paper} elevation={0} sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 3, overflow: 'hidden' }}>
+                  <TableContainer component={Paper} elevation={0} sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: '12px', overflow: 'hidden' }}>
                     <Table size="small">
                       <TableHead sx={{ bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
                         <TableRow>
