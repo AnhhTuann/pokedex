@@ -4,7 +4,7 @@ import {
   LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme,
   Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from '@mui/material';
-import { Close, ChevronRight, AutoAwesome, VolumeUp } from '@mui/icons-material';
+import { Close, ChevronRight, AutoAwesome, VolumeUp, PlayArrow, Pause, Stop, RecordVoiceOver } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 
@@ -47,6 +47,27 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const [showShiny, setShowShiny] = useState(false);
   const [moveTab, setMoveTab] = useState(0);
 
+  // Pokédex Voice states
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+
+  useEffect(() => {
+    const loadVoices = () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        setVoices(window.speechSynthesis.getVoices());
+      }
+    };
+    loadVoices();
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    return () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [id]);
 
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
     variables: { id }, skip: !id,
@@ -62,6 +83,66 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
   const inTeam = team.some(m => m.id === id);
   const primaryColor = TYPE_COLORS[p?.types?.[0]] || '#6366f1';
   const totalStats = p?.stats?.reduce((acc: number, s: any) => acc + s.value, 0) || 0;
+
+  const handleVoiceSpeak = () => {
+    if (!p || !p.description) return;
+
+    if (isSpeaking) {
+      if (isPaused) {
+        window.speechSynthesis.resume();
+        setIsPaused(false);
+      } else {
+        window.speechSynthesis.pause();
+        setIsPaused(true);
+      }
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(p.description);
+    
+    // Choose the best English female automated voice
+    const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith('en'));
+    const pokedexVoice = 
+      englishVoices.find(v => v.name.toLowerCase().includes('google uk english female')) ||
+      englishVoices.find(v => v.name.toLowerCase().includes('google us english')) ||
+      englishVoices.find(v => v.name.toLowerCase().includes('zira')) ||
+      englishVoices.find(v => v.name.toLowerCase().includes('female')) ||
+      englishVoices[0];
+
+    if (pokedexVoice) {
+      utterance.voice = pokedexVoice;
+    }
+
+    utterance.rate = 0.95; // Slower anime pace
+    utterance.pitch = 1.05; // Metallic tone
+
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      setIsPaused(false);
+    };
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setIsPaused(false);
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setIsPaused(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleVoiceStop = () => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+    setIsPaused(false);
+  };
 
   const playCry = () => {
     if (!p?.cry) return;
@@ -241,6 +322,121 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                 </Box>
               )}
             </Stack>
+
+            <Divider />
+
+            {/* Pokédex Voice Entry Description */}
+            <Paper
+              elevation={0}
+              sx={{
+                p: 2.5,
+                borderRadius: '16px',
+                bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.015)',
+                borderLeft: `5px solid ${primaryColor}`,
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              {/* Decorative Subtle Glowing Background Soundwave Bars for UI visual excellence */}
+              {isSpeaking && !isPaused && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 16,
+                    display: 'flex',
+                    gap: '3px',
+                    alignItems: 'flex-end',
+                    height: '24px'
+                  }}
+                >
+                  {[0.4, 0.8, 1.2, 0.6, 1.0, 0.5, 0.9].map((delay, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        width: '3px',
+                        height: '100%',
+                        bgcolor: primaryColor,
+                        borderRadius: '2px',
+                        animation: 'wave 1.2s ease-in-out infinite alternate',
+                        animationDelay: `${delay}s`,
+                        '@keyframes wave': {
+                          '0%': { height: '4px' },
+                          '100%': { height: '22px' }
+                        }
+                      }}
+                    />
+                  ))}
+                </Box>
+              )}
+
+              <Typography
+                variant="overline"
+                color="text.disabled"
+                sx={{ fontWeight: 800, letterSpacing: 2, display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}
+              >
+                <RecordVoiceOver sx={{ fontSize: 16, color: primaryColor }} />
+                Pokédex Voice Entry
+              </Typography>
+
+              <Typography
+                variant="body1"
+                sx={{
+                  fontStyle: 'italic',
+                  fontFamily: 'serif',
+                  fontSize: '1.05rem',
+                  lineHeight: 1.6,
+                  color: 'text.primary',
+                  mb: 2,
+                  pr: isSpeaking && !isPaused ? 4 : 0
+                }}
+              >
+                "{p.description || "No official dex database description available."}"
+              </Typography>
+
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  onClick={handleVoiceSpeak}
+                  startIcon={isSpeaking && !isPaused ? <Pause /> : <PlayArrow />}
+                  sx={{
+                    borderRadius: 8,
+                    bgcolor: isSpeaking && !isPaused ? 'warning.main' : primaryColor,
+                    '&:hover': {
+                      bgcolor: isSpeaking && !isPaused ? 'warning.dark' : alpha(primaryColor, 0.85),
+                    },
+                    fontWeight: 800,
+                    fontSize: 11,
+                    px: 2.5,
+                    py: 0.75,
+                    boxShadow: isSpeaking && !isPaused ? `0 0 12px ${theme.palette.warning.main}` : `0 0 12px ${alpha(primaryColor, 0.4)}`,
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {isSpeaking ? (isPaused ? 'Resume' : 'Pause Voice') : 'Read Entry'}
+                </Button>
+
+                {isSpeaking && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="error"
+                    onClick={handleVoiceStop}
+                    startIcon={<Stop />}
+                    sx={{
+                      borderRadius: 8,
+                      fontWeight: 800,
+                      fontSize: 11,
+                      px: 2,
+                      py: 0.75,
+                    }}
+                  >
+                    Stop
+                  </Button>
+                )}
+              </Stack>
+            </Paper>
 
             <Divider />
 

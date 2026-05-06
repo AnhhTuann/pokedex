@@ -22,6 +22,7 @@ model Pokemon {
   imageUrl       String?   // Official artwork
   shinyImageUrl  String?   // Shiny official artwork
   category       String?
+  description    String?
 
 
   // Base Stats

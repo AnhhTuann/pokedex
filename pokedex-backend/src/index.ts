@@ -338,6 +338,7 @@ const resolvers = {
           }
 
           let category: string | null = null;
+          let description: string | null = null;
           let megaEvolutions: any[] = [];
           let alternativeForms: any[] = [];
 
@@ -348,6 +349,15 @@ const resolvers = {
               const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
               if (genusObj) {
                 category = genusObj.genus;
+              }
+
+              const englishEntries = speciesData.flavor_text_entries?.filter((entry: any) => entry.language?.name === "en") || [];
+              if (englishEntries.length > 0) {
+                const rawText = englishEntries[englishEntries.length - 1].flavor_text;
+                description = rawText
+                  .replace(/[\n\f\r\t]/g, " ")
+                  .replace(/\s+/g, " ")
+                  .trim();
               }
 
               const varieties = speciesData.varieties || [];
@@ -457,7 +467,7 @@ const resolvers = {
               value: s.base_stat
             })),
             abilities: d.abilities.map((a: any) => a.ability.name),
-            description: `An alternative form of ${baseName}.`,
+            description: description || `An alternative form of ${baseName}.`,
             flavorTexts: [],
             gameVersions: d.game_indices ? d.game_indices.slice(0, 12).map((gi: any) => gi.version.name) : [],
             evolutions,
@@ -520,7 +530,7 @@ const resolvers = {
           { name: 'speed', value: p.speed },
         ],
         abilities: p.abilities.map((a: any) => a.name),
-        description: "A mysterious Pokémon from the Kanto region.",
+        description: p.description || "A mysterious Pokémon from the Kanto region.",
         flavorTexts: [],
         gameVersions: p.gameVersions.map((gv: any) => gv.name),
         evolutions,
