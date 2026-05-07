@@ -43,7 +43,16 @@ export default function GameModal({ onClose }: GameModalProps) {
       onClose={onClose}
       maxWidth="sm"
       fullWidth
-      slotProps={{ paper: { sx: { borderRadius: 5, overflow: 'hidden' } } }}
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: '16px',
+            overflow: 'hidden',
+            border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)',
+            boxShadow: '0 24px 48px rgba(0,0,0,0.25)',
+          }
+        }
+      }}
     >
       <Box sx={{ background: `linear-gradient(135deg, ${alpha('#6366f1', 0.15)} 0%, ${alpha('#ec4899', 0.08)} 100%)`, p: 3 }}>
         <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
@@ -90,7 +99,7 @@ export default function GameModal({ onClose }: GameModalProps) {
         {/* Input or Result */}
         {!revealed ? (
           <Box component="form" onSubmit={handleGuess} sx={{ width: '100%', maxWidth: 360 }}>
-            <Stack spacing={1.5}>
+            <Stack spacing={2}>
               <TextField
                 value={guess}
                 onChange={e => setGuess(e.target.value)}
@@ -99,13 +108,41 @@ export default function GameModal({ onClose }: GameModalProps) {
                 size="medium"
                 error={status === 'lost'}
                 helperText={status === 'lost' ? 'Wrong! Try again.' : ''}
-                slotProps={{ input: { sx: { borderRadius: 3, fontWeight: 700 } } }}
+                slotProps={{ input: { sx: { borderRadius: '10px', fontWeight: 700 } } }}
               />
-              <Stack direction="row" spacing={1}>
-                <Button type="submit" variant="contained" fullWidth size="large" sx={{ borderRadius: 3, fontWeight: 800, fontSize: 14 }}>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  sx={{
+                    borderRadius: '10px',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    height: '46px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    boxShadow: '0 4px 14px rgba(99, 102, 241, 0.3)'
+                  }}
+                >
                   Guess!
                 </Button>
-                <Button variant="outlined" color="inherit" onClick={() => { setRevealed(true); setStatus('lost'); }} sx={{ borderRadius: 3, fontWeight: 700, px: 3 }}>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => { setRevealed(true); setStatus('lost'); }}
+                  sx={{
+                    borderRadius: '10px',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    height: '46px',
+                    px: 3,
+                    whiteSpace: 'nowrap',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}
+                >
                   Give Up
                 </Button>
               </Stack>

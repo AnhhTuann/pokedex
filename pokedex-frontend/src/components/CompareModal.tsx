@@ -32,7 +32,15 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
       onClose={onClose}
       maxWidth="md"
       fullWidth
-      slotProps={{ paper: { sx: { borderRadius: 5 } } }}
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: '16px',
+            border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)',
+            boxShadow: '0 24px 48px rgba(0,0,0,0.25)',
+          }
+        }
+      }}
     >
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 900, letterSpacing: -0.5 }}>
         ⚔️ Head-to-Head

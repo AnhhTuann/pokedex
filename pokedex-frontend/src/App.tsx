@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import {
   AppBar, Toolbar, Typography, Container, Box, Grid, Button,
   ButtonGroup, IconButton, Tooltip, Skeleton, Alert, useTheme,
-  Stack, FormControlLabel, Switch, Dialog, DialogTitle, DialogContent, DialogActions, Divider
+  Stack, FormControlLabel, Switch, Dialog, DialogTitle, DialogContent, DialogActions, Divider, alpha
 } from '@mui/material';
 import {
   WbSunny, DarkMode, Favorite,
@@ -548,27 +548,60 @@ export default function App() {
           <VideogameAsset color="primary" /> SELECT GAME VERSION
         </DialogTitle>
         <Divider />
-        <DialogContent sx={{ p: 3 }}>
+        <DialogContent
+          sx={{
+            p: 3,
+            maxHeight: '65vh',
+            overflowY: 'auto',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: isDark ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.02)',
+              borderRadius: '10px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
+              borderRadius: '10px',
+              border: isDark ? '2px solid rgba(30, 30, 30, 0)' : '2px solid rgba(255, 255, 255, 0)',
+              backgroundClip: 'padding-box',
+              '&:hover': {
+                background: isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.25)',
+              }
+            },
+            scrollbarWidth: 'thin',
+            scrollbarColor: isDark ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.12) transparent',
+          }}
+        >
           {/* ALL VERSIONS BUTTON */}
           <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
             <Button
-              variant={selectedVersion === 'ALL' ? 'contained' : 'outlined'}
               onClick={() => {
                 setSelectedVersion('ALL');
                 setVersionDialogOpen(false);
               }}
               sx={{
-                width: '240px',
-                height: '44px',
-                fontWeight: 800,
+                width: '280px',
+                height: '48px',
+                fontWeight: 900,
                 fontSize: '0.95rem',
-                borderRadius: '8px',
-                borderColor: 'text.secondary',
+                borderRadius: '12px',
+                letterSpacing: '0.1em',
+                borderColor: selectedVersion === 'ALL' ? 'primary.main' : (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'),
                 color: selectedVersion === 'ALL' ? '#fff' : 'text.primary',
-                bgcolor: selectedVersion === 'ALL' ? '#6b7280' : 'transparent',
+                background: selectedVersion === 'ALL' 
+                  ? `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`
+                  : 'transparent',
+                boxShadow: selectedVersion === 'ALL' ? `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}` : 'none',
+                border: selectedVersion === 'ALL' ? 'none' : `1.5px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'}`,
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                 '&:hover': {
-                  bgcolor: selectedVersion === 'ALL' ? '#4b5563' : 'rgba(107, 114, 128, 0.08)',
-                  borderColor: 'text.primary'
+                  background: selectedVersion === 'ALL' 
+                    ? `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`
+                    : alpha(theme.palette.primary.main, 0.08),
+                  borderColor: 'primary.main',
+                  transform: 'scale(1.02) translateY(-1px)',
+                  boxShadow: selectedVersion === 'ALL' ? `0 12px 28px ${alpha(theme.palette.primary.main, 0.45)}` : `0 4px 12px ${alpha(theme.palette.primary.main, 0.15)}`,
                 }
               }}
             >
@@ -576,39 +609,62 @@ export default function App() {
             </Button>
           </Box>
 
-          <Stack spacing={3.5}>
+          <Stack spacing={4}>
             {GENERATION_VERSIONS.map((g) => (
               <Box key={g.gen}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'text.secondary', mb: 1.5, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {g.gen}
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 800,
+                      color: 'text.secondary',
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      fontSize: '0.75rem',
+                      whiteSpace: 'nowrap',
+                      opacity: 0.8
+                    }}
+                  >
+                    {g.gen}
+                  </Typography>
+                  <Divider sx={{ flex: 1, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }} />
+                </Box>
                 <Grid container spacing={1.5}>
                   {g.games.map((game) => {
                     const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
-                    const vColor = VERSION_COLORS[game.name] || '#6366f1';
+                    let vColor = VERSION_COLORS[game.name] || '#6366f1';
+                    
+                    // Override pure black (#000000) for Black / Black 2 with a visible dark grey (#555555) on dark backgrounds
+                    if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
+                      vColor = '#555555';
+                    }
+
                     return (
                       <Grid size={{ xs: 6, sm: 4, md: 2.4 }} key={game.name}>
                         <Button
-                          variant={isActive ? 'contained' : 'outlined'}
                           fullWidth
                           onClick={() => {
                             setSelectedVersion(game.name);
                             setVersionDialogOpen(false);
                           }}
                           sx={{
-                            fontWeight: 700,
-                            borderRadius: '8px',
-                            borderColor: vColor,
-                            color: isActive ? (game.name === 'white' || game.name === 'white-2' ? '#000' : '#fff') : 'text.primary',
-                            bgcolor: isActive ? vColor : 'transparent',
-                            boxShadow: isActive ? `0 4px 12px ${vColor}40` : 'none',
+                            fontWeight: 'bold',
+                            letterSpacing: '0.5px',
+                            borderRadius: '10px',
+                            border: isActive ? `2px solid ${vColor}` : `2px solid ${alpha(vColor, 0.5)}`,
+                            color: '#ffffff', // Mandatory high-contrast white text for all game buttons
+                            bgcolor: isActive ? alpha(vColor, 0.45) : alpha(vColor, 0.15),
+                            boxShadow: isActive ? `0 6px 20px ${alpha(vColor, 0.5)}` : 'none',
                             textTransform: 'capitalize',
-                            height: '40px',
+                            height: '42px',
+                            transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                             '&:hover': {
-                              bgcolor: isActive ? vColor : `${vColor}15`,
+                              bgcolor: alpha(vColor, 0.3),
                               borderColor: vColor,
-                              filter: 'brightness(1.05)',
-                              boxShadow: isActive ? `0 6px 16px ${vColor}60` : `0 2px 8px ${vColor}20`,
+                              borderStyle: 'solid',
+                              borderWidth: '2px',
+                              transform: 'scale(1.03) translateY(-1px)',
+                              boxShadow: `0 4px 12px ${alpha(vColor, 0.35)}`,
                             }
                           }}
                         >
