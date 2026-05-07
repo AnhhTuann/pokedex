@@ -41,9 +41,18 @@ const typeDefs = `#graphql
     type: String!
     power: Int
     accuracy: Int
+    pp: Int
+    generation: Int
+    description: String
+    effect: String
     damageClass: String
     learnMethod: String
     levelLearnedAt: Int
+  }
+
+  type MoveListResponse {
+    results: [Move!]!
+    totalCount: Int!
   }
 
   type FlavorText {
@@ -92,6 +101,7 @@ const typeDefs = `#graphql
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
     myTeam: [PokemonListItem!]!
+    getAllMoves(gen: Int, type: String, damageClass: String, limit: Int, offset: Int): MoveListResponse!
   }
 
   type Mutation {
@@ -250,6 +260,32 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
 const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
+
+    getAllMoves: async (_: any, { gen = null, type = '', damageClass = '', limit = 20, offset = 0 }: any) => {
+      const where: any = {};
+      if (gen !== null && gen !== undefined) {
+        where.generation = gen;
+      }
+      if (type) {
+        where.type = { equals: type.toLowerCase(), mode: 'insensitive' };
+      }
+      if (damageClass) {
+        where.damageClass = { equals: damageClass.toLowerCase(), mode: 'insensitive' };
+      }
+
+      const totalCount = await prisma.move.count({ where });
+      const results = await prisma.move.findMany({
+        where,
+        orderBy: { name: 'asc' },
+        take: limit,
+        skip: offset
+      });
+
+      return {
+        results,
+        totalCount
+      };
+    },
     
     pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, region = null, game = null }: any) => {
       if (ids && Array.isArray(ids) && ids.length === 0) {
@@ -625,6 +661,10 @@ const resolvers = {
           type: pm.move.type,
           power: pm.move.power,
           accuracy: pm.move.accuracy,
+          pp: pm.move.pp,
+          generation: pm.move.generation,
+          description: pm.move.description,
+          effect: pm.move.effect,
           damageClass: pm.move.damageClass,
           learnMethod: pm.learnMethod,
           levelLearnedAt: pm.levelLearnedAt

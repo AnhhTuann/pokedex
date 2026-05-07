@@ -130,6 +130,10 @@ model Move {
   name        String   @unique
   power       Int?
   accuracy    Int?
+  pp          Int?
+  generation  Int?
+  description String?
+  effect      String?
   type        String
   damageClass String
   

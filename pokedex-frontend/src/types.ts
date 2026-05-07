@@ -40,3 +40,15 @@ export interface PokemonListItem {
   regionalNumber?: number | null;
   speciesId?: number;
 }
+
+export interface Move {
+  name: string;
+  type: string;
+  power?: number | null;
+  accuracy?: number | null;
+  pp?: number | null;
+  generation?: number | null;
+  description?: string | null;
+  effect?: string | null;
+  damageClass: string;
+}

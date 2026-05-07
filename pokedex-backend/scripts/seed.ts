@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Đổi số này thành 1025 nếu muốn cào TOÀN BỘ các Gen
-const POKEMON_COUNT = 1025;
+const POKEMON_COUNT = 151;
 
 // Tự động phân loại Thế hệ dựa vào Pokédex ID
 const getGeneration = (id: number): number => {
@@ -18,6 +18,16 @@ const getGeneration = (id: number): number => {
   return 9;
 };
 
+const convertGenNameToNum = (genName: string): number => {
+  const match = genName.match(/generation-([a-z]+)/);
+  if (!match) return 1;
+  const roman = match[1];
+  const map: Record<string, number> = {
+    i: 1, ii: 2, iii: 3, iv: 4, v: 5, vi: 6, vii: 7, viii: 8, ix: 9, x: 10
+  };
+  return map[roman] || 1;
+};
+
 const moveCache = new Map<string, any>();
 
 async function getMoveDetails(name: string, url: string) {
@@ -26,10 +36,41 @@ async function getMoveDetails(name: string, url: string) {
     const res = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json();
+
+    let description = "";
+    if (data.flavor_text_entries) {
+      const englishEntry = data.flavor_text_entries.find(
+        (entry: any) => entry.language?.name === "en"
+      );
+      if (englishEntry) {
+        description = englishEntry.flavor_text
+          .replace(/[\n\f\r\t]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+    }
+
+    let effect = "";
+    if (data.effect_entries) {
+      const englishEffect = data.effect_entries.find(
+        (entry: any) => entry.language?.name === "en"
+      );
+      if (englishEffect) {
+        effect = (englishEffect.short_effect || englishEffect.effect)
+          .replace(/[\n\f\r\t]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+    }
+
     const details = {
       name: data.name,
       power: data.power,
       accuracy: data.accuracy,
+      pp: data.pp,
+      generation: data.generation?.name ? convertGenNameToNum(data.generation.name) : null,
+      description: description || null,
+      effect: effect || null,
       type: data.type.name,
       damageClass: data.damage_class?.name || "status",
     };
@@ -118,6 +159,10 @@ function getValidVersionsForForm(
 
 async function main() {
   console.log(`Starting seeding ${POKEMON_COUNT} Pokemon...`);
+
+  console.log("Cleaning up existing moves...");
+  await prisma.pokemonMove.deleteMany({});
+  await prisma.move.deleteMany({});
 
   // Tạo mảng tự động từ 1 đến POKEMON_COUNT
   const idsToSeed = Array.from(
@@ -250,6 +295,10 @@ async function main() {
                   name: moveDetails.name,
                   power: moveDetails.power,
                   accuracy: moveDetails.accuracy,
+                  pp: moveDetails.pp,
+                  generation: moveDetails.generation,
+                  description: moveDetails.description,
+                  effect: moveDetails.effect,
                   type: moveDetails.type,
                   damageClass: moveDetails.damageClass,
                 },
