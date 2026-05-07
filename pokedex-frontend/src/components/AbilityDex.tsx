@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Container,
@@ -22,16 +22,18 @@ import {
   useTheme,
   useMediaQuery,
   alpha,
-  Paper
+  Paper,
+  TextField,
+  InputAdornment
 } from '@mui/material';
-import { Close, Psychology, HelpOutlined } from '@mui/icons-material';
+import { Close, Psychology, HelpOutlined, Search } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 import { Ability } from '../types';
 
 // GraphQL query for all abilities
 const GET_ALL_ABILITIES = gql`
-  query GetAllAbilities($gen: Int, $limit: Int, $offset: Int) {
-    getAllAbilities(gen: $gen, limit: $limit, offset: $offset) {
+  query GetAllAbilities($gen: Int, $limit: Int, $offset: Int, $search: String) {
+    getAllAbilities(gen: $gen, limit: $limit, offset: $offset, search: $search) {
       results {
         id
         name
@@ -88,12 +90,25 @@ export default function AbilityDex() {
   const isDark = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // Filters State
+  // Search & Filters State
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [genFilter, setGenFilter] = useState<number | string>('ALL');
 
   // Drawer Detail State
   const [selectedAbility, setSelectedAbility] = useState<Ability | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Debounce search input
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
 
   // Pagination limits
   const limit = 24;
@@ -109,7 +124,8 @@ export default function AbilityDex() {
     variables: {
       gen: queryGen,
       limit,
-      offset: 0
+      offset: 0,
+      search: debouncedSearch
     },
     onCompleted: () => {
       setOffset(0);
@@ -178,6 +194,46 @@ export default function AbilityDex() {
         <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, maxStyle: 500, mx: 'auto' }}>
           Explore unique battle passive traits, hidden capabilities, and strategic benefits.
         </Typography>
+      </Box>
+
+      {/* Search Bar */}
+      <Box sx={{ maxWidth: { xs: '100%', sm: '480px' }, mx: 'auto', mb: 2 }}>
+        <TextField
+          fullWidth
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search abilities..."
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search sx={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.45)' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '20px',
+              bgcolor: isDark ? 'rgba(15, 23, 42, 0.6)' : 'rgba(241, 245, 249, 0.8)',
+              backdropFilter: 'blur(10px)',
+              '& fieldset': {
+                borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)',
+              },
+              '&:hover fieldset': {
+                borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.18)',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#3b82f6',
+              }
+            },
+            '& .MuiOutlinedInput-input': {
+              py: 1.5,
+              fontWeight: 600,
+              fontSize: '14px',
+              color: 'text.primary'
+            }
+          }}
+        />
       </Box>
 
       {/* Filter Selector */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Container,
@@ -22,16 +22,18 @@ import {
   useTheme,
   useMediaQuery,
   alpha,
-  Paper
+  Paper,
+  TextField,
+  InputAdornment
 } from '@mui/material';
-import { Close, FlashOn, HelpOutlined } from '@mui/icons-material';
+import { Close, FlashOn, HelpOutlined, Search } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 import { Move } from '../types';
 
 // GraphQL query for all moves
 const GET_ALL_MOVES = gql`
-  query GetAllMoves($gen: Int, $type: String, $damageClass: String, $limit: Int, $offset: Int) {
-    getAllMoves(gen: $gen, type: $type, damageClass: $damageClass, limit: $limit, offset: $offset) {
+  query GetAllMoves($gen: Int, $type: String, $damageClass: String, $limit: Int, $offset: Int, $search: String) {
+    getAllMoves(gen: $gen, type: $type, damageClass: $damageClass, limit: $limit, offset: $offset, search: $search) {
       results {
         name
         type
@@ -90,7 +92,9 @@ export default function MoveDex() {
   const isDark = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // Filters State
+  // Search & Filters State
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [genFilter, setGenFilter] = useState<number | string>('ALL');
   const [typeFilter, setTypeFilter] = useState<string>('ALL');
   const [catFilter, setCatFilter] = useState<string>('ALL');
@@ -98,6 +102,17 @@ export default function MoveDex() {
   // Drawer Detail State
   const [selectedMove, setSelectedMove] = useState<Move | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Debounce search input
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
 
   // Pagination limit
   const limit = 30;
@@ -117,7 +132,8 @@ export default function MoveDex() {
       type: queryType,
       damageClass: queryCat,
       limit,
-      offset: 0
+      offset: 0,
+      search: debouncedSearch
     },
     onCompleted: () => {
       // Reset offset when filters change
@@ -201,6 +217,46 @@ export default function MoveDex() {
         <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, maxStyle: 500, mx: 'auto' }}>
           Explore and analyze Pokemon physical, special, or status movesets.
         </Typography>
+      </Box>
+
+      {/* Search Bar */}
+      <Box sx={{ maxWidth: { xs: '100%', sm: '480px' }, mx: 'auto', mb: 2 }}>
+        <TextField
+          fullWidth
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search moves..."
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search sx={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.45)' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '20px',
+              bgcolor: isDark ? 'rgba(15, 23, 42, 0.6)' : 'rgba(241, 245, 249, 0.8)',
+              backdropFilter: 'blur(10px)',
+              '& fieldset': {
+                borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)',
+              },
+              '&:hover fieldset': {
+                borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.18)',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#3b82f6',
+              }
+            },
+            '& .MuiOutlinedInput-input': {
+              py: 1.5,
+              fontWeight: 600,
+              fontSize: '14px',
+              color: 'text.primary'
+            }
+          }}
+        />
       </Box>
 
       {/* Modern Premium Filter Bar */}

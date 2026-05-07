@@ -116,8 +116,8 @@ const typeDefs = `#graphql
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
     myTeam: [PokemonListItem!]!
-    getAllMoves(gen: Int, type: String, damageClass: String, limit: Int, offset: Int): MoveListResponse!
-    getAllAbilities(gen: Int, limit: Int, offset: Int): AbilityListResponse!
+    getAllMoves(gen: Int, type: String, damageClass: String, limit: Int, offset: Int, search: String): MoveListResponse!
+    getAllAbilities(gen: Int, limit: Int, offset: Int, search: String): AbilityListResponse!
   }
 
   type Mutation {
@@ -277,7 +277,7 @@ const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
 
-    getAllMoves: async (_: any, { gen = null, type = '', damageClass = '', limit = 20, offset = 0 }: any) => {
+    getAllMoves: async (_: any, { gen = null, type = '', damageClass = '', limit = 20, offset = 0, search = '' }: any) => {
       const where: any = {};
       if (gen !== null && gen !== undefined) {
         where.generation = gen;
@@ -287,6 +287,9 @@ const resolvers = {
       }
       if (damageClass) {
         where.damageClass = { equals: damageClass.toLowerCase(), mode: 'insensitive' };
+      }
+      if (search) {
+        where.name = { contains: search, mode: 'insensitive' };
       }
 
       const totalCount = await prisma.move.count({ where });
@@ -303,10 +306,13 @@ const resolvers = {
       };
     },
 
-    getAllAbilities: async (_: any, { gen = null, limit = 20, offset = 0 }: any) => {
+    getAllAbilities: async (_: any, { gen = null, limit = 20, offset = 0, search = '' }: any) => {
       const where: any = {};
       if (gen !== null && gen !== undefined) {
         where.generation = gen;
+      }
+      if (search) {
+        where.name = { contains: search, mode: 'insensitive' };
       }
 
       const totalCount = await prisma.ability.count({ where });
