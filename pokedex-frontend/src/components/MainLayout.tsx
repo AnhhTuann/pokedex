@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   AppBar, Toolbar, Typography, Box, Drawer, List, ListItem, ListItemButton,
   ListItemIcon, ListItemText, IconButton, Tooltip, Stack, Switch, FormControlLabel,
-  useTheme, Divider, alpha, Button, Dialog, DialogTitle, DialogContent, DialogActions
+  useTheme, Divider, alpha, Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid
 } from '@mui/material';
 import {
   Menu, CatchingPokemon, FlashOn, Psychology, Backpack, Map, Category,
@@ -120,12 +120,11 @@ export default function MainLayout() {
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
-                  primary={item.text}
-                  primaryTypographyProps={{
-                    fontWeight: isActive ? 800 : 600,
-                    fontSize: '0.9rem',
-                    letterSpacing: '0.2px'
-                  }}
+                  primary={
+                    <Typography sx={{ fontWeight: isActive ? 800 : 600, fontSize: '0.9rem', letterSpacing: '0.2px' }}>
+                      {item.text}
+                    </Typography>
+                  }
                 />
               </ListItemButton>
             </ListItem>
