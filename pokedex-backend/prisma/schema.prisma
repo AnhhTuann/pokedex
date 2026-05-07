@@ -64,9 +64,14 @@ model Type {
 }
 
 model Ability {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  pokemons Pokemon[]
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  generation  Int?
+  flavorText  String?
+  shortEffect String?
+  effect      String?
+  
+  pokemons    Pokemon[]
 }
 
 model Evolution {

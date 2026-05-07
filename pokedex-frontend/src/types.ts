@@ -52,3 +52,13 @@ export interface Move {
   effect?: string | null;
   damageClass: string;
 }
+
+export interface Ability {
+  id: number;
+  name: string;
+  generation?: number | null;
+  flavorText?: string | null;
+  shortEffect?: string | null;
+  effect?: string | null;
+  pokemons: PokemonListItem[];
+}

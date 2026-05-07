@@ -30,6 +30,7 @@ export default function MainLayout() {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const isMainDex = location.pathname === '/' || location.pathname.startsWith('/pokemon');
   const { toggleColorMode } = useColorMode();
   const isDark = theme.palette.mode === 'dark';
 
@@ -178,58 +179,62 @@ export default function MainLayout() {
 
           {/* Quick Global Switchers */}
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            {/* Game Version Dialog Trigger */}
-            <Button
-              id="game-version-selector-btn"
-              variant="contained"
-              startIcon={<VideogameAsset />}
-              onClick={() => setVersionDialogOpen(true)}
-              sx={{
-                bgcolor: selectedVersion === 'ALL' ? 'grey.800' : VERSION_COLORS[selectedVersion] || 'primary.main',
-                color: (selectedVersion === 'white' || selectedVersion === 'white-2') ? '#000' : '#fff',
-                fontWeight: 800,
-                px: 2,
-                height: 38,
-                borderRadius: '19px',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                textTransform: 'uppercase',
-                fontSize: '0.75rem',
-                letterSpacing: '0.05em',
-                boxShadow: selectedVersion !== 'ALL' ? `0 0 12px ${VERSION_COLORS[selectedVersion]}` : 'none',
-                '&:hover': {
-                  bgcolor: selectedVersion === 'ALL' ? 'grey.900' : VERSION_COLORS[selectedVersion] || 'primary.dark',
-                  filter: 'brightness(1.15)',
-                  boxShadow: selectedVersion !== 'ALL' ? `0 0 20px ${VERSION_COLORS[selectedVersion]}` : 'none',
-                }
-              }}
-            >
-              {selectedVersion === 'ALL' ? 'ALL VERSIONS' : `Version: ${selectedVersion}`}
-            </Button>
-
-            {/* Shiny Mode switch */}
-            <FormControlLabel
-              id="global-shiny-toggle"
-              control={
-                <Switch
-                  checked={isShinyMode}
-                  onChange={toggleShinyMode}
-                  color="secondary"
-                  size="small"
+            {isMainDex && (
+              <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+                {/* Game Version Dialog Trigger */}
+                <Button
+                  id="game-version-selector-btn"
+                  variant="contained"
+                  startIcon={<VideogameAsset />}
+                  onClick={() => setVersionDialogOpen(true)}
                   sx={{
-                    "& .MuiSwitch-thumb": {
-                      bgcolor: isShinyMode ? "#f59e0b" : undefined,
-                      boxShadow: isShinyMode ? "0 0 10px #f59e0b" : undefined,
+                    bgcolor: selectedVersion === 'ALL' ? 'grey.800' : VERSION_COLORS[selectedVersion] || 'primary.main',
+                    color: (selectedVersion === 'white' || selectedVersion === 'white-2') ? '#000' : '#fff',
+                    fontWeight: 800,
+                    px: 2,
+                    height: 38,
+                    borderRadius: '19px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    textTransform: 'uppercase',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.05em',
+                    boxShadow: selectedVersion !== 'ALL' ? `0 0 12px ${VERSION_COLORS[selectedVersion]}` : 'none',
+                    '&:hover': {
+                      bgcolor: selectedVersion === 'ALL' ? 'grey.900' : VERSION_COLORS[selectedVersion] || 'primary.dark',
+                      filter: 'brightness(1.15)',
+                      boxShadow: selectedVersion !== 'ALL' ? `0 0 20px ${VERSION_COLORS[selectedVersion]}` : 'none',
                     }
                   }}
+                >
+                  {selectedVersion === 'ALL' ? 'ALL VERSIONS' : `Version: ${selectedVersion}`}
+                </Button>
+
+                {/* Shiny Mode switch */}
+                <FormControlLabel
+                  id="global-shiny-toggle"
+                  control={
+                    <Switch
+                      checked={isShinyMode}
+                      onChange={toggleShinyMode}
+                      color="secondary"
+                      size="small"
+                      sx={{
+                        "& .MuiSwitch-thumb": {
+                          bgcolor: isShinyMode ? "#f59e0b" : undefined,
+                          boxShadow: isShinyMode ? "0 0 10px #f59e0b" : undefined,
+                        }
+                      }}
+                    />
+                  }
+                  label={
+                    <Typography variant="caption" sx={{ fontWeight: 800, color: isShinyMode ? 'secondary.main' : 'text.disabled', letterSpacing: 0.5 }}>
+                      ✨ SHINY
+                    </Typography>
+                  }
+                  sx={{ mr: 1, display: { xs: 'none', sm: 'flex' } }}
                 />
-              }
-              label={
-                <Typography variant="caption" sx={{ fontWeight: 800, color: isShinyMode ? 'secondary.main' : 'text.disabled', letterSpacing: 0.5 }}>
-                  ✨ SHINY
-                </Typography>
-              }
-              sx={{ mr: 1, display: { xs: 'none', sm: 'flex' } }}
-            />
+              </Stack>
+            )}
 
             {/* Game & Theme switches */}
             <Tooltip title="Who's That Pokémon? 🎮">
