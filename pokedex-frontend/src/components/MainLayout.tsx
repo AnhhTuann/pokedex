@@ -24,6 +24,7 @@ const MENU_ITEMS = [
   { text: 'Location Dex', path: '/locations', icon: <Map /> },
   { text: 'Type Dex', path: '/types', icon: <Category /> },
   { text: 'Nature Dex', path: '/natures', icon: <SelfImprovement /> },
+  { text: 'Team Builder', path: '/teambuilder', icon: <SportsEsports /> },
 ];
 
 export default function MainLayout() {

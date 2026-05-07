@@ -8,6 +8,7 @@ import MoveDex from './components/MoveDex';
 import AbilityDex from './components/AbilityDex';
 import ItemDex from './components/ItemDex';
 import NatureDex from './components/NatureDex';
+import TeamBuilder from './components/TeamBuilder';
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -180,6 +181,7 @@ export default function App() {
         <Route path="/locations" element={<LocationDex />} />
         <Route path="/types" element={<TypeDex />} />
         <Route path="/natures" element={<NatureDex />} />
+        <Route path="/teambuilder" element={<TeamBuilder />} />
       </Route>
     </Routes>
   );
