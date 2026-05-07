@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { MyPokedexProvider } from './lib/MyPokedexContext';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 // ─── Apollo Client ────────────────────────────────────────
 const client = new ApolloClient({
@@ -91,7 +92,9 @@ function Root() {
         <CssBaseline />
         <ApolloProvider client={client}>
           <MyPokedexProvider>
-            <App />
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
           </MyPokedexProvider>
         </ApolloProvider>
       </ThemeProvider>
