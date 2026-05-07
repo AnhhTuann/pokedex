@@ -435,7 +435,29 @@ export default function AbilityDex() {
             </Box>
 
             {/* Scrollable Drawer Content */}
-            <Box sx={{ p: 3.5, flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 3.5 }}>
+            <Box
+              sx={{
+                p: 3.5,
+                flex: 1,
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 3.5,
+                '&::-webkit-scrollbar': {
+                  width: '8px'
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: isDark ? '#0f172a' : '#ffffff'
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.18)',
+                  borderRadius: '4px',
+                  '&:hover': {
+                    background: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
+                  }
+                }
+              }}
+            >
               
               {/* Optional intro generation banner */}
               {selectedAbility.generation && (
@@ -455,70 +477,76 @@ export default function AbilityDex() {
               )}
 
               {/* Card 1: Game Description */}
-              <Box
-                sx={{
-                  borderRadius: '16px',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                  bgcolor: isDark ? '#1e293b' : '#f8fafc',
-                  minHeight: '80px',
-                  display: 'block'
-                }}
-              >
-                <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-                  <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#cbd5e1' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px', display: 'block' }}>
-                    GAME DESCRIPTION
-                  </Typography>
+              {selectedAbility.flavorText?.trim() ? (
+                <Box
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                    bgcolor: isDark ? '#1e293b' : '#f8fafc',
+                    height: 'auto',
+                    display: 'block'
+                  }}
+                >
+                  <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#cbd5e1' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px', display: 'block' }}>
+                      GAME DESCRIPTION
+                    </Typography>
+                  </Box>
+                  <Box sx={{ p: 2.5, pb: 3.5 }}>
+                    <Typography variant="body2" sx={{ color: isDark ? '#f1f5f9' : '#334155', fontWeight: 500, lineHeight: 1.6, display: 'block' }}>
+                      {selectedAbility.flavorText}
+                    </Typography>
+                  </Box>
                 </Box>
-                <Box sx={{ p: 2.5 }}>
-                  <Typography variant="body2" sx={{ color: isDark ? '#f1f5f9' : '#334155', fontWeight: 500, lineHeight: 1.6, display: 'block' }}>
-                    {selectedAbility.flavorText || 'No description found.'}
-                  </Typography>
-                </Box>
-              </Box>
+              ) : null}
 
               {/* Card 2: Effect */}
-              <Box
-                sx={{
-                  borderRadius: '16px',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                  bgcolor: isDark ? '#1e293b' : '#f8fafc',
-                  minHeight: '80px',
-                  display: 'block'
-                }}
-              >
-                <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-                  <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#cbd5e1' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px', display: 'block' }}>
-                    EFFECT
-                  </Typography>
+              {selectedAbility.shortEffect?.trim() ? (
+                <Box
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                    bgcolor: isDark ? '#1e293b' : '#f8fafc',
+                    height: 'auto',
+                    display: 'block'
+                  }}
+                >
+                  <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#cbd5e1' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px', display: 'block' }}>
+                      EFFECT
+                    </Typography>
+                  </Box>
+                  <Box sx={{ p: 2.5, pb: 3.5 }}>
+                    <Typography variant="body2" sx={{ color: isDark ? '#f1f5f9' : '#334155', fontWeight: 500, lineHeight: 1.6, display: 'block' }}>
+                      {selectedAbility.shortEffect}
+                    </Typography>
+                  </Box>
                 </Box>
-                <Box sx={{ p: 2.5 }}>
-                  <Typography variant="body2" sx={{ color: isDark ? '#f1f5f9' : '#334155', fontWeight: 500, lineHeight: 1.6, display: 'block' }}>
-                    {selectedAbility.shortEffect || 'No effect description found.'}
-                  </Typography>
-                </Box>
-              </Box>
+              ) : null}
 
               {/* Card 3: In-Depth Effect */}
-              <Box
-                sx={{
-                  borderRadius: '16px',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                  bgcolor: isDark ? '#1e293b' : '#f8fafc',
-                  minHeight: '80px',
-                  display: 'block'
-                }}
-              >
-                <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-                  <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#cbd5e1' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px', display: 'block' }}>
-                    IN-DEPTH EFFECT
-                  </Typography>
+              {selectedAbility.effect?.trim() ? (
+                <Box
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                    bgcolor: isDark ? '#1e293b' : '#f8fafc',
+                    height: 'auto',
+                    display: 'block'
+                  }}
+                >
+                  <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#cbd5e1' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px', display: 'block' }}>
+                      IN-DEPTH EFFECT
+                    </Typography>
+                  </Box>
+                  <Box sx={{ p: 2.5, pb: 3.5 }}>
+                    <Typography variant="body2" sx={{ color: isDark ? '#f1f5f9' : '#334155', fontWeight: 500, lineHeight: 1.6, display: 'block' }}>
+                      {selectedAbility.effect}
+                    </Typography>
+                  </Box>
                 </Box>
-                <Box sx={{ p: 2.5 }}>
-                  <Typography variant="body2" sx={{ color: isDark ? '#f1f5f9' : '#334155', fontWeight: 500, lineHeight: 1.6, display: 'block' }}>
-                    {selectedAbility.effect || 'No special in-depth battle rules found.'}
-                  </Typography>
-                </Box>
-              </Box>
+              ) : null}
 
               {/* Section: Pokémon with this ability */}
               <Box sx={{ mt: 2 }}>
@@ -594,12 +622,13 @@ export default function AbilityDex() {
                               height: 90,
                               objectFit: 'contain',
                               position: 'absolute',
-                              right: -8,
-                              bottom: -8,
+                              right: 16,
+                              top: '50%',
+                              transform: 'translateY(-50%)',
                               filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))',
                               transition: 'transform 0.2s ease-in-out',
                               '&:hover': {
-                                transform: 'scale(1.15) rotate(3deg)'
+                                transform: 'translateY(-50%) scale(1.15) rotate(3deg)'
                               }
                             }}
                           />
