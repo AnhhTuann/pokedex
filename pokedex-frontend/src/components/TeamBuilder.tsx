@@ -24,7 +24,9 @@ import {
   alpha,
   useTheme,
   Alert,
-  Autocomplete
+  Autocomplete,
+  Menu,
+  Snackbar
 } from '@mui/material';
 import {
   Add,
@@ -38,10 +40,15 @@ import {
   KeyboardDoubleArrowDown,
   InfoOutlined,
   CheckCircle,
-  Construction
+  Construction,
+  ContentCopy,
+  Image as ImageIcon,
+  Download,
+  CloudUpload
 } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
+import html2canvas from 'html2canvas';
 import { useTeamStore, TeamMember } from '../lib/teamStore';
 import { TYPE_LIST, calculateDamageTaken } from '../utils/typeMatchups';
 
@@ -425,6 +432,166 @@ export default function TeamBuilder() {
   const [activeSlotIndex, setActiveSlotIndex] = useState<number | null>(null);
   const [selectOpen, setSelectOpen] = useState(false);
 
+  // Export/Import states
+  const [exportAnchorEl, setExportAnchorEl] = useState<null | HTMLElement>(null);
+  const exportMenuOpen = Boolean(exportAnchorEl);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('success');
+
+  const showSnackbar = (message: string, severity: 'success' | 'error' | 'info' = 'success') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
+  const handleExportClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setExportAnchorEl(event.currentTarget);
+  };
+
+  const handleExportClose = () => {
+    setExportAnchorEl(null);
+  };
+
+  // 1. Export to Showdown Text Format
+  const exportToShowdown = (teamMembers: TeamMember[]): string => {
+    return teamMembers.map((member) => {
+      let text = `${member.name}`;
+      if (member.selectedItem) {
+        text += ` @ ${member.selectedItem}`;
+      }
+      text += '\n';
+      if (member.selectedAbility) {
+        text += `Ability: ${member.selectedAbility.replace('-', ' ')}\n`;
+      }
+      if (member.selectedNature) {
+        text += `${member.selectedNature} Nature\n`;
+      }
+      member.moves.forEach((move) => {
+        if (move && move.name) {
+          text += `- ${move.name.replace('-', ' ')}\n`;
+        }
+      });
+      return text;
+    }).join('\n');
+  };
+
+  const handleCopyShowdown = () => {
+    handleExportClose();
+    if (team.length === 0) {
+      showSnackbar('Your team is currently empty!', 'error');
+      return;
+    }
+    const showdownText = exportToShowdown(team);
+    navigator.clipboard.writeText(showdownText)
+      .then(() => {
+        showSnackbar('Copied Showdown text to clipboard!', 'success');
+      })
+      .catch(() => {
+        showSnackbar('Failed to copy text to clipboard.', 'error');
+      });
+  };
+
+  // 2. Export to Image (Infographic)
+  const handleDownloadImage = () => {
+    handleExportClose();
+    if (team.length === 0) {
+      showSnackbar('Your team is currently empty!', 'error');
+      return;
+    }
+    
+    const element = document.getElementById('team-infographic');
+    if (!element) {
+      showSnackbar('Infographic element not found in DOM.', 'error');
+      return;
+    }
+
+    showSnackbar('Generating infographic image... Please wait.', 'info');
+
+    html2canvas(element, {
+      useCORS: true,
+      scale: 2,
+      logging: false,
+      backgroundColor: isDark ? '#0f172a' : '#f8fafc'
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = imgData;
+      link.download = 'pokedex-team-infographic.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showSnackbar('Infographic downloaded successfully!', 'success');
+    }).catch((err) => {
+      showSnackbar('Failed to render team infographic.', 'error');
+      console.error(err);
+    });
+  };
+
+  // 3. Export to JSON
+  const handleSaveJSON = () => {
+    handleExportClose();
+    if (team.length === 0) {
+      showSnackbar('Your team is currently empty!', 'error');
+      return;
+    }
+    try {
+      const jsonStr = JSON.stringify(team, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'pokedex-team.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showSnackbar('Team saved as pokedex-team.json!', 'success');
+    } catch (err) {
+      showSnackbar('Failed to export team as JSON.', 'error');
+    }
+  };
+
+  // 4. Import from JSON
+  const handleJSONImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const { setTeam } = useTeamStore.getState();
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (Array.isArray(data)) {
+          const validatedTeam = data.map((item: any) => ({
+            id: Number(item.id) || Math.floor(Math.random() * 1000) + 1,
+            name: item.name || 'Unknown',
+            image: item.image || '',
+            types: Array.isArray(item.types) ? item.types : ['normal'],
+            selectedAbility: item.selectedAbility || null,
+            selectedItem: item.selectedItem || null,
+            selectedNature: item.selectedNature || null,
+            allAbilities: item.allAbilities || [],
+            allMoves: item.allMoves || [],
+            moves: Array.isArray(item.moves) ? item.moves : []
+          }));
+          
+          setTeam(validatedTeam.slice(0, 6));
+          showSnackbar('Team imported successfully!', 'success');
+        } else {
+          showSnackbar('Invalid JSON structure. Must be an array.', 'error');
+        }
+      } catch (err) {
+        showSnackbar('Failed to parse team JSON file.', 'error');
+      }
+    };
+    reader.readAsText(file);
+    // Reset file input value so same file can be selected again
+    event.target.value = '';
+  };
+
   // Fetch selection list
   const { data: listData } = useQuery(GET_POKEMON_FOR_TEAM, {
     variables: { search: searchQuery }
@@ -575,9 +742,92 @@ export default function TeamBuilder() {
           <Psychology sx={{ color: '#ec4899', fontSize: 38 }} />
           Smart Team Builder
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, maxW: 600, mx: 'auto' }}>
+        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, maxW: 600, mx: 'auto', mb: 3 }}>
           Assemble your dream competitive squad of 6. Auto-recommend optimal competitive movesets, perform real-time math analyses on weaknesses, and receive advice from our AI Coach.
         </Typography>
+
+        {/* Global Action Buttons */}
+        <Stack direction="row" spacing={2} sx={{ justifyContent: 'center' }}>
+          <Button
+            variant="outlined"
+            component="label"
+            startIcon={<CloudUpload />}
+            sx={{
+              borderRadius: '12px',
+              fontWeight: 800,
+              px: 3.5,
+              py: 1.25,
+              textTransform: 'uppercase',
+              fontSize: '0.75rem',
+              letterSpacing: '0.05em',
+              transition: 'all 0.2s',
+              borderColor: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+              color: 'text.primary',
+              '&:hover': {
+                borderColor: 'primary.main',
+                bgcolor: alpha(theme.palette.primary.main, 0.05),
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            Import Team JSON
+            <input type="file" accept=".json" hidden onChange={handleJSONImport} />
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={handleExportClick}
+            startIcon={<AutoAwesome />}
+            sx={{
+              borderRadius: '12px',
+              fontWeight: 900,
+              px: 4,
+              py: 1.25,
+              textTransform: 'uppercase',
+              fontSize: '0.75rem',
+              letterSpacing: '0.05em',
+              background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
+              color: '#ffffff',
+              boxShadow: `0 4px 15px ${alpha(theme.palette.secondary.main, 0.25)}`,
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: `0 8px 25px ${alpha(theme.palette.secondary.main, 0.45)}`,
+                filter: 'brightness(1.1)'
+              }
+            }}
+          >
+            Export Team
+          </Button>
+
+          {/* Export Choices Dropdown Menu */}
+          <Menu
+            anchorEl={exportAnchorEl}
+            open={exportMenuOpen}
+            onClose={handleExportClose}
+            slotProps={{
+              paper: {
+                sx: {
+                  borderRadius: '16px',
+                  mt: 1,
+                  boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
+                  border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)',
+                  p: 0.5
+                }
+              }
+            }}
+          >
+            <MenuItem onClick={handleCopyShowdown} sx={{ fontWeight: 700, fontSize: '13px', py: 1.25, px: 2, borderRadius: '8px', display: 'flex', gap: 1.5 }}>
+              <ContentCopy fontSize="small" color="action" /> Copy Showdown Text
+            </MenuItem>
+            <MenuItem onClick={handleDownloadImage} sx={{ fontWeight: 700, fontSize: '13px', py: 1.25, px: 2, borderRadius: '8px', display: 'flex', gap: 1.5 }}>
+              <ImageIcon fontSize="small" color="action" /> Download Infographic Image
+            </MenuItem>
+            <MenuItem onClick={handleSaveJSON} sx={{ fontWeight: 700, fontSize: '13px', py: 1.25, px: 2, borderRadius: '8px', display: 'flex', gap: 1.5 }}>
+              <Download fontSize="small" color="action" /> Save as Team JSON
+            </MenuItem>
+          </Menu>
+        </Stack>
       </Box>
 
       {/* 6-Slot Grid */}
@@ -919,6 +1169,179 @@ export default function TeamBuilder() {
           </Button>
         </DialogActions>
       </Dialog>
+      
+      {/* 5. Snackbar Feedback Notification */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarSeverity}
+          sx={{
+            width: '100%',
+            fontWeight: 800,
+            borderRadius: '12px',
+            fontSize: '13px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* 6. High-Fidelity Offscreen Infographic Card for Image Rendering */}
+      <Box sx={{ position: 'absolute', left: '-9999px', top: '-9999px', overflow: 'hidden' }}>
+        <div
+          id="team-infographic"
+          style={{
+            width: '900px',
+            height: '520px',
+            background: isDark
+              ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'
+              : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+            color: isDark ? '#ffffff' : '#0f172a',
+            padding: '30px',
+            boxSizing: 'border-box',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            borderRadius: '24px',
+            border: isDark ? '3px solid rgba(255, 255, 255, 0.1)' : '3px solid rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          {/* Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid rgba(128,128,128,0.2)', paddingBottom: '15px' }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '28px', fontWeight: 900, letterSpacing: '-1.5px', textTransform: 'uppercase', color: '#ec4899', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                🏆 ELITE SQUAD INFOGRAPHIC
+              </h1>
+              <p style={{ margin: '4px 0 0 0', fontSize: '13px', opacity: 0.7, fontWeight: 600 }}>
+                Generated by Pókédex Wiki AI Smart Coach
+              </p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '11px', opacity: 0.5, fontWeight: 700, letterSpacing: '1px' }}>VERSION 2.0</div>
+              <div style={{ fontSize: '14px', fontWeight: 800, color: '#10b981' }}>{team.length}/6 Active Members</div>
+            </div>
+          </div>
+
+          {/* Slots Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', margin: '20px 0', flex: 1 }}>
+            {Array.from({ length: 6 }).map((_, idx) => {
+              const member = team[idx];
+              if (!member) {
+                return (
+                  <div key={idx} style={{
+                    borderRadius: '16px',
+                    border: '2px dashed rgba(128,128,128,0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'rgba(128,128,128,0.03)'
+                  }}>
+                    <span style={{ fontSize: '12px', opacity: 0.4, fontWeight: 700, textTransform: 'uppercase' }}>Empty Slot #{idx+1}</span>
+                  </div>
+                );
+              }
+
+              const primaryColor = TYPE_COLORS[member.types[0]] || '#9ca3af';
+
+              return (
+                <div key={idx} style={{
+                  borderRadius: '16px',
+                  padding: '15px',
+                  background: isDark 
+                    ? `linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%)`
+                    : `linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)`,
+                  borderLeft: `5px solid ${primaryColor}`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                  position: 'relative',
+                  boxSizing: 'border-box'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      background: `${primaryColor}22`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <img src={member.image} alt={member.name} style={{ width: '85%', height: '85%', objectFit: 'contain' }} />
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: '14px', fontWeight: 900, textTransform: 'capitalize', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {member.name}
+                      </div>
+                      <div style={{ display: 'flex', gap: '4px', marginTop: '2px' }}>
+                        {member.types.map(t => (
+                          <span key={t} style={{
+                            fontSize: '7px',
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            padding: '1px 5px',
+                            borderRadius: '4px',
+                            background: TYPE_COLORS[t] || '#6b7280',
+                            color: '#ffffff'
+                          }}>{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '10px', fontSize: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div>
+                      <strong style={{ opacity: 0.5 }}>Ability:</strong> <span style={{ fontWeight: 700, textTransform: 'capitalize' }}>{member.selectedAbility?.replace('-', ' ') || '-'}</span>
+                    </div>
+                    <div>
+                      <strong style={{ opacity: 0.5 }}>Item:</strong> <span style={{ fontWeight: 700 }}>{member.selectedItem || '-'}</span>
+                    </div>
+                    <div>
+                      <strong style={{ opacity: 0.5 }}>Nature:</strong> <span style={{ fontWeight: 700 }}>{member.selectedNature || '-'}</span>
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '10px', borderTop: '1px solid rgba(128,128,128,0.15)', paddingTop: '6px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
+                      {Array.from({ length: 4 }).map((_, mIdx) => {
+                        const m = member.moves[mIdx];
+                        return (
+                          <div key={mIdx} style={{
+                            fontSize: '9px',
+                            fontWeight: 700,
+                            color: m ? (isDark ? '#e2e8f0' : '#1e293b') : 'rgba(128,128,128,0.4)',
+                            textTransform: 'capitalize',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }}>
+                            • {m ? m.name.replace('-', ' ') : 'None'}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Footer */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '2px solid rgba(128,128,128,0.15)', paddingTop: '12px', fontSize: '11px', opacity: 0.6, fontWeight: 700 }}>
+            <div>🛡️ Pókédex Wiki - Professional Battle Analytics</div>
+            <div>Designed for Elite Competitors</div>
+          </div>
+        </div>
+      </Box>
 
     </Container>
   );
