@@ -175,6 +175,10 @@ model Encounter {
   pokemonId    Int
   locationName String
   versionName  String
+  method       String?
+  minLevel     Int?
+  maxLevel     Int?
+  chance       Int?
 
   pokemon      Pokemon  @relation(fields: [pokemonId], references: [pokedexNumber], onDelete: Cascade)
 
@@ -191,4 +195,21 @@ model DexEntry {
 
   @@unique([pokemonId, regionName])
   @@index([regionName])
+}
+
+// ==========================================
+// PHASE 5: ITEM DEX MODULE
+// ==========================================
+
+model Item {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  cost        Int?
+  flingPower  Int?
+  flingEffect String?
+  category    String?
+  pocket      String?
+  flavorText  String?
+  effect      String?
+  spriteUrl   String?
 }

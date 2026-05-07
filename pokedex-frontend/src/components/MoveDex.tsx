@@ -227,12 +227,14 @@ export default function MoveDex() {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search moves..."
           variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search sx={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.45)' }} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search sx={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.45)' }} />
+                </InputAdornment>
+              ),
+            }
           }}
           sx={{
             '& .MuiOutlinedInput-root': {

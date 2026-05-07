@@ -62,3 +62,16 @@ export interface Ability {
   effect?: string | null;
   pokemons: PokemonListItem[];
 }
+
+export interface Item {
+  id: number;
+  name: string;
+  cost?: number | null;
+  flingPower?: number | null;
+  flingEffect?: string | null;
+  category?: string | null;
+  pocket?: string | null;
+  flavorText?: string | null;
+  effect?: string | null;
+  spriteUrl?: string | null;
+}
