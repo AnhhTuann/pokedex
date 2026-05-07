@@ -256,55 +256,27 @@ const resolvers = {
         return { results: [], totalCount: 0 };
       }
 
+      // Build database query filters
+      const where: any = {};
+
+      const GAME_TO_REGION: Record<string, string> = {
+        red: 'kanto', blue: 'kanto', yellow: 'kanto', firered: 'kanto', leafgreen: 'kanto',
+        gold: 'original-johto', silver: 'original-johto', crystal: 'original-johto',
+        heartgold: 'updated-johto', soulsilver: 'updated-johto',
+        ruby: 'hoenn', sapphire: 'hoenn', emerald: 'hoenn', 'omega-ruby': 'hoenn', 'alpha-sapphire': 'hoenn',
+        diamond: 'original-sinnoh', pearl: 'original-sinnoh', platinum: 'extended-sinnoh',
+        black: 'original-unova', white: 'original-unova', 'black-2': 'updated-unova', 'white-2': 'updated-unova',
+        x: 'kalos-central', y: 'kalos-central',
+        sun: 'original-alola', moon: 'original-alola', 'ultra-sun': 'updated-alola', 'ultra-moon': 'updated-alola',
+        sword: 'galar', shield: 'galar', scarlet: 'paldea', violet: 'paldea'
+      };
+
       if (version && version !== 'ALL') {
-        const dexEntries = await prisma.dexEntry.findMany({
-          where: {
-            regionName: version.toLowerCase(),
-            pokemon: {
-              isDefault: true,
-              ...(gen !== null ? { generation: gen } : {}),
-              ...(ids && Array.isArray(ids) && ids.length > 0 ? { pokedexNumber: { in: ids } } : {}),
-              ...(search ? {
-                OR: [
-                  { name: { contains: search.toLowerCase() } },
-                  ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }])
-                ]
-              } : {}),
-              ...(type ? { types: { some: { name: type.toLowerCase() } } } : {})
-            }
-          },
-          orderBy: {
-            entryNumber: 'asc'
-          },
-          include: {
-            pokemon: {
-              include: { types: true }
-            }
-          }
-        });
-
-        const slicedEntries = dexEntries.slice(offset, offset + limit);
-        const results = slicedEntries.map(entry => ({
-          id: entry.pokemon.pokedexNumber,
-          name: entry.pokemon.name,
-          types: entry.pokemon.types.map((t: any) => t.name),
-          image: entry.pokemon.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.pokemon.pokedexNumber}.png`,
-          shinyImage: entry.pokemon.shinyImageUrl,
-          category: entry.pokemon.category,
-          regionalNumber: entry.entryNumber,
-          speciesId: entry.pokemon.speciesId || entry.pokemon.pokedexNumber
-        }));
-
-        return {
-          results,
-          totalCount: dexEntries.length
-        };
+        const queryGame = version.toLowerCase();
+        // Direct array contains filter
+        where.availableInGames = { has: queryGame };
       }
 
-      const where: any = {
-        isDefault: true
-      };
-      
       if (gen !== null) {
         where.generation = gen;
       }
@@ -314,54 +286,105 @@ const resolvers = {
       if (search) {
         where.OR = [
           { name: { contains: search.toLowerCase() } },
-          ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }])
+          ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }]),
+          ...(isNaN(Number(search)) ? [] : [{ speciesId: Number(search) }])
         ];
       }
       if (type) {
         where.types = { some: { name: type.toLowerCase() } };
       }
 
-      const [totalCount, pokemons] = await Promise.all([
-        prisma.pokemon.count({ where }),
-        prisma.pokemon.findMany({
-          where,
-          skip: offset,
-          take: limit,
-          include: { types: true },
-          orderBy: { pokedexNumber: 'asc' }
-        })
-      ]);
+      // Query database for all matching Pokemon records (both base and variety forms)
+      const pokemons = await prisma.pokemon.findMany({
+        where,
+        include: { types: true }
+      });
 
-      const results: any[] = [];
-      for (const p of pokemons) {
-        results.push({
-          id: p.pokedexNumber,
-          name: p.name,
-          types: p.types.map((t: any) => t.name),
-          image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
-          shinyImage: p.shinyImageUrl,
-          category: p.category,
-          regionalNumber: null,
-          speciesId: p.speciesId || p.pokedexNumber
+      // Now map each Pokemon to output structure, including resolving its regional number if a specific version is selected
+      let results: any[] = [];
+
+      if (version && version !== 'ALL') {
+        const queryGame = version.toLowerCase();
+        const regionName = GAME_TO_REGION[queryGame] || queryGame;
+
+        // Fetch all DexEntry matching the resolved region name to map regional pokedex numbers
+        const dexEntries = await prisma.dexEntry.findMany({
+          where: { regionName }
         });
+        const entryMap = new Map<number, number>();
+        for (const entry of dexEntries) {
+          entryMap.set(entry.pokemonId, entry.entryNumber);
+        }
 
-        const altForms = (await getAlternativeForms(p.pokedexNumber)) || [];
-        for (const alt of altForms) {
+        // For each queried pokemon, look up its base species DB ID to find its regional number
+        for (const p of pokemons) {
+          // Find base species in database if p is a variety
+          let baseDbId = p.id;
+          if (!p.isDefault && p.speciesId) {
+            const basePoke = await prisma.pokemon.findUnique({
+              where: { pokedexNumber: p.speciesId },
+              select: { id: true }
+            });
+            if (basePoke) baseDbId = basePoke.id;
+          }
+
+          const regNum = entryMap.get(baseDbId) || null;
+
           results.push({
-            id: alt.id,
-            name: alt.name,
-            types: alt.types,
-            image: alt.image,
-            shinyImage: alt.shinyImage,
-            category: alt.category,
-            regionalNumber: null,
-            speciesId: alt.speciesId
+            id: p.pokedexNumber,
+            name: p.name,
+            types: p.types.map((t: any) => t.name),
+            image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
+            shinyImage: p.shinyImageUrl,
+            category: p.category,
+            regionalNumber: regNum,
+            speciesId: p.speciesId || p.pokedexNumber
           });
         }
+
+        // Filter out results that do not have a regional number for this version/region
+        results = results.filter(r => r.regionalNumber !== null);
+
+        // Sort by regionalNumber, then by id (pokedexNumber)
+        results.sort((a, b) => {
+          if (a.regionalNumber !== b.regionalNumber) {
+            return (a.regionalNumber || 0) - (b.regionalNumber || 0);
+          }
+          return a.id - b.id;
+        });
+
+      } else {
+        // No regional version selected (ALL / National Pokedex)
+        for (const p of pokemons) {
+          results.push({
+            id: p.pokedexNumber,
+            name: p.name,
+            types: p.types.map((t: any) => t.name),
+            image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
+            shinyImage: p.shinyImageUrl,
+            category: p.category,
+            regionalNumber: null,
+            speciesId: p.speciesId || p.pokedexNumber
+          });
+        }
+
+        // Sort by speciesId (to group varieties next to their base forms), then by id (pokedexNumber)
+        results.sort((a, b) => {
+          const aBase = a.speciesId || a.id;
+          const bBase = b.speciesId || b.id;
+          if (aBase !== bBase) {
+            return aBase - bBase;
+          }
+          return a.id - b.id;
+        });
       }
 
+      // Apply pagination (skip & take) on the fully sorted and filtered array
+      const totalCount = results.length;
+      const paginatedResults = results.slice(offset, offset + limit);
+
       return {
-        results,
+        results: paginatedResults,
         totalCount
       };
     },

@@ -213,7 +213,7 @@ export default function App() {
     }
   };
 
-  const mappedVersion = selectedVersion !== 'ALL' ? (GAME_TO_REGIONAL_DEX[selectedVersion.toLowerCase()] || selectedVersion.toLowerCase()) : undefined;
+  const mappedVersion = selectedVersion !== 'ALL' ? selectedVersion.toLowerCase() : undefined;
 
   const { data, loading, error, fetchMore } = useQuery<{
     pokemonList: { results: PokemonListItem[]; totalCount: number };

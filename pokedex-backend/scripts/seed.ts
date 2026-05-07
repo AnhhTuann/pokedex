@@ -40,11 +40,59 @@ async function getMoveDetails(name: string, url: string) {
   }
 }
 
+function getValidVersionsForForm(pokemonName: string, baseSpeciesVersions: string[]): string[] {
+  const nameLower = pokemonName.toLowerCase();
+  
+  if (nameLower.includes("-mega") || nameLower.includes("-primal")) {
+    const validMegas = ['x', 'y', 'omega-ruby', 'alpha-sapphire', 'sun', 'moon', 'ultra-sun', 'ultra-moon'];
+    return baseSpeciesVersions.filter(v => validMegas.includes(v.toLowerCase()));
+  }
+  
+  if (nameLower.includes("-alola")) {
+    const gen7Plus = [
+      'sun', 'moon', 'ultra-sun', 'ultra-moon', 
+      'lets-go-pikachu', 'lets-go-eevee', 
+      'sword', 'shield', 
+      'brilliant-diamond', 'shining-pearl', 
+      'legends-arceus', 
+      'scarlet', 'violet'
+    ];
+    return baseSpeciesVersions.filter(v => gen7Plus.includes(v.toLowerCase()));
+  }
+  
+  if (nameLower.includes("-galar")) {
+    const gen8Plus = [
+      'sword', 'shield', 
+      'brilliant-diamond', 'shining-pearl', 
+      'legends-arceus', 
+      'scarlet', 'violet'
+    ];
+    return baseSpeciesVersions.filter(v => gen8Plus.includes(v.toLowerCase()));
+  }
+  
+  if (nameLower.includes("-gmax")) {
+    return ['sword', 'shield'];
+  }
+  
+  if (
+    nameLower.includes("-cosplay") || 
+    nameLower.includes("-rock-star") || 
+    nameLower.includes("-belle") || 
+    nameLower.includes("-pop-star") || 
+    nameLower.includes("-phd") || 
+    nameLower.includes("-libre")
+  ) {
+    return ['omega-ruby', 'alpha-sapphire'];
+  }
+  
+  return baseSpeciesVersions;
+}
+
 async function main() {
   console.log(`Starting seeding ${POKEMON_COUNT} Pokemon...`);
 
-  // Step 1: Seed Pokemon, Types, Abilities, GameVersions, Moves
-  for (let i = 1; i <= POKEMON_COUNT; i++) {
+  const idsToSeed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 252, 253, 254];
+  for (const i of idsToSeed) {
     try {
       console.log(`Fetching Pokemon #${i}...`);
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
@@ -94,7 +142,35 @@ async function main() {
         create: { name: a.ability.name },
       }));
 
-      const gameVersions = data.game_indices.map((gi: any) => gi.version.name);
+      const DEX_TO_GAMES: Record<string, string[]> = {
+        'kanto': ['red', 'blue', 'yellow', 'firered', 'leafgreen', 'lets-go-pikachu', 'lets-go-eevee'],
+        'original-johto': ['gold', 'silver', 'crystal'],
+        'hoenn': ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire'],
+        'original-sinnoh': ['diamond', 'pearl'],
+        'extended-sinnoh': ['platinum'],
+        'updated-johto': ['heartgold', 'soulsilver'],
+        'original-unova': ['black', 'white'],
+        'updated-unova': ['black-2', 'white-2'],
+        'kalos-central': ['x', 'y'],
+        'kalos-coastal': ['x', 'y'],
+        'kalos-mountain': ['x', 'y'],
+        'original-alola': ['sun', 'moon'],
+        'updated-alola': ['ultra-sun', 'ultra-moon'],
+        'galar': ['sword', 'shield'],
+        'paldea': ['scarlet', 'violet']
+      };
+
+      const baseSpeciesVersionsSet = new Set<string>();
+      const pokedexNumbers = speciesData?.pokedex_numbers || [];
+      for (const pn of pokedexNumbers) {
+        const dexName = pn.pokedex?.name;
+        const games = DEX_TO_GAMES[dexName];
+        if (games) {
+          games.forEach((g: string) => baseSpeciesVersionsSet.add(g));
+        }
+      }
+      data.game_indices.forEach((gi: any) => baseSpeciesVersionsSet.add(gi.version.name));
+      const gameVersions = Array.from(baseSpeciesVersionsSet);
 
       const stats = data.stats.reduce((acc: any, s: any) => {
         const statName = s.stat.name;
@@ -172,6 +248,8 @@ async function main() {
         speciesId = parseInt(parts[parts.length - 1], 10);
       }
 
+      const availableInGames = getValidVersionsForForm(data.name, gameVersions);
+
       await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
         update: {
@@ -186,7 +264,8 @@ async function main() {
           encounters: { create: encountersData },
           category: category,
           description: description,
-          speciesId: speciesId
+          speciesId: speciesId,
+          availableInGames: availableInGames
         },
         create: {
           pokedexNumber: data.id,
@@ -216,7 +295,8 @@ async function main() {
           encounters: { create: encountersData },
           category: category,
           description: description,
-          speciesId: speciesId
+          speciesId: speciesId,
+          availableInGames: availableInGames
         },
       });
 
@@ -255,6 +335,63 @@ async function main() {
 
             const typesList = d.types.map((t: any) => t.type.name);
 
+            const varietyAvailableGames = getValidVersionsForForm(d.name, gameVersions);
+
+            let varietyCategory = "Species Form";
+            const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+            if (genusObj) {
+              varietyCategory = genusObj.genus;
+            }
+
+            // 1. Seed variety directly into Pokemon table for Homepage access
+            await prisma.pokemon.upsert({
+              where: { pokedexNumber: d.id },
+              update: {
+                generation: gen,
+                isDefault: false,
+                speciesId: data.id,
+                category: varietyCategory,
+                description: `An alternative form of ${data.name}.`,
+                availableInGames: varietyAvailableGames,
+                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
+                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
+                hp: d.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 50,
+                attack: d.stats.find((s: any) => s.stat.name === 'attack')?.base_stat || 50,
+                defense: d.stats.find((s: any) => s.stat.name === 'defense')?.base_stat || 50,
+                specialAttack: d.stats.find((s: any) => s.stat.name === 'special-attack')?.base_stat || 50,
+                specialDefense: d.stats.find((s: any) => s.stat.name === 'special-defense')?.base_stat || 50,
+                speed: d.stats.find((s: any) => s.stat.name === 'speed')?.base_stat || 50,
+              },
+              create: {
+                pokedexNumber: d.id,
+                speciesId: data.id,
+                generation: gen,
+                name: d.name,
+                height: d.height,
+                weight: d.weight,
+                baseExperience: d.base_experience,
+                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
+                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
+                hp: d.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 50,
+                attack: d.stats.find((s: any) => s.stat.name === 'attack')?.base_stat || 50,
+                defense: d.stats.find((s: any) => s.stat.name === 'defense')?.base_stat || 50,
+                specialAttack: d.stats.find((s: any) => s.stat.name === 'special-attack')?.base_stat || 50,
+                specialDefense: d.stats.find((s: any) => s.stat.name === 'special-defense')?.base_stat || 50,
+                speed: d.stats.find((s: any) => s.stat.name === 'speed')?.base_stat || 50,
+                types: {
+                  connectOrCreate: d.types.map((t: any) => ({
+                    where: { name: t.type.name },
+                    create: { name: t.type.name }
+                  }))
+                },
+                isDefault: false,
+                category: varietyCategory,
+                description: `An alternative form of ${data.name}.`,
+                availableInGames: varietyAvailableGames
+              }
+            });
+
+            // 2. Also keep PokemonVariety seeded for existing detail-page references
             await prisma.pokemonVariety.upsert({
               where: { id: d.id },
               update: {
@@ -289,7 +426,7 @@ async function main() {
 
   // Step 2: Seed Evolutions
   console.log("Seeding evolutions...");
-  for (let i = 1; i <= POKEMON_COUNT; i++) {
+  for (const i of idsToSeed) {
     try {
       const speciesRes = await fetch(
         `https://pokeapi.co/api/v2/pokemon-species/${i}`,
@@ -315,8 +452,7 @@ async function main() {
             evolvesTo.species.url.split("/").filter(Boolean).pop()!,
           );
 
-          // Only link if both exist in our Gen 1 DB (id <= 151)
-          if (fromId <= POKEMON_COUNT && toId <= POKEMON_COUNT) {
+          if (idsToSeed.includes(fromId) && idsToSeed.includes(toId)) {
             await prisma.evolution.upsert({
               where: {
                 fromPokemonId_toPokemonId: {
