@@ -10,6 +10,7 @@ export interface TeamMember {
   selectedNature?: string | null;
   allAbilities?: string[];
   allMoves?: any[];
+  stats?: Array<{ name: string; value: number }>;
   moves: any[];
 }
 

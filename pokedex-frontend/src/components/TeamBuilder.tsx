@@ -44,7 +44,8 @@ import {
   ContentCopy,
   Image as ImageIcon,
   Download,
-  CloudUpload
+  CloudUpload,
+  Lightbulb
 } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
@@ -75,6 +76,10 @@ const GET_POKEMON_BUILDER_DETAILS = gql`
       types
       image
       abilities
+      stats {
+        name
+        value
+      }
       moves {
         name
         type
@@ -99,7 +104,7 @@ const COMPETITIVE_ITEMS = [
   'Leftovers', 'Life Orb', 'Choice Band', 'Choice Specs', 'Choice Scarf',
   'Focus Sash', 'Assault Vest', 'Heavy-Duty Boots', 'Rocky Helmet', 'Eviolite',
   'Black Sludge', 'Air Balloon', 'Weakness Policy', 'Expert Belt', 'Lum Berry',
-  'Sitrus Berry', 'Damp Rock', 'Heat Rock', 'Smooth Rock', 'Icy Rock'
+  'Sitrus Berry', 'Damp Rock', 'Heat Rock', 'Smooth Rock', 'Icy Rock', 'Light Ball', 'Thick Club'
 ];
 
 const NATURE_NAMES = [
@@ -182,6 +187,64 @@ function getOptimalMoves(allMoves: any[], types: string[]): any[] {
   return selectedMoves;
 }
 
+// Helper function to get 3-5 recommended items based on rules & base stats
+export function getRecommendedItems(member: TeamMember): string[] {
+  const name = member.name.toLowerCase();
+
+  // Rule 1: Signature Items
+  if (name === 'pikachu') {
+    return ['Light Ball', 'Life Orb', 'Focus Sash', 'Leftovers'];
+  }
+  if (name === 'cubone' || name === 'marowak') {
+    return ['Thick Club', 'Leftovers', 'Assault Vest', 'Life Orb'];
+  }
+  if (name === 'ditto') {
+    return ['Choice Scarf', 'Focus Sash', 'Leftovers'];
+  }
+  if (name === 'chansey' || name === 'porygon2' || name === 'scyther' || name === 'sneasel') {
+    return ['Eviolite', 'Leftovers', 'Rocky Helmet', 'Sitrus Berry'];
+  }
+
+  // Parse stats
+  const statsMap: Record<string, number> = {};
+  if (member.stats) {
+    member.stats.forEach((s: any) => {
+      statsMap[s.name.toLowerCase()] = s.value;
+    });
+  }
+
+  const hp = statsMap['hp'] || 70;
+  const attack = statsMap['attack'] || 70;
+  const defense = statsMap['defense'] || 70;
+  const spAtk = statsMap['special-attack'] || 70;
+  const spDef = statsMap['special-defense'] || 70;
+  const speed = statsMap['speed'] || 70;
+
+  // Rule 2: Base Stats Rules
+  // Rule 2.1: Tank / Wall
+  if (hp + defense + spDef > 250) {
+    return ['Leftovers', 'Rocky Helmet', 'Sitrus Berry', 'Assault Vest', 'Heavy-Duty Boots'];
+  }
+
+  // Rule 2.2: Physical Sweeper
+  if (speed > 100 && attack > 100) {
+    return ['Choice Band', 'Life Orb', 'Choice Scarf', 'Expert Belt', 'Focus Sash'];
+  }
+
+  // Rule 2.3: Special Sweeper
+  if (speed > 100 && spAtk > 100) {
+    return ['Choice Specs', 'Life Orb', 'Focus Sash', 'Expert Belt', 'Choice Scarf'];
+  }
+
+  // Rule 2.4: Slow & Bulky Offense
+  if (speed < 50 && (attack > 90 || spAtk > 90)) {
+    return ['Assault Vest', 'Weakness Policy', 'Leftovers', 'Life Orb', 'Sitrus Berry'];
+  }
+
+  // Default Competitives
+  return ['Leftovers', 'Life Orb', 'Focus Sash', 'Heavy-Duty Boots', 'Expert Belt'];
+}
+
 // Slot Component - handles background loading of moves & abilities
 function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }) {
   const theme = useTheme();
@@ -195,7 +258,8 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
       if (res?.pokemon) {
         updateMemberDetails(member.id, {
           allAbilities: res.pokemon.abilities,
-          allMoves: res.pokemon.moves
+          allMoves: res.pokemon.moves,
+          stats: res.pokemon.stats
         });
       }
     }
@@ -205,8 +269,14 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
   const allMoves = member.allMoves || data?.pokemon?.moves || [];
 
   const handleAutoFill = () => {
-    const recommended = getOptimalMoves(allMoves, member.types);
-    setMoves(member.id, recommended);
+    const recommendedMoves = getOptimalMoves(allMoves, member.types);
+    setMoves(member.id, recommendedMoves);
+
+    // Auto-equip top recommended item based on stats/rules
+    const recItems = getRecommendedItems(member);
+    if (recItems.length > 0) {
+      setItem(member.id, recItems[0]);
+    }
   };
 
   return (
@@ -314,23 +384,38 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
           </Select>
         </FormControl>
 
-        {/* Item Selection */}
-        <FormControl fullWidth size="small">
-          <InputLabel id={`item-label-${member.id}`} sx={{ fontSize: '12px', fontWeight: 600 }}>Held Item</InputLabel>
-          <Select
-            labelId={`item-label-${member.id}`}
-            label="Held Item"
-            value={member.selectedItem || ''}
-            onChange={(e) => setItem(member.id, e.target.value)}
-            sx={{ borderRadius: '10px', fontSize: '13px', fontWeight: 600 }}
-          >
-            {COMPETITIVE_ITEMS.map((it) => (
-              <MenuItem key={it} value={it} sx={{ fontWeight: 600 }}>
-                {it}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {/* Item Selection with AI Recommendations */}
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Tooltip title="AI Recommended Item">
+            <Lightbulb sx={{ color: '#eab308', fontSize: 20, flexShrink: 0 }} />
+          </Tooltip>
+          <Autocomplete
+            fullWidth
+            size="small"
+            options={[
+              ...getRecommendedItems(member).map(it => ({ name: it, group: `🌟 Recommended for ${member.name}` })),
+              ...COMPETITIVE_ITEMS.filter(it => !getRecommendedItems(member).includes(it)).map(it => ({ name: it, group: 'All Items' }))
+            ]}
+            groupBy={(option) => option.group}
+            getOptionLabel={(option) => option.name}
+            value={member.selectedItem ? { name: member.selectedItem, group: '' } : null}
+            onChange={(e, newValue) => {
+              setItem(member.id, newValue ? newValue.name : null);
+            }}
+            isOptionEqualToValue={(option, val) => option.name === val.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Held Item"
+                placeholder="Search or select..."
+                sx={{
+                  '& .MuiInputLabel-root': { fontSize: '12px', fontWeight: 600 },
+                  '& .MuiOutlinedInput-root': { borderRadius: '10px', fontSize: '13px', fontWeight: 600 }
+                }}
+              />
+            )}
+          />
+        </Stack>
 
         {/* Nature Selection */}
         <FormControl fullWidth size="small">
@@ -416,7 +501,7 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
             }
           }}
         >
-          Auto-Recommend Moves
+          Auto-Build (Moves & Item)
         </Button>
       </Stack>
     </Card>
