@@ -2,14 +2,12 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 import PokemonDex from './components/PokemonDex';
-import {
-  NatureDex
-} from './components/Placeholders';
 import LocationDex from './components/LocationDex';
 import TypeDex from './components/TypeDex';
 import MoveDex from './components/MoveDex';
 import AbilityDex from './components/AbilityDex';
 import ItemDex from './components/ItemDex';
+import NatureDex from './components/NatureDex';
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
