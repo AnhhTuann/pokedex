@@ -17,6 +17,7 @@ import { motion } from "motion/react";
 import { PokemonListItem } from "../types";
 import { useMyPokedex } from "../lib/MyPokedexContext";
 import { useTeamStore } from "../lib/teamStore";
+import { formatSpeciesId } from "../lib/utils";
 
 // Type → palette color mapping
 const TYPE_COLORS: Record<string, string> = {
@@ -169,9 +170,9 @@ export default function PokeCard({
                 textTransform: "uppercase",
               }}
             >
-              #{pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
+              {pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
                 ? pokemon.regionalNumber.toString().padStart(3, "0")
-                : pokemon.id.toString().padStart(4, "0")}
+                : formatSpeciesId(pokemon.speciesId || pokemon.id)}
             </Typography>
 
             {/* Name */}

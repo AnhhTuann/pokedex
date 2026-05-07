@@ -7,19 +7,20 @@ import {
 import { Close, ChevronRight, AutoAwesome, VolumeUp, PlayArrow, Pause, Stop, RecordVoiceOver } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
+import { formatSpeciesId } from '../lib/utils';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {
     pokemon(id: $id) {
-      id name types image shinyImage height weight description cry category
+      id name types image shinyImage height weight description cry category speciesId
       stats { name value }
       abilities
-      evolutions { id name types image shinyImage minLevel trigger }
+      evolutions { id name types image shinyImage minLevel trigger speciesId }
       matchups { type multiplier }
       gameVersions
       moves { name type power accuracy damageClass learnMethod levelLearnedAt }
-      megaEvolutions { id name types image shinyImage isMega isAlternative }
-      alternativeForms { id name types image shinyImage isMega isAlternative }
+      megaEvolutions { id name types image shinyImage isMega isAlternative speciesId }
+      alternativeForms { id name types image shinyImage isMega isAlternative speciesId }
       locations(version: $version)
     }
   }
@@ -207,7 +208,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Box>
             <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
-              #{id.toString().padStart(3, '0')}
+              {formatSpeciesId(p?.speciesId || id)}
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'capitalize', color: 'text.primary', letterSpacing: -1, lineHeight: 1.1, mt: 0.5 }}>
               {p?.name || 'Loading…'}

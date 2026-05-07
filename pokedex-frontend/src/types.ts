@@ -10,6 +10,7 @@ export interface PokemonVariety {
   shinyImage?: string;
   isMega: boolean;
   isAlternative: boolean;
+  speciesId?: number;
 }
 
 export interface Pokemon {
@@ -26,6 +27,7 @@ export interface Pokemon {
   category?: string;
   megaEvolutions?: PokemonVariety[];
   alternativeForms?: PokemonVariety[];
+  speciesId?: number;
 }
 
 export interface PokemonListItem {
@@ -36,4 +38,5 @@ export interface PokemonListItem {
   shinyImage?: string;
   category?: string;
   regionalNumber?: number | null;
+  speciesId?: number;
 }

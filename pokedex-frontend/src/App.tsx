@@ -24,7 +24,7 @@ import { useTeamStore } from './lib/teamStore';
 const GET_POKEMON_LIST = gql`
   query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $version: String) {
     pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids, version: $version) {
-      results { id name types image shinyImage category regionalNumber }
+      results { id name types image shinyImage category regionalNumber speciesId }
       totalCount
     }
   }

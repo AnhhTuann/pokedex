@@ -18,6 +18,7 @@ const typeDefs = `#graphql
     trigger: String
     category: String
     regionalNumber: Int
+    speciesId: Int
   }
 
   type PokemonListResponse {
@@ -58,6 +59,7 @@ const typeDefs = `#graphql
     shinyImage: String
     isMega: Boolean!
     isAlternative: Boolean!
+    speciesId: Int
   }
 
   type PokemonDetail {
@@ -81,6 +83,7 @@ const typeDefs = `#graphql
     megaEvolutions: [PokemonVariety!]
     alternativeForms: [PokemonVariety!]
     locations(version: String): [String!]
+    speciesId: Int
   }
 
   type Query {
@@ -228,7 +231,8 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
           types: d.types.map((t: any) => t.type.name),
           image: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d.id}.png`,
           shinyImage: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${d.id}.png`,
-          category: category
+          category: category,
+          speciesId: pokemonId
         });
       } catch (err) {
         console.error(`Error fetching alternative form detail for ${v.pokemon.name}:`, err);
@@ -287,7 +291,8 @@ const resolvers = {
           image: entry.pokemon.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.pokemon.pokedexNumber}.png`,
           shinyImage: entry.pokemon.shinyImageUrl,
           category: entry.pokemon.category,
-          regionalNumber: entry.entryNumber
+          regionalNumber: entry.entryNumber,
+          speciesId: entry.pokemon.speciesId || entry.pokemon.pokedexNumber
         }));
 
         return {
@@ -336,7 +341,8 @@ const resolvers = {
           image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
           shinyImage: p.shinyImageUrl,
           category: p.category,
-          regionalNumber: null
+          regionalNumber: null,
+          speciesId: p.speciesId || p.pokedexNumber
         });
 
         const altForms = (await getAlternativeForms(p.pokedexNumber)) || [];
@@ -348,7 +354,8 @@ const resolvers = {
             image: alt.image,
             shinyImage: alt.shinyImage,
             category: alt.category,
-            regionalNumber: null
+            regionalNumber: null,
+            speciesId: alt.speciesId
           });
         }
       }
@@ -528,7 +535,8 @@ const resolvers = {
             cry: d.cries?.latest || null,
             moves: [],
             megaEvolutions,
-            alternativeForms
+            alternativeForms,
+            speciesId
           };
         } catch (err) {
           console.error("Error fetching form from PokeAPI fallback:", err);
@@ -552,7 +560,8 @@ const resolvers = {
         image: v.imageUrl,
         shinyImage: v.shinyImageUrl,
         isMega: v.isMega,
-        isAlternative: v.isAlternative
+        isAlternative: v.isAlternative,
+        speciesId: p.pokedexNumber
       }));
 
       const alternativeForms = (p.varieties || []).filter((v: any) => v.isAlternative).map((v: any) => ({
@@ -562,7 +571,8 @@ const resolvers = {
         image: v.imageUrl,
         shinyImage: v.shinyImageUrl,
         isMega: v.isMega,
-        isAlternative: v.isAlternative
+        isAlternative: v.isAlternative,
+        speciesId: p.pokedexNumber
       }));
 
       return {
@@ -599,7 +609,8 @@ const resolvers = {
           levelLearnedAt: pm.levelLearnedAt
         })),
         megaEvolutions,
-        alternativeForms
+        alternativeForms,
+        speciesId: p.speciesId || p.pokedexNumber
       };
     },
 
@@ -683,7 +694,7 @@ const resolvers = {
       const pId = parent.id;
       
       // Query encounters from database
-      let encounters = await prisma.encounter.findMany({
+      let encounters: any[] = await prisma.encounter.findMany({
         where: { pokemonId: pId }
       });
       

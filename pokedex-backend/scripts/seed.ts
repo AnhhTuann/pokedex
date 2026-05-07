@@ -165,6 +165,13 @@ async function main() {
         }
       }
 
+      // Extract speciesId from species.url (e.g. "https://pokeapi.co/api/v2/pokemon-species/6/" -> 6)
+      let speciesId: number | null = null;
+      if (data.species && data.species.url) {
+        const parts = data.species.url.split("/").filter(Boolean);
+        speciesId = parseInt(parts[parts.length - 1], 10);
+      }
+
       await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
         update: {
@@ -178,7 +185,8 @@ async function main() {
           moves: { create: movesData },
           encounters: { create: encountersData },
           category: category,
-          description: description
+          description: description,
+          speciesId: speciesId
         },
         create: {
           pokedexNumber: data.id,
@@ -207,7 +215,8 @@ async function main() {
           moves: { create: movesData },
           encounters: { create: encountersData },
           category: category,
-          description: description
+          description: description,
+          speciesId: speciesId
         },
       });
 
