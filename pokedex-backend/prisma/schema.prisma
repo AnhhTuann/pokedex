@@ -34,7 +34,8 @@ model Pokemon {
   specialDefense Int
   speed          Int
   isDefault      Boolean   @default(true)
-  availableInGames String[]
+  regionalDexes  String[]
+  altFormAvailableIn String[]
 
   // Relations
   types          Type[]

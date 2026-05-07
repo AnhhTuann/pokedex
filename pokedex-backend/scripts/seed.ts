@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Đổi số này thành 1025 nếu muốn cào TOÀN BỘ các Gen
-const POKEMON_COUNT = 386;
+const POKEMON_COUNT = 1025;
 
 // Tự động phân loại Thế hệ dựa vào Pokédex ID
 const getGeneration = (id: number): number => {
@@ -31,7 +31,7 @@ async function getMoveDetails(name: string, url: string) {
       power: data.power,
       accuracy: data.accuracy,
       type: data.type.name,
-      damageClass: data.damage_class?.name || "status"
+      damageClass: data.damage_class?.name || "status",
     };
     moveCache.set(name, details);
     return details;
@@ -40,58 +40,90 @@ async function getMoveDetails(name: string, url: string) {
   }
 }
 
-function getValidVersionsForForm(pokemonName: string, baseSpeciesVersions: string[]): string[] {
+function getValidVersionsForForm(
+  pokemonName: string,
+  baseSpeciesVersions: string[],
+): string[] {
   const nameLower = pokemonName.toLowerCase();
-  
+
   if (nameLower.includes("-mega") || nameLower.includes("-primal")) {
-    const validMegas = ['x', 'y', 'omega-ruby', 'alpha-sapphire', 'sun', 'moon', 'ultra-sun', 'ultra-moon'];
-    return baseSpeciesVersions.filter(v => validMegas.includes(v.toLowerCase()));
+    const validMegas = [
+      "x",
+      "y",
+      "omega-ruby",
+      "alpha-sapphire",
+      "sun",
+      "moon",
+      "ultra-sun",
+      "ultra-moon",
+    ];
+    return baseSpeciesVersions.filter((v) =>
+      validMegas.includes(v.toLowerCase()),
+    );
   }
-  
+
   if (nameLower.includes("-alola")) {
     const gen7Plus = [
-      'sun', 'moon', 'ultra-sun', 'ultra-moon', 
-      'lets-go-pikachu', 'lets-go-eevee', 
-      'sword', 'shield', 
-      'brilliant-diamond', 'shining-pearl', 
-      'legends-arceus', 
-      'scarlet', 'violet'
+      "sun",
+      "moon",
+      "ultra-sun",
+      "ultra-moon",
+      "lets-go-pikachu",
+      "lets-go-eevee",
+      "sword",
+      "shield",
+      "brilliant-diamond",
+      "shining-pearl",
+      "legends-arceus",
+      "scarlet",
+      "violet",
     ];
-    return baseSpeciesVersions.filter(v => gen7Plus.includes(v.toLowerCase()));
+    return baseSpeciesVersions.filter((v) =>
+      gen7Plus.includes(v.toLowerCase()),
+    );
   }
-  
+
   if (nameLower.includes("-galar")) {
     const gen8Plus = [
-      'sword', 'shield', 
-      'brilliant-diamond', 'shining-pearl', 
-      'legends-arceus', 
-      'scarlet', 'violet'
+      "sword",
+      "shield",
+      "brilliant-diamond",
+      "shining-pearl",
+      "legends-arceus",
+      "scarlet",
+      "violet",
     ];
-    return baseSpeciesVersions.filter(v => gen8Plus.includes(v.toLowerCase()));
+    return baseSpeciesVersions.filter((v) =>
+      gen8Plus.includes(v.toLowerCase()),
+    );
   }
-  
+
   if (nameLower.includes("-gmax")) {
-    return ['sword', 'shield'];
+    return ["sword", "shield"];
   }
-  
+
   if (
-    nameLower.includes("-cosplay") || 
-    nameLower.includes("-rock-star") || 
-    nameLower.includes("-belle") || 
-    nameLower.includes("-pop-star") || 
-    nameLower.includes("-phd") || 
+    nameLower.includes("-cosplay") ||
+    nameLower.includes("-rock-star") ||
+    nameLower.includes("-belle") ||
+    nameLower.includes("-pop-star") ||
+    nameLower.includes("-phd") ||
     nameLower.includes("-libre")
   ) {
-    return ['omega-ruby', 'alpha-sapphire'];
+    return ["omega-ruby", "alpha-sapphire"];
   }
-  
+
   return baseSpeciesVersions;
 }
 
 async function main() {
   console.log(`Starting seeding ${POKEMON_COUNT} Pokemon...`);
 
-  const idsToSeed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 252, 253, 254];
+  // Tạo mảng tự động từ 1 đến POKEMON_COUNT
+  const idsToSeed = Array.from(
+    { length: POKEMON_COUNT },
+    (_, index) => index + 1,
+  );
   for (const i of idsToSeed) {
     try {
       console.log(`Fetching Pokemon #${i}...`);
@@ -101,19 +133,26 @@ async function main() {
 
       const isDefault = data.is_default ?? true;
 
-      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+      const speciesRes = await fetch(
+        `https://pokeapi.co/api/v2/pokemon-species/${i}`,
+      );
       let category: string | null = null;
       let description: string | null = null;
       let speciesData: any = null;
       let dexEntriesData: { regionName: string; entryNumber: number }[] = [];
       if (speciesRes.ok) {
         speciesData = await speciesRes.json();
-        const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+        const genusObj = speciesData.genera?.find(
+          (g: any) => g.language?.name === "en",
+        );
         if (genusObj) {
           category = genusObj.genus;
         }
 
-        const englishEntries = speciesData.flavor_text_entries?.filter((entry: any) => entry.language?.name === "en") || [];
+        const englishEntries =
+          speciesData.flavor_text_entries?.filter(
+            (entry: any) => entry.language?.name === "en",
+          ) || [];
         if (englishEntries.length > 0) {
           const rawText = englishEntries[englishEntries.length - 1].flavor_text;
           description = rawText
@@ -124,13 +163,12 @@ async function main() {
 
         const pokedexNumbers = speciesData.pokedex_numbers || [];
         dexEntriesData = pokedexNumbers
-          .filter((pn: any) => pn.pokedex?.name !== 'national')
+          .filter((pn: any) => pn.pokedex?.name !== "national")
           .map((pn: any) => ({
             regionName: pn.pokedex.name,
-            entryNumber: pn.entry_number
+            entryNumber: pn.entry_number,
           }));
       }
-
 
       const types = data.types.map((t: any) => ({
         where: { name: t.type.name },
@@ -143,21 +181,29 @@ async function main() {
       }));
 
       const DEX_TO_GAMES: Record<string, string[]> = {
-        'kanto': ['red', 'blue', 'yellow', 'firered', 'leafgreen', 'lets-go-pikachu', 'lets-go-eevee'],
-        'original-johto': ['gold', 'silver', 'crystal'],
-        'hoenn': ['ruby', 'sapphire', 'emerald', 'omega-ruby', 'alpha-sapphire'],
-        'original-sinnoh': ['diamond', 'pearl'],
-        'extended-sinnoh': ['platinum'],
-        'updated-johto': ['heartgold', 'soulsilver'],
-        'original-unova': ['black', 'white'],
-        'updated-unova': ['black-2', 'white-2'],
-        'kalos-central': ['x', 'y'],
-        'kalos-coastal': ['x', 'y'],
-        'kalos-mountain': ['x', 'y'],
-        'original-alola': ['sun', 'moon'],
-        'updated-alola': ['ultra-sun', 'ultra-moon'],
-        'galar': ['sword', 'shield'],
-        'paldea': ['scarlet', 'violet']
+        kanto: [
+          "red",
+          "blue",
+          "yellow",
+          "firered",
+          "leafgreen",
+          "lets-go-pikachu",
+          "lets-go-eevee",
+        ],
+        "original-johto": ["gold", "silver", "crystal"],
+        hoenn: ["ruby", "sapphire", "emerald", "omega-ruby", "alpha-sapphire"],
+        "original-sinnoh": ["diamond", "pearl"],
+        "extended-sinnoh": ["platinum"],
+        "updated-johto": ["heartgold", "soulsilver"],
+        "original-unova": ["black", "white"],
+        "updated-unova": ["black-2", "white-2"],
+        "kalos-central": ["x", "y"],
+        "kalos-coastal": ["x", "y"],
+        "kalos-mountain": ["x", "y"],
+        "original-alola": ["sun", "moon"],
+        "updated-alola": ["ultra-sun", "ultra-moon"],
+        galar: ["sword", "shield"],
+        paldea: ["scarlet", "violet"],
       };
 
       const baseSpeciesVersionsSet = new Set<string>();
@@ -169,7 +215,9 @@ async function main() {
           games.forEach((g: string) => baseSpeciesVersionsSet.add(g));
         }
       }
-      data.game_indices.forEach((gi: any) => baseSpeciesVersionsSet.add(gi.version.name));
+      data.game_indices.forEach((gi: any) =>
+        baseSpeciesVersionsSet.add(gi.version.name),
+      );
       const gameVersions = Array.from(baseSpeciesVersionsSet);
 
       const stats = data.stats.reduce((acc: any, s: any) => {
@@ -186,7 +234,8 @@ async function main() {
       // Extract and fetch moves
       const movesData = [];
       for (const m of data.moves) {
-        const latestDetail = m.version_group_details[m.version_group_details.length - 1];
+        const latestDetail =
+          m.version_group_details[m.version_group_details.length - 1];
         if (!latestDetail) continue;
 
         const moveDetails = await getMoveDetails(m.move.name, m.move.url);
@@ -202,10 +251,10 @@ async function main() {
                   power: moveDetails.power,
                   accuracy: moveDetails.accuracy,
                   type: moveDetails.type,
-                  damageClass: moveDetails.damageClass
-                }
-              }
-            }
+                  damageClass: moveDetails.damageClass,
+                },
+              },
+            },
           });
         }
       }
@@ -213,7 +262,9 @@ async function main() {
       const gen = getGeneration(data.id);
 
       // Clean up old moves & encounters to allow clean re-seeding
-      const existingP = await prisma.pokemon.findUnique({ where: { pokedexNumber: data.id } });
+      const existingP = await prisma.pokemon.findUnique({
+        where: { pokedexNumber: data.id },
+      });
       if (existingP) {
         await prisma.pokemonMove.deleteMany({ where: { pokemonId: data.id } });
         await prisma.encounter.deleteMany({ where: { pokemonId: data.id } });
@@ -221,7 +272,9 @@ async function main() {
 
       // Fetch Encounters (Locations)
       console.log(`Fetching Encounters for Pokemon #${data.id}...`);
-      const encountersRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${data.id}/encounters`);
+      const encountersRes = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${data.id}/encounters`,
+      );
       const encountersData: any[] = [];
       if (encountersRes.ok) {
         try {
@@ -232,7 +285,7 @@ async function main() {
               const verName = vd.version.name;
               encountersData.push({
                 locationName: locName,
-                versionName: verName
+                versionName: verName,
               });
             }
           }
@@ -248,7 +301,15 @@ async function main() {
         speciesId = parseInt(parts[parts.length - 1], 10);
       }
 
-      const availableInGames = getValidVersionsForForm(data.name, gameVersions);
+      const regionalDexesSet = new Set<string>();
+      const pNumbers = speciesData?.pokedex_numbers || [];
+      for (const pn of pNumbers) {
+        const dexName = pn.pokedex?.name;
+        if (dexName && dexName !== "national") {
+          regionalDexesSet.add(dexName);
+        }
+      }
+      const regionalDexes = Array.from(regionalDexesSet);
 
       await prisma.pokemon.upsert({
         where: { pokedexNumber: data.id },
@@ -258,14 +319,15 @@ async function main() {
           isDefault: isDefault,
           dexEntries: {
             deleteMany: {},
-            create: dexEntriesData
+            create: dexEntriesData,
           },
           moves: { create: movesData },
           encounters: { create: encountersData },
           category: category,
           description: description,
           speciesId: speciesId,
-          availableInGames: availableInGames
+          regionalDexes: regionalDexes,
+          altFormAvailableIn: [],
         },
         create: {
           pokedexNumber: data.id,
@@ -289,23 +351,28 @@ async function main() {
           gameVersions: gameVersions,
           isDefault: isDefault,
           dexEntries: {
-            create: dexEntriesData
+            create: dexEntriesData,
           },
           moves: { create: movesData },
           encounters: { create: encountersData },
           category: category,
           description: description,
           speciesId: speciesId,
-          availableInGames: availableInGames
+          regionalDexes: regionalDexes,
+          altFormAvailableIn: [],
         },
       });
 
       // Seed Varieties (Mega & Alternative Forms)
       if (speciesData && speciesData.varieties) {
         // Clean up old varieties for this pokemon to allow clean re-seeding
-        await prisma.pokemonVariety.deleteMany({ where: { pokemonId: data.id } });
+        await prisma.pokemonVariety.deleteMany({
+          where: { pokemonId: data.id },
+        });
 
-        const nonDefault = speciesData.varieties.filter((v: any) => !v.is_default);
+        const nonDefault = speciesData.varieties.filter(
+          (v: any) => !v.is_default,
+        );
         for (const v of nonDefault) {
           try {
             const detailRes = await fetch(v.pokemon.url);
@@ -315,30 +382,37 @@ async function main() {
             const isMega = v.pokemon.name.includes("-mega");
             const isAlternative = !isMega;
 
-            let parts = d.name.split('-');
+            let parts = d.name.split("-");
             let base = parts[0];
-            let form = parts.slice(1).join(' ');
+            let form = parts.slice(1).join(" ");
             base = base.charAt(0).toUpperCase() + base.slice(1);
 
             let formattedName = d.name;
-            if (form === 'alola') formattedName = `Alolan ${base}`;
-            else if (form === 'galar') formattedName = `Galarian ${base}`;
-            else if (form === 'hisui') formattedName = `Hisuian ${base}`;
-            else if (form === 'paldea') formattedName = `Paldean ${base}`;
-            else if (form === 'gmax') formattedName = `Gigantamax ${base}`;
-            else if (form === 'mega') formattedName = `Mega ${base}`;
-            else if (form === 'mega-x') formattedName = `Mega ${base} X`;
-            else if (form === 'mega-y') formattedName = `Mega ${base} Y`;
+            if (form === "alola") formattedName = `Alolan ${base}`;
+            else if (form === "galar") formattedName = `Galarian ${base}`;
+            else if (form === "hisui") formattedName = `Hisuian ${base}`;
+            else if (form === "paldea") formattedName = `Paldean ${base}`;
+            else if (form === "gmax") formattedName = `Gigantamax ${base}`;
+            else if (form === "mega") formattedName = `Mega ${base}`;
+            else if (form === "mega-x") formattedName = `Mega ${base} X`;
+            else if (form === "mega-y") formattedName = `Mega ${base} Y`;
             else {
-              formattedName = parts.map((p: string) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+              formattedName = parts
+                .map((p: string) => p.charAt(0).toUpperCase() + p.slice(1))
+                .join(" ");
             }
 
             const typesList = d.types.map((t: any) => t.type.name);
 
-            const varietyAvailableGames = getValidVersionsForForm(d.name, gameVersions);
+            const varietyAvailableGames = getValidVersionsForForm(
+              d.name,
+              gameVersions,
+            );
 
             let varietyCategory = "Species Form";
-            const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+            const genusObj = speciesData.genera?.find(
+              (g: any) => g.language?.name === "en",
+            );
             if (genusObj) {
               varietyCategory = genusObj.genus;
             }
@@ -352,15 +426,34 @@ async function main() {
                 speciesId: data.id,
                 category: varietyCategory,
                 description: `An alternative form of ${data.name}.`,
-                availableInGames: varietyAvailableGames,
-                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
-                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
-                hp: d.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 50,
-                attack: d.stats.find((s: any) => s.stat.name === 'attack')?.base_stat || 50,
-                defense: d.stats.find((s: any) => s.stat.name === 'defense')?.base_stat || 50,
-                specialAttack: d.stats.find((s: any) => s.stat.name === 'special-attack')?.base_stat || 50,
-                specialDefense: d.stats.find((s: any) => s.stat.name === 'special-defense')?.base_stat || 50,
-                speed: d.stats.find((s: any) => s.stat.name === 'speed')?.base_stat || 50,
+                regionalDexes: regionalDexes,
+                altFormAvailableIn: varietyAvailableGames,
+                imageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_default ||
+                  d.sprites?.front_default ||
+                  null,
+                shinyImageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_shiny ||
+                  d.sprites?.front_shiny ||
+                  null,
+                hp:
+                  d.stats.find((s: any) => s.stat.name === "hp")?.base_stat ||
+                  50,
+                attack:
+                  d.stats.find((s: any) => s.stat.name === "attack")
+                    ?.base_stat || 50,
+                defense:
+                  d.stats.find((s: any) => s.stat.name === "defense")
+                    ?.base_stat || 50,
+                specialAttack:
+                  d.stats.find((s: any) => s.stat.name === "special-attack")
+                    ?.base_stat || 50,
+                specialDefense:
+                  d.stats.find((s: any) => s.stat.name === "special-defense")
+                    ?.base_stat || 50,
+                speed:
+                  d.stats.find((s: any) => s.stat.name === "speed")
+                    ?.base_stat || 50,
               },
               create: {
                 pokedexNumber: d.id,
@@ -370,25 +463,44 @@ async function main() {
                 height: d.height,
                 weight: d.weight,
                 baseExperience: d.base_experience,
-                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
-                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
-                hp: d.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 50,
-                attack: d.stats.find((s: any) => s.stat.name === 'attack')?.base_stat || 50,
-                defense: d.stats.find((s: any) => s.stat.name === 'defense')?.base_stat || 50,
-                specialAttack: d.stats.find((s: any) => s.stat.name === 'special-attack')?.base_stat || 50,
-                specialDefense: d.stats.find((s: any) => s.stat.name === 'special-defense')?.base_stat || 50,
-                speed: d.stats.find((s: any) => s.stat.name === 'speed')?.base_stat || 50,
+                imageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_default ||
+                  d.sprites?.front_default ||
+                  null,
+                shinyImageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_shiny ||
+                  d.sprites?.front_shiny ||
+                  null,
+                hp:
+                  d.stats.find((s: any) => s.stat.name === "hp")?.base_stat ||
+                  50,
+                attack:
+                  d.stats.find((s: any) => s.stat.name === "attack")
+                    ?.base_stat || 50,
+                defense:
+                  d.stats.find((s: any) => s.stat.name === "defense")
+                    ?.base_stat || 50,
+                specialAttack:
+                  d.stats.find((s: any) => s.stat.name === "special-attack")
+                    ?.base_stat || 50,
+                specialDefense:
+                  d.stats.find((s: any) => s.stat.name === "special-defense")
+                    ?.base_stat || 50,
+                speed:
+                  d.stats.find((s: any) => s.stat.name === "speed")
+                    ?.base_stat || 50,
                 types: {
                   connectOrCreate: d.types.map((t: any) => ({
                     where: { name: t.type.name },
-                    create: { name: t.type.name }
-                  }))
+                    create: { name: t.type.name },
+                  })),
                 },
                 isDefault: false,
                 category: varietyCategory,
                 description: `An alternative form of ${data.name}.`,
-                availableInGames: varietyAvailableGames
-              }
+                regionalDexes: regionalDexes,
+                altFormAvailableIn: varietyAvailableGames,
+              },
             });
 
             // 2. Also keep PokemonVariety seeded for existing detail-page references
@@ -396,29 +508,43 @@ async function main() {
               where: { id: d.id },
               update: {
                 name: d.name,
-                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
-                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
+                imageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_default ||
+                  d.sprites?.front_default ||
+                  null,
+                shinyImageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_shiny ||
+                  d.sprites?.front_shiny ||
+                  null,
                 isMega,
                 isAlternative,
-                types: typesList
+                types: typesList,
               },
               create: {
                 id: d.id,
                 pokemonId: data.id,
                 name: d.name,
-                imageUrl: d.sprites?.other?.["official-artwork"]?.front_default || d.sprites?.front_default || null,
-                shinyImageUrl: d.sprites?.other?.["official-artwork"]?.front_shiny || d.sprites?.front_shiny || null,
+                imageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_default ||
+                  d.sprites?.front_default ||
+                  null,
+                shinyImageUrl:
+                  d.sprites?.other?.["official-artwork"]?.front_shiny ||
+                  d.sprites?.front_shiny ||
+                  null,
                 isMega,
                 isAlternative,
-                types: typesList
-              }
+                types: typesList,
+              },
             });
           } catch (varError) {
-            console.error(`Error seeding variety ${v.pokemon.name} for Pokemon #${data.id}:`, varError);
+            console.error(
+              `Error seeding variety ${v.pokemon.name} for Pokemon #${data.id}:`,
+              varError,
+            );
           }
         }
       }
-
     } catch (error) {
       console.error(`Error seeding Pokemon #${i}:`, error);
     }

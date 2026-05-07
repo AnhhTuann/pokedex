@@ -853,67 +853,141 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                     }}
                   >
                     <Tab label="Level Up" />
-                    <Tab label="Machine" />
+                    <Tab label="TM / HM" />
                     <Tab label="Egg" />
                     <Tab label="Tutor" />
                   </Tabs>
 
-                  <TableContainer component={Paper} elevation={0} sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: '12px', overflow: 'hidden' }}>
-                    <Table size="small">
-                      <TableHead sx={{ bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
-                        <TableRow>
-                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Level</TableCell>
-                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Move</TableCell>
-                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Type</TableCell>
-                          <TableCell sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Cat.</TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Pwr</TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 800, fontSize: 10, textTransform: 'uppercase' }}>Acc</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {p.moves
-                          .filter((m: any) => {
-                            if (moveTab === 0) return m.learnMethod === 'level-up';
-                            if (moveTab === 1) return m.learnMethod === 'machine';
-                            if (moveTab === 2) return m.learnMethod === 'egg';
-                            return m.learnMethod === 'tutor';
-                          })
-                          .sort((a: any, b: any) => (a.levelLearnedAt || 0) - (b.levelLearnedAt || 0))
-                          .map((m: any, i: number) => {
-                            const isPhysical = m.damageClass === 'physical';
-                            const isSpecial = m.damageClass === 'special';
-                            
-                            return (
-                              <TableRow key={`${m.name}-${i}`} sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: 'action.hover' } }}>
-                                <TableCell sx={{ fontWeight: 700, color: 'text.secondary', fontSize: 12 }}>
-                                  {m.learnMethod === 'level-up' && m.levelLearnedAt > 0 ? m.levelLearnedAt : '—'}
-                                </TableCell>
-                                <TableCell sx={{ fontWeight: 800, textTransform: 'capitalize', fontSize: 13 }}>
-                                  {m.name.replace('-', ' ')}
-                                </TableCell>
-                                <TableCell>
-                                  <Chip label={m.type} size="small" sx={{ height: 20, fontSize: 9, fontWeight: 900, textTransform: 'uppercase', bgcolor: TYPE_COLORS[m.type] || '#9ca3af', color: '#fff' }} />
-                                </TableCell>
-                                <TableCell>
-                                  <Chip
-                                    label={m.damageClass}
-                                    size="small"
+                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }, gap: 2 }}>
+                    {p.moves
+                      .filter((m: any) => {
+                        if (moveTab === 0) return m.learnMethod === 'level-up';
+                        if (moveTab === 1) return m.learnMethod === 'machine';
+                        if (moveTab === 2) return m.learnMethod === 'egg';
+                        return m.learnMethod === 'tutor';
+                      })
+                      .sort((a: any, b: any) => {
+                        if (moveTab === 0) {
+                          return (a.levelLearnedAt || 0) - (b.levelLearnedAt || 0);
+                        }
+                        return a.name.localeCompare(b.name);
+                      })
+                      .map((m: any, i: number) => {
+                        const isPhysical = m.damageClass?.toLowerCase() === 'physical';
+                        const isSpecial = m.damageClass?.toLowerCase() === 'special';
+
+                        // Premium, spec-compliant styling for damage class
+                        // physical -> Đỏ đậm sẫm, special -> Xanh lam sẫm, status -> Xám/Đen nhạt
+                        let damageClassBg = 'rgba(156, 163, 175, 0.15)';
+                        let damageClassColor = theme.palette.text.secondary;
+                        if (isPhysical) {
+                          damageClassBg = '#991b1b'; // Dark deep red
+                          damageClassColor = '#ffffff';
+                        } else if (isSpecial) {
+                          damageClassBg = '#1e3a8a'; // Dark deep blue
+                          damageClassColor = '#ffffff';
+                        } else if (m.damageClass?.toLowerCase() === 'status') {
+                          damageClassBg = theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
+                          damageClassColor = theme.palette.text.secondary;
+                        }
+
+                        return (
+                          <Paper
+                            key={`${m.name}-${i}`}
+                            elevation={0}
+                            sx={{
+                              p: 2,
+                              borderRadius: '12px',
+                              border: `1px solid ${theme.palette.divider}`,
+                              bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.005)',
+                              transition: 'transform 0.2s, border-color 0.2s, box-shadow 0.2s',
+                              '&:hover': {
+                                transform: 'translateY(-2px)',
+                                borderColor: alpha(primaryColor, 0.4),
+                                boxShadow: `0 4px 12px ${alpha(primaryColor, 0.08)}`,
+                              }
+                            }}
+                          >
+                            {/* Dòng 1 */}
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0 }}>
+                                {moveTab === 0 && (
+                                  <Typography
+                                    variant="caption"
                                     sx={{
-                                      height: 20, fontSize: 9, fontWeight: 900, textTransform: 'uppercase',
-                                      bgcolor: isPhysical ? alpha('#ef4444', 0.15) : isSpecial ? alpha('#3b82f6', 0.15) : alpha('#9ca3af', 0.15),
-                                      color: isPhysical ? '#ef4444' : isSpecial ? '#3b82f6' : 'text.secondary',
-                                      border: `1px solid ${isPhysical ? alpha('#ef4444', 0.3) : isSpecial ? alpha('#3b82f6', 0.3) : alpha('#9ca3af', 0.3)}`,
+                                      fontWeight: 800,
+                                      color: 'text.disabled',
+                                      fontSize: '0.75rem',
+                                      whiteSpace: 'nowrap'
                                     }}
-                                  />
-                                </TableCell>
-                                <TableCell align="right" sx={{ fontWeight: 700, fontSize: 12 }}>{m.power || '—'}</TableCell>
-                                <TableCell align="right" sx={{ fontWeight: 700, fontSize: 12 }}>{m.accuracy || '—'}</TableCell>
-                              </TableRow>
-                            );
-                          })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                                  >
+                                    Lv.{m.levelLearnedAt > 0 ? m.levelLearnedAt : '—'}
+                                  </Typography>
+                                )}
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    fontWeight: 900,
+                                    textTransform: 'capitalize',
+                                    fontSize: '0.9rem',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    color: 'text.primary'
+                                  }}
+                                >
+                                  {m.name.replace(/-/g, ' ')}
+                                </Typography>
+                              </Box>
+
+                              <Stack direction="row" spacing={1.5} sx={{ pl: 1, flexShrink: 0, textAlign: 'right' }}>
+                                <Box>
+                                  <Typography variant="caption" color="text.disabled" sx={{ display: 'block', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase' }}>PWR</Typography>
+                                  <Typography variant="body2" sx={{ fontWeight: 800, color: m.power ? 'text.primary' : 'text.disabled' }}>{m.power || '—'}</Typography>
+                                </Box>
+                                <Box>
+                                  <Typography variant="caption" color="text.disabled" sx={{ display: 'block', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase' }}>ACC</Typography>
+                                  <Typography variant="body2" sx={{ fontWeight: 800, color: m.accuracy ? 'text.primary' : 'text.disabled' }}>{m.accuracy ? `${m.accuracy}%` : '—'}</Typography>
+                                </Box>
+                              </Stack>
+                            </Box>
+
+                            {/* Dòng 2 */}
+                            <Stack direction="row" spacing={1}>
+                              <Chip
+                                label={m.type}
+                                size="small"
+                                sx={{
+                                  height: 20,
+                                  fontSize: '0.7rem',
+                                  fontWeight: 900,
+                                  textTransform: 'uppercase',
+                                  bgcolor: TYPE_COLORS[m.type.toLowerCase()] || '#9ca3af',
+                                  color: '#fff',
+                                  borderRadius: '6px'
+                                }}
+                              />
+                              {m.damageClass && (
+                                <Chip
+                                  label={m.damageClass}
+                                  size="small"
+                                  sx={{
+                                    height: 20,
+                                    fontSize: '0.7rem',
+                                    fontWeight: 900,
+                                    textTransform: 'uppercase',
+                                    fontStyle: 'italic',
+                                    bgcolor: damageClassBg,
+                                    color: damageClassColor,
+                                    borderRadius: '6px',
+                                  }}
+                                />
+                              )}
+                            </Stack>
+                          </Paper>
+                        );
+                      })}
+                  </Box>
                 </Box>
               </>
             )}

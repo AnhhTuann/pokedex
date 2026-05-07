@@ -88,7 +88,7 @@ const typeDefs = `#graphql
 
   type Query {
     ping: String
-    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], version: String): PokemonListResponse
+    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
     myTeam: [PokemonListItem!]!
@@ -251,7 +251,7 @@ const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
     
-    pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, version = null }: any) => {
+    pokemonList: async (_: any, { limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, region = null, game = null }: any) => {
       if (ids && Array.isArray(ids) && ids.length === 0) {
         return { results: [], totalCount: 0 };
       }
@@ -259,22 +259,16 @@ const resolvers = {
       // Build database query filters
       const where: any = {};
 
-      const GAME_TO_REGION: Record<string, string> = {
-        red: 'kanto', blue: 'kanto', yellow: 'kanto', firered: 'kanto', leafgreen: 'kanto',
-        gold: 'original-johto', silver: 'original-johto', crystal: 'original-johto',
-        heartgold: 'updated-johto', soulsilver: 'updated-johto',
-        ruby: 'hoenn', sapphire: 'hoenn', emerald: 'hoenn', 'omega-ruby': 'hoenn', 'alpha-sapphire': 'hoenn',
-        diamond: 'original-sinnoh', pearl: 'original-sinnoh', platinum: 'extended-sinnoh',
-        black: 'original-unova', white: 'original-unova', 'black-2': 'updated-unova', 'white-2': 'updated-unova',
-        x: 'kalos-central', y: 'kalos-central',
-        sun: 'original-alola', moon: 'original-alola', 'ultra-sun': 'updated-alola', 'ultra-moon': 'updated-alola',
-        sword: 'galar', shield: 'galar', scarlet: 'paldea', violet: 'paldea'
-      };
-
-      if (version && version !== 'ALL') {
-        const queryGame = version.toLowerCase();
-        // Direct array contains filter
-        where.availableInGames = { has: queryGame };
+      if (region && region !== 'ALL' && game && game !== 'ALL') {
+        where.AND = [
+          { regionalDexes: { has: region.toLowerCase() } },
+          {
+            OR: [
+              { isDefault: true },
+              { altFormAvailableIn: { has: game.toLowerCase() } }
+            ]
+          }
+        ];
       }
 
       if (gen !== null) {
@@ -284,11 +278,16 @@ const resolvers = {
         where.pokedexNumber = { in: ids };
       }
       if (search) {
-        where.OR = [
+        const searchOR = [
           { name: { contains: search.toLowerCase() } },
           ...(isNaN(Number(search)) ? [] : [{ pokedexNumber: Number(search) }]),
           ...(isNaN(Number(search)) ? [] : [{ speciesId: Number(search) }])
         ];
+        if (where.AND) {
+          where.AND.push({ OR: searchOR });
+        } else {
+          where.OR = searchOR;
+        }
       }
       if (type) {
         where.types = { some: { name: type.toLowerCase() } };
@@ -303,9 +302,8 @@ const resolvers = {
       // Now map each Pokemon to output structure, including resolving its regional number if a specific version is selected
       let results: any[] = [];
 
-      if (version && version !== 'ALL') {
-        const queryGame = version.toLowerCase();
-        const regionName = GAME_TO_REGION[queryGame] || queryGame;
+      if (region && region !== 'ALL') {
+        const regionName = region.toLowerCase();
 
         // Fetch all DexEntry matching the resolved region name to map regional pokedex numbers
         const dexEntries = await prisma.dexEntry.findMany({

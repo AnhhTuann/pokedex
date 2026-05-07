@@ -22,8 +22,8 @@ import { useColorMode } from './main';
 import { useTeamStore } from './lib/teamStore';
 
 const GET_POKEMON_LIST = gql`
-  query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $version: String) {
-    pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids, version: $version) {
+  query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $region: String, $game: String) {
+    pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids, region: $region, game: $game) {
       results { id name types image shinyImage category regionalNumber speciesId }
       totalCount
     }
@@ -181,6 +181,15 @@ export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   violet: 'paldea',
 };
 
+export function getRegionAndGame(versionName: string) {
+  const game = versionName.toLowerCase();
+  if (game === 'all') {
+    return { region: 'ALL', game: 'ALL' };
+  }
+  const region = GAME_TO_REGIONAL_DEX[game] || game;
+  return { region, game };
+}
+
 type ViewMode = 'all' | 'favorites' | 'compare';
 
 export default function App() {
@@ -213,7 +222,9 @@ export default function App() {
     }
   };
 
-  const mappedVersion = selectedVersion !== 'ALL' ? selectedVersion.toLowerCase() : undefined;
+  const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
+  const queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
+  const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
 
   const { data, loading, error, fetchMore } = useQuery<{
     pokemonList: { results: PokemonListItem[]; totalCount: number };
@@ -225,7 +236,8 @@ export default function App() {
       type: typeFilter, 
       gen: genFilter, 
       ids: showFavorites ? favorites : null,
-      version: mappedVersion
+      region: queryRegion,
+      game: queryGame
     },
   });
 
