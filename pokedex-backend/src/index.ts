@@ -962,6 +962,8 @@ const resolvers = {
   }
 };
 
+const downloadSessions = new Map<string, { filename: string; mimeType: string; data: Buffer }>();
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -974,10 +976,59 @@ async function startServer() {
   await apolloServer.start();
   console.log("Apollo Server started with Phase 3 Features (Evolutions & Team Builder)");
 
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' })); // Allow large base64 strings for PNG exports
   app.use(cors());
 
   app.get('/api/ping', (req, res) => res.send('pong from Prisma backend!'));
+
+  // Bulletproof proxy download endpoint to solve browser extension filename corruption (e.g., IDM, dynamic blob downloads)
+  app.post('/api/download-session', (req, res) => {
+    const { filename, mimeType, content, isBase64 } = req.body;
+    if (!filename || !mimeType || content === undefined) {
+      return res.status(400).send('Missing required fields');
+    }
+
+    try {
+      let data: Buffer;
+      if (isBase64) {
+        data = Buffer.from(content, 'base64');
+      } else {
+        data = Buffer.from(content, 'utf-8');
+      }
+
+      const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      downloadSessions.set(token, { filename, mimeType, data });
+
+      // Expire session after 60 seconds
+      setTimeout(() => {
+        downloadSessions.delete(token);
+      }, 60000);
+
+      res.json({ token });
+    } catch (err) {
+      console.error('Error generating download session:', err);
+      res.status(500).send('Server error');
+    }
+  });
+
+  app.get('/api/download', (req, res) => {
+    const { token } = req.query;
+    if (!token || typeof token !== 'string') {
+      return res.status(400).send('Missing download token');
+    }
+
+    const session = downloadSessions.get(token);
+    if (!session) {
+      return res.status(410).send('Download link expired or invalid');
+    }
+
+    res.setHeader('Content-Type', session.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${session.filename}"`);
+    res.send(session.data);
+
+    // Clean up session immediately after delivery
+    downloadSessions.delete(token);
+  });
 
   app.use('/graphql', expressMiddleware(apolloServer));
 

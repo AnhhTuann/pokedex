@@ -245,6 +245,80 @@ export function getRecommendedItems(member: TeamMember): string[] {
   return ['Leftovers', 'Life Orb', 'Focus Sash', 'Heavy-Duty Boots', 'Expert Belt'];
 }
 
+// Helper function to get recommended abilities based on competitive tier
+export function getRecommendedAbilities(member: TeamMember): string[] {
+  const abilities = member.allAbilities || [];
+  if (abilities.length === 0) return [];
+
+  const topTierAbilities = [
+    // Offensive & Speed-boosting
+    'swift-swim', 'chlorophyll', 'sand-rush', 'slush-rush', 'speed-boost', 'unburden',
+    'huge-power', 'pure-power', 'guts', 'sheer-force', 'adaptability', 'sharpness',
+    'tough-claws', 'moxie', 'beast-boost', 'libero', 'protean', 'no-guard', 'solar-power',
+    'technician', 'tinted-lens', 'strong-jaw', 'iron-fist', 'reckless', 'hustle',
+    'competitive', 'defiant', 'contrary', 'gale-wings', 'serene-grace', 'magic-guard',
+    // Strong Utility / Defensive
+    'intimidate', 'regenerator', 'magic-bounce', 'prankster', 'multiscale',
+    'shadow-shield', 'fluffy', 'fur-coat', 'levitate', 'poison-heal', 'solid-rock',
+    'filter', 'thick-fat', 'water-absorb', 'volt-absorb', 'flash-fire', 'sap-sipper',
+    'unaware', 'sturdy', 'natural-cure', 'disguise', 'inner-focus', 'scrappy', 'mold-breaker'
+  ];
+
+  if (abilities.length === 1) {
+    return [abilities[0]];
+  }
+
+  const recommended = abilities.filter(ab => topTierAbilities.includes(ab.toLowerCase()));
+
+  if (recommended.length === 0 && abilities.length > 0) {
+    return [abilities[0]];
+  }
+
+  return recommended;
+}
+
+// Helper function to get recommended natures based on stat distribution
+export function getRecommendedNatures(member: TeamMember): string[] {
+  const statsMap: Record<string, number> = {};
+  if (member.stats) {
+    member.stats.forEach((s: any) => {
+      statsMap[s.name.toLowerCase()] = s.value;
+    });
+  }
+
+  const hp = statsMap['hp'] || 70;
+  const attack = statsMap['attack'] || 70;
+  const defense = statsMap['defense'] || 70;
+  const spAtk = statsMap['special-attack'] || 70;
+  const spDef = statsMap['special-defense'] || 70;
+  const speed = statsMap['speed'] || 70;
+
+  const isTanker = (hp + defense + spDef > 220) || (defense > 80 && spDef > 80);
+  const isPhysical = attack > spAtk;
+  const isSpecial = spAtk > attack;
+  const isFast = speed >= 75;
+
+  if (isTanker && !isFast) {
+    return ['Bold', 'Impish', 'Calm', 'Careful'];
+  }
+
+  if (isPhysical && isFast) {
+    return ['Jolly', 'Adamant'];
+  }
+
+  if (isSpecial && isFast) {
+    return ['Timid', 'Modest'];
+  }
+
+  if (attack > spAtk) {
+    return ['Adamant', 'Jolly', 'Impish', 'Careful'];
+  } else if (spAtk > attack) {
+    return ['Modest', 'Timid', 'Bold', 'Calm'];
+  }
+
+  return ['Jolly', 'Timid', 'Adamant', 'Modest'];
+}
+
 // Slot Component - handles background loading of moves & abilities
 function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }) {
   const theme = useTheme();
@@ -277,6 +351,18 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
     if (recItems.length > 0) {
       setItem(member.id, recItems[0]);
     }
+
+    // Auto-select top recommended Ability
+    const recAbilities = getRecommendedAbilities(member);
+    if (recAbilities.length > 0) {
+      setAbility(member.id, recAbilities[0]);
+    }
+
+    // Auto-select top recommended Nature
+    const recNatures = getRecommendedNatures(member);
+    if (recNatures.length > 0) {
+      setNature(member.id, recNatures[0]);
+    }
   };
 
   return (
@@ -293,7 +379,8 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
         display: 'flex',
         flexDirection: 'column',
         p: 2,
-        height: '100%'
+        height: '100%',
+        minHeight: '420px'
       }}
     >
       {/* Remove Button */}
@@ -366,23 +453,46 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
 
       {/* Build Slots Form */}
       <Stack spacing={1.5} sx={{ flex: 1 }}>
-        {/* Ability Selection */}
-        <FormControl fullWidth size="small">
-          <InputLabel id={`ability-label-${member.id}`} sx={{ fontSize: '12px', fontWeight: 600 }}>Ability</InputLabel>
-          <Select
-            labelId={`ability-label-${member.id}`}
-            label="Ability"
-            value={member.selectedAbility || ''}
-            onChange={(e) => setAbility(member.id, e.target.value)}
-            sx={{ borderRadius: '10px', fontSize: '13px', fontWeight: 600 }}
-          >
-            {allAbilities.map((ab: string) => (
-              <MenuItem key={ab} value={ab} sx={{ textTransform: 'capitalize', fontWeight: 600 }}>
-                {ab.replace('-', ' ')}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {/* Ability Selection with AI Recommendations */}
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Tooltip title="AI Recommended Ability">
+            <Lightbulb sx={{ color: '#eab308', fontSize: 20, flexShrink: 0 }} />
+          </Tooltip>
+          <Autocomplete
+            fullWidth
+            size="small"
+            options={[
+              ...getRecommendedAbilities(member).map(ab => ({ name: ab, group: '🌟 Recommended' })),
+              ...allAbilities.filter((ab: string) => !getRecommendedAbilities(member).includes(ab)).map((ab: string) => ({ name: ab, group: 'All Abilities' }))
+            ]}
+            groupBy={(option) => option.group}
+            getOptionLabel={(option) => option.name.replace(/-/g, ' ')}
+            value={member.selectedAbility ? { name: member.selectedAbility, group: '' } : null}
+            onChange={(e, newValue) => {
+              setAbility(member.id, newValue ? newValue.name : null);
+            }}
+            isOptionEqualToValue={(option, val) => option.name === val.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Ability"
+                placeholder="Search or select..."
+                sx={{
+                  '& .MuiInputLabel-root': { fontSize: '12px', fontWeight: 600 },
+                  '& .MuiOutlinedInput-root': { borderRadius: '10px', fontSize: '13px', fontWeight: 600 }
+                }}
+              />
+            )}
+            renderOption={(props, option) => (
+              <Box component="li" {...props} sx={{ textTransform: 'capitalize', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
+                {option.group === '🌟 Recommended' && (
+                  <Lightbulb sx={{ color: '#eab308', fontSize: 16 }} />
+                )}
+                {option.name.replace(/-/g, ' ')}
+              </Box>
+            )}
+          />
+        </Stack>
 
         {/* Item Selection with AI Recommendations */}
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
@@ -417,23 +527,46 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
           />
         </Stack>
 
-        {/* Nature Selection */}
-        <FormControl fullWidth size="small">
-          <InputLabel id={`nature-label-${member.id}`} sx={{ fontSize: '12px', fontWeight: 600 }}>Nature</InputLabel>
-          <Select
-            labelId={`nature-label-${member.id}`}
-            label="Nature"
-            value={member.selectedNature || ''}
-            onChange={(e) => setNature(member.id, e.target.value)}
-            sx={{ borderRadius: '10px', fontSize: '13px', fontWeight: 600 }}
-          >
-            {NATURE_NAMES.map((nat) => (
-              <MenuItem key={nat} value={nat} sx={{ fontWeight: 600 }}>
-                {nat}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {/* Nature Selection with AI Recommendations */}
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Tooltip title="AI Recommended Nature">
+            <Lightbulb sx={{ color: '#eab308', fontSize: 20, flexShrink: 0 }} />
+          </Tooltip>
+          <Autocomplete
+            fullWidth
+            size="small"
+            options={[
+              ...getRecommendedNatures(member).map(nat => ({ name: nat, group: '🌟 Recommended' })),
+              ...NATURE_NAMES.filter(nat => !getRecommendedNatures(member).includes(nat)).map(nat => ({ name: nat, group: 'All Natures' }))
+            ]}
+            groupBy={(option) => option.group}
+            getOptionLabel={(option) => option.name}
+            value={member.selectedNature ? { name: member.selectedNature, group: '' } : null}
+            onChange={(e, newValue) => {
+              setNature(member.id, newValue ? newValue.name : null);
+            }}
+            isOptionEqualToValue={(option, val) => option.name === val.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Nature"
+                placeholder="Search or select..."
+                sx={{
+                  '& .MuiInputLabel-root': { fontSize: '12px', fontWeight: 600 },
+                  '& .MuiOutlinedInput-root': { borderRadius: '10px', fontSize: '13px', fontWeight: 600 }
+                }}
+              />
+            )}
+            renderOption={(props, option) => (
+              <Box component="li" {...props} sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
+                {option.group === '🌟 Recommended' && (
+                  <Lightbulb sx={{ color: '#eab308', fontSize: 16 }} />
+                )}
+                {option.name}
+              </Box>
+            )}
+          />
+        </Stack>
 
         {/* Selected Moves */}
         <Box>
@@ -501,7 +634,7 @@ function TeamMemberSlot({ member, index }: { member: TeamMember; index: number }
             }
           }}
         >
-          Auto-Build (Moves & Item)
+          Auto-Build (Moves, Item, Ability, Nature)
         </Button>
       </Stack>
     </Card>
@@ -578,6 +711,17 @@ export default function TeamBuilder() {
       });
   };
 
+  // Reusable Helper to trigger file downloads correctly on all browsers
+  const triggerDownload = (url: string, filename: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename); // Use setAttribute to force download naming convention
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // 2. Export to Image (Infographic)
   const handleDownloadImage = () => {
     handleExportClose();
@@ -599,15 +743,35 @@ export default function TeamBuilder() {
       scale: 2,
       logging: false,
       backgroundColor: isDark ? '#0f172a' : '#f8fafc'
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = 'pokedex-team-infographic.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      showSnackbar('Infographic downloaded successfully!', 'success');
+    }).then(async (canvas) => {
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const base64Content = dataUrl.split(',')[1];
+        
+        const response = await fetch('/api/download-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            filename: 'my-pokemon-team.png',
+            mimeType: 'image/png',
+            content: base64Content,
+            isBase64: true
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create download session');
+        }
+
+        const { token } = await response.json();
+        window.location.href = `/api/download?token=${token}`;
+        showSnackbar('Infographic downloaded successfully!', 'success');
+      } catch (err) {
+        showSnackbar('Failed to download team infographic.', 'error');
+        console.error(err);
+      }
     }).catch((err) => {
       showSnackbar('Failed to render team infographic.', 'error');
       console.error(err);
@@ -615,7 +779,7 @@ export default function TeamBuilder() {
   };
 
   // 3. Export to JSON
-  const handleSaveJSON = () => {
+  const handleSaveJSON = async () => {
     handleExportClose();
     if (team.length === 0) {
       showSnackbar('Your team is currently empty!', 'error');
@@ -623,18 +787,29 @@ export default function TeamBuilder() {
     }
     try {
       const jsonStr = JSON.stringify(team, null, 2);
-      const blob = new Blob([jsonStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'pokedex-team.json';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-      showSnackbar('Team saved as pokedex-team.json!', 'success');
+      const response = await fetch('/api/download-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          filename: 'my-pokemon-team.json',
+          mimeType: 'application/json',
+          content: jsonStr,
+          isBase64: false
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create download session');
+      }
+
+      const { token } = await response.json();
+      window.location.href = `/api/download?token=${token}`;
+      showSnackbar('Team saved as my-pokemon-team.json!', 'success');
     } catch (err) {
       showSnackbar('Failed to export team as JSON.', 'error');
+      console.error(err);
     }
   };
 
@@ -951,7 +1126,8 @@ export default function TeamBuilder() {
                         bgcolor: isDark ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)',
                         cursor: 'pointer',
                         transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                        height: '280px',
+                        height: '100%',
+                        minHeight: '420px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -990,9 +1166,9 @@ export default function TeamBuilder() {
       </Grid>
 
       {/* Analytics Dividers */}
-      <Grid container spacing={4}>
+      <Grid container spacing={4} sx={{ alignItems: 'stretch' }}>
         {/* Left Column: Synergy Analyzer */}
-        <Grid size={{ xs: 12, md: 7 }}>
+        <Grid size={{ xs: 12, md: 7 }} sx={{ display: 'flex' }}>
           <Paper
             elevation={0}
             sx={{
@@ -1000,7 +1176,11 @@ export default function TeamBuilder() {
               borderRadius: '24px',
               border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
               bgcolor: isDark ? 'rgba(15, 23, 42, 0.4)' : 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(20px)'
+              backdropFilter: 'blur(20px)',
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              width: '100%'
             }}
           >
             <Typography variant="h6" sx={{ fontWeight: 900, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -1013,24 +1193,26 @@ export default function TeamBuilder() {
 
             {/* Warning Boxes */}
             {team.length > 0 && warnings.length > 0 && (
-              <Stack spacing={1} sx={{ mb: 3 }}>
-                {warnings.map((warn, i) => (
-                  <Alert
-                    key={i}
-                    severity="error"
-                    icon={<Warning fontSize="small" />}
-                    sx={{
-                      borderRadius: '12px',
-                      fontWeight: 700,
-                      fontSize: '12px',
-                      bgcolor: isDark ? 'rgba(239, 68, 68, 0.1)' : undefined,
-                      border: `1px solid ${alpha('#ef4444', 0.25)}`
-                    }}
-                  >
-                    {warn}
-                  </Alert>
-                ))}
-              </Stack>
+              <Box sx={{ mb: 3 }}>
+                <Stack spacing={1}>
+                  {warnings.map((warn, i) => (
+                    <Alert
+                      key={i}
+                      severity="error"
+                      icon={<Warning fontSize="small" />}
+                      sx={{
+                        borderRadius: '12px',
+                        fontWeight: 700,
+                        fontSize: '12px',
+                        bgcolor: isDark ? 'rgba(239, 68, 68, 0.1)' : undefined,
+                        border: `1px solid ${alpha('#ef4444', 0.25)}`
+                      }}
+                    >
+                      {warn}
+                    </Alert>
+                  ))}
+                </Stack>
+              </Box>
             )}
 
             {team.length > 0 && warnings.length === 0 && (
@@ -1051,69 +1233,81 @@ export default function TeamBuilder() {
             )}
 
             {/* 18-Type Grid Counters */}
-            <Grid container spacing={1.5}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 1.5,
+                justifyContent: 'flex-start'
+              }}
+            >
               {TYPE_LIST.map((type) => {
                 const count = coverage[type] || { weak: 0, resist: 0 };
                 return (
-                  <Grid size={{ xs: 6, sm: 4, md: 3 }} key={type}>
-                    <Box
+                  <Box
+                    key={type}
+                    sx={{
+                      flex: {
+                        xs: '1 1 calc(50% - 12px)',
+                        sm: '1 1 calc(33.33% - 12px)',
+                        md: '1 1 calc(25% - 12px)'
+                      },
+                      minWidth: '100px',
+                      p: 1,
+                      borderRadius: '12px',
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}`,
+                      bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 1
+                    }}
+                  >
+                    {/* Type Badge */}
+                    <Chip
+                      label={type}
+                      size="small"
                       sx={{
-                        p: 1,
-                        borderRadius: '12px',
-                        border: `1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}`,
-                        bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: 1
+                        height: 18,
+                        fontSize: '8px',
+                        fontWeight: 900,
+                        textTransform: 'uppercase',
+                        bgcolor: alpha(TYPE_COLORS[type] || '#6b7280', 0.85),
+                        color: '#fff',
+                        width: '100%',
+                        textAlign: 'center'
                       }}
-                    >
-                      {/* Type Badge */}
-                      <Chip
-                        label={type}
-                        size="small"
-                        sx={{
-                          height: 18,
-                          fontSize: '8px',
-                          fontWeight: 900,
-                          textTransform: 'uppercase',
-                          bgcolor: alpha(TYPE_COLORS[type] || '#6b7280', 0.85),
-                          color: '#fff',
-                          width: '100%',
-                          textAlign: 'center'
-                        }}
-                      />
+                    />
 
-                      {/* Weaks/Resists tags */}
-                      <Stack direction="row" spacing={1} sx={{ width: '100%', justifyContent: 'space-around' }}>
-                        <Tooltip title="Pokémon weak to this type">
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
-                            <KeyboardDoubleArrowDown sx={{ fontSize: 12, color: count.weak > 0 ? '#ef4444' : 'text.disabled' }} />
-                            <Typography variant="caption" sx={{ fontWeight: 800, color: count.weak > 0 ? '#ef4444' : 'text.disabled' }}>
-                              {count.weak}
-                            </Typography>
-                          </Box>
-                        </Tooltip>
+                    {/* Weaks/Resists tags */}
+                    <Stack direction="row" spacing={1} sx={{ width: '100%', justifyContent: 'space-around' }}>
+                      <Tooltip title="Pokémon weak to this type">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
+                          <KeyboardDoubleArrowDown sx={{ fontSize: 12, color: count.weak > 0 ? '#ef4444' : 'text.disabled' }} />
+                          <Typography variant="caption" sx={{ fontWeight: 800, color: count.weak > 0 ? '#ef4444' : 'text.disabled' }}>
+                            {count.weak}
+                          </Typography>
+                        </Box>
+                      </Tooltip>
 
-                        <Tooltip title="Pokémon resistant or immune to this type">
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
-                            <KeyboardDoubleArrowUp sx={{ fontSize: 12, color: count.resist > 0 ? '#22c55e' : 'text.disabled' }} />
-                            <Typography variant="caption" sx={{ fontWeight: 800, color: count.resist > 0 ? '#22c55e' : 'text.disabled' }}>
-                              {count.resist}
-                            </Typography>
-                          </Box>
-                        </Tooltip>
-                      </Stack>
-                    </Box>
-                  </Grid>
+                      <Tooltip title="Pokémon resistant or immune to this type">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
+                          <KeyboardDoubleArrowUp sx={{ fontSize: 12, color: count.resist > 0 ? '#22c55e' : 'text.disabled' }} />
+                          <Typography variant="caption" sx={{ fontWeight: 800, color: count.resist > 0 ? '#22c55e' : 'text.disabled' }}>
+                            {count.resist}
+                          </Typography>
+                        </Box>
+                      </Tooltip>
+                    </Stack>
+                  </Box>
                 );
               })}
-            </Grid>
+            </Box>
           </Paper>
         </Grid>
 
         {/* Right Column: AI Coach Recommendations */}
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid size={{ xs: 12, md: 5 }} sx={{ display: 'flex' }}>
           <Paper
             elevation={0}
             sx={{
@@ -1122,7 +1316,10 @@ export default function TeamBuilder() {
               border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
               bgcolor: isDark ? 'rgba(15, 23, 42, 0.4)' : 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(20px)',
-              height: '100%'
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              width: '100%'
             }}
           >
             <Typography variant="h6" sx={{ fontWeight: 900, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -1191,7 +1388,29 @@ export default function TeamBuilder() {
               }
             }}
           />
-          <Stack spacing={1} sx={{ maxHeight: '350px', overflowY: 'auto' }}>
+          <Stack
+            spacing={1}
+            sx={{
+              maxHeight: '350px',
+              overflowY: 'auto',
+              pr: 0.5,
+              '&::-webkit-scrollbar': {
+                width: '8px'
+              },
+              '&::-webkit-scrollbar-track': {
+                background: isDark ? '#1e293b' : '#ffffff'
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)',
+                borderRadius: '4px',
+                '&:hover': {
+                  background: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
+                }
+              },
+              scrollbarWidth: 'thin',
+              scrollbarColor: isDark ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.15) transparent',
+            }}
+          >
             {availablePokemon.map((p: any) => (
               <Box
                 key={p.id}
