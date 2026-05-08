@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Container, Box, Grid, Card, CardActionArea, CardContent, Typography,
@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import {
   CatchingPokemon, PlaylistAddCheck, RotateLeft, DoneAll, Search,
-  FilterList, HelpOutlined, AutoAwesome, CheckCircle
+  HelpOutlined, AutoAwesome, CheckCircle, Visibility
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 import { PokemonListItem } from '../types';
@@ -48,15 +48,262 @@ const TYPE_COLORS: Record<string, string> = {
   fairy: "#f472b6",
 };
 
+// ── OPTIMIZED CHILD CARD COMPONENT (React.memo) ──
+interface TrackerCardProps {
+  pokemon: PokemonListItem;
+  isCaught: boolean;
+  isShiny: boolean;
+  isShinyMode: boolean;
+  onToggleCaught: (id: number) => void;
+  onToggleShiny: (id: number) => void;
+  onViewDetails: (id: number) => void;
+}
+
+const TrackerCard = React.memo<TrackerCardProps>(({
+  pokemon,
+  isCaught,
+  isShiny,
+  isShinyMode,
+  onToggleCaught,
+  onToggleShiny,
+  onViewDetails
+}) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const primaryColor = TYPE_COLORS[pokemon.types[0]] || '#9ca3af';
+
+  const isMarked = isCaught || isShiny;
+
+  return (
+    <Card
+      elevation={isMarked ? 5 : 0}
+      sx={{
+        height: '100%',
+        borderRadius: '16px',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative',
+        overflow: 'visible',
+        cursor: 'pointer',
+        border: isShiny 
+          ? '2px solid #fbbf24'
+          : isCaught 
+            ? '2px solid #10b981' 
+            : `1.5px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+        background: isShiny
+          ? `linear-gradient(160deg, ${alpha('#fbbf24', isDark ? 0.15 : 0.06)} 0%, ${theme.palette.background.paper} 70%)`
+          : isCaught
+            ? `linear-gradient(160deg, ${alpha('#10b981', isDark ? 0.15 : 0.06)} 0%, ${theme.palette.background.paper} 70%)`
+            : (isDark ? 'rgba(30, 41, 59, 0.15)' : '#f8fafc'),
+        boxShadow: isShiny 
+          ? `0 8px 24px ${alpha('#fbbf24', isDark ? 0.35 : 0.18)}`
+          : isCaught 
+            ? `0 8px 24px ${alpha('#10b981', isDark ? 0.25 : 0.12)}` 
+            : 'none',
+      }}
+    >
+      {/* Action buttons (top-right corner) */}
+      <Stack
+        direction="row"
+        spacing={0.75}
+        sx={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 3
+        }}
+      >
+        {/* Shiny Toggler (Gold Star) */}
+        <Tooltip title={isShiny ? 'Remove Shiny status' : 'Mark as Shiny ✨'}>
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleShiny(pokemon.id);
+            }}
+            sx={{
+              color: isShiny ? '#fbbf24' : 'text.disabled',
+              bgcolor: isShiny ? alpha('#fbbf24', 0.15) : 'action.hover',
+              border: `1.5px solid ${isShiny ? '#fbbf24' : 'transparent'}`,
+              boxShadow: isShiny ? `0 0 10px ${alpha('#fbbf24', 0.5)}` : 'none',
+              '&:hover': {
+                bgcolor: isShiny ? alpha('#fbbf24', 0.25) : alpha('#fbbf24', 0.1),
+                color: isShiny ? '#d97706' : '#fbbf24',
+              }
+            }}
+          >
+            <AutoAwesome fontSize="small" />
+          </IconButton>
+        </Tooltip>
+
+        {/* Caught Toggler (Pokeball check) */}
+        <Tooltip title={isCaught ? 'Mark as Uncaught' : 'Mark as Caught'}>
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleCaught(pokemon.id);
+            }}
+            sx={{
+              color: isCaught ? '#10b981' : 'text.disabled',
+              bgcolor: isCaught ? alpha('#10b981', 0.15) : 'action.hover',
+              border: `1.5px solid ${isCaught ? '#10b981' : 'transparent'}`,
+              boxShadow: isCaught ? `0 0 10px ${alpha('#10b981', 0.5)}` : 'none',
+              '&:hover': {
+                bgcolor: isCaught ? alpha('#10b981', 0.25) : alpha(theme.palette.primary.main, 0.1),
+                color: isCaught ? '#059669' : 'primary.main',
+              }
+            }}
+          >
+            <CheckCircle fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Stack>
+
+      <CardActionArea
+        onClick={() => onToggleCaught(pokemon.id)}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          p: 3,
+          pt: 4,
+          pb: 3,
+          borderRadius: '16px',
+        }}
+      >
+        {/* Pokémon Circle container */}
+        <Box
+          sx={{
+            width: 110,
+            height: 110,
+            borderRadius: '50%',
+            transition: 'all 0.3s ease',
+            background: isShiny
+              ? alpha('#fbbf24', isDark ? 0.15 : 0.1)
+              : isCaught
+                ? alpha(primaryColor, isDark ? 0.15 : 0.1)
+                : (isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb: 2,
+            position: 'relative'
+          }}
+        >
+          <Box
+            component="img"
+            src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
+            alt={pokemon.name}
+            loading="lazy"
+            decoding="async"
+            sx={{
+              width: 84,
+              height: 84,
+              objectFit: 'contain',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              filter: isMarked
+                ? 'drop-shadow(0 4px 12px rgba(0,0,0,0.25))'
+                : 'grayscale(100%) opacity(0.5)',
+              transform: isMarked ? 'scale(1)' : 'scale(0.9)',
+            }}
+          />
+        </Box>
+
+        <CardContent sx={{ p: 0, width: '100%', textAlign: 'center' }}>
+          {/* Dex ID */}
+          <Typography variant="caption" sx={{ fontWeight: 800, color: isShiny ? '#fbbf24' : isCaught ? 'primary.main' : 'text.disabled', letterSpacing: 1.5 }}>
+            {pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
+              ? pokemon.regionalNumber.toString().padStart(3, '0')
+              : formatSpeciesId(pokemon.speciesId || pokemon.id)}
+          </Typography>
+
+          {/* Name */}
+          <Typography variant="h6" sx={{ fontWeight: 900, textTransform: 'capitalize', mt: 0.5, mb: 1, letterSpacing: -0.5, color: isMarked ? 'text.primary' : 'text.secondary' }}>
+            {pokemon.name} {isShiny && '✨'}
+          </Typography>
+
+          {/* Types Chips */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}>
+            {pokemon.types.map((type) => (
+              <Chip
+                key={type}
+                label={type}
+                size="small"
+                sx={{
+                  bgcolor: isMarked 
+                    ? alpha(TYPE_COLORS[type] || '#9ca3af', 0.85)
+                    : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'),
+                  color: isMarked ? '#fff' : 'text.disabled',
+                  fontSize: 8,
+                  fontWeight: 800,
+                  letterSpacing: 1,
+                  textTransform: 'uppercase',
+                  height: 18,
+                }}
+              />
+            ))}
+          </Box>
+        </CardContent>
+      </CardActionArea>
+
+      {/* Eye icon trigger (bottom-right corner) - Clean, absolute positioning, no overlap */}
+      <Tooltip title="View Stats & Details">
+        <IconButton
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            onViewDetails(pokemon.id);
+          }}
+          sx={{
+            position: 'absolute',
+            bottom: 8,
+            right: 8,
+            zIndex: 3,
+            color: 'text.disabled',
+            opacity: 0.35,
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              opacity: 1,
+              color: isShiny ? '#fbbf24' : 'primary.main',
+              bgcolor: isShiny ? alpha('#fbbf24', 0.1) : alpha(theme.palette.primary.main, 0.1)
+            },
+            '.MuiCard-root:hover &': {
+              opacity: 0.75
+            }
+          }}
+        >
+          <Visibility sx={{ fontSize: '1.15rem' }} />
+        </IconButton>
+      </Tooltip>
+    </Card>
+  );
+}, (prev, next) => {
+  // Only re-render if caught status, shiny status, or shinyMode changes
+  return prev.isCaught === next.isCaught &&
+         prev.isShiny === next.isShiny &&
+         prev.isShinyMode === next.isShinyMode;
+});
+
+// ── MAIN CATCH TRACKER COMPONENT ──
 export default function CatchTracker() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  // Stores
-  const { selectedVersion, setSelectedVersion, isShinyMode } = useTeamStore();
-  const { caughtPokemonIds, shinyPokemonIds, toggleCaught, toggleShiny, markAllCaught, resetAll } = useCatchStore();
+  // Granular Zustand subscriptions - Prevents unnecessary re-renders when other values change
+  const caughtPokemonIds = useCatchStore(state => state.caughtPokemonIds);
+  const shinyPokemonIds = useCatchStore(state => state.shinyPokemonIds);
+  const toggleCaught = useCatchStore(state => state.toggleCaught);
+  const toggleShiny = useCatchStore(state => state.toggleShiny);
+  const markAllCaught = useCatchStore(state => state.markAllCaught);
+  const resetAll = useCatchStore(state => state.resetAll);
 
-  // Local State
+  // TeamStore selector
+  const selectedVersion = useTeamStore(state => state.selectedVersion);
+  const setSelectedVersion = useTeamStore(state => state.setSelectedVersion);
+  const isShinyMode = useTeamStore(state => state.isShinyMode);
+
+  // Local state
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [hideCaught, setHideCaught] = useState(false);
@@ -66,12 +313,16 @@ export default function CatchTracker() {
   const [confirmMarkAllOpen, setConfirmMarkAllOpen] = useState(false);
   const [confirmResetOpen, setConfirmResetOpen] = useState(false);
 
-  // Region & Version Variable mapping
+  // O(1) Search Set caches to eliminate heavy .includes() linear scans in grid loops
+  const caughtSet = useMemo(() => new Set(caughtPokemonIds), [caughtPokemonIds]);
+  const shinySet = useMemo(() => new Set(shinyPokemonIds), [shinyPokemonIds]);
+
+  // Version Variable mapping
   const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
   const queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
   const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
 
-  // GraphQL Query (limit set to 1025 to fetch everything when loading so we can perform client-side paging or filters comfortably)
+  // GraphQL Query (loads up to 1025 standard pokemons for living dex virtualization)
   const { data, loading, error } = useQuery<{
     pokemonList: { results: PokemonListItem[]; totalCount: number };
   }>(GET_POKEMON_LIST, {
@@ -88,28 +339,49 @@ export default function CatchTracker() {
   const pokemonList = data?.pokemonList?.results || [];
   const totalCount = data?.pokemonList?.totalCount || 0;
 
-  // Filters logic
-  const filteredList = pokemonList.filter((p) => {
-    if (hideCaught && caughtPokemonIds.includes(p.id)) {
-      return false;
-    }
-    return true;
-  });
+  // Stable callback triggers using useCallback to maintain rigid ref stability for children
+  const handleToggleCaught = useCallback((id: number) => {
+    toggleCaught(id);
+  }, [toggleCaught]);
 
-  // Progress Calculations (Regular + Shiny)
-  const totalPokemon = 1025; // Standard national dex cap
+  const handleToggleShiny = useCallback((id: number) => {
+    toggleShiny(id);
+  }, [toggleShiny]);
+
+  const handleViewDetails = useCallback((id: number) => {
+    setSelectedId(id);
+  }, []);
+
+  // Filter application
+  const filteredList = useMemo(() => {
+    return pokemonList.filter((p) => {
+      if (hideCaught && caughtSet.has(p.id)) {
+        return false;
+      }
+      return true;
+    });
+  }, [pokemonList, hideCaught, caughtSet]);
+
+  // Progress Calculations
+  const totalPokemon = 1025;
   const nationalProgress = Math.min(100, Math.round((caughtPokemonIds.length / totalPokemon) * 100)) || 0;
   const nationalShinyProgress = Math.min(100, Math.round((shinyPokemonIds.length / totalPokemon) * 100)) || 0;
 
-  // Calculate local progress matching active filters
-  const visiblePokemonIds = pokemonList.map(p => p.id);
-  const caughtInActiveFilter = visiblePokemonIds.filter(id => caughtPokemonIds.includes(id)).length;
-  const shinyInActiveFilter = visiblePokemonIds.filter(id => shinyPokemonIds.includes(id)).length;
+  // Calculate local Regional progress
+  const visiblePokemonIds = useMemo(() => pokemonList.map(p => p.id), [pokemonList]);
+  const caughtInActiveFilter = useMemo(() => {
+    return visiblePokemonIds.filter(id => caughtSet.has(id)).length;
+  }, [visiblePokemonIds, caughtSet]);
+
+  const shinyInActiveFilter = useMemo(() => {
+    return visiblePokemonIds.filter(id => shinySet.has(id)).length;
+  }, [visiblePokemonIds, shinySet]);
+
   const localTotal = totalCount || 1;
   const localProgress = Math.min(100, Math.round((caughtInActiveFilter / localTotal) * 100)) || 0;
   const localShinyProgress = Math.min(100, Math.round((shinyInActiveFilter / localTotal) * 100)) || 0;
 
-  // Mass action handlers
+  // Mass action confirms
   const handleMarkAllConfirm = () => {
     markAllCaught(visiblePokemonIds);
     setConfirmMarkAllOpen(false);
@@ -183,16 +455,16 @@ export default function CatchTracker() {
             </Stack>
           </Box>
 
-          {/* Dual Progress Bars (Regular + Shiny) */}
+          {/* Dual Progress Bars */}
           <Grid container spacing={4}>
-            {/* National Living Dex Progress */}
+            {/* National Progress */}
             <Grid size={{ xs: 12, md: selectedVersion !== 'ALL' ? 6 : 12 }}>
               <Stack spacing={2}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 900, letterSpacing: 0.5, color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)', textTransform: 'uppercase' }}>
                   🌐 NATIONAL LIVING DEX PROGRESS
                 </Typography>
 
-                {/* Regular Dex progress */}
+                {/* Regular */}
                 <Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, alignItems: 'center' }}>
                     <Typography variant="caption" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -217,7 +489,7 @@ export default function CatchTracker() {
                   />
                 </Box>
 
-                {/* Shiny Dex progress */}
+                {/* Shiny */}
                 <Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, alignItems: 'center' }}>
                     <Typography variant="caption" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -244,7 +516,7 @@ export default function CatchTracker() {
               </Stack>
             </Grid>
 
-            {/* Regional Progress (Shows if version/generation filter is active) */}
+            {/* Regional Progress */}
             {selectedVersion !== 'ALL' && (
               <Grid size={{ xs: 12, md: 6 }}>
                 <Stack spacing={2}>
@@ -444,14 +716,7 @@ export default function CatchTracker() {
       ) : (
         <Grid container spacing={3}>
           <AnimatePresence mode="popLayout">
-            {filteredList.map((p, idx) => {
-              const isCaught = caughtPokemonIds.includes(p.id);
-              const isShiny = shinyPokemonIds.includes(p.id);
-              const primaryColor = TYPE_COLORS[p.types[0]] || '#9ca3af';
-
-              // Visual details dependent on catching state
-              const isMarked = isCaught || isShiny;
-
+            {filteredList.map((p) => {
               return (
                 <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <motion.div
@@ -459,210 +724,18 @@ export default function CatchTracker() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 25, delay: (idx % 24) * 0.02 }}
-                    whileHover={{ y: -6, scale: 1.02 }}
-                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                     style={{ height: '100%' }}
                   >
-                    <Card
-                      elevation={isMarked ? 6 : 0}
-                      sx={{
-                        height: '100%',
-                        borderRadius: '16px',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative',
-                        overflow: 'visible',
-                        cursor: 'pointer',
-                        border: isShiny 
-                          ? '2px solid #fbbf24'
-                          : isCaught 
-                            ? '2px solid #10b981' 
-                            : `1.5px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                        background: isShiny
-                          ? `linear-gradient(160deg, ${alpha('#fbbf24', isDark ? 0.15 : 0.06)} 0%, ${theme.palette.background.paper} 70%)`
-                          : isCaught
-                            ? `linear-gradient(160deg, ${alpha('#10b981', isDark ? 0.15 : 0.06)} 0%, ${theme.palette.background.paper} 70%)`
-                            : (isDark ? 'rgba(30, 41, 59, 0.15)' : '#f8fafc'),
-                        boxShadow: isShiny 
-                          ? `0 8px 24px ${alpha('#fbbf24', isDark ? 0.35 : 0.18)}`
-                          : isCaught 
-                            ? `0 8px 24px ${alpha('#10b981', isDark ? 0.25 : 0.12)}` 
-                            : 'none',
-                      }}
-                    >
-                      {/* Interactive Dual Button Stack in Top Right Corner */}
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{
-                          position: 'absolute',
-                          top: 10,
-                          right: 10,
-                          zIndex: 3
-                        }}
-                      >
-                        {/* Shiny Toggle (Gold Star) */}
-                        <Tooltip title={isShiny ? 'Remove Shiny status' : 'Mark as Shiny ✨'}>
-                          <IconButton
-                            size="small"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleShiny(p.id);
-                            }}
-                            sx={{
-                              color: isShiny ? '#fbbf24' : 'text.disabled',
-                              bgcolor: isShiny ? alpha('#fbbf24', 0.15) : 'action.hover',
-                              border: `1.5px solid ${isShiny ? '#fbbf24' : 'transparent'}`,
-                              boxShadow: isShiny ? `0 0 10px ${alpha('#fbbf24', 0.5)}` : 'none',
-                              '&:hover': {
-                                bgcolor: isShiny ? alpha('#fbbf24', 0.25) : alpha('#fbbf24', 0.1),
-                                color: isShiny ? '#d97706' : '#fbbf24',
-                              }
-                            }}
-                          >
-                            <AutoAwesome fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-
-                        {/* Caught Toggle (Pokeball check) */}
-                        <Tooltip title={isCaught ? 'Mark as Uncaught' : 'Mark as Caught'}>
-                          <IconButton
-                            size="small"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleCaught(p.id);
-                            }}
-                            sx={{
-                              color: isCaught ? '#10b981' : 'text.disabled',
-                              bgcolor: isCaught ? alpha('#10b981', 0.15) : 'action.hover',
-                              border: `1.5px solid ${isCaught ? '#10b981' : 'transparent'}`,
-                              boxShadow: isCaught ? `0 0 10px ${alpha('#10b981', 0.5)}` : 'none',
-                              '&:hover': {
-                                bgcolor: isCaught ? alpha('#10b981', 0.25) : alpha(theme.palette.primary.main, 0.1),
-                                color: isCaught ? '#059669' : 'primary.main',
-                              }
-                            }}
-                          >
-                            <CheckCircle fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                      </Stack>
-
-                      <CardActionArea
-                        onClick={() => toggleCaught(p.id)}
-                        sx={{
-                          height: '100%',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          p: 3,
-                          pt: 4,
-                          borderRadius: '16px',
-                        }}
-                      >
-                        {/* Pokémon Sprite Circle container */}
-                        <Box
-                          sx={{
-                            width: 110,
-                            height: 110,
-                            borderRadius: '50%',
-                            transition: 'all 0.3s ease',
-                            background: isShiny
-                              ? alpha('#fbbf24', isDark ? 0.15 : 0.1)
-                              : isCaught
-                                ? alpha(primaryColor, isDark ? 0.15 : 0.1)
-                                : (isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            mb: 2,
-                            position: 'relative'
-                          }}
-                        >
-                          <Box
-                            component="img"
-                            src={isShiny && p.shinyImage ? p.shinyImage : p.image}
-                            alt={p.name}
-                            loading="lazy"
-                            sx={{
-                              width: 84,
-                              height: 84,
-                              objectFit: 'contain',
-                              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                              filter: isMarked
-                                ? 'drop-shadow(0 4px 12px rgba(0,0,0,0.25))'
-                                : 'grayscale(100%) opacity(0.5)',
-                              transform: isMarked ? 'scale(1)' : 'scale(0.9)',
-                            }}
-                          />
-                        </Box>
-
-                        <CardContent sx={{ p: 0, width: '100%', textAlign: 'center' }}>
-                          {/* Dex ID */}
-                          <Typography variant="caption" sx={{ fontWeight: 800, color: isShiny ? '#fbbf24' : isCaught ? 'primary.main' : 'text.disabled', letterSpacing: 1.5 }}>
-                            {p.regionalNumber !== undefined && p.regionalNumber !== null
-                              ? p.regionalNumber.toString().padStart(3, '0')
-                              : formatSpeciesId(p.speciesId || p.id)}
-                          </Typography>
-
-                          {/* Name */}
-                          <Typography variant="h6" sx={{ fontWeight: 900, textTransform: 'capitalize', mt: 0.5, mb: 1, letterSpacing: -0.5, color: isMarked ? 'text.primary' : 'text.secondary' }}>
-                            {p.name} {isShiny && '✨'}
-                          </Typography>
-
-                          {/* Types Chips */}
-                          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}>
-                            {p.types.map((type) => (
-                              <Chip
-                                key={type}
-                                label={type}
-                                size="small"
-                                sx={{
-                                  bgcolor: isMarked 
-                                    ? alpha(TYPE_COLORS[type] || '#9ca3af', 0.85)
-                                    : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'),
-                                  color: isMarked ? '#fff' : 'text.disabled',
-                                  fontSize: 8,
-                                  fontWeight: 800,
-                                  letterSpacing: 1,
-                                  textTransform: 'uppercase',
-                                  height: 18,
-                                }}
-                              />
-                            ))}
-                          </Box>
-                        </CardContent>
-                      </CardActionArea>
-
-                      {/* Detail view trigger */}
-                      <Button
-                        size="small"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedId(p.id);
-                        }}
-                        sx={{
-                          position: 'absolute',
-                          bottom: 12,
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          fontSize: '0.65rem',
-                          fontWeight: 800,
-                          color: 'text.disabled',
-                          opacity: 0,
-                          visibility: 'hidden',
-                          transition: 'all 0.2s ease',
-                          '.MuiCard-root:hover &': {
-                            opacity: 1,
-                            visibility: 'visible',
-                            bottom: 14,
-                            color: 'primary.main'
-                          }
-                        }}
-                      >
-                        VIEW DETAILS
-                      </Button>
-                    </Card>
+                    <TrackerCard
+                      pokemon={p}
+                      isCaught={caughtSet.has(p.id)}
+                      isShiny={shinySet.has(p.id)}
+                      isShinyMode={isShinyMode}
+                      onToggleCaught={handleToggleCaught}
+                      onToggleShiny={handleToggleShiny}
+                      onViewDetails={handleViewDetails}
+                    />
                   </motion.div>
                 </Grid>
               );
