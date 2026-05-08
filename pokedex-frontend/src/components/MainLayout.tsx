@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import {
   Menu, CatchingPokemon, FlashOn, Psychology, Backpack, Map, Category,
-  SelfImprovement, VideogameAsset, WbSunny, DarkMode, SportsEsports
+  SelfImprovement, VideogameAsset, WbSunny, DarkMode, SportsEsports, PlaylistAddCheck
 } from '@mui/icons-material';
 import { useColorMode } from '../main';
 import { useTeamStore } from '../lib/teamStore';
@@ -18,6 +18,7 @@ const DRAWER_WIDTH = 260;
 
 const MENU_ITEMS = [
   { text: 'Pokédex', path: '/', icon: <CatchingPokemon /> },
+  { text: 'Catch Tracker', path: '/tracker', icon: <PlaylistAddCheck /> },
   { text: 'Move Dex', path: '/moves', icon: <FlashOn /> },
   { text: 'Ability Dex', path: '/abilities', icon: <Psychology /> },
   { text: 'Item Dex', path: '/items', icon: <Backpack /> },

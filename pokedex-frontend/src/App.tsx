@@ -9,6 +9,7 @@ import AbilityDex from './components/AbilityDex';
 import ItemDex from './components/ItemDex';
 import NatureDex from './components/NatureDex';
 import TeamBuilder from './components/TeamBuilder';
+import CatchTracker from './components/CatchTracker';
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -182,6 +183,7 @@ export default function App() {
         <Route path="/types" element={<TypeDex />} />
         <Route path="/natures" element={<NatureDex />} />
         <Route path="/teambuilder" element={<TeamBuilder />} />
+        <Route path="/tracker" element={<CatchTracker />} />
       </Route>
     </Routes>
   );
