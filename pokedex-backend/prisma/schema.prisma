@@ -224,6 +224,7 @@ model Walkthrough {
   chapterTitle String
   content      String   // Contains HTML rich content string from TipTap
   order        Int      // To sort chapters in order
+  language     String   @default("vi") // 'vi' or 'en'
 
-  @@index([gameVersion])
+  @@index([gameVersion, language])
 }

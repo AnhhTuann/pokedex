@@ -146,6 +146,7 @@ const typeDefs = `#graphql
     chapterTitle: String!
     content: String!
     order: Int!
+    language: String!
   }
 
   type Query {
@@ -159,13 +160,13 @@ const typeDefs = `#graphql
     getAllItems(search: String, limit: Int, offset: Int): ItemListResponse!
     getLocations(version: String!): [String!]!
     getLocationEncounters(locationName: String!, version: String!): [EncounterListItem!]!
-    getWalkthroughs(gameVersion: String!): [Walkthrough!]!
+    getWalkthroughs(gameVersion: String!, language: String!): [Walkthrough!]!
   }
 
   type Mutation {
     toggleFavorite(pokemonId: Int!): Boolean!
     saveTeam(pokemonIds: [Int!]!): Boolean!
-    upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, content: String!, order: Int!): Walkthrough!
+    upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, content: String!, order: Int!, language: String): Walkthrough!
     deleteWalkthrough(id: Int!): Boolean!
   }
 `;
@@ -882,9 +883,12 @@ const resolvers = {
       }));
     },
 
-    getWalkthroughs: async (_: any, { gameVersion }: { gameVersion: string }) => {
+    getWalkthroughs: async (_: any, { gameVersion, language }: { gameVersion: string; language: string }) => {
       return await prisma.walkthrough.findMany({
-        where: { gameVersion: { equals: gameVersion.toLowerCase(), mode: 'insensitive' } },
+        where: { 
+          gameVersion: { equals: gameVersion.toLowerCase(), mode: 'insensitive' },
+          language: language ? { equals: language.toLowerCase(), mode: 'insensitive' } : undefined
+        },
         orderBy: { order: 'asc' }
       });
     }
@@ -934,12 +938,13 @@ const resolvers = {
       return true;
     },
 
-    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, content, order }: any) => {
+    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, content, order, language }: any) => {
       const data = {
         gameVersion: gameVersion.toLowerCase(),
         chapterTitle,
         content,
-        order
+        order,
+        language: language ? language.toLowerCase() : 'vi'
       };
 
       if (id) {

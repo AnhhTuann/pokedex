@@ -16,25 +16,27 @@ import EditorToolbar from './EditorToolbar';
 import { VERSION_COLORS } from '../App';
 
 const GET_WALKTHROUGHS = gql`
-  query GetWalkthroughs($gameVersion: String!) {
-    getWalkthroughs(gameVersion: $gameVersion) {
+  query GetWalkthroughs($gameVersion: String!, $language: String!) {
+    getWalkthroughs(gameVersion: $gameVersion, language: $language) {
       id
       gameVersion
       chapterTitle
       content
       order
+      language
     }
   }
 `;
 
 const UPSERT_WALKTHROUGH = gql`
-  mutation UpsertWalkthrough($id: Int, $gameVersion: String!, $chapterTitle: String!, $content: String!, $order: Int!) {
-    upsertWalkthrough(id: $id, gameVersion: $gameVersion, chapterTitle: $chapterTitle, content: $content, order: $order) {
+  mutation UpsertWalkthrough($id: Int, $gameVersion: String!, $chapterTitle: String!, $content: String!, $order: Int!, $language: String) {
+    upsertWalkthrough(id: $id, gameVersion: $gameVersion, chapterTitle: $chapterTitle, content: $content, order: $order, language: $language) {
       id
       gameVersion
       chapterTitle
       content
       order
+      language
     }
   }
 `;
@@ -83,6 +85,7 @@ const GAME_OPTIONS = [
 
 export default function AdminWalkthrough() {
   const [gameVersion, setGameVersion] = useState('emerald');
+  const [language, setLanguage] = useState('vi');
   const [chapterTitle, setChapterTitle] = useState('');
   const [order, setOrder] = useState<number>(1);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -92,7 +95,7 @@ export default function AdminWalkthrough() {
 
   // GraphQL Query for selected game's walkthroughs
   const { data, loading, refetch } = useQuery(GET_WALKTHROUGHS, {
-    variables: { gameVersion }
+    variables: { gameVersion, language }
   });
 
   // Mutations
@@ -149,7 +152,8 @@ export default function AdminWalkthrough() {
           gameVersion,
           chapterTitle,
           content: htmlContent,
-          order: Number(order)
+          order: Number(order),
+          language
         }
       });
 
@@ -166,6 +170,7 @@ export default function AdminWalkthrough() {
     setEditingId(chapter.id);
     setChapterTitle(chapter.chapterTitle);
     setOrder(chapter.order);
+    setLanguage(chapter.language || 'vi');
     editor?.commands.setContent(chapter.content);
   };
 
@@ -275,6 +280,29 @@ export default function AdminWalkthrough() {
                       </Box>
                     </MenuItem>
                   ))}
+                </TextField>
+
+                <TextField
+                  select
+                  label="Language"
+                  value={language}
+                  onChange={(e) => {
+                    setLanguage(e.target.value);
+                    handleResetForm();
+                  }}
+                  fullWidth
+                  size="small"
+                >
+                  <MenuItem value="vi">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
+                      🇻🇳 Tiếng Việt
+                    </Box>
+                  </MenuItem>
+                  <MenuItem value="en">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
+                      🇬🇧 English
+                    </Box>
+                  </MenuItem>
                 </TextField>
 
                 <TextField

@@ -814,6 +814,118 @@ const EMERALD_CHAPTERS = [
   }
 ];
 
+const ENGLISH_CHAPTERS = [
+  {
+    gameVersion: 'emerald',
+    chapterTitle: 'Chapter 1: The Beginning of the Journey',
+    order: 1,
+    language: 'en',
+    content: `
+      <h1>Chapter 1: The Beginning of the Journey</h1>
+      <p>Welcome to the vast region of Hoenn! Your journey to become a Pokémon Champion starts in a peaceful little village called <strong>Littleroot Town</strong>.</p>
+
+      <h2>1. Littleroot Town & The First Challenge</h2>
+      <p>After adjusting the clock in your bedroom, go next door to greet May/Brendan (your Rival). Then, head north towards Route 101. Here, you will save Professor Birch from a wild Zigzagoon by choosing one of three incredibly powerful starter Pokémon:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(255, 255, 255, 0.04);">
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Primary Type</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tactical Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/252.png" alt="Treecko" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">TREECKO</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Grass</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Focuses on high speed, excellent for breezing through Gym 1 (Rock) and Gym 8 (Water). But struggles a bit mid-game.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="Torchic" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">TORCHIC</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Evolves into Combusken with Fire/Fighting dual-typing and massive damage output, making it a powerful carry later on.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/258.png" alt="Mudkip" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #3b82f6;">MUDKIP</td>
+            <td style="padding: 12px 16px;">Water</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;"><strong>The absolute best choice!</strong> Once it evolves into Marshtomp, its Water/Ground typing grants complete immunity to Electric moves, offering the smoothest run.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <blockquote>
+        <strong>Quick Tip:</strong> Select Mudkip if you want a seamless story experience and easy battles against almost all Gyms.
+      </blockquote>
+
+      <h2>2. Route 101, Oldale Town & Rival Fight</h2>
+      <p>From Route 101, head straight north to <strong>Oldale Town</strong> and heal up at the Pokémon Center. Continue to Route 103 to face your Rival in your very first battle. After winning, return with your Rival to the lab in Littleroot Town to receive your <strong>Pokédex</strong> and your first <strong>Poké Balls</strong>.</p>
+    `
+  },
+  {
+    gameVersion: 'emerald',
+    chapterTitle: 'Chapter 2: First Badge - Stone Badge',
+    order: 2,
+    language: 'en',
+    content: `
+      <h1>Chapter 2: First Badge - Stone Badge</h1>
+      <p>Passing through the bug-infested Petalburg Woods, you will set foot in the highly industrial <strong>Rustboro City</strong>.</p>
+
+      <h2>1. Rustboro City & Preparation</h2>
+      <p>Before stepping into the Gym, visit the Pokémon School in the city to receive the useful held item <strong>Quick Claw</strong> (which increases the chance of striking first in battle).</p>
+
+      <h2>2. Challenging Gym Leader Roxanne</h2>
+      <p>The Rustboro Gym specializes in Rock-type Pokémon, led by the intelligent Roxanne. Water (Mudkip), Grass (Treecko), or Fighting-type moves will easily crush this Gym.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(255, 255, 255, 0.04);">
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Dangerous Moves</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png" alt="Geodude" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Geodude</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 12</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock / Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock Throw, Defense Curl</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/299.png" alt="Nosepass" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #a1a1aa;">Nosepass</td>
+            <td style="padding: 12px 16px;">Lvl 15</td>
+            <td style="padding: 12px 16px;">Rock</td>
+            <td style="padding: 12px 16px;">Rock Tomb, Harden, Block</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <blockquote>
+        <strong>Victory Reward:</strong> The <strong>Stone Badge</strong> (which allows you to use HM01 Cut outside of battle) and the TM move <strong>TM39 Rock Tomb</strong>.
+      </blockquote>
+    `
+  }
+];
+
 async function main() {
   console.log('🚀 Bắt đầu cập nhật toàn bộ 10 chương dữ liệu Walkthrough Pokémon Emerald chuẩn chỉ...');
 
@@ -824,15 +936,26 @@ async function main() {
 
   console.log('🧹 Đã dọn dẹp các bản ghi cũ.');
 
-  // Thêm dữ liệu 10 chương đầy đủ
+  // Thêm dữ liệu 10 chương đầy đủ bằng tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
+    const record = await prisma.walkthrough.create({
+      data: {
+        ...chapter,
+        language: 'vi'
+      }
+    });
+    console.log(`✅ Nạp thành công tiếng Việt: ${record.chapterTitle} (Thứ tự: ${record.order})`);
+  }
+
+  // Thêm dữ liệu chương bằng tiếng Anh
+  for (const chapter of ENGLISH_CHAPTERS) {
     const record = await prisma.walkthrough.create({
       data: chapter
     });
-    console.log(`✅ Nạp thành công: ${record.chapterTitle} (Thứ tự: ${record.order})`);
+    console.log(`✅ Nạp thành công tiếng Anh: ${record.chapterTitle} (Thứ tự: ${record.order})`);
   }
 
-  console.log('🎉 Hoàn thành nạp dữ liệu đầy đủ 10 chương Walkthrough Emerald xuất sắc!');
+  console.log('🎉 Hoàn thành nạp dữ liệu đầy đủ các chương Walkthrough Emerald xuất sắc!');
 }
 
 main()

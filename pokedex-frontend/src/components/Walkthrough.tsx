@@ -3,20 +3,22 @@ import { useQuery, gql } from '@apollo/client';
 import DOMPurify from 'dompurify';
 import {
   Box, Card, CardContent, Typography, MenuItem, TextField, Grid,
-  List, ListItemButton, ListItemText, Divider, Stack, Button, CircularProgress, alpha, useTheme
+  List, ListItemButton, ListItemText, Divider, Stack, Button, CircularProgress, alpha, useTheme,
+  ToggleButton, ToggleButtonGroup
 } from '@mui/material';
 import { ImportContacts, NavigateNext, Settings, AutoStories } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { VERSION_COLORS } from '../App';
 
 const GET_WALKTHROUGHS = gql`
-  query GetWalkthroughs($gameVersion: String!) {
-    getWalkthroughs(gameVersion: $gameVersion) {
+  query GetWalkthroughs($gameVersion: String!, $language: String!) {
+    getWalkthroughs(gameVersion: $gameVersion, language: $language) {
       id
       gameVersion
       chapterTitle
       content
       order
+      language
     }
   }
 `;
@@ -60,10 +62,11 @@ export default function Walkthrough() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [gameVersion, setGameVersion] = useState('emerald');
+  const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [selectedChapterId, setSelectedChapterId] = useState<number | null>(null);
 
   const { data, loading } = useQuery(GET_WALKTHROUGHS, {
-    variables: { gameVersion }
+    variables: { gameVersion, language }
   });
 
   const chapters = data?.getWalkthroughs || [];
@@ -105,15 +108,62 @@ export default function Walkthrough() {
           </Typography>
         </Box>
 
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<Settings />}
-          onClick={() => navigate('/admin/walkthrough')}
-          sx={{ fontWeight: 800, borderRadius: '8px', border: '1.5px solid' }}
-        >
-          Go to CMS Editor 🛠️
-        </Button>
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
+          <ToggleButtonGroup
+            value={language}
+            exclusive
+            onChange={(_, newLang) => {
+              if (newLang !== null) setLanguage(newLang);
+            }}
+            size="small"
+            sx={{
+              bgcolor: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '10px',
+              p: '3px',
+              '& .MuiToggleButton-root': {
+                border: 'none',
+                borderRadius: '8px',
+                px: 2,
+                py: 0.6,
+                fontWeight: 800,
+                fontSize: '0.78rem',
+                letterSpacing: '0.5px',
+                color: 'text.secondary',
+                transition: 'all 0.2s ease',
+                '&.Mui-selected': {
+                  bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.12)',
+                  }
+                },
+                '&:hover': {
+                  bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  color: 'text.primary',
+                }
+              }
+            }}
+          >
+            <ToggleButton value="vi">
+              🇻🇳 VI
+            </ToggleButton>
+            <ToggleButton value="en">
+              🇬🇧 EN
+            </ToggleButton>
+          </ToggleButtonGroup>
+
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<Settings />}
+            onClick={() => navigate('/admin/walkthrough')}
+            sx={{ fontWeight: 800, borderRadius: '8px', border: '1.5px solid' }}
+          >
+            Go to CMS Editor 🛠️
+          </Button>
+        </Stack>
       </Box>
 
       <Grid container spacing={4} sx={{ alignItems: 'stretch' }}>
@@ -276,7 +326,7 @@ export default function Walkthrough() {
                         Chapter {activeChapter.order}
                       </Typography>
                     </Box>
-                    <Typography variant="h5" sx={{ fontWeight: 950, letterSpacing: -0.5, fontFamily: '"Inter", "Plus Jakarta Sans", sans-serif' }}>
+                    <Typography variant="h5" sx={{ fontWeight: 950, letterSpacing: -0.5, fontFamily: '"Be Vietnam Pro", "Inter", sans-serif' }}>
                       {activeChapter.chapterTitle}
                     </Typography>
                   </Stack>
@@ -286,7 +336,7 @@ export default function Walkthrough() {
                   <Box
                     dangerouslySetInnerHTML={{ __html: cleanHTML }}
                     sx={{
-                      fontFamily: '"Inter", "Plus Jakarta Sans", "Roboto", sans-serif',
+                      fontFamily: '"Be Vietnam Pro", "Inter", sans-serif',
                       color: 'text.primary',
                       '& h1': { display: 'none !important' }, // Ẩn hoàn toàn H1 trùng lặp bằng !important
                       '& h2': { 
@@ -297,14 +347,14 @@ export default function Walkthrough() {
                         mb: 2,
                         borderBottom: '1px solid rgba(255,255,255,0.08)',
                         pb: 1,
-                        fontFamily: '"Inter", "Plus Jakarta Sans", sans-serif'
+                        fontFamily: '"Be Vietnam Pro", "Inter", sans-serif'
                       },
                       '& h3': { 
                         fontSize: '1.2rem', 
                         fontWeight: 700, 
                         mt: 3, 
                         mb: 1.5,
-                        fontFamily: '"Inter", "Plus Jakarta Sans", sans-serif'
+                        fontFamily: '"Be Vietnam Pro", "Inter", sans-serif'
                       },
                       '& p': { 
                         fontSize: '1rem', 
