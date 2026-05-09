@@ -178,7 +178,7 @@ export default function Walkthrough() {
               flexDirection: 'column'
             }}
           >
-            <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+            <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%', flexGrow: 1, overflow: 'hidden' }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 2, letterSpacing: -0.5, textTransform: 'uppercase' }}>
                 Select Version
               </Typography>
@@ -236,7 +236,7 @@ export default function Walkthrough() {
                     flexGrow: 1,
                     overflowY: 'auto',
                     overflowX: 'hidden', // Tắt hoàn toàn thanh cuộn ngang
-                    maxHeight: '480px',
+                    height: 0,
                     pr: 0.5,
                     scrollbarWidth: 'thin', // Chuẩn Firefox & modern Chrome
                     scrollbarColor: '#475569 transparent', // Solid slate-600 cho Windows
