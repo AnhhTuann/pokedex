@@ -41,15 +41,18 @@ export default function MainLayout() {
   const { isShinyMode, toggleShinyMode, selectedVersion, setSelectedVersion } = useTeamStore();
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
+
+  const drawerWidth = isSidebarOpen ? DRAWER_WIDTH : 0;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const menuList = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper', overflow: 'hidden' }}>
+    <Box sx={{ width: DRAWER_WIDTH, height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper', overflow: 'hidden' }}>
       {/* Brand Header */}
       <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 1.5, minHeight: 64 }}>
         <Typography
@@ -184,12 +187,16 @@ export default function MainLayout() {
         position="fixed"
         elevation={0}
         sx={{
-          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-          ml: { md: `${DRAWER_WIDTH}px` },
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
           bgcolor: isDark ? 'rgba(15,15,26,0.85)' : 'rgba(255,255,255,0.85)',
           backdropFilter: 'blur(16px)',
           borderBottom: `1px solid ${theme.palette.divider}`,
-          zIndex: theme.zIndex.appBar
+          zIndex: theme.zIndex.appBar,
+          transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
         }}
       >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', px: { xs: 2, sm: 3 } }}>
@@ -200,7 +207,17 @@ export default function MainLayout() {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { md: 'none' }, color: 'text.primary' }}
+              sx={{ mr: 1, display: { md: 'none' }, color: 'text.primary' }}
+            >
+              <Menu />
+            </IconButton>
+
+            {/* Toggle Button for desktop */}
+            <IconButton
+              color="inherit"
+              aria-label="toggle sidebar"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              sx={{ mr: 1, display: { xs: 'none', md: 'inline-flex' }, color: 'text.primary' }}
             >
               <Menu />
             </IconButton>
@@ -296,7 +313,17 @@ export default function MainLayout() {
       </AppBar>
 
       {/* ── Sidebar Drawers ── */}
-      <Box component="nav" sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}>
+      <Box
+        component="nav"
+        sx={{
+          width: { md: `${drawerWidth}px` },
+          flexShrink: { md: 0 },
+          transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+        }}
+      >
         {/* Mobile Temporary Drawer */}
         <Drawer
           variant="temporary"
@@ -324,9 +351,14 @@ export default function MainLayout() {
             display: { xs: 'none', md: 'block' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: DRAWER_WIDTH,
+              width: `${drawerWidth}px`,
               borderRight: `1px solid ${theme.palette.divider}`,
               backgroundImage: 'none',
+              overflowX: 'hidden',
+              transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
             }
           }}
           open
@@ -341,9 +373,13 @@ export default function MainLayout() {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
+          width: { md: `calc(100% - ${drawerWidth}px)` },
           minHeight: '100vh',
-          pt: 11 // Padding top to avoid header overlay
+          pt: 11, // Padding top to avoid header overlay
+          transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
         }}
       >
         <Outlet />
