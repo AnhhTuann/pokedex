@@ -83,96 +83,6 @@ export default function Walkthrough() {
 
   return (
     <Box sx={{ maxWidth: '1400px', mx: 'auto', p: { xs: 1, md: 3 } }}>
-      {/* Global CSS Inject for Dark Mode Stylings of TipTap HTML Elements */}
-      <style>{`
-        .walkthrough-html-render {
-          color: #cbd5e1;
-          font-size: 1rem;
-          line-height: 1.7;
-          font-family: 'Inter', sans-serif;
-        }
-        .walkthrough-html-render h1, 
-        .walkthrough-html-render h2 {
-          color: #f1f5f9;
-          font-weight: 850;
-          letter-spacing: -0.5px;
-          margin-top: 24px;
-          margin-bottom: 12px;
-        }
-        .walkthrough-html-render h1 {
-          font-size: 1.6rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          padding-bottom: 8px;
-        }
-        .walkthrough-html-render h2 {
-          font-size: 1.3rem;
-        }
-        .walkthrough-html-render p {
-          margin-bottom: 16px;
-        }
-        .walkthrough-html-render table {
-          border-collapse: separate;
-          border-spacing: 0;
-          width: 100%;
-          margin: 24px 0;
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 12px;
-          overflow: hidden;
-          background-color: rgba(15, 15, 25, 0.5);
-          backdrop-filter: blur(8px);
-        }
-        .walkthrough-html-render table th,
-        .walkthrough-html-render table td {
-          padding: 12px 16px;
-          text-align: left;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .walkthrough-html-render table th {
-          background-color: ${alpha(gameColor, 0.12)};
-          color: #fff;
-          font-weight: 800;
-          font-size: 0.9rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          border-bottom: 2px solid ${alpha(gameColor, 0.4)};
-        }
-        .walkthrough-html-render table tr:last-child td {
-          border-bottom: none;
-        }
-        .walkthrough-html-render table tr:hover td {
-          background-color: rgba(255, 255, 255, 0.02);
-        }
-        .walkthrough-html-render img {
-          max-width: 64px;
-          display: inline-block;
-          vertical-align: middle;
-          margin: 0 4px;
-          transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-          filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
-        }
-        .walkthrough-html-render img:hover {
-          transform: scale(1.2) translateY(-2px);
-          filter: drop-shadow(0 8px 12px ${alpha(gameColor, 0.4)});
-        }
-        .walkthrough-html-render blockquote {
-          border-left: 4px solid ${gameColor};
-          padding: 12px 20px;
-          margin: 20px 0;
-          background-color: ${alpha(gameColor, 0.05)};
-          border-radius: 0 8px 8px 0;
-          color: #94a3b8;
-          font-style: italic;
-        }
-        .walkthrough-html-render ul,
-        .walkthrough-html-render ol {
-          margin-bottom: 16px;
-          padding-left: 24px;
-        }
-        .walkthrough-html-render li {
-          margin-bottom: 6px;
-        }
-      `}</style>
-
       {/* Page Header */}
       <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
         <Box>
@@ -218,38 +128,52 @@ export default function Walkthrough() {
               flexDirection: 'column'
             }}
           >
-            <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <Typography variant="h6" sx={{ fontWeight: 800, mb: 2, letterSpacing: -0.5 }}>
-                SELECT VERSION
+            <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 2, letterSpacing: -0.5, textTransform: 'uppercase' }}>
+                Select Version
               </Typography>
-
+              
               <TextField
                 select
-                label="Game Version"
                 value={gameVersion}
-                onChange={(e) => {
-                  setGameVersion(e.target.value);
-                }}
+                onChange={(e) => setGameVersion(e.target.value)}
                 fullWidth
-                size="small"
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <Box
+                        sx={{
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          bgcolor: gameColor,
+                          mr: 1.5,
+                          boxShadow: `0 0 10px ${alpha(gameColor, 0.8)}`
+                        }}
+                      />
+                    ),
+                    sx: { fontWeight: 800 }
+                  }
+                }}
+                sx={{ mb: 3 }}
               >
-                {GAME_OPTIONS.map((g) => (
-                  <MenuItem key={g.value} value={g.value}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
-                      <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: VERSION_COLORS[g.value] || '#fff' }} />
-                      {g.label}
-                    </Box>
+                {GAME_OPTIONS.map((game) => (
+                  <MenuItem key={game.value} value={game.value} sx={{ fontWeight: 800 }}>
+                    {game.label}
                   </MenuItem>
                 ))}
               </TextField>
 
-              <Typography variant="subtitle2" sx={{ fontWeight: 800, mt: 4, mb: 1.5, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                Chapters list
+              <Divider sx={{ mb: 3, opacity: 0.1 }} />
+
+              <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1.5, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                Chapters List
               </Typography>
-              <Divider sx={{ mb: 1 }} />
 
               {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress size={24} /></Box>
+                <Box sx={{ py: 6, display: 'flex', justifyContent: 'center' }}>
+                  <CircularProgress size={32} sx={{ color: gameColor }} />
+                </Box>
               ) : chapters.length === 0 ? (
                 <Box sx={{ py: 6, textAlign: 'center', opacity: 0.5 }}>
                   <ImportContacts sx={{ fontSize: 40, mb: 1, opacity: 0.6 }} />
@@ -257,56 +181,75 @@ export default function Walkthrough() {
                   <Typography variant="caption">Trang hướng dẫn cho bản game này chưa được cập nhật.</Typography>
                 </Box>
               ) : (
-                <List sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: '480px' }}>
-                  {chapters.map((chapter: any) => {
-                    const isActive = selectedChapterId === chapter.id;
-                    return (
-                      <ListItemButton
-                        key={chapter.id}
-                        onClick={() => setSelectedChapterId(chapter.id)}
-                        sx={{
-                          borderRadius: '12px',
-                          mb: 1,
-                          py: 1.5,
-                          px: 2,
-                          bgcolor: isActive ? alpha(gameColor, 0.12) : 'transparent',
-                          color: isActive ? '#ffffff' : 'text.secondary',
-                          border: '1px solid',
-                          borderColor: isActive ? alpha(gameColor, 0.3) : 'transparent',
-                          position: 'relative',
-                          overflow: 'hidden',
-                          '&:hover': {
-                            bgcolor: isActive ? alpha(gameColor, 0.16) : 'action.hover',
-                            color: isActive ? '#ffffff' : 'text.primary',
-                            transform: 'translateX(4px)'
-                          },
-                          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                          ...(isActive && {
-                            '&::before': {
-                              content: '""',
-                              position: 'absolute',
-                              left: 0,
-                              top: '20%',
-                              height: '60%',
-                              width: '4px',
-                              borderRadius: '4px',
-                              backgroundColor: gameColor,
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    overflowX: 'hidden', // Tắt hoàn toàn thanh cuộn ngang
+                    maxHeight: '480px',
+                    pr: 0.5,
+                    scrollbarWidth: 'thin', // Chuẩn Firefox & modern Chrome
+                    scrollbarColor: '#475569 transparent', // Solid slate-600 cho Windows
+                    '&::-webkit-scrollbar': { width: '6px', height: '6px' },
+                    '&::-webkit-scrollbar-track': { background: 'transparent' },
+                    '&::-webkit-scrollbar-thumb': { 
+                      background: '#475569', 
+                      borderRadius: '10px' 
+                    },
+                    '&::-webkit-scrollbar-thumb:hover': { background: '#64748b' },
+                  }}
+                >
+                  <List sx={{ p: 0 }}>
+                    {chapters.map((chapter: any) => {
+                      const isActive = selectedChapterId === chapter.id;
+                      return (
+                        <ListItemButton
+                          key={chapter.id}
+                          onClick={() => setSelectedChapterId(chapter.id)}
+                          sx={{
+                            borderRadius: '12px',
+                            mb: 1,
+                            py: 1.2,
+                            px: 2,
+                            bgcolor: isActive ? alpha(gameColor, 0.12) : 'transparent',
+                            color: isActive ? '#ffffff' : 'text.secondary',
+                            border: '1px solid',
+                            borderColor: isActive ? alpha(gameColor, 0.3) : 'transparent',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            '&:hover': {
+                              bgcolor: isActive ? alpha(gameColor, 0.16) : 'action.hover',
+                              color: isActive ? '#ffffff' : 'text.primary',
+                              transform: 'translateX(4px)'
+                            },
+                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            ...(isActive && {
+                              '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                left: 0,
+                                top: '20%',
+                                height: '60%',
+                                width: '4px',
+                                borderRadius: '4px',
+                                backgroundColor: gameColor,
+                              }
+                            })
+                          }}
+                        >
+                          <ListItemText
+                            primary={
+                              <Typography sx={{ fontWeight: isActive ? 850 : 600, fontSize: '0.88rem', wordBreak: 'break-word' }}>
+                                {chapter.chapterTitle}
+                              </Typography>
                             }
-                          })
-                        }}
-                      >
-                        <ListItemText
-                          primary={
-                            <Typography sx={{ fontWeight: isActive ? 800 : 600, fontSize: '0.88rem' }}>
-                              {chapter.chapterTitle}
-                            </Typography>
-                          }
-                        />
-                        <NavigateNext fontSize="small" sx={{ opacity: isActive ? 1 : 0.3 }} />
-                      </ListItemButton>
-                    );
-                  })}
-                </List>
+                          />
+                          <NavigateNext fontSize="small" sx={{ opacity: isActive ? 1 : 0.3, ml: 1, flexShrink: 0 }} />
+                        </ListItemButton>
+                      );
+                    })}
+                  </List>
+                </Box>
               )}
             </CardContent>
           </Card>
@@ -327,22 +270,103 @@ export default function Walkthrough() {
               {activeChapter ? (
                 <Box>
                   {/* Chapter Header */}
-                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 2 }}>
+                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 2, flexWrap: 'wrap', gap: 1 }}>
                     <Box sx={{ px: 1.5, py: 0.5, borderRadius: '6px', bgcolor: alpha(gameColor, 0.2), border: `1px solid ${alpha(gameColor, 0.4)}` }}>
                       <Typography variant="caption" sx={{ color: gameColor, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
                         Chapter {activeChapter.order}
                       </Typography>
                     </Box>
-                    <Typography variant="h5" sx={{ fontWeight: 950, letterSpacing: -0.5 }}>
+                    <Typography variant="h5" sx={{ fontWeight: 950, letterSpacing: -0.5, fontFamily: '"Inter", "Plus Jakarta Sans", sans-serif' }}>
                       {activeChapter.chapterTitle}
                     </Typography>
                   </Stack>
                   <Divider sx={{ mb: 4, opacity: 0.1 }} />
 
-                  {/* Sanitized HTML Output Canvas */}
-                  <div
+                  {/* Sanitized HTML Output Canvas with Enhanced Typography & Scoped Styling */}
+                  <Box
                     dangerouslySetInnerHTML={{ __html: cleanHTML }}
-                    className="walkthrough-html-render"
+                    sx={{
+                      fontFamily: '"Inter", "Plus Jakarta Sans", "Roboto", sans-serif',
+                      color: 'text.primary',
+                      '& h1': { display: 'none !important' }, // Ẩn hoàn toàn H1 trùng lặp bằng !important
+                      '& h2': { 
+                        color: gameColor, 
+                        fontSize: '1.5rem', 
+                        fontWeight: 800, 
+                        mt: 4, 
+                        mb: 2,
+                        borderBottom: '1px solid rgba(255,255,255,0.08)',
+                        pb: 1,
+                        fontFamily: '"Inter", "Plus Jakarta Sans", sans-serif'
+                      },
+                      '& h3': { 
+                        fontSize: '1.2rem', 
+                        fontWeight: 700, 
+                        mt: 3, 
+                        mb: 1.5,
+                        fontFamily: '"Inter", "Plus Jakarta Sans", sans-serif'
+                      },
+                      '& p': { 
+                        fontSize: '1rem', 
+                        lineHeight: 1.8, 
+                        color: 'text.secondary', 
+                        mb: 2.5 
+                      },
+                      '& strong': { color: 'text.primary', fontWeight: 700 },
+                      '& ul, & ol': { mb: 2.5, paddingLeft: '1.5rem', color: 'text.secondary', lineHeight: 1.8 },
+                      '& li': { mb: 0.5 },
+                      '& table': { 
+                        width: '100%', 
+                        borderCollapse: 'collapse', 
+                        my: 3,
+                        fontSize: '0.95rem',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'rgba(15, 15, 25, 0.3)'
+                      },
+                      '& th': { 
+                        background: alpha(gameColor, 0.08), 
+                        color: 'text.primary', 
+                        fontWeight: 800, 
+                        p: 2, 
+                        textAlign: 'left',
+                        textTransform: 'uppercase',
+                        fontSize: '0.85rem',
+                        letterSpacing: '0.5px',
+                        borderBottom: `2px solid ${alpha(gameColor, 0.3)}`
+                      },
+                      '& td': { 
+                        p: 2, 
+                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                        color: 'text.secondary',
+                        verticalAlign: 'middle'
+                      },
+                      '& tbody tr:hover': { background: 'rgba(255,255,255,0.02)' },
+                      '& img': {
+                        maxWidth: '64px',
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                        margin: '0 4px',
+                        transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))'
+                      },
+                      '& img:hover': {
+                        transform: 'scale(1.2) translateY(-2px)',
+                        filter: `drop-shadow(0 8px 12px ${alpha(gameColor, 0.4)})`
+                      },
+                      '& blockquote': {
+                        borderLeft: `4px solid ${gameColor}`,
+                        padding: '12px 20px',
+                        margin: '20px 0',
+                        backgroundColor: alpha(gameColor, 0.05),
+                        borderRadius: '0 8px 8px 0',
+                        color: 'text.secondary',
+                        fontStyle: 'italic',
+                        '& strong': { color: gameColor }
+                      }
+                    }}
                   />
                 </Box>
               ) : (
