@@ -811,6 +811,187 @@ const EMERALD_CHAPTERS = [
 
       <p>Sau khi đánh bại Wallace, chúc mừng bạn! Bạn đã chính thức bước lên ngai vàng danh giá nhất thế giới Pokémon, ghi danh vào bảng vàng Hall of Fame và kết thúc trọn vẹn chương truyện chính của <strong>Pokémon Emerald</strong> huyền thoại!</p>
     `
+  },
+  {
+    gameVersion: 'emerald',
+    chapterTitle: 'Phần 11: Bí mật Pokémon Siêu Hiếm & Huyền Thoại (Late-game / Post-game)',
+    order: 11,
+    language: 'vi',
+    content: `
+      <h1>Phần 11: Bí mật Pokémon Siêu Hiếm & Huyền Thoại (Late-game / Post-game)</h1>
+      <p>Bên cạnh cốt truyện chính, Pokémon Emerald còn chứa đựng một thế giới bí ẩn khổng lồ với những loài Pokémon huyền thoại và siêu hiếm mà bất kỳ nhà huấn luyện nào cũng khao khát sở hữu.</p>
+
+      <h2>1. Latias hoặc Latios (Roaming Pokémon)</h2>
+      <p>Sau khi đánh bại Elite Four, bạn sẽ thức dậy ở nhà mình tại Littleroot Town. Hãy xuống nhà xem TV, mẹ của bạn sẽ hỏi chú Pokémon bí ẩn xuất hiện trên bản tin có màu gì:</p>
+      <ul>
+        <li><strong>Chọn Red (Đỏ):</strong> Latias <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/380.png" style="max-width:32px; vertical-align:middle;" /> sẽ xuất hiện hoang dã trên toàn bản đồ.</li>
+        <li><strong>Chọn Blue (Xanh):</strong> Latios <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/381.png" style="max-width:32px; vertical-align:middle;" /> sẽ xuất hiện hoang dã trên toàn bản đồ.</li>
+      </ul>
+      <blockquote>
+        <strong>Mẹo bắt Lati@s:</strong> Do chúng liên tục đổi Route ngẫu nhiên mỗi khi bạn di chuyển, hãy mang theo Pokémon có chiêu <em>Mean Look</em> (như Crobat, Golbat) hoặc Pokémon có đặc tính <em>Shadow Tag</em> (như Wobbuffet) để ngăn chúng bỏ chạy. Ném Master Ball ngay lập tức hoặc làm suy yếu và quăng Ultra Ball!
+      </blockquote>
+
+      <h2>2. Thần thú Địa cầu: Groudon & Kyogre</h2>
+      <p>Emerald cho phép bạn bắt cả Groudon <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/383.png" style="max-width:32px; vertical-align:middle;" /> và Kyogre <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/382.png" style="max-width:32px; vertical-align:middle;" /> ở cấp độ 70 tại giai đoạn hậu game:</p>
+      <ol>
+        <li>Đến Viện Thời tiết (Weather Institute) trên Route 119, nói chuyện với giáo sư ở tầng 2.</li>
+        <li>Nếu ông báo <strong>"Hạn hán" (Drought)</strong> tại một Route: Hãy đến ngay đó tìm hang đá <strong>Terra Cave</strong> để bắt Groudon.</li>
+        <li>Nếu ông báo <strong>"Mưa lớn" (Heavy Rain)</strong> tại một vùng biển: Hãy dùng Surf/Dive đến đó tìm hang nước ngầm <strong>Marine Cave</strong> để bắt Kyogre.</li>
+      </ol>
+      <blockquote>
+        <strong>Lưu ý:</strong> Hãy đến bắt ngay lập tức! Nếu bạn đổi bản đồ hoặc chần chừ quá lâu, thời tiết sẽ thay đổi và hang động sẽ di chuyển sang Route khác.
+      </blockquote>
+
+      <h2>3. Bộ ba tượng đá Golem cổ đại (Regis)</h2>
+      <p>Để mở khóa ba hang đá của Regirock, Regice, và Registeel, bạn cần giải mã Sealed Chamber hóc búa nhất game:</p>
+      <ul>
+        <li><strong>Chuẩn bị:</strong> Pokémon có chiêu <em>Dig, Surf, Dive</em>. Bắt một con <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:24px; vertical-align:middle;" /> (dưới đáy biển Sootopolis) và một con <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:24px; vertical-align:middle;" /> (tiến hóa từ Wailmer ở level 40).</li>
+        <li><strong>Mở cửa hang cổ đại:</strong> Xếp Relicanth ở vị trí <strong>ĐẦU TIÊN</strong> và Wailord ở vị trí <strong>CUỐI CÙNG</strong> trong đội hình của bạn. Lướt sóng ra vùng nước xiết Route 134, lặn xuống hang ngầm Sealed Chamber. Lên bờ, đọc bảng chữ nổi Braille và dùng chiêu <strong>Dig</strong> để mở thông phòng trong. Đọc tấm bia cuối cùng để kích hoạt tiếng động mở hang Regis trên toàn bản đồ.</li>
+      </ul>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(255, 255, 255, 0.04);">
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Golem</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Địa điểm</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Câu đố mở khóa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/377.png" alt="Regirock" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #b45309;">Regirock (Lvl 40)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sa mạc Route 111 (Desert Ruins)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc bảng chữ nổi, đi sang trái 2 bước, lùi xuống 2 bước, sau đó dùng chiêu <strong>Rock Smash</strong>.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/378.png" alt="Regice" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Regice (Lvl 40)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Biển phía tây Route 105 (Island Cave)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc bảng chữ nổi, chạy dọc theo sát mép tường căn phòng đúng một vòng tròn không dừng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/379.png" alt="Registeel" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #94a3b8;">Registeel (Lvl 40)</td>
+            <td style="padding: 12px 16px;">Vùng đồi Route 120 (Ancient Tomb)</td>
+            <td style="padding: 12px 16px;">Đọc bảng chữ nổi, di chuyển ra đúng tâm căn phòng và sử dụng chiêu <strong>Flash</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4. Săn Pokémon siêu hiếm và trao đổi</h2>
+      <ul>
+        <li><strong>Bagon (Metagross tương lai):</strong> Quay lại hang Meteor Falls, dùng Surf và Waterfall leo thác lên tầng sâu nhất. Bagon <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/371.png" style="max-width:24px; vertical-align:middle;" /> chỉ xuất hiện tại dải đất nhỏ hẹp chứa đĩa TM02 Dragon Claw với tỉ lệ 25%.</li>
+        <li><strong>Feebas & Milotic:</strong> Chỉ xuất hiện tại 6 ô nước ngẫu nhiên trên toàn bộ dòng sông Route 119. Hãy dùng cần câu Old Rod câu thử từng ô nước một vài lần. Cho Feebas <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/349.png" style="max-width:24px; vertical-align:middle;" /> ăn Pokéblock màu Xanh (Blended từ Pamtre hoặc Kelpsy Berry) để max chỉ số Beauty trước khi cho lên cấp để tiến hóa thành Milotic.</li>
+        <li><strong>Beldum (Steven's Gift):</strong> Hậu game, ghé thăm nhà Steven ở Mossdeep City để nhận Beldum <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/374.png" style="max-width:24px; vertical-align:middle;" /> level 5 đặt sẵn trong quả Pokéball trên bàn.</li>
+        <li><strong>NPC Trades (Trao đổi trong game):</strong>
+          <ul>
+            <li><strong>Seedot:</strong> Đổi Ralts với NPC ở Rustboro City (nhận Seedot tên DOTS).</li>
+            <li><strong>Plusle:</strong> Đổi Volbeat với NPC ở Fortree City (nhận Plusle tên PLUSES).</li>
+            <li><strong>Horsea:</strong> Đổi Bagon với NPC ở Pacifidlog Town (nhận Horsea tên SEASOR).</li>
+            <li><strong>Meowth:</strong> Đổi Skitty với NPC ở Battle Frontier (nhận Meowth tên MEOWOW).</li>
+          </ul>
+        </li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: 'emerald',
+    chapterTitle: 'Phần 12: Toàn tập Hậu game, Battle Frontier & Vật phẩm Trấn phái',
+    order: 12,
+    language: 'vi',
+    content: `
+      <h1>Phần 12: Toàn tập Hậu game, Battle Frontier & Vật phẩm Trấn phái</h1>
+      <p>Sau khi bước lên ngôi vị vô địch Pokémon League, vùng đất Hoenn vẫn còn vô vàn thử thách khắc nghiệt đang chờ đón bạn.</p>
+
+      <h2>1. Đấu trường đỉnh cao: Battle Frontier</h2>
+      <p>Mua vé tàu tại Slateport hoặc Lilycove City để đi đến hòn đảo biệt lập <strong>Battle Frontier</strong> - thử thách "end-game" thực sự của Pokémon Emerald với độ khó cực đại, bao gồm 7 cơ sở thử thách độc đáo:</p>
+      <ul>
+        <li><strong>Battle Tower:</strong> Đấu tháp truyền thống, chiến đấu liên tục 7 trận đơn/đôi.</li>
+        <li><strong>Battle Factory:</strong> Sử dụng Pokémon "thuê" (Rental), thử thách khả năng ứng biến chiến thuật.</li>
+        <li><strong>Battle Dome:</strong> Đấu giải đấu loại trực tiếp (Tournament) vô cùng hồi hộp.</li>
+        <li><strong>Battle Pike & Battle Pyramid:</strong> Thử thách sinh tồn, di chuyển qua mê cung chứa đầy bẫy, trạng thái xấu và Pokémon hoang dã.</li>
+        <li><strong>Battle Arena & Battle Palace:</strong> Đấu hiệp giới hạn lượt và đấu tự động phụ thuộc vào Bản tính (Nature) của Pokémon.</li>
+      </ul>
+      <p><em>Mục tiêu tối thượng:</em> Đánh bại các Frontier Brains để nhận Huy hiệu Bạc (Silver Symbol) và Huy hiệu Vàng (Gold Symbol) danh giá.</p>
+
+      <h2>2. Safari Zone mở rộng (Bắt Pokémon vùng Johto)</h2>
+      <p>Quay lại Safari Zone ở Route 121 sau khi phá đảo. Phía đông của khu bảo tồn sẽ được mở rộng thêm hai phân khu mới. Tại đây, bạn có thể bắt được những Pokémon hiếm vùng Johto (Gen 2) như: Mareep <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/179.png" style="max-width:24px; vertical-align:middle;" />, Houndour <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/228.png" style="max-width:24px; vertical-align:middle;" />, Gligar <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/207.png" style="max-width:24px; vertical-align:middle;" />, Teddiursa, Pineco...</p>
+
+      <h2>3. Các tính năng hậu game lý thú</h2>
+      <ul>
+        <li><strong>Tái đấu Gym Leaders (Match Call):</strong> PokéNav của bạn thỉnh thoảng sẽ reo chuông báo Gym Leader cũ muốn tái đấu. Đội hình tái đấu của họ sẽ là Đấu Đôi (Double Battle) với level cực cao (50-60+) và chiêu thức tối ưu.</li>
+        <li><strong>Xây Căn cứ bí mật (Secret Bases):</strong> Mua đĩa TM43 Secret Power ở chợ Slateport và dùng lên các gốc cây to rủ lá, hốc đá trên tường hoặc bụi rậm để tạo lập không gian riêng, tự do trang trí bàn ghế và poster mua tại siêu thị Lilycove.</li>
+        <li><strong>Pokémon Contests:</strong> Ghé Lilycove City tham gia các cuộc thi sắc đẹp Pokémon với 5 hạng mục: Cool, Beauty, Cute, Smart và Tough.</li>
+        <li><strong>Pokémon Sự Kiện (Event Pokémon):</strong> Sử dụng cheat/RetroArch để mở khóa vé tàu:
+          <ul>
+            <li><strong>Aurora Ticket:</strong> Đến Birth Island giải đố tam giác để bắt Deoxys <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/386.png" style="max-width:24px; vertical-align:middle;" /> (Lvl 30).</li>
+            <li><strong>Old Sea Map:</strong> Đến Faraway Island bắt Mew <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png" style="max-width:24px; vertical-align:middle;" /> (Lvl 30) ẩn trong bụi cỏ.</li>
+            <li><strong>Mystic Ticket:</strong> Đến Navel Rock bắt Lugia <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:24px; vertical-align:middle;" /> hoặc Ho-Oh <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" style="max-width:24px; vertical-align:middle;" /> (Lvl 70).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>4. Các vật phẩm và kỹ năng (TM) trấn phái</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(255, 255, 255, 0.04);">
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tên vật phẩm / TM</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tác dụng</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Cách sở hữu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Exp. Share</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Chia sẻ kinh nghiệm cho Pokémon không cần ra trận</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nói chuyện với Mr. Stone tại Devon Corp sau khi chuyển thư cho Steven ở Dewford.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Amulet Coin</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhân đôi tiền thưởng nhận được sau mỗi trận đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nói chuyện với mẹ tại nhà ở Littleroot sau khi thắng Norman (Gym 5).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Macho Brace</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhân đôi chỉ số nỗ lực (EV) nhận được khi luyện cấp</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đánh bại cả 4 thành viên gia đình Winstrate tại căn nhà nhỏ trên Route 111.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Soothe Bell</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tăng nhanh điểm thân thiết (Happiness)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận tại Pokémon Fan Club trong thành phố Slateport City.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">TM13 Ice Beam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Chiêu hệ Băng cực mạnh trị rồng và bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tìm thấy trong phòng ngầm tàu bỏ hoang Abandoned Ship ở Route 108 (cần Surf & Dive).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">TM24 Thunderbolt</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sát thương hệ Điện ổn định nhất game</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ Wattson sau khi tắt máy phát điện ngầm New Mauville.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">TM26 Earthquake</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đòn hệ Đất mạnh nhất game</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nằm sâu dưới lòng hang đáy biển Seafloor Cavern.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Đá Tiến Hóa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Dùng để tiến hóa Pokémon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lượm các mảnh Shard (Red, Blue, Yellow, Green) dưới lòng biển sâu rồi đem đổi với Treasure Hunter tại Route 124.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
   }
 ];
 
@@ -923,11 +1104,57 @@ const ENGLISH_CHAPTERS = [
         <strong>Victory Reward:</strong> The <strong>Stone Badge</strong> (which allows you to use HM01 Cut outside of battle) and the TM move <strong>TM39 Rock Tomb</strong>.
       </blockquote>
     `
+  },
+  {
+    gameVersion: 'emerald',
+    chapterTitle: 'Chapter 11: Rare & Legendary Pokémon Secrets (Late-game / Post-game)',
+    order: 11,
+    language: 'en',
+    content: `
+      <h1>Chapter 11: Rare & Legendary Pokémon Secrets (Late-game / Post-game)</h1>
+      <p>Discover the rare and legendary Pokémon that await you in Hoenn's post-game world.</p>
+
+      <h2>1. Latias or Latios (Roaming Pokémon)</h2>
+      <p>After beating the Elite Four, watch the TV downstairs. Your mother will ask you what color the broadcasted Pokémon was:</p>
+      <ul>
+        <li><strong>Red:</strong> Latias will spawn wild across the map.</li>
+        <li><strong>Blue:</strong> Latios will spawn wild across the map.</li>
+      </ul>
+
+      <h2>2. Kyogre & Groudon</h2>
+      <p>Talk to the researcher at the Weather Institute (Route 119) to track Groudon's <strong>Terra Cave</strong> or Kyogre's <strong>Marine Cave</strong> across Hoenn.</p>
+
+      <h2>3. Regirock, Regice, and Registeel</h2>
+      <p>Solve the Sealed Chamber mystery by placing Relicanth first and Wailord last in your party, then using Dig/Flash/Rock Smash in their respective caves.</p>
+    `
+  },
+  {
+    gameVersion: 'emerald',
+    chapterTitle: 'Chapter 12: Post-game Battle Frontier & Essential Items Guide',
+    order: 12,
+    language: 'en',
+    content: `
+      <h1>Chapter 12: Post-game Battle Frontier & Essential Items Guide</h1>
+      <p>Master the ultimate challenges of Hoenn's Battle Frontier and collect game-changing items.</p>
+
+      <h2>1. The Battle Frontier</h2>
+      <p>Sail to the Battle Frontier to challenge the 7 facilities (Tower, Dome, Palace, Arena, Factory, Pike, and Pyramid) and defeat Frontier Brains for Symbols.</p>
+
+      <h2>2. Extended Safari Zone</h2>
+      <p>Catch rare Gen 2 Johto Pokémon such as Mareep, Houndour, and Gligar in the newly unlocked eastern zones of the Safari Zone.</p>
+
+      <h2>3. Essential Items and TMs</h2>
+      <ul>
+        <li><strong>Exp. Share:</strong> Share experience without fighting (Devon Corp).</li>
+        <li><strong>Amulet Coin:</strong> Double prize money (Littleroot Town).</li>
+        <li><strong>TM13 Ice Beam:</strong> Essential Ice-type attack (Abandoned Ship).</li>
+      </ul>
+    `
   }
 ];
 
 async function main() {
-  console.log('🚀 Bắt đầu cập nhật toàn bộ 10 chương dữ liệu Walkthrough Pokémon Emerald chuẩn chỉ...');
+  console.log('🚀 Bắt đầu cập nhật toàn bộ 12 chương dữ liệu Walkthrough Pokémon Emerald chuẩn chỉ...');
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
