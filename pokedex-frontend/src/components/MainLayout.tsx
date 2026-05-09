@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import {
   Menu, CatchingPokemon, FlashOn, Psychology, Backpack, Map, Category,
-  SelfImprovement, VideogameAsset, WbSunny, DarkMode, SportsEsports, PlaylistAddCheck
+  SelfImprovement, VideogameAsset, WbSunny, DarkMode, SportsEsports, PlaylistAddCheck, SportsKabaddi
 } from '@mui/icons-material';
 import { useColorMode } from '../main';
 import { useTeamStore } from '../lib/teamStore';
@@ -26,6 +26,7 @@ const MENU_ITEMS = [
   { text: 'Type Dex', path: '/types', icon: <Category /> },
   { text: 'Nature Dex', path: '/natures', icon: <SelfImprovement /> },
   { text: 'Team Builder', path: '/teambuilder', icon: <SportsEsports /> },
+  { text: 'Damage Calc', path: '/calculator', icon: <SportsKabaddi /> },
 ];
 
 export default function MainLayout() {
