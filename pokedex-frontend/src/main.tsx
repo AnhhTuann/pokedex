@@ -5,6 +5,7 @@ import { MyPokedexProvider } from './lib/MyPokedexContext';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 
 // ─── Apollo Client ────────────────────────────────────────
 const client = new ApolloClient({

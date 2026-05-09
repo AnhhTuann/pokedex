@@ -188,6 +188,40 @@ export default function Walkthrough() {
                 value={gameVersion}
                 onChange={(e) => setGameVersion(e.target.value)}
                 fullWidth
+                SelectProps={{
+                  MenuProps: {
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 350,
+                        overflowY: 'auto',
+                        '& .MuiMenu-list': {
+                          '&::-webkit-scrollbar': { width: '6px' },
+                          '&::-webkit-scrollbar-track': { background: 'transparent' },
+                          '&::-webkit-scrollbar-thumb': { 
+                            background: 'rgba(255, 255, 255, 0.15)', 
+                            borderRadius: '10px' 
+                          },
+                          '&::-webkit-scrollbar-thumb:hover': { 
+                            background: 'rgba(255, 255, 255, 0.25)' 
+                          },
+                          scrollbarWidth: 'thin',
+                          scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
+                        },
+                        '&::-webkit-scrollbar': { width: '6px' },
+                        '&::-webkit-scrollbar-track': { background: 'transparent' },
+                        '&::-webkit-scrollbar-thumb': { 
+                          background: 'rgba(255, 255, 255, 0.15)', 
+                          borderRadius: '10px' 
+                        },
+                        '&::-webkit-scrollbar-thumb:hover': { 
+                          background: 'rgba(255, 255, 255, 0.25)' 
+                        },
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
+                      },
+                    },
+                  },
+                }}
                 slotProps={{
                   input: {
                     startAdornment: (

@@ -271,6 +271,40 @@ export default function AdminWalkthrough() {
                   }}
                   fullWidth
                   size="small"
+                  SelectProps={{
+                    MenuProps: {
+                      PaperProps: {
+                        sx: {
+                          maxHeight: 350,
+                          overflowY: 'auto',
+                          '& .MuiMenu-list': {
+                            '&::-webkit-scrollbar': { width: '6px' },
+                            '&::-webkit-scrollbar-track': { background: 'transparent' },
+                            '&::-webkit-scrollbar-thumb': { 
+                              background: 'rgba(255, 255, 255, 0.15)', 
+                              borderRadius: '10px' 
+                            },
+                            '&::-webkit-scrollbar-thumb:hover': { 
+                              background: 'rgba(255, 255, 255, 0.25)' 
+                            },
+                            scrollbarWidth: 'thin',
+                            scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
+                          },
+                          '&::-webkit-scrollbar': { width: '6px' },
+                          '&::-webkit-scrollbar-track': { background: 'transparent' },
+                          '&::-webkit-scrollbar-thumb': { 
+                            background: 'rgba(255, 255, 255, 0.15)', 
+                            borderRadius: '10px' 
+                          },
+                          '&::-webkit-scrollbar-thumb:hover': { 
+                            background: 'rgba(255, 255, 255, 0.25)' 
+                          },
+                          scrollbarWidth: 'thin',
+                          scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
+                        },
+                      },
+                    },
+                  }}
                 >
                   {GAME_OPTIONS.map((g) => (
                     <MenuItem key={g.value} value={g.value}>
@@ -292,6 +326,26 @@ export default function AdminWalkthrough() {
                   }}
                   fullWidth
                   size="small"
+                  SelectProps={{
+                    MenuProps: {
+                      PaperProps: {
+                        sx: {
+                          maxHeight: 350,
+                          '&::-webkit-scrollbar': { width: '6px' },
+                          '&::-webkit-scrollbar-track': { background: 'transparent' },
+                          '&::-webkit-scrollbar-thumb': { 
+                            background: 'rgba(255, 255, 255, 0.15)', 
+                            borderRadius: '10px' 
+                          },
+                          '&::-webkit-scrollbar-thumb:hover': { 
+                            background: 'rgba(255, 255, 255, 0.25)' 
+                          },
+                          scrollbarWidth: 'thin',
+                          scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
+                        },
+                      },
+                    },
+                  }}
                 >
                   <MenuItem value="vi">
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
