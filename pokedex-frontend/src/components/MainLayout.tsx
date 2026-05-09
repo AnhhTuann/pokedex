@@ -49,7 +49,7 @@ export default function MainLayout() {
   };
 
   const menuList = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper', overflow: 'hidden' }}>
       {/* Brand Header */}
       <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 1.5, minHeight: 64 }}>
         <Typography
@@ -72,7 +72,37 @@ export default function MainLayout() {
       <Divider sx={{ opacity: 0.1 }} />
 
       {/* Nav Menu */}
-      <List sx={{ px: 2, py: 3, flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <List
+        sx={{
+          px: 2,
+          py: 3,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          
+          /* Custom Scrollbar cho Webkit (Chrome, Safari, Edge) */
+          '&::-webkit-scrollbar': { 
+            width: '4px', // Làm thanh cuộn thật mỏng để không chiếm diện tích
+          },
+          '&::-webkit-scrollbar-track': { 
+            background: 'transparent', // Ẩn hoàn toàn rãnh cuộn (track)
+          },
+          '&::-webkit-scrollbar-thumb': { 
+            background: 'rgba(255, 255, 255, 0.08)', // Thumb màu xám siêu nhạt, chìm vào nền
+            borderRadius: '10px', 
+          },
+          '&::-webkit-scrollbar-thumb:hover': { 
+            background: 'rgba(255, 255, 255, 0.2)', // Sáng lên một chút khi hover
+          },
+          
+          /* Custom cho Firefox (Chỉ hỗ trợ chỉnh độ dày và màu sắc) */
+          scrollbarWidth: 'thin', 
+          scrollbarColor: 'rgba(255, 255, 255, 0.1) transparent',
+        }}
+      >
         {MENU_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;
           return (
