@@ -140,6 +140,14 @@ const typeDefs = `#graphql
     pokemon: PokemonListItem
   }
 
+  type Walkthrough {
+    id: Int!
+    gameVersion: String!
+    chapterTitle: String!
+    content: String!
+    order: Int!
+  }
+
   type Query {
     ping: String
     pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String): PokemonListResponse
@@ -151,11 +159,14 @@ const typeDefs = `#graphql
     getAllItems(search: String, limit: Int, offset: Int): ItemListResponse!
     getLocations(version: String!): [String!]!
     getLocationEncounters(locationName: String!, version: String!): [EncounterListItem!]!
+    getWalkthroughs(gameVersion: String!): [Walkthrough!]!
   }
 
   type Mutation {
     toggleFavorite(pokemonId: Int!): Boolean!
     saveTeam(pokemonIds: [Int!]!): Boolean!
+    upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, content: String!, order: Int!): Walkthrough!
+    deleteWalkthrough(id: Int!): Boolean!
   }
 `;
 
@@ -869,6 +880,13 @@ const resolvers = {
         types: s.pokemon.types.map((t: any) => t.name),
         image: s.pokemon.imageUrl
       }));
+    },
+
+    getWalkthroughs: async (_: any, { gameVersion }: { gameVersion: string }) => {
+      return await prisma.walkthrough.findMany({
+        where: { gameVersion: { equals: gameVersion.toLowerCase(), mode: 'insensitive' } },
+        orderBy: { order: 'asc' }
+      });
     }
   },
 
@@ -913,6 +931,33 @@ const resolvers = {
         await prisma.teamSlot.createMany({ data: slots });
       }
 
+      return true;
+    },
+
+    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, content, order }: any) => {
+      const data = {
+        gameVersion: gameVersion.toLowerCase(),
+        chapterTitle,
+        content,
+        order
+      };
+
+      if (id) {
+        return await prisma.walkthrough.update({
+          where: { id },
+          data
+        });
+      } else {
+        return await prisma.walkthrough.create({
+          data
+        });
+      }
+    },
+
+    deleteWalkthrough: async (_: any, { id }: { id: number }) => {
+      await prisma.walkthrough.delete({
+        where: { id }
+      });
       return true;
     }
   },

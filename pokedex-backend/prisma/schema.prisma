@@ -213,3 +213,17 @@ model Item {
   effect      String?
   spriteUrl   String?
 }
+
+// ==========================================
+// PHASE 6: WALKTHROUGH CMS MODULE
+// ==========================================
+
+model Walkthrough {
+  id           Int      @id @default(autoincrement())
+  gameVersion  String   // e.g. 'emerald', 'firered'
+  chapterTitle String
+  content      String   // Contains HTML rich content string from TipTap
+  order        Int      // To sort chapters in order
+
+  @@index([gameVersion])
+}

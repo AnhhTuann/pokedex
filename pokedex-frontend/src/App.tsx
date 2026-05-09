@@ -11,6 +11,8 @@ import NatureDex from './components/NatureDex';
 import TeamBuilder from './components/TeamBuilder';
 import CatchTracker from './components/CatchTracker';
 import DamageCalculator from './components/DamageCalculator';
+import Walkthrough from './components/Walkthrough';
+import AdminWalkthrough from './components/AdminWalkthrough';
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -186,6 +188,8 @@ export default function App() {
         <Route path="/teambuilder" element={<TeamBuilder />} />
         <Route path="/tracker" element={<CatchTracker />} />
         <Route path="/calculator" element={<DamageCalculator />} />
+        <Route path="/walkthrough" element={<Walkthrough />} />
+        <Route path="/admin/walkthrough" element={<AdminWalkthrough />} />
       </Route>
     </Routes>
   );
