@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { EMERALD_CHAPTERS, ENGLISH_EMERALD_CHAPTERS } from './data/walkthrough-emerald';
-import { FIRERED_CHAPTERS, ENGLISH_FIRERED_CHAPTERS } from './data/walkthrough-firered';
+import { EMERALD_CHAPTERS, ENGLISH_EMERALD_CHAPTERS } from './data/walkthrough-emerald.js';
+import { FIRERED_CHAPTERS, ENGLISH_FIRERED_CHAPTERS } from './data/walkthrough-firered.js';
+import { LEAFGREEN_CHAPTERS, ENGLISH_LEAFGREEN_CHAPTERS } from './data/walkthrough-leafgreen.js';
 
 const prisma = new PrismaClient();
 
@@ -9,10 +10,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald và FireRed.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed và LeafGreen.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -44,6 +45,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [FireRed EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp LeafGreen Tiếng Việt
+  for (const chapter of LEAFGREEN_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [LeafGreen VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp LeafGreen Tiếng Anh
+  for (const chapter of ENGLISH_LEAFGREEN_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [LeafGreen EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');

@@ -1,6 +1,6 @@
-export const FIRERED_CHAPTERS = [
+export const LEAFGREEN_CHAPTERS = [
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 1: Khởi đầu tại Thị trấn Pallet",
     order: 1,
     language: "vi",
@@ -90,7 +90,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 2: Huy hiệu 1 - Boulder Badge",
     order: 2,
     language: "vi",
@@ -173,7 +173,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 3: Huy hiệu 2 - Cascade Badge",
     order: 3,
     language: "vi",
@@ -269,7 +269,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 4: Huy hiệu 3 - Thunder Badge",
     order: 4,
     language: "vi",
@@ -375,7 +375,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 5: Huy hiệu 4 - Rainbow Badge",
     order: 5,
     language: "vi",
@@ -436,7 +436,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 6: Tháp Pokémon & Kính thần Silph",
     order: 6,
     language: "vi",
@@ -503,7 +503,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 7: Huy hiệu 5 - Soul Badge",
     order: 7,
     language: "vi",
@@ -564,7 +564,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 8: Huy hiệu 6 - Marsh Badge",
     order: 8,
     language: "vi",
@@ -677,7 +677,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 9: Huy hiệu 7 - Volcano Badge",
     order: 9,
     language: "vi",
@@ -738,7 +738,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 10: Huy hiệu 8 & Đỉnh cao Kanto League",
     order: 10,
     language: "vi",
@@ -1184,7 +1184,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 11: Toàn tập Quần đảo Sevii Islands",
     order: 11,
     language: "vi",
@@ -1251,7 +1251,7 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 12: Chim Huyền Thoại, Mewtwo & Bí mật Move Tutors",
     order: 12,
     language: "vi",
@@ -1275,7 +1275,7 @@ export const FIRERED_CHAPTERS = [
       </blockquote>
 
       <h2>3. Cơ chế độc lạ: Săn lùng Thần thú chạy rông vùng Johto (Roaming Beasts)</h2>
-      <p>Một điểm cực kỳ thú vị và kích thích trong Pokémon FireRed là sự xuất hiện của một trong ba thần thú vùng Johto chạy rông trên khắp các ngọn cỏ vùng Kanto sau khi bạn kết nối thành công cỗ máy của Celio. Thần thú xuất hiện sẽ phụ thuộc hoàn toàn vào Pokémon Starter bạn chọn lựa:</p>
+      <p>Một điểm cực kỳ thú vị và kích thích trong Pokémon LeafGreen là sự xuất hiện của một trong ba thần thú vùng Johto chạy rông trên khắp các ngọn cỏ vùng Kanto sau khi bạn kết nối thành công cỗ máy của Celio. Thần thú xuất hiện sẽ phụ thuộc hoàn toàn vào Pokémon Starter bạn chọn lựa:</p>
       <ul>
         <li><strong>Nếu chọn Bulbasaur:</strong> Chú sư tử lửa <strong>Entei</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" style="max-width:32px; vertical-align:middle;" /> sẽ chạy rông hoang dã trên toàn Kanto.</li>
         <li><strong>Nếu chọn Squirtle:</strong> Thần thú sấm chớp <strong>Raikou</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" style="max-width:32px; vertical-align:middle;" /> sẽ chạy rông hoang dã trên toàn Kanto.</li>
@@ -1336,13 +1336,13 @@ export const FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon",
     order: 13,
     language: "vi",
     content: `
       <h1>Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon</h1>
-      <p>Bản tra cứu nhanh toàn bộ các máy di chuyển đặc biệt (HMs), vật phẩm nhiệm vụ cốt lõi và các giao dịch Pokémon cực hời với các NPC trong bản game Pokémon FireRed!</p>
+      <p>Bản tra cứu nhanh toàn bộ các máy di chuyển đặc biệt (HMs), vật phẩm nhiệm vụ cốt lõi và các giao dịch Pokémon cực hời với các NPC trong bản game Pokémon LeafGreen!</p>
 
       <h2>1. Danh sách vị trí sở hữu tất cả các HM (Hidden Machines)</h2>
       <p>Các chiêu thức HM là bắt buộc để dọn dẹp chướng ngại vật trên đường và du hành khắp bản đồ Kanto:</p>
@@ -1517,9 +1517,9 @@ export const FIRERED_CHAPTERS = [
   }
 ];
 
-export const ENGLISH_FIRERED_CHAPTERS = [
+export const ENGLISH_LEAFGREEN_CHAPTERS = [
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 1: The Journey Begins at Pallet Town",
     order: 1,
     language: "en",
@@ -1572,7 +1572,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 2: Gym 1 - Boulder Badge",
     order: 2,
     language: "en",
@@ -1625,7 +1625,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 3: Gym 2 - Cascade Badge",
     order: 3,
     language: "en",
@@ -1677,7 +1677,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 4: Gym 3 - Thunder Badge",
     order: 4,
     language: "en",
@@ -1738,7 +1738,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 5: Gym 4 - Rainbow Badge",
     order: 5,
     language: "en",
@@ -1799,7 +1799,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 6: Pokémon Tower & Silph Scope",
     order: 6,
     language: "en",
@@ -1815,7 +1815,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 7: Gym 5 - Soul Badge",
     order: 7,
     language: "en",
@@ -1876,7 +1876,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 8: Silph Co. & Gym 6 - Marsh Badge",
     order: 8,
     language: "en",
@@ -1937,7 +1937,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 9: Gym 7 - Volcano Badge",
     order: 9,
     language: "en",
@@ -1998,7 +1998,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 10: Gym 8 & The Kanto League Championship",
     order: 10,
     language: "en",
@@ -2386,7 +2386,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 11: Comprehensive Sevii Islands Guide",
     order: 11,
     language: "en",
@@ -2442,7 +2442,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
         <li><strong>Decode the Braille Path:</strong> Fall through the center hole, decode the ancient Braille writing, and walk through the holes in this specific order: <strong>Up -> Left -> Right -> Down</strong> to reach the pedestal.</li>
         <li>Just as you reach for the **Sapphire**, Team Rocket scientist Gideon ambushes you, steals the gem, and retreats to Five Island.</li>
         <li><strong>Raid the Rocket Warehouse:</strong> Return to Five Island, infiltrate their warehouse (now that you have the passcode), navigate the spinning floor tiles, defeat Gideon, and reclaim the Sapphire!</li>
-        <li><strong>Activate Interregional Trade:</strong> Deliver the Sapphire to Celio on One Island. His network machine will go fully operational, allowing you to trade Pokémon freely between FireRed/LeafGreen and Ruby/Sapphire/Emerald!</li>
+        <li><strong>Activate Interregional Trade:</strong> Deliver the Sapphire to Celio on One Island. His network machine will go fully operational, allowing you to trade Pokémon freely between LeafGreen/LeafGreen and Ruby/Sapphire/Emerald!</li>
       </ul>
 
       <h3>7. Seven Island: Trainer Tower & The Tanoby Ruins</h3>
@@ -2453,7 +2453,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 12: Legendary Pokémon & Secrets",
     order: 12,
     language: "en",
@@ -2538,13 +2538,13 @@ export const ENGLISH_FIRERED_CHAPTERS = [
     `
   },
   {
-    gameVersion: "firered",
+    gameVersion: "leafgreen",
     chapterTitle: "Chapter 13: Complete HMs, Quest Items & In-Game Trades Guide",
     order: 13,
     language: "en",
     content: `
       <h1>Chapter 13: Complete HMs, Quest Items & In-Game Trades Guide</h1>
-      <p>Your ultimate reference guide containing all Hidden Machines (HMs), essential story quest items, and highly lucrative NPC in-game trades across Kanto in Pokémon FireRed!</p>
+      <p>Your ultimate reference guide containing all Hidden Machines (HMs), essential story quest items, and highly lucrative NPC in-game trades across Kanto in Pokémon LeafGreen!</p>
 
       <h2>1. All Hidden Machines (HMs) Locations</h2>
       <p>HMs are vital for traversing the Kanto map and clearing pathway obstacles:</p>
@@ -2646,7 +2646,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
           <tr>
             <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Ruby & Sapphire</td>
             <td style="padding: 12px 16px;">Ruby is found at Mt. Ember (One Island). Sapphire is at Six Island's Dotted Hole, then retrieved from Gideon at Five Island's Rocket Warehouse.</td>
-            <td style="padding: 12px 16px;">Delivered to Celio to activate inter-regional trading between FireRed/LeafGreen and the Hoenn games.</td>
+            <td style="padding: 12px 16px;">Delivered to Celio to activate inter-regional trading between LeafGreen/LeafGreen and the Hoenn games.</td>
           </tr>
         </tbody>
       </table>
@@ -2671,7 +2671,7 @@ export const ENGLISH_FIRERED_CHAPTERS = [
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/122.png" style="max-width:32px;" /><br/><span style="color:#a855f7; font-weight:bold;">Mr. Mime</span>
             </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>MIMIEN</strong>. The <strong>only way</strong> to acquire this Psychic-type powerhouse in FireRed. Its high Special Attack and Speed are incredible for sweeping mid-game gyms!</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>MIMIEN</strong>. The <strong>only way</strong> to acquire this Psychic-type powerhouse in LeafGreen. Its high Special Attack and Speed are incredible for sweeping mid-game gyms!</td>
           </tr>
           <tr>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Route 11 Gate House 2F (East of Vermilion)</td>

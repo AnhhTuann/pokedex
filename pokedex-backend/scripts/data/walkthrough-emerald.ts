@@ -1323,6 +1323,183 @@ export const EMERALD_CHAPTERS = [
           </tr>
         </tbody>
       </table>
+      </table>
+    `
+  },
+  {
+    gameVersion: "emerald",
+    chapterTitle: "Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon",
+    order: 13,
+    language: "vi",
+    content: `
+      <h1>Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon</h1>
+      <p>Bản tra cứu nhanh toàn bộ các máy di chuyển đặc biệt (HMs), vật phẩm nhiệm vụ cốt lõi và các giao dịch Pokémon độc quyền với các NPC trong bản game Pokémon Emerald (vùng đất Hoenn)!</p>
+
+      <h2>1. Danh sách vị trí sở hữu tất cả 8 HM (Hidden Machines)</h2>
+      <p>Tại vùng đất Hoenn, bạn cần thu thập đủ 8 chiếc máy HM để khám phá toàn bộ thế giới hải đảo rộng lớn:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(59, 130, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">HM / Chiêu thức</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Tác dụng ngoài trận</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Vị trí lấy cụ thể</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Huy hiệu yêu cầu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">HM01: Cut (Chặt cây)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Chặt cây bụi chặn đường để mở lối đi ẩn.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ ông chủ <strong>Cut Master</strong> trong ngôi nhà nằm ngay bên trái Pokémon Center thành phố Rustboro City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Stone Badge (Gym 1)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">HM02: Fly (Bay nhanh)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bay tức thời tới bất kỳ thành phố nào bạn từng ghé thăm.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Được tặng bởi Đối thủ (Brendan/May) sau khi bạn đánh bại họ trên đường mòn <strong>Route 110</strong> (sau khi ra khỏi Slateport City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Feather Badge (Gym 6)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">HM03: Surf (Lướt sóng)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bơi trên nước để vượt biển, sông ngòi.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ bố của Wally đứng ngoài cửa sau khi bạn đánh bại Gym Leader Norman tại Petalburg City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #ec4899;">Balance Badge (Gym 5)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a1a1aa;">HM04: Strength (Sức mạnh)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đẩy các tảng đá tròn lớn trong hang động.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghé thăm hang động <strong>Rusturf Tunnel</strong>, dùng Rock Smash đập vỡ tảng đá nứt để giúp đôi tình nhân đoàn tụ. Anh chàng sẽ tặng bạn HM04 để trả ơn.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #e11d48;">Heat Badge (Gym 4)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f59e0b;">HM05: Flash (Thắp sáng)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thắp sáng các hang động tối tăm như Granite Cave.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ nhà thám hiểm đứng ngay lối vào tầng hầm 1 của hang <strong>Granite Cave</strong> (mạn trái thị trấn Dewford Town).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Knuckle Badge (Gym 2)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #84cc16;">HM06: Rock Smash (Đập đá)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đập vụn các tảng đá nứt chặn đường mòn.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghé ngôi nhà <strong>Rock Smash Guy</strong> ở khu vực phía đông nam thành phố điện Mauville City và trò chuyện với ông chủ.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Dynamo Badge (Gym 3)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #2563eb;">HM07: Waterfall (Leo thác)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Leo ngược dòng các dòng thác nước dốc đứng.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ nhà vô địch Wallace tại Cave of Origin (hoặc Sootopolis City) sau khi hoàn tất cốt truyện dẹp loạn hai quái thú thần thoại Groudon & Kyogre.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Rain Badge (Gym 8)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #1e3a8a;">HM08: Dive (Lặn biển)</td>
+            <td style="padding: 12px 16px;">Lặn xuống lòng đại dương sâu thẳm tại các rãnh nước sâu màu xanh đậm.</td>
+            <td style="padding: 12px 16px;">Được Steven Stone trao tặng tại ngôi nhà riêng của anh ta ở góc tây bắc thành phố vũ trụ Mossdeep City (sau khi giải cứu trạm không gian Space Center).</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #8b5cf6;">Mind Badge (Gym 7)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Bản tra cứu các Vật phẩm làm Nhiệm vụ Cốt truyện chính</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 88, 12, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left; width: 150px;">Vật phẩm</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left;">Cách thức sở hữu</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left;">Mục đích / Nhiệm vụ cốt truyện</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Letter (Thư gửi Steven)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Chủ tịch tập đoàn Devon Corporation tại Rustboro City giao phó sau khi bạn cứu nhân viên của ông ta.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đem giao cho Steven Stone đang nghiên cứu tranh đá cổ sâu trong hang <strong>Granite Cave</strong> (Dewford Town). Bạn sẽ được tặng TM47 Steel Wing.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Devon Parts</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đánh bại tên trộm Aqua Grunt trong hang Rusturf Tunnel để giành lại bưu kiện bị cướp.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đem giao cho thuyền trưởng Stern tại xưởng đóng tàu cảng Slateport City để tiếp tục tiến trình cốt truyện.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Devon Scope</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Steven Stone trao tặng tại cây cầu bắc qua sông trên Route 120 (gần Fortree City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dùng để dò quét phát hiện các chú tắc kè hoa **Kecleon** tàng hình đang chắn lối đi vào Gym Fortree và các lối rẽ bí mật.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Meteorite (Mảnh thiên thạch)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Gỡ mảnh đá phát sáng ra khỏi cỗ máy khoa học tại đỉnh núi lửa <strong>Mt. Chimney</strong> sau khi đánh bại thủ lĩnh băng phản diện.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mang đến Fallarbor Town trao trả cho Giáo sư Cozmo bị bắt cóc để nhận đĩa chiêu thức TM27 Return rất mạnh.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Go-Goggles (Kính cát)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đối thủ trao tặng ngay trước cửa Petalburg Gym sau khi bạn đánh bại ông bố Norman.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dùng để bảo vệ mắt, cho phép đi xuyên qua cơn bão cát khổng lồ càn quét sa mạc Route 111 (nơi có tháp Mirage Tower).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #ec4899;">Magma Emblem</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhặt được tại đỉnh núi mộ cổ Mt. Pyre mạn sườn đồi sương mù.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mở ra cánh cổng đá bí mật dẫn vào tổng bộ căn cứ ngầm Magma Hideout ẩn sâu trên sườn dốc Jagged Pass.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Scanner (Máy quét cổ)</td>
+            <td style="padding: 12px 16px;">Tìm thấy phát sáng dưới khoang tàu đắm ngập nước sâu của xác tàu Abandoned Ship (Route 108) (cần chiêu Dive để lặn).</td>
+            <td style="padding: 12px 16px;">Đem giao cho thuyền trưởng Stern tại Slateport cảng để đổi lấy vật phẩm tiến hóa cực hiếm cho Clamperl: <strong>DeepSeaTooth</strong> hoặc <strong>DeepSeaScale</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Các giao dịch trao đổi Pokémon NPC (In-Game Trades)</h2>
+      <p>Các NPC hữu ích dọc hành trình Hoenn sẵn lòng trao đổi những quái thú đặc hữu hiếm gặp:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Địa điểm NPC đứng</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center;">Bạn trao (Give)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center;">Bạn nhận (Get)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Đánh giá chỉ số & Biệt danh Pokémon nhận</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà gỗ bên cạnh Gym (Rustboro City)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/280.png" style="max-width:32px;" /><br/>Ralts
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/273.png" style="max-width:32px;" /><br/><span style="color:#10b981; font-weight:bold;">Seedot</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>DOTS</strong>. Giúp bạn sở hữu sớm Seedot (hệ Cỏ) để luyện cấp tiến hóa thành Shiftry cực ngầu mang song hệ Cỏ/Bóng Tối gánh team rất ổn định.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà nhỏ mạn nam Fortree City</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/313.png" style="max-width:32px;" /><br/>Volbeat
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/312.png" style="max-width:32px;" /><br/><span style="color:#fbbf24; font-weight:bold;">Plusle</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>PULS-LE</strong>. Mang sẵn vật phẩm <strong>Wood Charcoal</strong> tăng sát thương hệ Lửa. Chú chuột điện Plusle này thăng cấp cực nhanh và có đòn giật điện tốc độ cao rất lợi hại để trị hệ Nước.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà nổi mạn nam thị trấn Pacifidlog Town</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/371.png" style="max-width:32px;" /><br/>Bagon
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/116.png" style="max-width:32px;" /><br/><span style="color:#60a5fa; font-weight:bold;">Horsea</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>SEASOR</strong>. Pokémon mang kèm Dragon Scale. Bạn có thể huấn luyện nó tiến hóa lên Kingdra - một trong những kỵ sĩ rồng biển rực rỡ nhất game Hoenn!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold;">Căn nhà tranh ở mạn đông khu Battle Frontier</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/300.png" style="max-width:32px;" /><br/>Skitty
+            </td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" style="max-width:32px;" /><br/><span style="color:#cbd5e1; font-weight:bold;">Meowth</span>
+            </td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Biệt danh: <strong>MEOWTHY</strong>. Cách duy nhất để lấy được chú mèo chiêu tài Meowth chính chủ Gen 1 tại vùng Hoenn. Nó mang sẵn Retro Mail rất dễ thương để sưu tầm!</td>
+          </tr>
+        </tbody>
+      </table>
     `
   }
 ];
@@ -1482,5 +1659,182 @@ export const ENGLISH_EMERALD_CHAPTERS = [
         <li><strong>TM13 Ice Beam:</strong> Essential Ice-type attack (Abandoned Ship).</li>
       </ul>
     `
+  },
+  {
+    gameVersion: "emerald",
+    chapterTitle: "Chapter 13: Complete HMs, Quest Items & In-Game Trades Guide",
+    order: 13,
+    language: "en",
+    content: `
+      <h1>Chapter 13: Complete HMs, Quest Items & In-Game Trades Guide</h1>
+      <p>Your ultimate reference guide containing all Hidden Machines (HMs), essential story quest items, and highly lucrative NPC in-game trades across Hoenn in Pokémon Emerald!</p>
+
+      <h2>1. All 8 Hidden Machines (HMs) Locations</h2>
+      <p>HMs are vital for traversing the massive oceanic region of Hoenn and clearing pathway obstacles:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(59, 130, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">HM / Move Name</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Overworld Effect</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Precise Obtain Location</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Badge Required</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">HM01: Cut</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Cuts down small shrubs to unlock hidden pathways.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by the <strong>Cut Master</strong> inside his house directly to the left of the Rustboro City Pokémon Center.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Stone Badge (Gym 1)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">HM02: Fly</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Instantly fly back to any previously visited town or city.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by your Rival (Brendan/May) on <strong>Route 110</strong> after defeating them, just north of Slateport City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Feather Badge (Gym 6)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">HM03: Surf</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Travel across water bodies like oceans and rivers.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Acquired from Wally's parents next door to the Petalburg Gym immediately after defeating Gym Leader Norman.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #ec4899;">Balance Badge (Gym 5)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a1a1aa;">HM04: Strength</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Push heavy round boulders inside caves and ruins.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Acquired from the grateful trainer inside <strong>Rusturf Tunnel</strong> after using Rock Smash to shatter the boulder separating the lovers.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #e11d48;">Heat Badge (Gym 4)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f59e0b;">HM05: Flash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Light up pitch-black caves like Granite Cave.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by the hiker standing near the entrance to Granite Cave's first basement floor (B1F) in Dewford Town.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Knuckle Badge (Gym 2)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #84cc16;">HM06: Rock Smash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Shatter cracked overworld rocks blocking your path.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Acquired from the Rock Smash enthusiast inside his house in southeastern Mauville City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Dynamo Badge (Gym 3)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #2563eb;">HM07: Waterfall</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Scale up vertical, fast-flowing waterfalls.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by Champion Wallace at the Cave of Origin (Sootopolis City) after resolving the Groudon and Kyogre climate conflict.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Rain Badge (Gym 8)</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #1e3a8a;">HM08: Dive</td>
+            <td style="padding: 12px 16px;">Submerge underwater into deep ocean trenches (dark blue water blocks).</td>
+            <td style="padding: 12px 16px;">Given by Steven Stone inside his home in northwestern Mossdeep City after protecting the Space Center from Team Magma.</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #8b5cf6;">Mind Badge (Gym 7)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Key Quest & Story Items Directory</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 88, 12, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left; width: 150px;">Key Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left;">How to Obtain</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left;">Quest Use / Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Letter to Steven</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by Mr. Stone at the Devon Corporation in Rustboro City after saving his employee.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Deliver to Steven Stone inside Granite Cave (Dewford Town) to receive TM47 Steel Wing.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Devon Parts</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Retrieve from the Aqua Grunt inside Rusturf Tunnel after defeating him.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Deliver to Capt. Stern at the Slateport City Shipyard to progress the main plot.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Devon Scope</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by Steven Stone on Route 120 near Fortree City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Used to detect invisible wild **Kecleon** blocking paths, including the entry to the Fortree Gym.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Meteorite</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dismantle from the machine at the peak of Mt. Chimney after defeating Leader Archie/Maxie.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Deliver to Professor Cozmo in Fallarbor Town to receive the high-utility TM27 Return.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Go-Goggles</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Received from your Rival immediately after defeating Norman at the Petalburg Gym.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Protects your eyes, enabling you to traverse the harsh sandstorms on Route 111.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #ec4899;">Magma Emblem</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Found near the summit tombs of Mt. Pyre.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Unlocks the hidden rock wall portal leading to the subterranean Magma Hideout along Jagged Pass.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Scanner</td>
+            <td style="padding: 12px 16px;">Found inside the flooded chambers of the Abandoned Ship (requires HM08 Dive).</td>
+            <td style="padding: 12px 16px;">Trade with Capt. Stern in Slateport City to acquire either a DeepSeaTooth or a DeepSeaScale for evolving Clamperl.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Lucrative NPC In-Game Trades</h2>
+      <p>Trade with these helpful trainers across Hoenn to get rare species with accelerated growth rates:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Trade Location</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center;">You Give</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center;">You Receive</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Utility Description & Nickname</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Rustboro City House next to Gym</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/280.png" style="max-width:32px;" /><br/>Ralts
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/273.png" style="max-width:32px;" /><br/><span style="color:#10b981; font-weight:bold;">Seedot</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>DOTS</strong>. Great Grass-type acquired early on that evolves into Shiftry (Grass/Dark) to handle psychic and water threats.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Fortree City Southern Treehouse</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/313.png" style="max-width:32px;" /><br/>Volbeat
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/312.png" style="max-width:32px;" /><br/><span style="color:#fbbf24; font-weight:bold;">Plusle</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>PULS-LE</strong>. Comes carrying Wood Charcoal (increases Fire damage). An extremely fast Electric-type that learns powerful moves early!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Pacifidlog Town Floating House</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/371.png" style="max-width:32px;" /><br/>Bagon
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/116.png" style="max-width:32px;" /><br/><span style="color:#60a5fa; font-weight:bold;">Horsea</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>SEASOR</strong>. Comes carrying a Dragon Scale. Train it to evolve into Kingdra - a monstrously powerful Water/Dragon hybrid!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold;">Battle Frontier Eastern Cottage</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/300.png" style="max-width:32px;" /><br/>Skitty
+            </td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" style="max-width:32px;" /><br/><span style="color:#cbd5e1; font-weight:bold;">Meowth</span>
+            </td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Nickname: <strong>MEOWTHY</strong>. The only way to get a classic Gen 1 Meowth in Hoenn. Comes holding rare Retro Mail.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
   }
 ];
+
