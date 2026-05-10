@@ -573,6 +573,86 @@ export const YELLOW_CHAPTERS = [
 
       <h2>2. Trận chiến Rival định mệnh trên Route 22</h2>
       <p>Trên đường tới Indigo Plateau, người bạn học Rival sẽ chặn đường thách thức bạn với đội hình toàn diện cực mạnh có sự góp mặt của Eevee đã tiến hóa đỉnh cao!</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon của Rival</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Khắc chế & Đấu pháp đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/28.png" alt="Sandslash" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sandslash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Slash, Poison Sting, Swift, Fury Swipes. Có tốc độ khá và đòn chém Slash dễ chí mạng. Hãy dùng chiêu Surf của Blastoise dập tắt ngay lập tức.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/102.png" alt="Exeggcute" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Exeggcute</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 45</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Cỏ / Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hypnosis, Barrage, Stun Spore, Solarbeam. Các đòn trạng thái vô cùng phiền phức. Sử dụng chiêu Flamethrower của Charizard thiêu cháy dứt khoát.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+                <span style="font-size: 11px; color: #94a3b8;">hoặc</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/91.png" alt="Cloyster" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Ninetales / Cloyster</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 45 / 47</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Lửa / Thủy - Băng</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Rival dùng <strong>Ninetales</strong> nếu Eevee của hắn tiến hóa thành Jolteon/Vaporeon, hoặc dùng <strong>Cloyster</strong> nếu Eevee tiến hóa thành Flareon. Dập Ninetales bằng nước (Surf) và hạ Cloyster bằng điện (Pikachu).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/82.png" alt="Magneton" style="max-width: 45px;" />
+                <span style="font-size: 11px; color: #94a3b8;">hoặc</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Magneton / Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47 / 45</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Điện / Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hắn dùng <strong>Magneton</strong> nếu Eevee tiến hóa thành Flareon/Vaporeon, và dùng <strong>Ninetales</strong> nếu Eevee hóa Jolteon. Dễ dàng dùng đòn Đất dứt điểm cả hai.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/64.png" alt="Kadabra" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Kadabra</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Kinesis, Psychic, Recover, Reflect. Sức sát thương đặc biệt cực lớn. Hãy sử dụng đòn tấn công vật lý mạnh mẽ như Body Slam từ Snorlax để hạ đo ván nhanh gọn.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png" alt="Jolteon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/136.png" alt="Flareon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/134.png" alt="Vaporeon" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Jolteon / Flareon / Vaporeon</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Điện / Lửa / Thủy</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Át chủ bài hệ tiến hóa của Eevee. Hãy sử dụng hệ khắc chế cứng tương ứng: dùng Đất khắc Jolteon; dùng Thủy dập Flareon; dùng Điện (Pikachu) / Cỏ (Venusaur) để nướng chín Vaporeon.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -728,6 +808,89 @@ export const YELLOW_CHAPTERS = [
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-weight: bold;">Dragonite</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Lvl 62</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Rồng / Bay</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Trận đấu Định mệnh: Tân Vô Địch - Đối đầu Rival tối thượng!</h2>
+      <p>Sau khi bình định Lance, bạn ngỡ ngàng phát hiện ra Rival của mình đã hoàn thành giải đấu trước bạn và đang chễm chệ trên ngôi vị Nhà Vô Địch! Trận đấu cuối cùng vĩ đại nhất đời huấn luyện viên chính thức bùng nổ:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px; color: #ef4444;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 80px; color: #ef4444;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 120px; color: #ef4444;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Bí quyết dứt điểm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/28.png" alt="Sandslash" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sandslash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 61</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sở hữu đòn Earthquake vô cùng nguy hiểm. Bơi Surf dập tắt nó nhanh chóng để lấy lợi thế đầu trận.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="max-width: 55px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Alakazam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 59</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Siêu tốc độ và lực công phép cực mạnh. Tránh dùng đòn đặc biệt; hãy dập nát bằng đòn tấn công vật lý nặng ký từ Snorlax (Body Slam / Hyper Beam).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/103.png" alt="Exeggutor" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Exeggutor</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 61</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Cỏ / Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Lượng máu lớn cùng các đòn gây phiền nhiễu. Sử dụng chiêu Flamethrower hệ Lửa của Charizard để thiêu rụi hoàn toàn.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/91.png" alt="Cloyster" style="max-width: 40px;" />
+                <span style="font-size: 11px; color: #94a3b8;">hoặc</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cloyster / Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 59</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Băng - Thủy / Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hắn dùng <strong>Cloyster</strong> (Lvl 59) nếu Eevee hóa Flareon, hoặc dùng <strong>Ninetales</strong> (Lvl 59) nếu Eevee hóa Jolteon/Vaporeon. Shock điện Cloyster và dội nước Surf hạ gục Ninetales.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/82.png" alt="Magneton" style="max-width: 45px;" />
+                <span style="font-size: 11px; color: #94a3b8;">hoặc</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Magneton / Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57 / 59</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện / Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hắn dùng <strong>Magneton</strong> nếu Eevee hóa Flareon/Vaporeon, và dùng <strong>Ninetales</strong> nếu Eevee hóa Jolteon. Dễ dàng tiễn cả hai bằng đòn Đất dũng mãnh Earthquake.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png" alt="Jolteon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/136.png" alt="Flareon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/134.png" alt="Vaporeon" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Jolteon / Flareon / Vaporeon (Át Chủ Bài)</td>
+            <td style="padding: 12px 16px;">Lvl 65</td>
+            <td style="padding: 12px 16px;">Điện / Lửa / Thủy</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Át chủ bài tối thượng cấp độ 65! Hãy dùng hệ khắc tinh tuyệt đối tương ứng để hạ gục: Đất đối đầu Jolteon; Thủy đối đầu Flareon; Điện (Pikachu) / Cỏ (Venusaur) đối đầu Vaporeon. Chiến thắng sẽ đưa bạn lên ngôi Vị Vô Địch Kanto!</td>
           </tr>
         </tbody>
       </table>
@@ -1497,6 +1660,86 @@ export const ENGLISH_YELLOW_CHAPTERS = [
 
       <h2>2. The Route 22 Rival Ambush</h2>
       <p>Your rival blocks Route 22, leading a balanced team anchored by his fully evolved Eeveelution. Use typing advantages to crush him one last time before Victory Road!</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Rival's Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/28.png" alt="Sandslash" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sandslash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Slash, Poison Sting, Swift, Fury Swipes. Decent Speed and critical-prone Slash. Wash away instantly with Blastoise's Surf.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/102.png" alt="Exeggcute" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Exeggcute</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 45</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Grass / Psychic</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hypnosis, Barrage, Stun Spore, Solarbeam. Disruptive status moves; burn down cleanly using Charizard's Flamethrower.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+                <span style="font-size: 11px; color: #94a3b8;">or</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/91.png" alt="Cloyster" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Ninetales / Cloyster</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 45 / 47</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Fire / Water - Ice</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">He uses <strong>Ninetales</strong> if Eevee evolved into Jolteon/Vaporeon, or <strong>Cloyster</strong> if Eevee became Flareon. Counter Ninetales with Surf, and shock Cloyster with Pikachu.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/82.png" alt="Magneton" style="max-width: 45px;" />
+                <span style="font-size: 11px; color: #94a3b8;">or</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Magneton / Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47 / 45</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Electric / Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">He has <strong>Magneton</strong> if Eevee became Flareon/Vaporeon, and <strong>Ninetales</strong> if Eevee is Jolteon. Crush both easily with Ground-type moves (Earthquake/Dig).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/64.png" alt="Kadabra" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Kadabra</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Psychic</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Kinesis, Psychic, Recover, Reflect. Massive Special attacking power; abuse its low Physical defense with Snorlax's Body Slam.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png" alt="Jolteon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/136.png" alt="Flareon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/134.png" alt="Vaporeon" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Jolteon / Flareon / Vaporeon</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Electric / Fire / Water</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">His evolved Eevee ace. Counter with type advantages: Ground against Jolteon; Water against Flareon; Grass (Venusaur) or Electric (Pikachu) against Vaporeon.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -1652,6 +1895,89 @@ export const ENGLISH_YELLOW_CHAPTERS = [
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-weight: bold;">Dragonite</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Lvl 62</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">Dragon / Flying</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. The Final Battle: Face the Ultimate Champion Rival!</h2>
+      <p>After conquering Lance, you learn that your lifelong Rival has already defeated the Elite Four and claimed the title of Kanto Champion! Prepare your ultimate strategy for the greatest battle of your journey:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px; color: #ef4444;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 80px; color: #ef4444;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 120px; color: #ef4444;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Counter strategy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/28.png" alt="Sandslash" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sandslash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 61</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Armed with a highly dangerous Earthquake. Wash it away instantly with Surf to claim an early-game advantage.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="max-width: 55px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Alakazam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 59</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Extremely high Speed and Special attacking power. Avoid using special attacks; abuse its low Physical defense with Snorlax's Body Slam or Hyper Beam.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/103.png" alt="Exeggutor" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Exeggutor</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 61</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Grass / Psychic</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Massive HP and disruptive moves. Melt it down completely using Charizard's Flamethrower.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/91.png" alt="Cloyster" style="max-width: 40px;" />
+                <span style="font-size: 11px; color: #94a3b8;">or</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cloyster / Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 59</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ice - Water / Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">He has <strong>Cloyster</strong> (Lvl 59) if Eevee became Flareon, or <strong>Ninetales</strong> (Lvl 59) if Eevee is Jolteon/Vaporeon. Shock Cloyster with Pikachu, and douse Ninetales with Surf.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/82.png" alt="Magneton" style="max-width: 45px;" />
+                <span style="font-size: 11px; color: #94a3b8;">or</span>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Ninetales" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Magneton / Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57 / 59</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Electric / Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">He uses <strong>Magneton</strong> if Eevee became Flareon/Vaporeon, and <strong>Ninetales</strong> if Eevee became Jolteon. Crush both with powerful Ground-type Earthquakes.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <div style="display: flex; justify-content: center; gap: 4px; align-items: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png" alt="Jolteon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/136.png" alt="Flareon" style="max-width: 40px;" />
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/134.png" alt="Vaporeon" style="max-width: 40px;" />
+              </div>
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Jolteon / Flareon / Vaporeon (Ace)</td>
+            <td style="padding: 12px 16px;">Lvl 65</td>
+            <td style="padding: 12px 16px;">Electric / Fire / Water</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">The ultimate evolved Eevee ace at Lvl 65! Leverage hard type counters to conquer: Ground for Jolteon; Water for Flareon; Electric (Pikachu) or Grass (Venusaur) for Vaporeon. Victory will secure your place as Kanto Champion!</td>
           </tr>
         </tbody>
       </table>
