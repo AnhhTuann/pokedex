@@ -514,13 +514,219 @@ export const BLACK_CHAPTERS = [
       <p>Sau khi đoạt đủ 8 chiếc huy hiệu danh giá, vượt qua con đường rực lửa Route 10, đặt chân lên đấu trường tột cùng của vinh quang: Pokémon League.</p>
 
       <h2>1. Thách đấu Bộ Tứ Siêu Đẳng Elite Four đỉnh cao</h2>
-      <p>Unova Elite Four cho phép bạn tự do lựa chọn thứ tự thách thách đấu 4 cao thủ chuyên nghiệp bậc nhất:</p>
-      <ul>
-        <li><strong>Shauntal (Ma quái):</strong> Dùng đòn Bóng Tối hoặc Ma bạo kích cực nhanh lên Coagrigus và Chandelure.</li>
-        <li><strong>Grimsley (Bóng tối):</strong> Dùng đòn Giác Đấu (Sawk/Emboar) hoặc côn trùng đạp bẻ vỡ giáp Bisharp và Krookodile lẹ.</li>
-        <li><strong>Caitlin (Tâm Linh):</strong> Pierce thủ vật lý yếu ớt bằng các đòn Bóng Tối dứt điểm tàn khốc.</li>
-        <li><strong>Marshal (Giác đấu):</strong> Dùng đòn Tâm Linh hoặc đòn hệ Bay tầm xa dội ngập đấu sĩ.</li>
-      </ul>
+      <p>Unova Elite Four cho phép bạn tự do thách đấu 4 đại cao thủ chuyên nghiệp theo bất kỳ thứ tự nào bạn muốn:</p>
+
+      <h3 style="color: #c084fc; margin-top: 24px;">1. Shauntal (Hệ Ma - Ghost)</h3>
+      <p>Shauntal sử dụng sức mạnh tâm linh ma quái để bẫy kẻ thù:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(139, 92, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: center; width: 100px; color: #a78bfa;">Hình ảnh</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Bộ chiêu thức & Kế sách đập tan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/563.png" alt="Cofagrigus" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cofagrigus</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ma (Ghost)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Cực kỳ trâu bò, sở hữu năng lực **Mummy** biến đặc tính của bạn thành vô hại và đòn bẫy hiểm ác **Will-O-Wisp** gây bỏng giảm công vật lý. Tránh dùng đòn tiếp xúc thể chất; dứt điểm lẹ bằng đòn đặc biệt hệ Ma hoặc Bóng Tối.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/593.png" alt="Jellicent" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Jellicent</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước / Ma</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ngoại hình giống con sứa, có đòn **Surf** và **Shadow Ball** uy lực lớn. Đánh bại nhanh bằng chiêu hệ Điện cực mạnh từ Galvantula/Zebstrika hoặc đòn hệ Cỏ từ Simisage.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/623.png" alt="Golurk" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Golurk</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đất / Ma</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sở hữu sức tấn công vật lý rất cao với đòn **Earthquake** và **Shadow Punch** giội sấm sét. Khắc chế triệt để bằng đòn hệ Nước (Surf của Samurott) hoặc chiêu hệ Cỏ siêu bạo phát.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/609.png" alt="Chandelure" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Chandelure (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px;">Ma / Lửa</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Sở hữu chỉ số Tấn công Đặc biệt cao khủng khiếp bậc nhất! Cầm chiêu thức tàn bạo **Fire Blast** và **Shadow Ball** hủy diệt. Tuyệt đối không để nó ra tay trước; dập sập nát lập tức bằng đòn hệ Đất (Earthquake) hoặc dội ngập nước dập lửa nhanh chóng!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: #818cf8; margin-top: 24px;">2. Grimsley (Hệ Bóng Tối - Dark)</h3>
+      <p>Grimsley luôn lạnh lùng sử dụng các mưu mẹo hắc ám tinh vi:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(79, 70, 229, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(79, 70, 229, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: center; width: 100px; color: #818cf8;">Hình ảnh</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Bộ chiêu thức & Kế sách đập tan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/560.png" alt="Scrafty" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Scrafty</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bóng Tối / Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Khả năng phòng ngự cực khủng, spams đòn hiểm **Sand Attack** and **Crunch**. Đấm bay bằng đòn Giác Đấu của chính bạn hoặc đòn hệ Bay cực nhanh.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/553.png" alt="Krookodile" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Krookodile</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đất / Bóng Tối</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Rất nhanh và khỏe, cầm đòn **Earthquake** và **Foul Play** phản kích. Dội nước dập tắt cá sấu bằng Surf cực lẹ hoặc đá bay bằng đòn Giác đấu.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/510.png" alt="Liepard" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Liepard</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bóng Tối</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Cực kì nhanh nhưng phòng thủ siêu mỏng cánh. Một cú đấm Giác Đấu sấm sét từ Emboar/Sawk đủ để nghiền nát con báo đen này ngay tức khắc.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/625.png" alt="Bisharp" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Bisharp (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px;">Bóng Tối / Thép</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Chiến binh bọc giáp thép sắt cứng cáp sở hữu chiêu **Night Slash** chí mạng. Tuy nhiên nó chịu $\times 4$ sát thương chí tử từ hệ Giác Đấu! Hãy quất ngay một đòn **Brick Break** hoặc **Low Kick** của Sawk/Emboar để đập sập tan nát chiến binh này lẹ làng!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: #f472b6; margin-top: 24px;">3. Caitlin (Hệ Tâm Linh - Psychic)</h3>
+      <p>Caitlin sở hữu siêu năng lực tinh thần khủng khiếp áp đảo đối thủ:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(236, 72, 153, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: center; width: 100px; color: #f472b6;">Hình ảnh</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Bộ chiêu thức & Kế sách đập tan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/579.png" alt="Reuniclus" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Reuniclus</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tế bào chất nhầy có lượng HP rất cao, spams **Psychic** và **Focus Blast**. Do tốc độ của nó rất chậm, hãy ghim đòn vật lý hệ Ma hoặc Bóng Tối cực mạnh để hạ gục lẹ.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/561.png" alt="Sigilyph" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sigilyph</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh / Bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Rất nhanh, spams đòn **Air Slash** gây hoảng sợ. Hãy giật sét tê liệt với đòn Điện từ Galvantula/Zebstrika dọn sạch mây mù bay nhảy.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/518.png" alt="Musharna" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Musharna</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Khả năng chống chịu cực kì lì lợm, spams **Hypnosis** gây ngủ phiền hà rồi dựng bình máu phục hồi. Cắn nát kén ngủ mộng mị này bằng đòn Crunch hệ Bóng Tối dứt khoát.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/576.png" alt="Gothitelle" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Gothitelle (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px;">Tâm Linh</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Tiểu thư bóng tối sở hữu thủ cực tốt cầm đòn **Psychic** bão bùng và **Thunderbolt** bao quát. Xé toạc đầm ren tím bằng các chiêu vật lý hệ Bóng Tối mạnh bạo (Crunch của Krookodile) để hạ sập quý cô này!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: #fbbf24; margin-top: 24px;">4. Marshal (Hệ Giác Đấu - Fighting)</h3>
+      <p>Marshal sở hữu những võ sĩ cơ bắp cuồn cuộn uy lực vô song:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(245, 158, 11, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: center; width: 100px; color: #fbbf24;">Hình ảnh</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Bộ chiêu thức & Kế sách đập tan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/538.png" alt="Throh" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Throh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đô vật màu đỏ cực lì, có đòn **Storm Throw** luôn luôn chí mạng bạo phát và gạt ngã thể chất. Sử dụng chiêu đặc biệt hệ Tâm Linh từ tầm xa dội tắt đài, né tránh va chạm cơ thể trực diện.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/539.png" alt="Sawk" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sawk</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Võ sĩ áo xanh có đặc tính **Sturdy** chống bị sốc chết 1 hit cực kỳ khó chịu! Spams đòn bạt tai liên hoàn **Karate Chop** và **Stone Edge**. Hãy đánh trúng mồi bẫy phá Sturdy rồi thổi bay bằng chiêu hệ Tâm Linh/Bay.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/534.png" alt="Conkeldurr" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Conkeldurr</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Gã khổng lồ vác hai cột bê tông có sức tấn công kinh hoàng cùng đòn ưu tiên **Mach Punch** bộc phá và **Hammer Arm** tàn phá gạch đá. Dội bão gió gạt bay cột bê tông bằng chiêu hệ Bay (Air Slash của Sigilyph/Unfezant) nhanh chóng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/620.png" alt="Mienshao" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Mienshao (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px;">Giác Đấu</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Yêu hầu múa quyền tốc độ cao như chớp giật giật, sở hữu đòn **Jump Kick** và **U-turn** tinh ranh luồn lách né đòn. Trấn áp ngay võ sỹ múa lụa quyền pháp này bằng đòn Tâm Linh uy lực bão bùng để dứt điểm trận đấu vinh quang!</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>2. Sự trỗi dậy kinh hoàng của N's Castle bao vây League</h2>
       <p>Khi bạn sắp sửa bước vào thách đấu Nhà Vô Địch Alder, N bất ngờ đánh bại Alder trước! Ngay lập tức, một tòa lâu đài khổng lồ đầy ma mị **N's Castle** trỗi dậy từ lòng đất, những chiếc vuốt sắt gớm ghiếc cắm thẳng bám chặt xung quanh Pokémon League, tạo nên cảnh tượng hào hùng bậc nhất lịch sử dòng game!</p>
@@ -1227,13 +1433,219 @@ export const ENGLISH_BLACK_CHAPTERS = BLACK_CHAPTERS.map(viChapter => {
         <p>With all 8 badges secured, cross the steep Route 10 trails to challenge the highest battlefield: the Unova Pokémon League.</p>
 
         <h2>1. Battling the Unova Elite Four</h2>
-        <p>Unova lets you challenge the Elite Four in any order you choose:</p>
-        <ul>
-          <li><strong>Shauntal (Ghost):</strong> Strike down Coagrigus and Chandelure with fast Ghost or Dark moves.</li>
-          <li><strong>Grimsley (Dark):</strong> Use physical Fighting attacks (Sawk/Emboar) to shatter Bisharp and Krookodile.</li>
-          <li><strong>Caitlin (Psychic):</strong> Pierce her low physical defenses using STAB Dark-type attacks.</li>
-          <li><strong>Marshal (Fighting):</strong> Strike from range using Psychic or Flying types.</li>
-        </ul>
+        <p>The Unova Pokémon League allows you to challenge the Elite Four in any order you choose:</p>
+
+        <h3 style="color: #c084fc; margin-top: 24px;">1. Shauntal (Ghost-type)</h3>
+        <p>Shauntal is an eccentric novelist who harnesses supernatural forces to entrap challenger squads:</p>
+
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(139, 92, 246, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: center; width: 100px; color: #a78bfa;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Move Pool & Battle Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/563.png" alt="Cofagrigus" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cofagrigus</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghost</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Highly defensive with the **Mummy** ability, which overrides your contact abilities, alongside **Will-O-Wisp** to cripple physical sweepers. Avoid contact moves and hit it hard from the special side using Ghost or Dark attacks.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/593.png" alt="Jellicent" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Jellicent</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Water / Ghost</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">A bulky sea-specter wielding STAB **Surf** and **Shadow Ball**. Zap it quickly using Electric attacks from Galvantula or drain it with Grass-type moves.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/623.png" alt="Golurk" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Golurk</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ground / Ghost</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Boasts immense physical power with **Earthquake** and **Shadow Punch**. Pierce through its earthen armor utilizing Surf (from Samurott) or Grass-type attacks.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/609.png" alt="Chandelure" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Chandelure (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 50</td>
+              <td style="padding: 12px 16px;">Ghost / Fire</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;">Possesses a world-class Special Attack stat. Wields devastating **Fire Blast** and **Shadow Ball** moves. Never let it move first; strike down this flame chandelier immediately using Ground (Earthquake) or Water-type (Surf) sweepers!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="color: #818cf8; margin-top: 24px;">2. Grimsley (Dark-type)</h3>
+        <p>Grimsley is a sophisticated gambler who uses highly lethal and deceptive tactical setups:</p>
+
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(79, 70, 229, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(79, 70, 229, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: center; width: 100px; color: #818cf8;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(79, 70, 229, 0.3); text-align: left; color: #818cf8;">Move Pool & Battle Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/560.png" alt="Scrafty" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Scrafty</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark / Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Boasts highly robust defenses, spamming **Sand Attack** and **Crunch**. Shatter its defensive posture using rapid Flying-type attacks or your own Fighting-type moves.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/553.png" alt="Krookodile" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Krookodile</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ground / Dark</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Very fast and aggressive, wielding **Earthquake** and **Foul Play**. Wash it away with Surf (Samurott) or break its stance using heavy Fighting-type attacks.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/510.png" alt="Liepard" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Liepard</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Fast but exceptionally fragile. A single heavy Fighting-type hit from Emboar or Sawk is more than enough to silence this panthers shadow instantly.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/625.png" alt="Bisharp" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Bisharp (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 50</td>
+              <td style="padding: 12px 16px;">Dark / Steel</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;">A heavily armored warrior wielding sharp STAB **Night Slash** blows. However, it takes $\times 4$ fatal damage from Fighting-type attacks! Demolish it instantly using Sawk/Emboar's **Brick Break** or **Low Kick**!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="color: #f472b6; margin-top: 24px;">3. Caitlin (Psychic-type)</h3>
+        <p>Caitlin is a sleeping psychic princess who releases extraordinary spiritual waves when active:</p>
+
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(236, 72, 153, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: center; width: 100px; color: #f472b6;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(236, 72, 153, 0.3); text-align: left; color: #f472b6;">Move Pool & Battle Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/579.png" alt="Reuniclus" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Reuniclus</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">A slow but bulky cell-colloid wielding **Psychic** and **Focus Blast**. Capitalize on its poor Speed to crush it using powerful physical Dark-type moves.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/561.png" alt="Sigilyph" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sigilyph</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic / Flying</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Extremely fast, utilizing flinching **Air Slash** tactics. Shoot it out of the skies using Electric moves from Galvantula or Zebstrika.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/518.png" alt="Musharna" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Musharna</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">An exceptionally bulky dream tapir that spams **Hypnosis** to put targets to sleep. Chew through its sleep-shroud with solid physical Dark-type (Crunch) hits.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/576.png" alt="Gothitelle" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Gothitelle (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 50</td>
+              <td style="padding: 12px 16px;">Psychic</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;">A goth mistress with solid defensive statistics, wielding **Psychic** and **Thunderbolt**. Slice through its defenses using heavy physical Dark-type attacks (Krookodile's Crunch) to close out her domain!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="color: #fbbf24; margin-top: 24px;">4. Marshal (Fighting-type)</h3>
+        <p>Marshal is Champion Alder's premier discipline, wielding physical martial powerhouses:</p>
+
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 24px 0; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(245, 158, 11, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: center; width: 100px; color: #fbbf24;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left; color: #fbbf24;">Move Pool & Battle Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/538.png" alt="Throh" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Throh</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Extremely bulky red judo expert wielding guaranteed critical hit **Storm Throw** attacks. Blast it down from range using special Psychic attacks (Reuniclus / Gothitelle).</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/539.png" alt="Sawk" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sawk</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">A fierce blue karate practitioner with the **Sturdy** ability, preventing single-hit knockouts. Wields fast **Karate Chop** and **Stone Edge** moves. Clear its Sturdy then blow it away using Flying or Psychic moves.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/534.png" alt="Conkeldurr" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Conkeldurr</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">An absolute powerhouse carrying double concrete pillars. Wields heavy physical priority **Mach Punch** and crushing **Hammer Arm** strikes. Melt its pillars down quickly using high-impact Flying-type moves (Unfezant/Sigilyph).</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/620.png" alt="Mienshao" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Mienshao (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 50</td>
+              <td style="padding: 12px 16px;">Fighting</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;">A lightning-fast martial artist wielding sweeping **Jump Kick** and deceptive **U-turn** moves. Suppress its extreme mobility using powerful Psychic moves (Sigilyph/Reuniclus) to secure your League victory!</td>
+            </tr>
+          </tbody>
+        </table>
 
         <h2>2. The Summoning of N's Castle</h2>
         <p>Right as you prepare to battle Champion Alder, N overrides the arena! Suddenly, the massive cyber-classic **N's Castle** rises from the ground, wrapping around the League in one of the most cinematic sequences in series history!</p>
