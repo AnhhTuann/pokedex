@@ -103,6 +103,7 @@ export const YELLOW_CHAPTERS = [
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
           <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon của Team Rocket</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
@@ -111,18 +112,27 @@ export const YELLOW_CHAPTERS = [
         </thead>
         <tbody>
           <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/23.png" alt="Ekans" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Ekans</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 14</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Độc</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Giải quyết nhanh bằng các đòn tấn công vật lý mạnh mẽ.</td>
           </tr>
           <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/109.png" alt="Koffing" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Koffing</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 14</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Độc</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tương tự Ekans, cẩn thận đòn trạng thái nhiễm độc Poison.</td>
           </tr>
           <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="Meowth" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Meowth</td>
             <td style="padding: 12px 16px;">Lvl 14</td>
             <td style="padding: 12px 16px; color: #cbd5e1;">Thường</td>
@@ -1190,6 +1200,7 @@ export const ENGLISH_YELLOW_CHAPTERS = [
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
           <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Team Rocket's Squad</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
@@ -1198,18 +1209,27 @@ export const ENGLISH_YELLOW_CHAPTERS = [
         </thead>
         <tbody>
           <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/23.png" alt="Ekans" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Ekans</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 14</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Poison</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Take down swiftly with heavy physical attacks.</td>
           </tr>
           <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/109.png" alt="Koffing" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Koffing</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 14</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Poison</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Wipe out quickly, watch out for poison status effects.</td>
           </tr>
           <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="Meowth" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Meowth</td>
             <td style="padding: 12px 16px;">Lvl 14</td>
             <td style="padding: 12px 16px; color: #cbd5e1;">Normal</td>
