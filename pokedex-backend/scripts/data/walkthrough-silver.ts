@@ -1124,7 +1124,311 @@ export const SILVER_CHAPTERS = [
       </table>
     `
   }
-];
+,
+  {
+    gameVersion: "silver",
+    chapterTitle: "Phần 12: Hành trình khám phá Kanto & Trận quyết chiến đỉnh cao với Red tại Mt. Silver",
+    order: 12,
+    language: "vi",
+    content: `
+      <h1>Phần 12: Hành trình khám phá Kanto & Trận quyết chiến đỉnh cao với Red tại Mt. Silver</h1>
+      <p>Sau khi chiến thắng Johto Pokémon League, hãy gặp Giáo sư Elm để nhận vé tàu <strong>S.S. Ticket</strong> bước lên du thuyền sang trọng S.S. Aqua vượt biển tiến thẳng sang vùng đất Kanto huyền thoại!</p>
+
+      <h2>1. Săn Lùng 8 Huy Hiệu Gym Vùng Kanto</h2>
+      <p>Tại Kanto, bạn sẽ lần lượt khiêu chiến 8 thủ lĩnh phòng Gym kinh điển của Generation 1 ở cấp độ hoàn toàn mới, kịch tính hơn nhiều:</p>
+      <ul>
+        <li><strong>Brock (Pewter Gym):</strong> Thủ lĩnh đá tảng với bộ đôi Ryhorn & Onix cứng cáp <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/95.png" style="max-width:24px; vertical-align:middle;" />.</li>
+        <li><strong>Misty (Cerulean Gym):</strong> Trận chiến dưới nước tuyệt vời cùng Starmie siêu tốc độ <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/121.png" style="max-width:24px; vertical-align:middle;" />.</li>
+        <li><strong>Lt. Surge (Vermilion Gym):</strong> Vượt qua mê cung thùng rác rực điện để thách thức Raichu <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" style="max-width:24px; vertical-align:middle;" />.</li>
+        <li><strong>Erika (Celadon Gym):</strong> Khu vườn hoa rực rỡ hệ Cỏ sẵn sàng chào đón bạn.</li>
+        <li><strong>Janine (Fuchsia Gym):</strong> Con gái của Koga kế thừa phòng Gym Độc thuật tàng hình bí ẩn.</li>
+        <li><strong>Sabrina (Saffron Gym):</strong> Đấu trường siêu linh ma thuật khốc liệt Alakazam <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" style="max-width:24px; vertical-align:middle;" />.</li>
+        <li><strong>Blaine (Cinnabar Gym):</strong> Vị trí Gym dời sang hang động đá núi lửa Seafoam Islands hoang dã.</li>
+        <li><strong>Blue (Viridian Gym):</strong> Cựu vô địch Kanto thách thức bạn với đội hình đa hệ vô cùng cân bằng, không có một điểm yếu rõ rệt nào!</li>
+      </ul>
+
+      <h2>2. Trận Quyết Chiến Thần Thoại atop Mt. Silver</h2>
+      <p>Sau khi thu thập trọn bộ 16 Huy hiệu Gym của cả hai vùng đất, Giáo sư Oak sẽ cấp giấy phép cho bạn tiến vào vùng cấm địa linh thiêng: <strong>Mt. Silver (Núi Bạc)</strong>.</p>
+      <p>Tại đỉnh núi tuyết phủ trắng xóa quanh năm, một bóng hình lặng lẽ đang chờ đón bạn. Đó chính là huyền thoại vô địch: <strong>Red (Level 75-81+)</strong>!</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px; color: #f87171;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #f87171;">Thần Thú của Red</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #f87171;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #f87171;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #f87171;">Chiến thuật khắc chế tối ưu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Pikachu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Level 81</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Chú chuột điện siêu cấp Level 81 có tốc độ cực nhanh. Sử dụng các đòn hệ Đất của Donphan hoặc Steelix để chặn đứng hoàn toàn!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/196.png" alt="Espeon" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Espeon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Level 73</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Siêu Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Kháng đòn siêu linh cực tốt bằng Pokémon hệ Bóng Tối như Umbreon hoặc Tyranitar, sau đó hạ gục bằng đòn vật lý mạnh.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" alt="Snorlax" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Snorlax</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Level 75</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thường</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Một bức tường máu khổng lồ vô cùng khó nhằn. Hãy đấm vỡ giáp của nó bằng đòn hệ Giác Đấu dũng mãnh (Machamp / Heracross).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" alt="Venusaur" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venusaur</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Level 77</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Cỏ / Độc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Thiêu rụi lớp phòng ngự sinh học bằng đòn hệ Lửa rực cháy từ Typhlosion hoặc Charizard.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" alt="Blastoise" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Blastoise</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Level 77</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Giật điện sấm sét xé tan giáp nước bằng chiêu phóng điện của Ampharos hoặc Raikou.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" alt="Charizard" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Charizard</td>
+            <td style="padding: 12px 16px;">Level 77</td>
+            <td style="padding: 12px 16px;">Lửa / Bay</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Đánh mạnh bằng đòn hệ Nước (Surf) hoặc hệ Đá để gây sát thương nhân đôi cực đỉnh!</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  },
+  {
+    gameVersion: "silver",
+    chapterTitle: "Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon Johto",
+    order: 13,
+    language: "vi",
+    content: `
+      <h1>Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon Johto</h1>
+      <p>Cơ sở tra cứu nhanh chóng tất cả các công cụ vượt địa hình, vật phẩm nhiệm vụ cốt truyện chính và các giao dịch Pokémon NPC cực hời vùng Johto!</p>
+
+      <h2>1. Danh sách vị trí sở hữu 7 HM (Hidden Machines) Vùng Johto</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 120px; color: #facc15;">HM</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 120px; color: #facc15;">Chiêu thức</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: color: #facc15;">Vị trí sở hữu cụ thể</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 150px; color: #facc15;">Yêu cầu Huy hiệu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM01</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Cut (Chặt)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận sâu trong rừng Ilex Forest sau khi lùa bắt thành công chú vịt Farfetch'd đi lạc.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Hive Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM02</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Fly (Bay)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Trò chuyện với vợ của võ sư Chuck bên ngoài cửa Gym Cianwood City ngay sau khi hạ gục ông ta.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Storm Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM03</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Surf (Lướt)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Hạ gục cả 5 cô gái Kimono Girls xinh đẹp tại nhà hát kịch Ecruteak City để nhận đĩa máy này.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Zephyr Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM04</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Strength (Đẩy)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nói chuyện với chàng thủy thủ tại quán ăn Olivine Café (Olivine City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Plain Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM05</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Flash (Sáng)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thắng trưởng lão Elder Li tại đỉnh tháp Sprout Tower (Violet City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Không cần huy hiệu</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM06</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Whirlpool (Xoáy)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Được Lance trao tặng bên trong căn cứ ngầm Team Rocket ở Mahogany Town sau khi dẹp loạn máy phát sóng.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Glacier Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">HM07</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #38bdf8;">Waterfall (Thác)</td>
+            <td style="padding: 12px 16px;">Lượm trên sàn băng lạnh giá tại tầng 1F của hang động Ice Path.</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Rising Badge</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Bản Tra Cứu Các Vật Phẩm Nhiệm Vụ Quan Trọng Johto</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 150px; color: #facc15;">Key Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Cách lấy vật phẩm</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Công dụng cốt truyện</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Mystery Egg (Trứng Bí Ẩn)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ nhà ông Mr. Pokémon tại bìa rừng Route 30 đầu hành trình.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giao cho Giáo sư Elm nghiên cứu, sau đó trứng sẽ nở thành Pokémon hiếm **Togepi**!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Squirt Bottle (Bình nước)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ cửa hàng hoa Goldenrod Flower Shop sau khi chiến thắng Gym Leader Whitney.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tưới nước kích động cái cây chắn đường dã ngoại ở ngã ba Route 36 để bắt hoặc đánh bại **Sudowoodo (Level 20)**.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">SecretPotion (Thần dược)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mua tại nhà thuốc cổ truyền Cianwood City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đem về ngọn hải đăng Olivine Lighthouse để chữa bệnh cho Ampharos của thủ lĩnh Jasmine.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Rainbow Wing (Cánh Cầu Vồng)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giám đốc Đài phát thanh Radio Tower tặng sau khi phá tan hang ổ Rocket tại Goldenrod.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mở đường leo lên đỉnh tháp Tin Tower để diện kiến phượng hoàng huyền thoại **Ho-Oh**.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  },
+  {
+    gameVersion: "silver",
+    chapterTitle: "Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại",
+    order: 14,
+    language: "vi",
+    content: `
+      <h1>Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại</h1>
+      <p>Thế hệ Generation 2 giới thiệu cơ chế Pokémon chạy hoang dã cực kỳ kịch tính và những vị thần bảo hộ đại dương, bầu trời và rừng rậm.</p>
+
+      <h2>1. Bộ Ba Chó Huyền Thoại Chạy Hoang dã</h2>
+      <p>Sau khi kích hoạt sự kiện sụp đổ tháp tại <strong>Burned Tower (Tháp Cháy)</strong> ở Ecruteak City, ba thần thú vùng Johto sẽ hồi sinh và bay lượn ngẫu nhiên khắp các đồng cỏ hoang vùng Johto ở cấp độ 40:</p>
+      <ul>
+        <li><strong>Raikou (Hệ Điện - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" style="max-width:24px; vertical-align:middle;" />:</strong> Tốc độ sấm sét, chuyên sử dụng Roar dã ngoại để chạy trốn khỏi trận đấu.</li>
+        <li><strong>Entei (Hệ Lửa - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" style="max-width:24px; vertical-align:middle;" />:</strong> Chạy nhanh vượt trội, có đòn phun lửa uy lực dũng mãnh dã ngoại.</li>
+        <li><strong>Suicune (Hệ Nước - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:24px; vertical-align:middle;" />:</strong> Thần thú gió mùa bảo hộ dòng sông. (Trong bản <strong>Crystal</strong>, Suicune sẽ có cốt truyện tĩnh gặp ở Tin Tower mà không chạy trốn, gánh đội cực kỳ xuất sắc).</li>
+        <li><strong>Chiến thuật săn lùng:</strong> Sử dụng Pokémon có chiêu chặn chạy trốn như <strong>Mean Look</strong> (Umbreon / Crobat) hoặc ru ngủ lập tức, tốt nhất là quăng quả <strong>Master Ball</strong> thần thánh.</li>
+      </ul>
+
+      <h2>2. Thần Bảo Hộ Đại Dương Lugia & Phượng Hoàng Lửa Ho-Oh</h2>
+      <p>Hai hộ vệ thần thánh tối thượng của thế giới Gen 2 có mốc xuất hiện phụ thuộc vào phiên bản bạn chơi:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 100px; color: #10b981;">Hình ảnh</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Thần Thú</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Cốt truyện chính (Cấp 40)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Hậu game (Cấp 70)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Nơi ẩn ngụ cụ thể</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" alt="Ho-Oh" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Ho-Oh (Phượng Hoàng Lửa)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Mặc định trong bản <strong>Gold</strong> bằng Rainbow Wing lấy ở Radio Tower.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Trong bản <strong>Silver</strong> bằng cách nhận cánh lông từ ông lão ở Pewter City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đỉnh tháp <strong>Tin Tower</strong> (Ecruteak City).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" alt="Lugia" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Lugia (Rồng Biển Cổ Đại)</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Mặc định trong bản <strong>Silver</strong> bằng Silver Wing lấy ở Radio Tower.</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Trong bản <strong>Gold</strong> bằng cánh lông bạc nhận từ ông lão ở Pewter City.</td>
+            <td style="padding: 12px 16px;">Hang động mê cung nước <strong>Whirl Islands</strong> (Route 41).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Thần Rừng Celebi & Pokémon Đặc Biệt Union Cave</h2>
+      <ul>
+        <li><strong>Celebi - Thần Rừng Thời Không (Lvl 30) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/251.png" style="max-width:24px; vertical-align:middle;" />:</strong> Độc quyền sự kiện dã ngoại. Mang quả bóng cổ <strong>GS Ball</strong> đến cho thợ làm bóng Kurt ở Azalea Town để giải mã, sau đó đặt nó vào ngôi đền cổ kính ở <strong>Ilex Forest</strong> để gọi Celebi xuất hiện dã ngoại!</li>
+        <li><strong>Lapras Huyền Thoại Union Cave (Lvl 20) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" style="max-width:24px; vertical-align:middle;" />:</strong> Chú rồng nước Lapras có tỉ lệ xuất hiện tĩnh cực hiếm sâu dưới lòng hồ nước Union Cave B2F <strong>chỉ vào duy nhất ngày thứ Sáu hàng tuần</strong>. Đội hình gánh rồng tuyệt hảo cho hành trình Johto!</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "silver",
+    chapterTitle: "Phần 15: Toàn tập Hậu game, Battle Tower & Vật phẩm Trấn phái Johto",
+    order: 15,
+    language: "vi",
+    content: `
+      <h1>Phần 15: Toàn tập Hậu game, Battle Tower & Vật phẩm Trấn phái Johto</h1>
+      <p>Johto hậu game mang đến những tính năng đột phá sáng tạo vượt bậc của thế hệ Generation 2, thiết lập nền móng thi đấu chuyên nghiệp đầu tiên.</p>
+
+      <h2>1. Đấu Trường Đỉnh Cao Battle Tower (Bản Crystal)</h2>
+      <p>Nằm ngoài khơi biển phía tây thành phố cảng Olivine City, **Battle Tower** là thử thách đỉnh phong nhất thế giới Gen 2:</p>
+      <ul>
+        <li><strong>Luật thi đấu:</strong> Bạn sẽ chọn đội hình gồm 3 Pokémon tham chiến chuỗi 7 trận đấu liên tiếp với các đối thủ máy tính thông minh vượt bậc.</li>
+        <li><strong>Cơ chế phân nhóm cấp độ:</strong> Chia làm các phòng thi đấu từ Level 10, 20... cho đến Level 100 cực hạn. Kẻ địch có chiến thuật dùng đòn trạng thái vô cùng sắc sảo.</li>
+        <li><strong>Phần thưởng quý giá:</strong> Đạt chuỗi thắng tuyệt đối để nhận được các loại Vitamin tăng chỉ số nỗ lực (Carbos, Protein, Calcium...) nâng cấp sức mạnh cực hạn.</li>
+      </ul>
+
+      <h2>2. Bản Tra Cứu Các Vật Phẩm Trấn Phái Toàn Diện Johto</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 180px;">Bảo vật vô giá</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Sức mạnh thực chiến đặc quyền</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Cách tìm kiếm đặc thù</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">EXP. Share (Chia sẻ EXP)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhận 50% điểm kinh nghiệm trận đấu mà không cần ra sân chiến đấu.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đem chiếc vảy đỏ <strong>Red Scale</strong> (nhận được sau khi hạ gục chú Gyarados Đỏ đột biến tại Lake of Rage) về đổi với Mr. Pokémon trên Route 30.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Leftovers (Đồ ăn thừa)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hồi phục 1/16 lượng máu tối đa sau mỗi lượt đấu vô cùng bền bỉ.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sở hữu sẵn trên người chú Pokémon ngủ ham ăn <strong>Snorlax hoang dã</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" style="max-width:24px; vertical-align:middle;" /> chặn đường Vermilion City sau khi bắt giữ được nó, hoặc lục thùng rác ở hầm ngầm Celadon.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Amulet Coin (Xu Bùa Hộ Mệnh)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhân đôi toàn bộ tiền thưởng kiếm được sau mỗi chiến thắng dã ngoại.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tìm thấy ở tầng hầm tối tăm sâu khu trung tâm thương mại <strong>Goldenrod Dept. Store</strong>.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">TM26 Earthquake (Động Đất)</td>
+            <td style="padding: 12px 16px;">Chiêu thức Đất tối cường với sức mạnh công phá hủy diệt hàng đầu game.</td>
+            <td style="padding: 12px 16px;">Nằm sâu tại tầng hầm hang động dẫn đến đỉnh Liên Minh <strong>Victory Road (B1F)</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  }];
 
 export const ENGLISH_SILVER_CHAPTERS = [
   {
@@ -2252,4 +2556,114 @@ export const ENGLISH_SILVER_CHAPTERS = [
       </table>
     `
   }
-];
+,
+  {
+    gameVersion: "silver",
+    chapterTitle: "Chapter 14: Johto Rare & Legendary Secrets",
+    order: 14,
+    language: "en",
+    content: `
+      <h1>Chapter 14: Johto Rare & Legendary Secrets</h1>
+      <p>Generation 2 introduced high-stakes roaming wild encounters and iconic guardians ruling over storms, oceans, and timelines.</p>
+
+      <h2>1. The Roaming Legendary Beasts</h2>
+      <p>Awakened at the collapsed ruins of the <strong>Burned Tower</strong> in Ecruteak City, Johto's legendary elementals scatter and roam the grass across Johto at Level 40:</p>
+      <ul>
+        <li><strong>Raikou (Electric - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" style="max-width:24px; vertical-align:middle;" />:</strong> Blistering Speed. Uses Roar to instantly escape combat.</li>
+        <li><strong>Entei (Fire - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" style="max-width:24px; vertical-align:middle;" />:</strong> High physical power, deals devastating flame attacks.</li>
+        <li><strong>Suicune (Water - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:24px; vertical-align:middle;" />:</strong> The North Wind. (In <strong>Crystal</strong>, Suicune has a static story encounter at Tin Tower, offering an elite Water-type carry).</li>
+        <li><strong>Catch Tactics:</strong> Use speed trap passives like <strong>Shadow Tag</strong> (Wobbuffet) or move-trapping like <strong>Mean Look</strong> (Umbreon/Crobat). Throwing the <strong>Master Ball</strong> immediately bypasses the chase.</li>
+      </ul>
+
+      <h2>2. Lugia, Guardian of the Oceans & Ho-Oh, Phoenix of the Heavens</h2>
+      <p>These two legendary mythological titans rest at opposite ends of Johto, with level milestones shifting by version:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 100px; color: #10b981;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Legendary Titan</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Story Mode (Lvl 40)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Post-Game (Lvl 70)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Nesting Chamber</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" alt="Ho-Oh" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Ho-Oh (Fire / Flying)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Default target in **Gold** via Rainbow Wing.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Post-Game goal in **Silver** via Pewter City's old man.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Peak of **Tin Tower** (Ecruteak City).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" alt="Lugia" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Lugia (Psychic / Water)</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Default target in **Silver** via Silver Wing.</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Post-Game goal in **Gold** via Pewter City's old man.</td>
+            <td style="padding: 12px 16px;">Subterranean waterfalls of **Whirl Islands** (Route 41).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Celebi (Time Guardian) & Lapras</h2>
+      <ul>
+        <li><strong>Celebi (Time Guardian - Lvl 30) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/251.png" style="max-width:24px; vertical-align:middle;" />:</strong> Event exclusive. Deliver the mysterious <strong>GS Ball</strong> to Kurt in Azalea Town to decode, then place it inside the shrine in the heart of <strong>Ilex Forest</strong> to summon Celebi!</li>
+        <li><strong>Lapras (Union Cave Friday Event - Lvl 20) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" style="max-width:24px; vertical-align:middle;" />:</strong> Generates as a static overworld encounter in Union Cave B2F <strong>only on Fridays</strong>. Excellent bulky Water/Ice carry for your Johto journey.</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "silver",
+    chapterTitle: "Chapter 15: Post-Game Battle Tower & Essential Items Guide",
+    order: 15,
+    language: "en",
+    content: `
+      <h1>Chapter 15: Post-Game Battle Tower & Essential Items Guide</h1>
+      <p>Generation 2 post-game introduced core features that established the competitive and technical foundation of modern Pokémon battling.</p>
+
+      <h2>1. The Crystal Battle Tower Arena</h2>
+      <p>Located on the coast west of Olivine City, the **Battle Tower** stands as the ultimate strategic gauntlet of Generation 2:</p>
+      <ul>
+        <li><strong>The Challenge:</strong> Select a tight squad of 3 Pokémon to challenge an AI-driven sequence of 7 consecutive matches.</li>
+        <li><strong>Level brackets:</strong> Ranging from Level 10, 20... up to Level 100 maximum. AI utilizing complex toxic/stalling setups!</li>
+        <li><strong>Prizes:</strong> Score high winning streaks to receive stat-boosting vitamins (Protein, Calcium, Carbos) to maximize your Pokémon's potential.</li>
+      </ul>
+
+      <h2>2. Essential Gen 2 Items Reference</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 180px;">Held Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Tactical Advantage</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Method of Acquisition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">EXP. Share</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Passes 50% experience to the holder without entering the active battlefield.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Trade the rare <strong>Red Scale</strong> (obtained from the Lake of Rage Red Gyarados) with Mr. Pokémon on Route 30.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Leftovers</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Slowly restores 1/16 of holder's maximum HP each turn.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Carried held by the wild overworld **Snorlax** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" style="max-width:24px; vertical-align:middle;" /> blocking Vermilion City, or searched out from the trash bin inside Celadon.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Amulet Coin</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Doubles overworld prize money earned from victorious trainer combat.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Found tucked inside the dark basement of the **Goldenrod Dept. Store**.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">TM26 Earthquake</td>
+            <td style="padding: 12px 16px;">The absolute strongest Ground-type move with 100 power and zero accuracy penalties.</td>
+            <td style="padding: 12px 16px;">Located deep inside Kanto-Johto boundary path <strong>Victory Road (B1F)</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  }];

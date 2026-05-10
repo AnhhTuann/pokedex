@@ -1515,7 +1515,133 @@ export const LEAFGREEN_CHAPTERS = [
       </table>
     `
   }
-];
+,
+  {
+    gameVersion: "leafgreen",
+    chapterTitle: "Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại",
+    order: 14,
+    language: "vi",
+    content: `
+      <h1>Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại</h1>
+      <p>Sau khi khôi phục hệ thống mạng liên kết vùng Hoenn tại Sevii Islands, thế giới Pokémon rộng mở ra những bí ẩn cổ xưa nhất vùng Kanto.</p>
+
+      <h2>1. Săn lùng Bộ Ba Chó Huyền Thoại Chạy Hoang</h2>
+      <p>Sau khi chiến thắng Tứ Đại Thiên Vương và hoàn thành nhiệm vụ Ruby/Sapphire của Celio, một trong ba Thần Thú vùng Johto sẽ xuất hiện ngẫu nhiên hoang dã khắp Kanto ở Level 50. Con thú nào xuất hiện phụ thuộc hoàn toàn vào Pokémon khởi đầu của bạn:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(59, 130, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Hình ảnh</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Yêu cầu Starter</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Chiến thuật săn bắt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" alt="Raikou" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Raikou</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Squirtle</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Cực kỳ nhanh. Hãy dùng kỹ năng chặn chạy trốn như <strong>Mean Look</strong> hoặc ném ngay quả <strong>Master Ball</strong> để thu phục lập tức!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" alt="Entei" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Entei</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Bulbasaur</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sở hữu đòn gầm rú Roar có thể ép trận đấu kết thúc tức thì (Lỗi game khiến biến mất vĩnh viễn). Nên dùng <strong>Master Ball</strong> trước khi quăng bóng dã ngoại.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" alt="Suicune" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Suicune</td>
+            <td style="padding: 12px 16px;">Nước</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #f43f5e;">Charmander</td>
+            <td style="padding: 12px 16px;">Chống chịu tốt, di chuyển vừa phải. Sử dụng trạng thái ngủ hoặc đóng băng để tối ưu tỷ lệ bắt giữ.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Mewtwo - Siêu Thú Tối Thượng tại Cerulean Cave <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
+      <p>Sau khi kết nối hoàn tất máy thời không của Celio, lối vào hang động <strong>Cerulean Cave</strong> (mạn bắc Cerulean City) sẽ chính thức mở cửa. Tại đáy sâu nhất của mê cung, bạn sẽ diện kiến <strong>Mewtwo (Level 70)</strong>.</p>
+      <ul>
+        <li><strong>Đội hình mang theo:</strong> Mang theo Pokémon hệ Bóng Tối (Dark) để miễn nhiễm đòn siêu linh nguy hiểm hoặc Pokémon có đòn ru ngủ ổn định.</li>
+        <li><strong>Cách bắt tốt nhất:</strong> Mewtwo có khả năng tự phục hồi bằng đòn Recover cực kỳ khó chịu. Quả <strong>Master Ball</strong> là cứu cánh hoàn hảo nhất tại đây.</li>
+      </ul>
+
+      <h2>3. Khám Phá Bí Mật Khải Sinh Đảo: Deoxys & Sứ Mệnh Navel Rock</h2>
+      <p>Sử dụng vé sự kiện đặc biệt để mở khóa các hải đảo bí ẩn nhất thế giới Sevii:</p>
+      <ul>
+        <li><strong>Birth Island (Đảo Khai Sinh - Deoxys) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/386.png" style="max-width:28px; vertical-align:middle;" />:</strong> Sử dụng Aurora Ticket để cập bến hòn đảo hình tam giác. Bạn phải giải câu đố đẩy khối tam giác màu đỏ theo số bước tối ưu nhất. Khi khối đá nổ tung, <strong>Deoxys (Level 30)</strong> sẽ xuất hiện! (Trong FireRed, nó sẽ mang Dạng Tấn công; trong LeafGreen mang Dạng Phòng thủ).</li>
+        <li><strong>Navel Rock (Đá Rốn - Lugia & Ho-Oh):</strong> Sử dụng Mystic Ticket để đi đến ngọn tháp đá kỳ vĩ này. Ở đáy sâu thẳm ngập nước là nơi trú ngụ của <strong>Lugia (Level 70)</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:28px; vertical-align:middle;" />, còn ở đỉnh tháp nhọn cao chọc trời là tổ phượng hoàng lửa <strong>Ho-Oh (Level 70)</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" style="max-width:28px; vertical-align:middle;" />.</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "leafgreen",
+    chapterTitle: "Phần 15: Toàn tập Hậu game, Đấu trường & Vật phẩm Trấn phái",
+    order: 15,
+    language: "vi",
+    content: `
+      <h1>Phần 15: Toàn tập Hậu game, Đấu trường & Vật phẩm Trấn phái</h1>
+      <p>Hoàn thành cốt truyện chính chỉ là khởi đầu! Vùng Sevii Islands mở ra chuỗi nhiệm vụ hậu game đỉnh cao và những đấu trường thử thách thực lực tối thượng.</p>
+
+      <h2>1. Chuỗi Nhiệm Vụ Sevii Islands (Đảo 4-7)</h2>
+      <p>Sau khi chiến thắng Liên Minh, hãy nhận <strong>Rainbow Pass</strong> từ Celio để tiến sang các hòn đảo phía nam:</p>
+      <ul>
+        <li><strong>Four Island (Đảo Bốn):</strong> Ghé thăm hang động <strong>Icefall Cave</strong>, hợp tác cùng Lorelei đánh bại băng đảng Team Rocket đang bắt bớ Pokémon hoang dã dã man dã ngoại, nhận HM07 Waterfall.</li>
+        <li><strong>Five Island (Đảo Năm):</strong> Khám phá đồng cỏ hoang Meadow, giải mã ổ khóa căn cứ ngầm <strong>Rocket Warehouse</strong> bằng mật mã kép thu thập được dọc đường để quét sạch tàn dư Rocket cứu thế giới. Đoạt lấy viên đá <strong>Sapphire</strong> mang về kích hoạt máy truyền tin đa vùng.</li>
+        <li><strong>Seven Island (Đảo Bảy):</strong> Khám phá di tích cổ đại <strong>Tanoby Ruins</strong>, giải đố đẩy đá trong hang để mở khóa sự xuất hiện của 28 hình dạng chữ cổ thần bí <strong>Unown</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201.png" style="max-width:24px; vertical-align:middle;" /> dã ngoại.</li>
+      </ul>
+
+      <h2>2. Đấu Trường Đỉnh Cao Trainer Tower</h2>
+      <p>Nằm ở phía bắc Đảo Bảy (Seven Island), đấu trường <strong>Trainer Tower</strong> thử thách khả năng thi đấu tính giờ (Time Attack) khốc liệt nhất game:</p>
+      <ul>
+        <li><strong>Cơ chế đặc biệt:</strong> Pokémon của kẻ địch sẽ tự động tăng tiến cấp độ tương thích bằng với cấp độ của Pokémon mạnh nhất trong đội hình của bạn!</li>
+        <li><strong>Phần thưởng:</strong> Khi hoàn thành trong thời gian quy định, bạn sẽ nhận được vô số vật phẩm quý hiếm như Dragon Scale, Metal Coat, Up-Grade hay các loại dược thảo quý giá.</li>
+      </ul>
+
+      <h2>3. Các Vật Phẩm Trấn Phái Hậu Game</h2>
+      <p>Để xây dựng đội hình thi đấu tháp đỉnh cao, hãy trang bị ngay các bảo vật sau:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 180px;">Bảo vật</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Tác dụng thực chiến</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Cách thu thập</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Leftovers (Đồ ăn thừa)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Hồi phục 1/16 lượng máu tối đa sau mỗi lượt đấu.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đến đúng 2 ô đất trống Snorlax từng ngủ say ngủ gật chặn đường (Route 12 & Route 16) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" style="max-width:24px; vertical-align:middle;" /> và dùng công cụ <strong>Itemfinder</strong> để dò tìm dã ngoại.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Macho Brace (Băng Đô Đô)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhân đôi điểm nỗ lực (EV) nhận được khi hạ địch để tăng chỉ số cực hạn.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dùng <strong>Itemfinder</strong> ngay trên ô gạch trống thủ lĩnh Giovanni từng đứng trong phòng Gym Viridian City sau khi hạ gục ông ta.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Exp. Share</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Chia sẻ kinh nghiệm cho Pokémon đeo giữ mà không cần trực tiếp ra trận đấu.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Gặp trợ lý Giáo sư Oak tại cổng gác Route 15 nếu bạn đã thu thập tối thiểu <strong>50 loài Pokémon</strong> khác nhau.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #f43f5e;">Amulet Coin</td>
+            <td style="padding: 12px 16px;">Nhân đôi lượng tiền thưởng thắng trận đấu dã ngoại.</td>
+            <td style="padding: 12px 16px;">Gặp trợ lý Oak tại cổng gác Route 16 nếu đăng ký đủ 40 loài Pokémon.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  }];
 
 export const ENGLISH_LEAFGREEN_CHAPTERS = [
   {
@@ -2717,4 +2843,130 @@ export const ENGLISH_LEAFGREEN_CHAPTERS = [
       </table>
     `
   }
-];
+,
+  {
+    gameVersion: "leafgreen",
+    chapterTitle: "Chapter 14: Rare & Legendary Pokémon Secrets",
+    order: 14,
+    language: "en",
+    content: `
+      <h1>Chapter 14: Rare & Legendary Pokémon Secrets</h1>
+      <p>With the multi-region link established in the Sevii Islands, legendary secrets across Kanto are officially unlocked.</p>
+
+      <h2>1. Tracking the Roaming Johto Legendary Beast</h2>
+      <p>Defeating the Elite Four and fully restoring Celio's link machine triggers a roaming Johto legendary beast across Kanto at Level 50. The specific beast is decided by your chosen starter:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(59, 130, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Starter Requirement</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Capturing Strategy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" alt="Raikou" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Raikou</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Electric</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Squirtle</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fastest runner. Trap it using Wobbuffet's <strong>Shadow Tag</strong> or use a <strong>Mean Look</strong> strategy. Otherwise, throw your <strong>Master Ball</strong>!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" alt="Entei" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Entei</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Bulbasaur</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Possesses <strong>Roar</strong> which forcefully ends battles and deletes it forever due to a gen 3 glitch. Ruin its day with instant sleep or use the <strong>Master Ball</strong>!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" alt="Suicune" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Suicune</td>
+            <td style="padding: 12px 16px;">Water</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #f43f5e;">Charmander</td>
+            <td style="padding: 12px 16px;">Highly defensive. Best locked down with Hypnosis/Sleep Powder and caught with Ultra Balls.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Mewtwo - The Genetic Masterpiece at Cerulean Cave <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
+      <p>Completing Celio's network device unlocks access to the high-level labyrinth <strong>Cerulean Cave</strong> north of Cerulean City. Deep on the bottom floor, you will find <strong>Mewtwo (Level 70)</strong>.</p>
+      <ul>
+        <li><strong>Preparation:</strong> Bring bulky Dark-type or high-defense Psychic counters. Wobbuffet or heavy sleep status users are great.</li>
+        <li><strong>Catch Tip:</strong> Mewtwo uses Recover. Throwing the <strong>Master Ball</strong> immediately secures this beast without any effort.</li>
+      </ul>
+
+      <h2>3. Special Mythical Island Events: Deoxys, Lugia & Ho-Oh</h2>
+      <p>Use special retro event tickets to sail to rare uncharted islands:</p>
+      <ul>
+        <li><strong>Birth Island (Deoxys) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/386.png" style="max-width:28px; vertical-align:middle;" />:</strong> Travel with the Aurora Ticket to this triangular island. Solve the sliding puzzle by tapping the red stone in the minimum number of moves. Once it turns hot red, <strong>Deoxys (Level 30)</strong> spawns! (Attack Form in FireRed, Defense Form in LeafGreen).</li>
+        <li><strong>Navel Rock (Lugia & Ho-Oh):</strong> Sail with the Mystic Ticket to this towering monument. Dive to the deep flooded chambers to capture <strong>Lugia (Level 70)</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:28px; vertical-align:middle;" /> or ascend the peak to challenge the legendary phoenix <strong>Ho-Oh (Level 70)</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" style="max-width:28px; vertical-align:middle;" />.</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "leafgreen",
+    chapterTitle: "Chapter 15: Post-game, Battle Tower & Essential Items Guide",
+    order: 15,
+    language: "en",
+    content: `
+      <h1>Chapter 15: Post-game, Battle Tower & Essential Items Guide</h1>
+      <p>Becoming the Champion is just the beginning! The southern Sevii Islands hold top-tier post-game battles and legendary treasure directories.</p>
+
+      <h2>1. Navigating Sevii Islands (Islands 4-7)</h2>
+      <p>Receive the <strong>Rainbow Pass</strong> from Celio after entering the Hall of Fame to open deep exploration paths:</p>
+      <ul>
+        <li><strong>Four Island (Four Island):</strong> Explore the frozen <strong>Icefall Cave</strong>, teaming up with Lorelei to drive away Team Rocket thugs. Retrieve HM07 Waterfall.</li>
+        <li><strong>Five Island (Five Island):</strong> Charge into the <strong>Rocket Warehouse</strong> at Five Island Meadow. Input the double-mypass code found during your journey to clean out the Rocket headquarters. Retrieve the glowing <strong>Sapphire</strong> gem.</li>
+        <li><strong>Seven Island (Seven Island):</strong> Reach the ancient <strong>Tanoby Ruins</strong>. Solve the block-moving puzzle inside Tanoby Key chamber to release all 28 forms of wild <strong>Unown</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201.png" style="max-width:24px; vertical-align:middle;" /> across the island!</li>
+      </ul>
+
+      <h2>2. Trainer Tower Time Attack Arena</h2>
+      <p>Constructed on northern Seven Island, the <strong>Trainer Tower</strong> is Kanto's ultimate post-game speedrun battle challenge:</p>
+      <ul>
+        <li><strong>Cメカニズム (Mechanism):</strong> Competitors dynamically scale matching the exact level of your highest-level Pokémon, creating a perfectly fair and challenging battleground!</li>
+        <li><strong>Prizes:</strong> Beat the timer in Single, Double, Knockout, or Mixed mode to earn incredible rare items including Metal Coat, Dragon Scale, Up-Grade, or Mental Herb.</li>
+      </ul>
+
+      <h2>3. Post-Game God-Tier Items Directory</h2>
+      <p>To optimize your team for the final challenges, collect these essential resources:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 180px;">Item Name</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Tactical Advantage</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Acquisition Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Leftovers</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Gradually heals 1/16 of maximum HP each turn.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Stand precisely on the two spots where Snorlax was sleeping (Route 12 and Route 16) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" style="max-width:24px; vertical-align:middle;" /> and activate your <strong>Itemfinder</strong>.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Macho Brace</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Doubles effort values (EVs) gained in combat, speeding up stat growth.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Stand on the exact empty floor space where Leader Giovanni stood in the Viridian Gym, and use your <strong>Itemfinder</strong>.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Exp. Share</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Passes 50% combat experience to a non-active party member.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by Professor Oak's aide in the Route 15 gate house once you register at least <strong>50 distinct species</strong> in your Dex.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #f43f5e;">Amulet Coin</td>
+            <td style="padding: 12px 16px;">Doubles prize money earned from battling overworld trainers.</td>
+            <td style="padding: 12px 16px;">Speak with Oak's aide at the Route 16 gate house if you have caught 40+ species.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  }];

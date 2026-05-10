@@ -1188,7 +1188,128 @@ export const YELLOW_CHAPTERS = [
       </table>
     `
   }
-];
+,
+  {
+    gameVersion: "yellow",
+    chapterTitle: "Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại",
+    order: 14,
+    language: "vi",
+    content: `
+      <h1>Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại</h1>
+      <p>Vùng đất Kanto nguyên bản ẩn chứa những bí ẩn huyền thoại đầu tiên của toàn bộ thế giới Pokémon. Hãy cùng khám phá và bắt trọn bộ!</p>
+
+      <h2>1. Mewtwo - Quái Thú Tiến Hóa Tối Thượng <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
+      <p>Sau khi chiến thắng Liên Minh Pokémon và bước vào sảnh danh vọng Hall of Fame, hang động bí ẩn <strong>Cerulean Cave</strong> (nằm phía tây bắc Cerulean City) sẽ mở cửa:</p>
+      <ul>
+        <li><strong>Vị trí:</strong> Tầng sâu nhất (B1F) ẩn sau mê cung đá và dòng nước xiết.</li>
+        <li><strong>Cấp độ:</strong> 70.</li>
+        <li><strong>Chiến thuật:</strong> Mewtwo sở hữu chỉ số Special vô địch thế hệ 1, có thể quét sạch đội hình bạn bằng Psychic và tự hồi máu bằng Recover. Quả bóng <strong>Master Ball</strong> nhận được từ chủ tịch Silph Co. là lựa chọn hoàn hảo nhất tại đây.</li>
+      </ul>
+
+      <h2>2. Bộ Ba Chim Huyền Thoại (Legendary Birds)</h2>
+      <p>Ba hộ vệ nguyên tố phân bố tại ba địa danh hiểm trở nhất vùng Kanto, xuất hiện tĩnh ở Level 50:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(59, 130, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Vị trí ẩn ngụ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Mẹo giải đố & Chinh phục</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Băng / Bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Seafoam Islands (Đảo Bọt Biển)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sử dụng chiêu <strong>Strength</strong> để đẩy các tảng đá tròn rơi xuống các hố sâu, chặn dòng nước chảy xiết bên dưới để có thể bơi lướt sóng tiếp cận chú chim băng giá.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Zapdos</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện / Bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Power Plant (Nhà máy Điện Bỏ Hoang)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bơi xuôi dòng nước từ Route 10 xuống mạn đông bắc. Zapdos nằm ở căn phòng sâu nhất của nhà máy bỏ hoang, xung quanh là vô số Electrode tàng hình chặn đường.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #f97316;">Moltres</td>
+            <td style="padding: 12px 16px;">Lửa / Bay</td>
+            <td style="padding: 12px 16px;">Victory Road (Đường Chiến Thắng)</td>
+            <td style="padding: 12px 16px;">Nằm ở tầng 2F của mê cung hang động dẫn đến đỉnh Liên Minh. Hãy giải đố đẩy đá lên công tắc để mở lối rẽ tiếp cận Moltres ẩn mình sâu trong hang lửa.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Các Pokémon Siêu Hiếm Tại Khu Bảo Tồn Safari Zone</h2>
+      <p>Khu bảo tồn hoang dã Fuchsia Safari Zone chứa đựng những Pokémon có tỷ lệ xuất hiện cực kỳ thấp và vô cùng khó bắt giữ (do dễ hoảng sợ bỏ chạy):</p>
+      <ul>
+        <li><strong>Chansey (Lvl 26) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/113.png" style="max-width:24px; vertical-align:middle;" />:</strong> Tỉ lệ xuất hiện chỉ 1% đến 4% tại Khu vực Trung Tâm và Khu Vực 2. Sở hữu lượng máu khổng lồ vô địch game.</li>
+        <li><strong>Scyther <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" style="max-width:24px; vertical-align:middle;" /> / Pinsir <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/127.png" style="max-width:24px; vertical-align:middle;" />:</strong> Độc quyền phiên bản với tỉ lệ chỉ 1% đến 4%. Sát thủ côn trùng lý tưởng cho bộ sưu tập.</li>
+        <li><strong>Tauros <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/128.png" style="max-width:24px; vertical-align:middle;" /> & Kangaskhan <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png" style="max-width:24px; vertical-align:middle;" />:</strong> Những mãnh thú vật lý hệ Thường cực kỳ hung dữ, tỉ lệ gặp cực thấp tại Khu Vực 1 và Khu Vực 3.</li>
+        <li><strong>Mẹo bắt Safari:</strong> Đừng quăng đá khiến chúng dễ hoảng sợ bỏ chạy dã ngoại. Hãy quăng mồi dụ để chúng bình tĩnh hơn, hoặc ném ngay Safari Ball khi chúng đứng yên sơ hở.</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "yellow",
+    chapterTitle: "Phần 15: Toàn tập Hậu game & Vật phẩm Trấn phái",
+    order: 15,
+    language: "vi",
+    content: `
+      <h1>Phần 15: Toàn tập Hậu game & Vật phẩm Trấn phái</h1>
+      <p>Dù không có hệ thống đảo Sevii Islands hay Đấu Trường Battle Frontier đồ sộ như các thế hệ sau, thế giới Generation 1 vẫn giữ nguyên giá trị thử thách bất hủ hậu game.</p>
+
+      <h2>1. Các Mục Tiêu Hậu Game Tối Thượng</h2>
+      <ul>
+        <li><strong>Chinh Phục Cerulean Cave:</strong> Thử thách vượt qua hang động khắc nghiệt chứa đầy Pokémon hoang dã cấp cao nhất game (đạt tới Level 50-60+ dã ngoại dã ngoại).</li>
+        <li><strong>Hoàn thành Pokédex 150 Loài:</strong> Thu thập đủ 150 loài Pokémon dã ngoại để nhận bằng chứng nhận danh giá từ nhà phát triển Game Freak tại Celadon Mansion!</li>
+        <li><strong>Truyền thuyết Mew Glitch (Bí mật) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png" style="max-width:24px; vertical-align:middle;" />:</strong> Trick lỗi đặc biệt bằng cách dùng Fly/Teleport thoát khỏi góc nhìn của HLV trên Route 8, đối đầu HLV trên Route 24 rồi quay lại Lavender Town để ép Pokémon Thần Thoại <strong>Mew (Level 7)</strong> xuất hiện dã ngoại!</li>
+      </ul>
+
+      <h2>2. Bản Tra Cứu Các Vật Phẩm & TMs Trấn Phái Hệ Kanto</h2>
+      <p>Kanto sở hữu những chiếc máy kỹ năng (TMs) và vật phẩm phụ trợ có sức mạnh thay đổi hoàn toàn cục diện trận đấu:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 180px;">Bảo vật / TMs</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Sức mạnh cốt lõi</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Vị trí thu thập</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Master Ball (Bóng Tối Thượng)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Bóng bắt giữ 100% thành công không trượt phát nào dã ngoại.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ chủ tịch tập đoàn <strong>Silph Co.</strong> tại Saffron City sau khi quét sạch trùm Rocket Giovanni.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">TM26 Earthquake (Động Đất)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tuyệt kỹ hệ Đất mạnh nhất với 100 Sức mạnh và độ chính xác tuyệt đối.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lượm tại tầng 10F của Silph Co., hoặc tặng bởi Giovanni sau khi hạ gục lão tại Viridian Gym (Gym 8).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">TM11 Bubblebeam (Tia Bong Bóng)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đòn hệ Nước tuyệt vời giúp gánh team cực mạnh giai đoạn đầu và giữa game.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Được Misty trao tặng ngay sau khi bạn vượt qua Cerulean Gym (Gym 2).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">EXP. ALL (Máy chia kinh nghiệm)</td>
+            <td style="padding: 12px 16px;">Chia đều lượng kinh nghiệm nhận được cho toàn bộ 6 thành viên trong đội hình dã ngoại.</td>
+            <td style="padding: 12px 16px;">Nhận từ trợ lý Oak ở trạm gác lớn nối Route 11 and Route 12 nếu bạn đã đăng ký ít nhất <strong>50 loài Pokémon</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  }];
 
 export const ENGLISH_YELLOW_CHAPTERS = [
   {
@@ -2380,4 +2501,125 @@ export const ENGLISH_YELLOW_CHAPTERS = [
       </table>
     `
   }
-];
+,
+  {
+    gameVersion: "yellow",
+    chapterTitle: "Chapter 14: Rare & Legendary Pokémon Secrets",
+    order: 14,
+    language: "en",
+    content: `
+      <h1>Chapter 14: Rare & Legendary Pokémon Secrets</h1>
+      <p>Discover the origin stories of Pokémon's first mythological gods hidden deep inside the classic Kanto wilderness.</p>
+
+      <h2>1. Mewtwo - The Gene-Spliced Overlord <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
+      <p>After conquering the Elite Four and claiming your Championship, the barrier blocking the northwestern cavern of <strong>Cerulean Cave</strong> collapses:</p>
+      <ul>
+        <li><strong>Location:</strong> Bottom floor (B1F) past twisting labyrinths and strong water currents.</li>
+        <li><strong>Level:</strong> 70.</li>
+        <li><strong>Battle Strategy:</strong> Mewtwo possesses the highest Special stat in Generation 1 history, sweep-capable Psychic attacks, and instant healing with Recover. It is the absolute prime target for your <strong>Master Ball</strong>.</li>
+      </ul>
+
+      <h2>2. The Legendary Elemental Bird Trio</h2>
+      <p>The three original elemental guardians rest in static encounters across Kanto's most hazardous environments at Level 50:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(59, 130, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Nesting Location</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Puzzles & Tactics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ice / Flying</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Seafoam Islands</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Use HM04 <strong>Strength</strong> to push stone boulders into open cavern holes, blocking the fierce water currents below so you can safely swim to its island platform.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Zapdos</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Electric / Flying</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Abandoned Power Plant</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Surf downstream from the Route 10 river inlet. Zapdos blocks the exit of the deepest machine room, surrounded by fake Item Balls that turn out to be wild Electrode.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" style="max-width: 45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #f97316;">Moltres</td>
+            <td style="padding: 12px 16px;">Fire / Flying</td>
+            <td style="padding: 12px 16px;">Victory Road Caverns</td>
+            <td style="padding: 12px 16px;">Perched on floor 2F of the League-qualifying cave system. Complete the boulder-pushing puzzle to unlock the side wall leading to this fiery phoenix.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Snaring Elusive Safari Zone Species</h2>
+      <p>The Fuchsia Safari Zone contains extremely rare species with extremely high escape rates. Patience is your greatest tool:</p>
+      <ul>
+        <li><strong>Chansey (Lvl 26) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/113.png" style="max-width:24px; vertical-align:middle;" />:</strong> Boasts a tiny 1% to 4% encounter rate in the Center Area and Area 2. Possesses god-tier HP reserves.</li>
+        <li><strong>Scyther <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" style="max-width:24px; vertical-align:middle;" /> / Pinsir <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/127.png" style="max-width:24px; vertical-align:middle;" />:</strong> Version exclusives at tiny 1%-4% encounter rates. Phenomenal Bug-type physical sweepers.</li>
+        <li><strong>Tauros <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/128.png" style="max-width:24px; vertical-align:middle;" /> & Kangaskhan <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png" style="max-width:24px; vertical-align:middle;" />:</strong> Devastating Normal-type sweepers with tiny spawn rates in Area 1 and Area 3.</li>
+        <li><strong>Safari Capture Formula:</strong> Avoid throwing rocks (boosts catch rate but triggers instant escape). Throwing Bait makes them stay but cuts catch rates. Learn to throw Safari Balls immediately when they stand surprised!</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "yellow",
+    chapterTitle: "Chapter 15: Post-game & Essential Items Guide",
+    order: 15,
+    language: "en",
+    content: `
+      <h1>Chapter 15: Post-game & Essential Items Guide</h1>
+      <p>While Generation 1 lacks the extensive post-game regions of newer games, mastering the game's item mechanics and final dungeons offers ultimate satisfaction.</p>
+
+      <h2>1. Ultimate End-Game Milestones</h2>
+      <ul>
+        <li><strong>Conquering Cerulean Cave:</strong> Test your team's synergy against Kanto's highest-level wild threats (scaling up to Level 50-60+ in the wild).</li>
+        <li><strong>Completing the 150 Pokédex Challenge:</strong> Catch all 150 legal species to receive the official Diploma from Game Freak inside Celadon Mansion!</li>
+        <li><strong>The Mythical Mew Glitch (Secret) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png" style="max-width:24px; vertical-align:middle;" />:</strong> Trigger an ancient developer glitch by flying/teleporting away from a trainer on Route 8, battling a trainer on Route 24, and walking back to Lavender Town to summon a wild <strong>Mew (Level 7)</strong>!</li>
+      </ul>
+
+      <h2>2. Essential Kanto Weapons & TMs Directory</h2>
+      <p>Equip these powerful game-defining elements to construct your final dream team:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 180px;">Item / TM Name</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Tactical Value</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Acquisition Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Master Ball</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">A legendary prototype ball that catches any wild target with a 100% success rate.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Gifted by the President of <strong>Silph Co.</strong> in Saffron City after driving away Giovanni.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">TM26 Earthquake</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">The strongest Ground-type move in Gen 1, dealing 100 Power with absolute accuracy.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Found on floor 10F of Silph Co., or awarded by Giovanni after beating the Viridian Gym.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">TM11 Bubblebeam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">A spectacular early-to-mid-game Water attack that carries your starter through early gauntlets.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Awarded by Misty upon conquering the Cerulean Gym (Gym 2).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">EXP. ALL</td>
+            <td style="padding: 12px 16px;">Distributes gained combat experience evenly across all 6 active party members.</td>
+            <td style="padding: 12px 16px;">Acquired from Oak's aide in the gate house between Route 11 and Route 12 once you have logged 50+ species.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
+  }];
