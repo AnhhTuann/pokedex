@@ -962,6 +962,195 @@ export const RED_CHAPTERS = [
         <strong>Mẹo bắt sống Mewtwo:</strong> Mewtwo sở hữu chiêu hồi máu cực nhanh Recover cùng đòn Psychic bạo kích có thể quét sạch toàn bộ đội hình của bạn chỉ trong vài lượt đấu. Đừng tốn công rút máu! Hãy rút quả bóng tối thượng **Master Ball** nhận được từ tập đoàn Silph Co. ra quăng để tóm sống nó ngay lượt đấu đầu tiên một cách vô cùng mãn nhãn và kết thúc hành trình vĩ đại xuất sắc rực rỡ!
       </blockquote>
     `
+  },
+  {
+    gameVersion: "red",
+    chapterTitle: "Phần 13: Hướng dẫn HMs, Vật phẩm Nhiệm vụ & Trao đổi NPC",
+    order: 13,
+    language: "vi",
+    content: `
+      <h1>Phần 13: Hướng dẫn HMs, Vật phẩm Nhiệm vụ & Trao đổi NPC</h1>
+      <p>Bên cạnh tuyến cốt truyện chính, việc nắm rõ cách lấy các HMs quan trọng, giải mã vật phẩm nhiệm vụ và tận dụng các giao dịch trao đổi Pokémon với NPC sẽ giúp bạn tối ưu hóa sức mạnh đội hình và dễ dàng khám phá thế giới Kanto.</p>
+
+      <h2>1. Danh sách và Vị trí của các HMs (Hidden Machines)</h2>
+      <p>Các HMs là những kỹ năng di chuyển ngoài bản đồ bắt buộc phải có để phá đảo game:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 120px;">HM</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 120px;">Tên chiêu</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Cách sở hữu</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 150px;">Yêu cầu Huy hiệu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM01</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Cut</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ thuyền trưởng tàu S.S. Anne sau khi chữa bệnh cho ông ấy tại Vermilion City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cascade Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM02</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Fly</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ cô gái trong căn nhà bí mật phía bắc Tuyến đường Route 16 (cần chặt cây Cut).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Thunder Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM03</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Surf</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tìm thấy trong Căn nhà Bí mật (Secret House) ở khu vực sâu nhất của Safari Zone tại Fuchsia City.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Soul Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM04</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Strength</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ Giám đốc Safari Zone ở Fuchsia City sau khi trả lại Răng Vàng (Gold Teeth) cho ông ấy.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Rainbow Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">HM05</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #38bdf8;">Flash</td>
+            <td style="padding: 12px 16px;">Nhận từ phụ tá của Giáo sư Oak tại Route 2 (phía nam sau khi đi xuyên qua Diglett's Cave), yêu cầu sở hữu ít nhất 10 Pokémon trong Pokédex.</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Boulder Badge</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Bản tra cứu các Vật phẩm làm Nhiệm vụ Cốt truyện</h2>
+      <p>Các vật phẩm đặc biệt cần thiết để giải mã các cốt truyện và mở khóa khu vực ẩn:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 150px;">Vật phẩm</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Cách sở hữu</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Công dụng cốt truyện</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Oak's Parcel</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ người bán hàng tại Poké Mart ở Viridian City ở đầu game.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giao cho Giáo sư Oak ở Pallet Town để nhận Pokédex và 5 quả Poké Ball.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">S.S. Ticket</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giúp Bill trở lại hình người tại Sea Cottage ở Route 25.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dùng để lên du thuyền sang trọng S.S. Anne tại cảng Vermilion City.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Silph Scope</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đánh bại trùm Giovanni ở căn cứ bí mật Team Rocket dưới hầm Game Corner (Celadon City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhìn thấy danh tính thật của các bóng ma tại Pokémon Tower ở Lavender Town.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Poké Flute</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giải cứu cụ Fuji từ tay Team Rocket ở tầng cao nhất Pokémon Tower (Lavender Town).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thổi sáo đánh thức hai chú Snorlax khổng lồ đang ngủ chặn đường Route 12 và Route 16.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #22c55e;">Card Key</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhặt trên sàn ở tầng 5 (5F) tòa nhà tập đoàn Silph Co. (Saffron City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mở tất cả các cánh cửa khóa thẻ từ trên mọi tầng của Silph Co.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fb7185;">Gold Teeth</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhặt dưới đất ở khu vực sâu nhất Safari Zone (Fuchsia City).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đưa lại cho Warden ở Fuchsia City để nhận HM04 Strength cực kỳ quý giá.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Secret Key</td>
+            <td style="padding: 12px 16px;">Tìm thấy sâu dưới tầng hầm của dinh thự Pokémon Mansion ở Cinnabar Island.</td>
+            <td style="padding: 12px 16px;">Mở khóa cửa phòng Gym lửa của thủ lĩnh Blaine tại Cinnabar Island.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Danh sách các NPC Trade trong Pokémon Red</h2>
+      <p>Trao đổi Pokémon với các huấn luyện viên NPC để nhận những Pokémon độc quyền hoặc có tốc độ tăng trưởng điểm kinh nghiệm vượt trội:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 220px;">Địa điểm giao dịch</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 140px;">Bạn đưa</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 140px;">Bạn nhận lại</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Đánh giá chiến thuật & Biệt danh</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà cạnh Pokémon Center ở Vermilion City</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/21.png" style="max-width:40px;" /><br/>Spearow
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/83.png" style="max-width:40px;" /><br/><span style="color:#cbd5e1; font-weight:bold;">Farfetch'd</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>DUX</strong>. Đây là cách **duy nhất** để sở hữu Farfetch'd trong Pokémon Red. Nó có tốc độ tăng trưởng kinh nghiệm cực kỳ nhanh và cực khỏe ở đầu game nhờ đòn Slash!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà trên Route 2 (phải đi qua Diglett's Cave)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png" style="max-width:40px;" /><br/>Abra
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/122.png" style="max-width:40px;" /><br/><span style="color:#a855f7; font-weight:bold;">Mr. Mime</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>BARIMAND</strong>. Pokémon hệ Siêu linh (Psychic) cực kỳ bá đạo ở Gen 1 với Đặc công và Tốc độ cao, giúp bạn càn quét hầu hết các thử thách lớn nhỏ.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Tuyến đường Route 5 (Underground Path)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/32.png" style="max-width:40px;" /><br/>Nidoran♂
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/29.png" style="max-width:40px;" /><br/><span style="color:#22c55e; font-weight:bold;">Nidoran♀</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>SPOT</strong>. Giúp bạn nhanh chóng nâng cấp lên Nidoqueen - một chiến binh cực trâu bò với bộ chiêu thức vô cùng đa dạng phục vụ chiến dịch cày cuốc.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà cạnh Pokémon Center ở Cerulean City</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/61.png" style="max-width:40px;" /><br/>Poliwhirl
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/124.png" style="max-width:40px;" /><br/><span style="color:#f87171; font-weight:bold;">Jynx</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>LOLA</strong>. Sát thủ diệt rồng tuyệt đối! Song hệ Băng/Siêu linh cực kỳ hiếm có, là quân bài tủ hoàn hảo nhất để đè bẹp các chiến long rồng bay của Lance trong Elite Four.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Phòng thí nghiệm ở Cinnabar Island</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" style="max-width:40px;" /><br/>Raichu
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/101.png" style="max-width:40px;" /><br/><span style="color:#fbbf24; font-weight:bold;">Electrode</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>DORIS</strong>. Sở hữu chỉ số Tốc độ nhanh nhất toàn cõi Pokémon Thế hệ 1, là mảnh ghép tuyệt hảo cho các chiến thuật sốc điện nhanh diệt chim gyarados.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Phòng thí nghiệm ở Cinnabar Island</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" style="max-width:40px;" /><br/>Venonat
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/114.png" style="max-width:40px;" /><br/><span style="color:#10b981; font-weight:bold;">Tangela</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>CRINKLES</strong>. Pokémon hệ Cỏ thuần chủng duy nhất trong trò chơi, có chỉ số Vật lý cực kỳ bền bỉ và bộ kỹ năng ru ngủ/trói buộc độc đáo.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold;">Phòng thí nghiệm ở Cinnabar Island</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/77.png" style="max-width:40px;" /><br/>Ponyta
+            </td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/86.png" style="max-width:40px;" /><br/><span style="color:#60a5fa; font-weight:bold;">Seel</span>
+            </td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Biệt danh: <strong>SAILOR</strong>. Giúp bạn nhanh chóng nâng cấp lên Dewgong cực trâu bò với thuộc tính Nước/Băng để dẹp gọn các ải thử thách cuối game.</td>
+          </tr>
+        </tbody>
+      </table>
+    `
   }
 ];
 
@@ -1928,6 +2117,195 @@ export const ENGLISH_RED_CHAPTERS = [
       <blockquote>
         <strong>Instant Catch:</strong> Mewtwo recovers health quickly with Recover and wipes out teams with Psychic. Do not waste effort trying to chip away its health! Pull out your **Master Ball** (received from Silph Co.) and throw it on turn 1 to successfully catch Mewtwo, concluding your grand adventure!
       </blockquote>
+    `
+  },
+  {
+    gameVersion: "red",
+    chapterTitle: "Chapter 13: Complete HMs, Quest Items & In-Game NPC Trades",
+    order: 13,
+    language: "en",
+    content: `
+      <h1>Chapter 13: Complete HMs, Quest Items & In-Game NPC Trades</h1>
+      <p>Beyond the main campaign, mastering the acquisition of essential Hidden Machines (HMs), deciphering puzzle quest items, and utilizing critical NPC Trades is vital for optimizing your battle party's strength and easily navigating the Kanto region.</p>
+
+      <h2>1. The 5 Hidden Machines (HMs) Directory</h2>
+      <p>HMs grant permanent map navigation techniques mandatory for progressive game exploration:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 120px;">HM</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 120px;">Move</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">How to Obtain</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 150px;">Gym Badge Required</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM01</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Cut</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Received from the seasick Captain of the S.S. Anne in Vermilion City harbor.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cascade Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM02</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Fly</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Given by a girl in a hidden house located off Route 16 (Cut tree required).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Thunder Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM03</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Surf</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Discovered inside the Secret House located in the deepest depths of the Fuchsia City Safari Zone.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Soul Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">HM04</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Strength</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Acquired from the Safari Zone Warden in Fuchsia City after returning his lost Gold Teeth.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Rainbow Badge</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">HM05</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #38bdf8;">Flash</td>
+            <td style="padding: 12px 16px;">Acquired from Professor Oak's Aide on Route 2 (south of Diglett's Cave passage) upon having 10+ Pokémon registered in your Pokédex.</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Boulder Badge</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Key Quest & Story Items Directory</h2>
+      <p>Special items crucial for cracking the plot and unlocking forbidden areas:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; width: 150px;">Key Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">How to Obtain</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Quest Use / Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Oak's Parcel</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Acquired from the Viridian City Poké Mart merchant at the very beginning of the game.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Deliver to Professor Oak in Pallet Town to unlock the Pokédex and receive starting Poké Balls.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">S.S. Ticket</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Help Bill transform back into human form inside his Sea Cottage on Route 25.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Presented at the harbor gate in Vermilion City to board the cruise ship S.S. Anne.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Silph Scope</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Defeat boss Giovanni in the hidden Team Rocket Hideout below the Celadon City Game Corner.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Used to reveal the true ghost spirits wandering inside the Lavender Town Pokémon Tower.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Poké Flute</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rescue Mr. Fuji from Team Rocket on the top floor of the Pokémon Tower (Lavender Town).</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Used to wake up the two giant sleeping **Snorlax** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" style="max-width:24px; vertical-align:middle;" /> blocking Route 12 and Route 16.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #22c55e;">Card Key</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Found on the floor of the 5th floor (5F) of the Saffron City <strong>Silph Co.</strong> building.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Unlocks all keycard-secured doors across all floors of Silph Co.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fb7185;">Gold Teeth</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Found on the ground inside the deepest area of the Fuchsia City Safari Zone.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Return to the Safari Zone Warden in Fuchsia City to obtain the invaluable HM04 Strength.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Secret Key</td>
+            <td style="padding: 12px 16px;">Located in the deep basement room of the Pokémon Mansion on Cinnabar Island.</td>
+            <td style="padding: 12px 16px;">Unlocks the Cinnabar Island Gym doors of the Fire-type leader Blaine.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Exclusive NPC In-Game Trades in Pokémon Red</h2>
+      <p>Trade with various NPC researchers or trainers across Kanto to acquire exclusive Pokémon with rapid experience growth rates:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; width: 220px;">Trade Location</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 140px;">You Give</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 140px;">You Receive</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Tactical Review & Nickname</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">House next to Pokémon Center in Vermilion City</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/21.png" style="max-width:40px;" /><br/>Spearow
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/83.png" style="max-width:40px;" /><br/><span style="color:#cbd5e1; font-weight:bold;">Farfetch'd</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>DUX</strong>. The **only** legal way to get Farfetch'd in Pokémon Red. Levels up blazingly fast and is incredible early-game using Slash!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">House on Route 2 (accessible via Diglett's Cave)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png" style="max-width:40px;" /><br/>Abra
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/122.png" style="max-width:40px;" /><br/><span style="color:#a855f7; font-weight:bold;">Mr. Mime</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>BARIMAND</strong>. Elite Psychic-type sweeper with high Speed and Special. Sweeps through mid-game gym challenges like child's play.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Route 5 (Underground Path Entrance)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/32.png" style="max-width:40px;" /><br/>Nidoran♂
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/29.png" style="max-width:40px;" /><br/><span style="color:#22c55e; font-weight:bold;">Nidoran♀</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>SPOT</strong>. Quick access to Nidoqueen, a versatile, bulky Ground/Poison tank that can learn almost any TM in the game.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">House next to Pokémon Center in Cerulean City</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/61.png" style="max-width:40px;" /><br/>Poliwhirl
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/124.png" style="max-width:40px;" /><br/><span style="color:#ef4444; font-weight:bold;">Jynx</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>LOLA</strong>. The ultimate dragon hunter! Its rare Ice/Psychic typing is perfect for wiping out Lance's high-level dragons.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Cinnabar Lab Research Room (Cinnabar Island)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" style="max-width:40px;" /><br/>Raichu
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/101.png" style="max-width:40px;" /><br/><span style="color:#fbbf24; font-weight:bold;">Electrode</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>DORIS</strong>. The absolute fastest speed stat in Generation 1, perfect for securing turn-1 status conditions or high-velocity Electric sweeps.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Cinnabar Lab Research Room (Cinnabar Island)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" style="max-width:40px;" /><br/>Venonat
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/114.png" style="max-width:40px;" /><br/><span style="color:#10b981; font-weight:bold;">Tangela</span>
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nickname: <strong>CRINKLES</strong>. The only pure Grass type in original Red, boasting fantastic physical Defense and great support/status utility.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold;">Cinnabar Lab Research Room (Cinnabar Island)</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/77.png" style="max-width:40px;" /><br/>Ponyta
+            </td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/86.png" style="max-width:40px;" /><br/><span style="color:#60a5fa; font-weight:bold;">Seel</span>
+            </td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Nickname: <strong>SAILOR</strong>. Can be evolved quickly into a bulky Dewgong (Water/Ice) to provide heavy Ice Beam support during late-game gauntlets.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   }
 ];
