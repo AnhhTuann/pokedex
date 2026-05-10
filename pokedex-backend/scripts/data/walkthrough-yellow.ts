@@ -40,11 +40,6 @@ export const YELLOW_CHAPTERS = [
 
       <h2>1. Thử thách cực đại tại Pewter Gym</h2>
       <p>Thủ lĩnh Brock sử dụng hệ Đá/Đất miễn nhiễm hoàn toàn với các đòn đánh hệ Lôi của Pikachu! Nếu chỉ dùng Pikachu, bạn sẽ thất bại thảm hại.</p>
-      
-      <div style="text-align: center; margin: 16px 0;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png" alt="Geodude" style="max-width: 60px; margin-right: 20px;" />
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/95.png" alt="Onix" style="max-width: 80px;" />
-      </div>
 
       <h2>2. Chiến thuật bắt Pokémon khắc chế</h2>
       <p>Để dễ dàng đánh bại Brock, hãy bắt các Pokémon sau ở các tuyến đường lân cận:</p>
@@ -56,24 +51,31 @@ export const YELLOW_CHAPTERS = [
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
           <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon của Brock</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Tuyệt chiêu khắc chế đề xuất</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png" alt="Geodude" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Geodude</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 10</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #94a3b8;">Đá / Đất</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Dùng Low Kick của Mankey hoặc Double Kick của Nidoran.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đá / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Defense Curl. Dùng Low Kick của Mankey hoặc Double Kick của Nidoran để hạ gục nhanh gọn.</td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Onix</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/95.png" alt="Onix" style="max-width: 80px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Onix (Át chủ bài)</td>
             <td style="padding: 12px 16px;">Lvl 12</td>
-            <td style="padding: 12px 16px; color: #94a3b8;">Đá / Đất</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Sử dụng đòn hệ Giác đấu liên tục, tránh dùng Pikachu tấn công điện.</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Đá / Đất</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Tackle, Screech, Bind. Sử dụng đòn hệ Giác đấu liên tục, tránh dùng Pikachu tấn công điện.</td>
           </tr>
         </tbody>
       </table>
@@ -155,6 +157,38 @@ export const YELLOW_CHAPTERS = [
 
       <h2>2. Đánh bại Misty (Cascade Badge)</h2>
       <p>Misty tại Cerulean Gym sở hữu Starmie vô cùng đáng sợ. Thật tuyệt vời, chú Pikachu của bạn chính là khắc tinh tuyệt đối của cô nàng hệ Thủy này! Sử dụng tuyệt chiêu <strong>Thunderbolt</strong> hoặc <strong>Thundershock</strong> của Pikachu để nướng chín toàn bộ đội hình Misty cực kỳ dễ dàng.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/120.png" alt="Staryu" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Staryu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 18</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Thủy</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Water Gun. Pikachu có thể hạ gục dễ dàng chỉ với một phát giật điện Thunderbolt/Thundershock.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/121.png" alt="Starmie" style="max-width: 70px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Starmie (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 21</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Thủy / Siêu Linh</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Bubblebeam, Swift. Chiêu Bubblebeam gây sát thương cực rát. Hãy sử dụng chiêu Thunderbolt của Pikachu hoặc Bulbasaur vừa nhận được để giật điện dứt điểm dứt khoát.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -171,14 +205,29 @@ export const YELLOW_CHAPTERS = [
 
       <h2>2. Trận chiến Lôi thần độc nhất</h2>
       <p>Trái ngược với Red & Blue, trong bản Yellow Lt. Surge chỉ sử dụng duy nhất một Pokémon át chủ bài đúng như trong anime tập phim đối đầu huyền thoại:</p>
-      <div style="text-align: center; margin: 24px 0;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu" style="max-width: 90px;" />
-        <p style="font-weight: bold; color: #fbbf24;">Raichu (Cấp độ 28)</p>
-      </div>
 
-      <blockquote>
-        <strong>Chiến thuật:</strong> Pikachu sẽ gặp bất lợi lớn trước Raichu có chỉ số cao hơn nhiều. Hãy dùng một chú <strong>Diglett</strong> bắt tại Hang Diglett's Cave ngay cạnh thành phố. Sử dụng đòn đất **Dig** để dễ dàng hạ gục chú chuột điện khổng lồ này mà không tốn một giọt máu!
-      </blockquote>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu" style="max-width: 80px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Raichu (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 28</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Điện</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Thunderbolt, Mega Punch, Growl. Pikachu gặp bất lợi lớn trước Raichu có chỉ số vượt trội. Hãy dùng Diglett bắt tại Hang Diglett's Cave dùng đòn đất <strong>Dig</strong> để khắc chế hoàn toàn.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -194,13 +243,48 @@ export const YELLOW_CHAPTERS = [
       <p>Tại siêu thị Celadon, bạn hãy mua nước ngọt (Fresh Water / Soda Pop) ở tầng thượng để đưa cho lính gác mở các cửa ngõ dẫn vào Saffron City.</p>
 
       <h2>2. Đánh bại Erika (Rainbow Badge)</h2>
-      <p>Erika tại Celadon Gym sở hữu các Pokémon hệ Cỏ/Độc siêu chịu đựng:</p>
-      <ul>
-        <li><strong>Victreebel (Lvl 32)</strong></li>
-        <li><strong>Tangela (Lvl 29)</strong></li>
-        <li><strong>Gloom (Lvl 32)</strong></li>
-      </ul>
-      <p><strong>Khắc chế hoàn hảo:</strong> Sử dụng chú rồng lửa nhỏ <strong>Charizard</strong> (sau khi luyện tiến hóa từ Charmander) thổi lửa thiêu rụi hoàn toàn đội hình của cô ấy!</p>
+      <p>Erika tại Celadon Gym sử dụng các Pokémon hệ Cỏ/Độc với các đòn đánh gây trạng thái vô cùng khó chịu.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/114.png" alt="Tangela" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Tangela</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 30</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Cỏ</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Constrict, Bind. Dùng Charizard thổi lửa thiêu rụi dễ dàng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/70.png" alt="Weepinbell" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Weepinbell</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 32</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Cỏ / Độc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Razor Leaf, Poisonpowder, Wrap. Khắc tinh cứng là hệ Bay (Pidgeot) hoặc hệ Lửa (Charizard).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/44.png" alt="Gloom" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Gloom (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 32</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Cỏ / Độc</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Acid, Sleep Powder, Petal Dance. Đòn ru ngủ khó chịu, nên giải quyết thật nhanh bằng hệ Lửa hoặc hệ Siêu linh (Kadabra).</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -236,11 +320,57 @@ export const YELLOW_CHAPTERS = [
       </ul>
 
       <h2>2. Hạ gục Thủ lĩnh Koga (Soul Badge)</h2>
-      <p>Koga trong bản Yellow đã được thiết kế lại đội hình cực mạnh mô phỏng theo gia tộc ninja của mình với 3 chú Koffing tiến hóa thành Weezing và át chủ bài là Venomoth:</p>
-      <ul>
-        <li>Veneonath (Lvl 50), Weezing (Lvl 46, Lvl 48).</li>
-      </ul>
-      <p>Hãy tận dụng sức mạnh tâm linh của Kadabra/Alakazam hoặc hệ Đất của Dugtrio để quét sạch nhanh chóng.</p>
+      <p>Koga trong bản Yellow đã được thiết kế lại đội hình cực mạnh mô phỏng theo gia tộc ninja của mình với 3 chú Venonat tiến cấp và át chủ bài là Venomoth:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" alt="Venonat" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venonat</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 44</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Trùng / Độc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Toxic, Sleep Powder. Dùng Kadabra/Alakazam dùng đòn Siêu linh thổi bay nhanh gọn.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" alt="Venonat" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venonat</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 46</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Trùng / Độc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Psychic, Poisonpowder. Sát thương tâm linh phụ trợ khá đau, hạ gục sớm bằng đòn Siêu linh hoặc Lửa.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" alt="Venonat" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venonat</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Trùng / Độc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Double-Edge, Sleep Powder, Poisonpowder. Rất nhiều đòn trạng thái ru ngủ phiền toái.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/49.png" alt="Venomoth" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Venomoth (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Trùng / Độc</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Double-Edge, Leech Life, Psybeam, Sleep Powder. Cực kỳ bền bỉ và khó chịu. Sử dụng chiêu Flamethrower của Charizard hoặc Psychic của Alakazam để tiêu diệt ngay lập tức.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -260,7 +390,48 @@ export const YELLOW_CHAPTERS = [
       </ul>
 
       <h2>2. Đánh bại Sabrina (Marsh Badge)</h2>
-      <p>Sabrina sở hữu phòng Gym tâm linh vương giả thống trị Kanto. Hãy cẩn thận với Alakazam siêu mạnh của cô ta. Tận dụng sát thương vật lý dồi dào từ Snorlax để đè bẹp Alakazam mỏng manh dễ dàng!</p>
+      <p>Sabrina sở hữu phòng Gym tâm linh vương giả thống trị Kanto. Hãy cẩn thận với Alakazam siêu mạnh của cô ta.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png" alt="Abra" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Abra</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tâm linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Teleport, Flash. Abra cực kỳ mỏng manh, không có chiêu tấn công. Kết liễu ngay lập tức.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/64.png" alt="Kadabra" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Kadabra</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tâm linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Kinesis, Recover, Psybeam, Reflect. Có đòn phục hồi Recover khó chịu, hãy áp đảo bằng sát thương vật lý lớn.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Alakazam (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Tâm linh</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Recover, Psychic, Reflect, Double Team. Át chủ bài với tốc độ và chỉ số đặc biệt siêu kinh khủng. Hãy dùng đòn đè đấm vật lý nặng như Body Slam từ Snorlax để hạ gục nhanh chóng do chỉ số phòng thủ vật lý của nó rất yếu.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -276,8 +447,57 @@ export const YELLOW_CHAPTERS = [
       <p>Đột nhập dinh thự bỏ hoang, tìm kiếm chiếc chìa khóa bí mật <strong>Secret Key</strong> ẩn sâu ở tầng hầm để mở khóa cổng phòng Gym của Blaine.</p>
 
       <h2>2. Vượt qua trắc nghiệm Cinnabar Gym</h2>
-      <p>Thay vì chiến đấu với các huấn luyện viên phụ, bạn có thể trả lời các câu hỏi trắc nghiệm của máy tính để mở cửa đi tiếp. Gặp Blaine hệ Lửa cực mạnh:</p>
-      <p><strong>Khắc chế tuyệt vời:</strong> Chú rùa nước <strong>Blastoise</strong> (sau khi luyện tiến hóa từ Squirtle) phun nước Surf quét sạch toàn bộ đội hình hệ Hỏa một cách thần tốc!</p>
+      <p>Thay vì chiến đấu with các huấn luyện viên phụ, bạn có thể trả lời các câu hỏi trắc nghiệm của máy tính để mở cửa đi tiếp. Gặp Blaine hệ Lửa cực mạnh:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/58.png" alt="Growlithe" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Growlithe</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ember, Leer, Take Down, Agility. Sát thương lửa chưa cao, dập tắt nhanh chóng bằng đòn hệ Thủy.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/77.png" alt="Ponyta" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Ponyta</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ember, Tail Whip, Stomp, Fire Spin. Tốc độ khá nhanh nhưng phòng thủ yếu, khắc chế dễ bằng Water Gun hoặc Surf.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png" alt="Rapidash" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Rapidash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Lửa</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Stomp, Fire Spin, Take Down, Agility. Đòn Fire Spin gây khó chịu khi khống chế lượt đấu, hãy kết thúc sớm bằng các Pokémon hệ Thủy/Đất dồi dào HP.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/59.png" alt="Arcanine" style="max-width: 70px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Arcanine (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 54</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Lửa</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Roar, Leer, Reflect, Flamethrower. Sức tấn công vật lý và đặc biệt đều cực lớn cùng chiêu Flamethrower thiêu cháy kinh hoàng. Sử dụng chiêu Surf uy lực cao từ Blastoise để dập tắt ngọn lửa nhanh chóng.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -291,7 +511,65 @@ export const YELLOW_CHAPTERS = [
 
       <h2>1. Trận chiến quyết định với Giovanni (Earth Badge)</h2>
       <p>Thủ lĩnh tối cao của Viridian Gym không ai khác chính là Giovanni hệ Đất/Độc. Đây là trận chiến cuối cùng để dập tắt dã tâm của Team Rocket:</p>
-      <p>Sử dụng chiêu Surf của Blastoise hoặc chiêu Cỏ của Venusaur để biến toàn bộ đội hình của hắn thành cát bụi, đoạt lấy Huy hiệu cuối cùng để bước vào đấu trường Kanto League.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Chiêu thức & Khắc chế đề xuất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/111.png" alt="Rhyhorn" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Rhyhorn</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đất / Đá</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tail Whip, Fury Attack, Horn Drill, Scary Face. Khắc chế cực mạnh bởi nước (Surf) nhân 4 sát thương dập tắt ngay lập tức.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/51.png" alt="Dugtrio" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Dugtrio</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 53</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sand-Attack, Slash, Earthquake, Fissure. Tốc độ rất cao cùng đòn động đất cực đau. Sử dụng các đòn hệ Băng hoặc Thủy để dứt điểm sớm.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/31.png" alt="Nidoqueen" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Nidoqueen</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 53</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Độc / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Thunder, Double Kick, Poison Sting, Body Slam. Khá cứng và có đòn sét Thunder nguy hiểm với hệ Thủy. Có thể khắc chế nhanh bằng chiêu Siêu linh (Alakazam) hoặc các đòn hệ Đất mạnh.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/34.png" alt="Nidoking" style="max-width: 55px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Nidoking</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 55</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Độc / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Thunder, Double Kick, Poison Sting, Thrash. Lực tấn công vật lý cực mạnh. Áp đảo nhanh gọn bằng Alakazam (Tâm linh) hoặc các chiêu thức hệ Thủy từ xa.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/112.png" alt="Rhydon" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Rhydon (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 55</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Đất / Đá</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Fissure, Take Down, Horn Drill, Rock Slide. Chỉ số vật lý siêu khủng. Tuy nhiên phòng thủ đặc biệt rất tệ, chỉ cần 1 phát Surf từ Blastoise hoặc Mega Drain của Venusaur là bốc hơi ngay tắp lự.</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>2. Trận chiến Rival định mệnh trên Route 22</h2>
       <p>Trên đường tới Indigo Plateau, người bạn học Rival sẽ chặn đường thách thức bạn với đội hình toàn diện cực mạnh có sự góp mặt của Eevee đã tiến hóa đỉnh cao!</p>
@@ -686,11 +964,6 @@ export const ENGLISH_YELLOW_CHAPTERS = [
 
       <h2>1. Brock's Immune Rock/Ground Shields</h2>
       <p>Leader Brock uses Rock/Ground Pokémon which are totally immune to Pikachu's Electric attacks. If you fight with just Pikachu, you will be swiftly defeated.</p>
-      
-      <div style="text-align: center; margin: 16px 0;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png" alt="Geodude" style="max-width: 60px; margin-right: 20px;" />
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/95.png" alt="Onix" style="max-width: 80px;" />
-      </div>
 
       <h2>2. Capturing Fighting-type Counters</h2>
       <p>Capture these counters in nearby routes to bypass Brock easily:</p>
@@ -702,24 +975,31 @@ export const ENGLISH_YELLOW_CHAPTERS = [
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
           <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Brock's Pokémon</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Recommended Move Counter</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png" alt="Geodude" style="max-width: 60px;" />
+            </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Geodude</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 10</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Rock / Ground</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Use Mankey's Low Kick or Nidoran's Double Kick.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Defense Curl. Use Mankey's Low Kick or Nidoran's Double Kick for a swift victory.</td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Onix</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/95.png" alt="Onix" style="max-width: 80px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Onix (Signature)</td>
             <td style="padding: 12px 16px;">Lvl 12</td>
             <td style="padding: 12px 16px; color: #cbd5e1;">Rock / Ground</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Hit hard with Fighting-type moves, do not attempt electric attacks.</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Tackle, Screech, Bind. Hit hard with Fighting-type moves; avoid using Pikachu's electric attacks.</td>
           </tr>
         </tbody>
       </table>
@@ -801,6 +1081,38 @@ export const ENGLISH_YELLOW_CHAPTERS = [
 
       <h2>2. Beating Misty's Gym (Cascade Badge)</h2>
       <p>Misty's Starmie is deadly. Fortunately, your Pikachu is the perfect counter! Blast through the Cerulean Gym with Pikachu's high-voltage <strong>Thunderbolt</strong> for an effortless win.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/120.png" alt="Staryu" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Staryu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 18</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Water</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Water Gun. Pikachu easily defeats it with a single Thundershock or Thunderbolt.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/121.png" alt="Starmie" style="max-width: 70px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Starmie (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 21</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Water / Psychic</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Bubblebeam, Swift. Starmie's Bubblebeam hits extremely hard. Counter with Pikachu's Thunderbolt or the newly obtained Bulbasaur.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -817,14 +1129,29 @@ export const ENGLISH_YELLOW_CHAPTERS = [
 
       <h2>2. Beating Lt. Surge's Raichu</h2>
       <p>Unlike Red & Blue, Lt. Surge relies on a single anime-accurate titan:</p>
-      <div style="text-align: center; margin: 24px 0;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu" style="max-width: 90px;" />
-        <p style="font-weight: bold; color: #fbbf24;">Raichu (Level 28)</p>
-      </div>
 
-      <blockquote>
-        <strong>Pro-Tip:</strong> Pikachu will struggle hard. Instead, catch a wild <strong>Diglett</strong> inside Diglett's Cave next to the city. Use **Dig** (Ground-type) to crush his Raichu instantly without taking a scratch!
-      </blockquote>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu" style="max-width: 80px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Raichu (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 28</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Electric</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Thunderbolt, Mega Punch, Growl. Pikachu will struggle hard due to stats disparity. Capture a wild <strong>Diglett</strong> inside Diglett's Cave and use <strong>Dig</strong> (Ground-type) to crush his Raichu instantly.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -840,13 +1167,48 @@ export const ENGLISH_YELLOW_CHAPTERS = [
       <p>Purchase a Fresh Water or Soda Pop on the roof of the Celadon Dept. Store to bribe the thirsty guards blocking Saffron City gates.</p>
 
       <h2>2. Beating Erika (Rainbow Badge)</h2>
-      <p>Erika uses bulky Grass/Poison types:</p>
-      <ul>
-        <li><strong>Victreebel (Lvl 32)</strong></li>
-        <li><strong>Tangela (Lvl 29)</strong></li>
-        <li><strong>Gloom (Lvl 32)</strong></li>
-      </ul>
-      <p><strong>Perfect Counter:</strong> Melt her squad down with fire blasts from your evolved <strong>Charizard</strong>!</p>
+      <p>Erika uses bulky Grass/Poison types with highly disruptive status attacks.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/114.png" alt="Tangela" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Tangela</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 30</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Grass</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Constrict, Bind. Charizard melts it down in seconds with Flame attacks.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/70.png" alt="Weepinbell" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Weepinbell</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 32</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Grass / Poison</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Razor Leaf, Poisonpowder, Wrap. Counter with flying moves from Pidgeot or Charizard's Flamethrower.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/44.png" alt="Gloom" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Gloom (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 32</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Grass / Poison</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Acid, Sleep Powder, Petal Dance. Annoying sleeping powder loop; defeat quickly with fire blasts or Psychic moves from Kadabra.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -882,11 +1244,57 @@ export const ENGLISH_YELLOW_CHAPTERS = [
       </ul>
 
       <h2>2. Defeating Ninja Koga (Soul Badge)</h2>
-      <p>Koga's Yellow squad is remodeled to match his ninja clan, using three leveled Weezings and his signature Venomoth:</p>
-      <ul>
-        <li>Venomoth (Lvl 50), Weezings (Lvl 46, Lvl 48).</li>
-      </ul>
-      <p>Crush them with Alakazam's Psychic attacks or Dugtrio's Ground-type moves.</p>
+      <p>Koga's Yellow squad is remodeled to match his ninja clan, featuring three leveled Venonats and his signature Venomoth:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" alt="Venonat" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venonat</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 44</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Bug / Poison</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Toxic, Sleep Powder. Blow away instantly with Kadabra/Alakazam's Psychic attacks.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" alt="Venonat" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venonat</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 46</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Bug / Poison</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Psychic, Poisonpowder. Sizable auxiliary psychic damage; defeat quickly using Fire or Psychic types.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png" alt="Venonat" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Venonat</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Bug / Poison</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tackle, Double-Edge, Sleep Powder, Poisonpowder. Many annoying sleep powder loops; clear out using Fire or Ground moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/49.png" alt="Venomoth" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Venomoth (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Bug / Poison</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Double-Edge, Leech Life, Psybeam, Sleep Powder. Highly resilient and disruptive. Utilize Charizard's Flamethrower or Alakazam's Psychic to eliminate immediately.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -906,7 +1314,48 @@ export const ENGLISH_YELLOW_CHAPTERS = [
       </ul>
 
       <h2>2. Defeating Sabrina (Marsh Badge)</h2>
-      <p>Sabrina rules Saffron with her supreme Psychic types. Watch out for her high-Special Alakazam! Crush Alakazam's fragile defenses with heavy physical moves from Snorlax.</p>
+      <p>Sabrina rules Saffron with her supreme Psychic types. Watch out for her high-Special Alakazam!</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png" alt="Abra" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Abra</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Psychic</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Teleport, Flash. Highly fragile with zero attacking moves; eliminate instantly.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/64.png" alt="Kadabra" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Kadabra</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Psychic</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Kinesis, Recover, Psybeam, Reflect. Troublesome Recover loop; overwhelm with heavy physical attacks.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Alakazam (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 50</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Psychic</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Recover, Psychic, Reflect, Double Team. Extremely high speed and Special stats. Counter by abusing its terrible physical defense with heavy moves like Snorlax's Body Slam.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -923,7 +1372,56 @@ export const ENGLISH_YELLOW_CHAPTERS = [
 
       <h2>2. Blaine's Volcanic Trivia Gym</h2>
       <p>Answer computer trivia questions to bypass Gym trainers. Defeat Fire Leader Blaine:</p>
-      <p><strong>Perfect Counter:</strong> Spray down his fire team with high-power Surf attacks from your fully evolved <strong>Blastoise</strong>!</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/58.png" alt="Growlithe" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Growlithe</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ember, Leer, Take Down, Agility. Low danger; extinguish swiftly with Water-type moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/77.png" alt="Ponyta" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Ponyta</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 48</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ember, Tail Whip, Stomp, Fire Spin. Fast but fragile; easily countered by Blastoise's Surf.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png" alt="Rapidash" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Rapidash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Fire</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Stomp, Fire Spin, Take Down, Agility. Annoying trapping Fire Spin loop; finish early with high-HP Water or Ground types.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/59.png" alt="Arcanine" style="max-width: 70px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Arcanine (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 54</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Fire</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Roar, Leer, Reflect, Flamethrower. Massive stats coupled with devastating Flamethrower attack. Overwhelm immediately using Blastoise's Surf.</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
@@ -937,7 +1435,65 @@ export const ENGLISH_YELLOW_CHAPTERS = [
 
       <h2>1. The Final Fight with Giovanni (Earth Badge)</h2>
       <p>The mysterious Viridian Gym Leader is none other than Giovanni himself, leading his Ground/Poison squadron:</p>
-      <p>Wash away his Ground defenses with Blastoise's Surf or Venusaur's Grass attacks to claim your 8th Gym badge and earn entry into the Indigo Plateau.</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(234, 179, 8, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: center; width: 100px; color: #facc15;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 80px; color: #facc15;">Level</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; width: 140px; color: #facc15;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 179, 8, 0.3); text-align: left; color: #facc15;">Moves & Recommended Counters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/111.png" alt="Rhyhorn" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Rhyhorn</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 50</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ground / Rock</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tail Whip, Fury Attack, Horn Drill, Scary Face. Heavy 4x weakness to Water; wash away instantly with Surf.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/51.png" alt="Dugtrio" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Dugtrio</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 53</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sand-Attack, Slash, Earthquake, Fissure. High speed paired with devastating Earthquake. Counter with Ice or Water moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/31.png" alt="Nidoqueen" style="max-width: 50px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Nidoqueen</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 53</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Poison / Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Thunder, Double Kick, Poison Sting, Body Slam. Bulky with dangerous Thunder coverage against Water-types. Counter with Alakazam's Psychic attacks.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/34.png" alt="Nidoking" style="max-width: 55px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Nidoking</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 55</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Poison / Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Thunder, Double Kick, Poison Sting, Thrash. High physical raw power. Overcome swiftly using Alakazam's Psychic or heavy range Water moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/112.png" alt="Rhydon" style="max-width: 60px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Rhydon (Signature)</td>
+            <td style="padding: 12px 16px;">Lvl 55</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Ground / Rock</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Fissure, Take Down, Horn Drill, Rock Slide. Extreme physical stats but extremely weak Special defense; easily OHKO'd with Blastoise's Surf.</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>2. The Route 22 Rival Ambush</h2>
       <p>Your rival blocks Route 22, leading a balanced team anchored by his fully evolved Eeveelution. Use typing advantages to crush him one last time before Victory Road!</p>
