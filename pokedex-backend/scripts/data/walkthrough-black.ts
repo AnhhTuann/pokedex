@@ -931,6 +931,151 @@ export const BLACK_CHAPTERS = [
         </tbody>
       </table>
     `
+  },
+  {
+    gameVersion: "black",
+    chapterTitle: "Phần 16: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt",
+    order: 16,
+    language: "vi",
+    content: `
+      <h1>Phần 16: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt</h1>
+      <p>Bên cạnh các thần thú chính, Pokémon Black & White cất giấu những bí mật kinh hoàng về các thần thú cổ đại siêu hiếm và huyền thoại ẩn dật bạo liệt!</p>
+
+      <h2>1. Thần chiến thắng Victini (Liberty Garden - Level 15)</h2>
+      <p>Thần thú hệ Tâm Linh/Lửa huyền thoại mang đặc tính **Victory Star** giúp tăng độ chính xác tuyệt đối cho toàn đội!</p>
+      <div style="text-align: center; margin: 24px 0;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/494.png" alt="Victini" style="max-width: 100px;" />
+        <p style="font-style: italic; color: #f43f5e; margin-top: 8px;">Victini - Hiện thân của chiến thắng vạn cổ!</p>
+      </div>
+      <p><strong>Cách thu phục:</strong> Sử dụng vé Liberty Pass di chuyển bằng tàu từ bến cảng Castelia City đến đảo Liberty Garden. Vượt qua nhóm Plasma canh gác dưới tầng hầm để chạm trán Victini ở cấp độ 15 bộc phá!</p>
+
+      <h2>2. Bộ Ba Thần Thú Thủ Lĩnh Công Lý (Sacred Swordsmen)</h2>
+      <p>Các dũng sĩ công lý huyền thoại đại diện cho tinh thần nghĩa hiệp bảo vệ rừng xanh:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(139, 92, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Thần Thú</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Hệ & Cấp Độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Vị Trí & Điều Kiện Bắt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/638.png" alt="Cobalion" style="max-width:45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a78bfa;">Cobalion</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thép / Giác Đấu<br/><strong>Lvl 42</strong></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nằm sâu bên trong hang động **Mistralton Cave** (phải học lướt nước Surf và đẩy đá Strength). Thu phục dũng sỹ này trước tiên để mở khóa hai thần thú còn lại!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/639.png" alt="Terrakion" style="max-width:45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Terrakion</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đá / Giác Đấu<br/><strong>Lvl 42</strong></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Xuất hiện tại thánh đường ẩn **Trial Chamber** bên trong Victory Road sau khi thu phục thành công Cobalion. Sức công vật lý vô cùng tàn bạo!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/640.png" alt="Virizion" style="max-width:45px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #10b981;">Virizion</td>
+            <td style="padding: 12px 16px;">Cỏ / Giác Đấu<br/><strong>Lvl 42</strong></td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Xuất hiện tại **Rumination Field** thuộc khu rừng Pinwheel Forest sau khi Cobalion thức tỉnh. Nổi tiếng với chỉ số kháng phép và tốc độ lướt điệu nghệ.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Thần Đất Mẹ Landorus hoang dã tối cao (Level 70)</h2>
+      <p>Thần đất Landorus ngự trị mang hai hệ Đất/Bay vô cùng bá đạo dã ngoại hoang dã!</p>
+      <div style="text-align: center; margin: 24px 0;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/645.png" alt="Landorus" style="max-width: 100px;" />
+        <p style="font-style: italic; color: #fbbf24; margin-top: 8px;">Thần Đất Landorus uy nghi xuất hiện mây khói cuồng bạo!</p>
+      </div>
+      <p><strong>Cách triệu gọi:</strong> Mang cả hai thần mây Tornadus (bắt dã ngoại ở bản Black) và Thundurus (bắt dã ngoại ở bản White) trong tổ đội tiến thẳng về miếu thờ cổ **Abundant Shrine** mạn phía đông Unova để diện kiến và thu phục rồng thiêng vạn cổ.</p>
+    `
+  },
+  {
+    gameVersion: "black",
+    chapterTitle: "Phần 17: Toàn tập Giao dịch với NPC - NPC Trades Guide",
+    order: 17,
+    language: "vi",
+    content: `
+      <h1>Phần 17: Toàn tập Giao dịch với NPC - NPC Trades Guide</h1>
+      <p>Giao dịch Pokémon với các NPC dã ngoại trên bản đồ là cơ hội tuyệt vời để thu được những chiến binh đặc thù, có chỉ số IVs cực đẹp và lượng điểm kinh nghiệm nhân đôi bộc phá hành trình đi cảnh!</p>
+
+      <h2>Danh Sách Các Giao Dịch Trấn Phái Tuyệt Mật</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Sprite Đổi</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Cần Giao Dịch</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Sprite Nhận</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Nhận Được</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Vị Trí NPC & Đặc Điểm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/546.png" alt="Cottonee" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Cottonee (Hệ Cỏ)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/548.png" alt="Petilil" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Petilil (Hệ Cỏ)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Nacrene City:</strong> Đổi Cottonee hoang dã lấy Petilil (chỉ dành riêng cho bản Black!). Giúp bạn có ngay chiến binh cỏ bạo kích quét sàn.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/525.png" alt="Boldore" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Boldore (Hệ Đá)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/587.png" alt="Emolga" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Emolga (Sóc Điện)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 7:</strong> Một NPC trong ngôi nhà bên đường muốn đổi Boldore lấy sóc bay lôi điện Emolga cực kỳ nhanh nhẹn tinh ranh!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/572.png" alt="Minccino" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Minccino (Hệ Thường)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/550.png" alt="Basculin" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Basculin (Cá Vược)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 4 (Cổng sa mạc):</strong> NPC trong tòa nhà chốt gác đổi Minccino lấy cá vược bạo chúa Basculin sọc đỏ (Black) hoặc sọc xanh (White).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="Ditto" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Ditto (Biến Hình)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/479.png" alt="Rotom" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Rotom (Hệ Điện/Ma)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 15 (Hậu Game):</strong> NPC trong căn nhà dã ngoại hoang dã đổi Ditto lấy thần thú Rotom với khả năng nhập vào các thiết bị gia dụng vô cùng độc đáo!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/573.png" alt="Cinccino" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; color: #cbd5e1; font-weight: bold;">Cinccino (Tiến hóa)</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/446.png" alt="Munchlax" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Munchlax (Hệ Thường)</td>
+            <td style="padding: 12px 16px;"><strong>Undella Town (Chỉ Mùa Hè):</strong> NPC tại biệt thự muốn đổi Cinccino sang chảnh để lấy chú bé ham ăn Munchlax siêu hiếm!</td>
+          </tr>
+        </tbody>
+      </table>
+    `
   }
 ];
 
@@ -1825,6 +1970,147 @@ export const ENGLISH_BLACK_CHAPTERS = BLACK_CHAPTERS.map(viChapter => {
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Choice Scarf</td>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Boosts Speed stat by 50% but restricts usage to a single selected move.</td>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Purchase with BP at the exchange.</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      break;
+
+    case 16:
+      title = "Chapter 16: Secrets of Ultra Rare & Legendary Beasts";
+      content = `
+        <h1>Chapter 16: Secrets of Ultra Rare & Legendary Beasts</h1>
+        <p>Beyond the core storyline dragons, Pokémon Black & White hide deep ancient secrets about extremely rare and legendary beasts residing in hidden locations across Unova!</p>
+
+        <h2>1. The Victory Star Victini (Liberty Garden - Level 15)</h2>
+        <p>A mythical Psychic/Fire guardian boasting the **Victory Star** ability, boosting the accuracy of your entire battle roster!</p>
+        <div style="text-align: center; margin: 24px 0;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/494.png" alt="Victini" style="max-width: 100px;" />
+          <p style="font-style: italic; color: #f43f5e; margin-top: 8px;">Victini - The eternal bringer of absolute victory!</p>
+        </div>
+        <p><strong>Capture Method:</strong> Obtain the Liberty Pass to board a ship from Castelia City piers to Liberty Garden. Clear out the Team Plasma grunts defending the island, and challenge Victini in the basement at Level 15!</p>
+
+        <h2>2. The Legendary Sacred Swordsmen (The Musketeers)</h2>
+        <p>Three legendary quadruped warriors representing the ultimate force of justice and forest preservation:</p>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(139, 92, 246, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: center; width: 100px; color: #a78bfa;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Legendary Beast</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Type & Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left; color: #a78bfa;">Encounter Location & Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/638.png" alt="Cobalion" style="max-width:45px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a78bfa;">Cobalion</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Steel / Fighting<br/><strong>Lvl 42</strong></td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Located inside the deep chambers of **Mistralton Cave** (requires HM Surf and Strength). Catch Cobalion first to trigger Terrakion and Virizion out of hiding!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/639.png" alt="Terrakion" style="max-width:45px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Terrakion</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock / Fighting<br/><strong>Lvl 42</strong></td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Appears in the hidden **Trial Chamber** of Victory Road once Cobalion is successfully captured. Carries monumental physical attack statistics!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/640.png" alt="Virizion" style="max-width:45px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #10b981;">Virizion</td>
+              <td style="padding: 12px 16px;">Grass / Fighting<br/><strong>Lvl 42</strong></td>
+              <td style="padding: 12px 16px; color: #cbd5e1;">Found waiting in the **Rumination Field** deep inside Pinwheel Forest once Cobalion is released. Specializes in extreme Speed and Special Defense.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>3. The Great Sky Deity Landorus (Level 70)</h2>
+        <p>A premier Ground/Flying elemental force governing Unova's agricultural fertility:</p>
+        <div style="text-align: center; margin: 24px 0;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/645.png" alt="Landorus" style="max-width: 100px;" />
+          <p style="font-style: italic; color: #fbbf24; margin-top: 8px;">Landorus - The grand agricultural spirit arriving in a dust storm!</p>
+        </div>
+        <p><strong>Summoning Requirements:</strong> Bring both the roaming storm gods, Tornadus (Black exclusive) and Thundurus (White exclusive), in your active party and present them at the **Abundant Shrine** to initiate this epic Level 70 capture encounter.</p>
+      `;
+      break;
+
+    case 17:
+      title = "Chapter 17: NPC Trades Guide";
+      content = `
+        <h1>Chapter 17: NPC Trades Guide</h1>
+        <p>Trading with regional NPCs is the absolute best way to acquire unique Pokémon species carrying boosted EXP gain modifiers, fixed high IV stats, and rare battle traits!</p>
+
+        <h2>Essential Regional NPC Trades Registry</h2>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(16, 185, 129, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Give Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Required Trade</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Receive Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Received Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">NPC Location & Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/546.png" alt="Cottonee" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Cottonee (Grass)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/548.png" alt="Petilil" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Petilil (Grass)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Nacrene City:</strong> Trade a wild Cottonee for a high-IV Petilil (Black Exclusive). Ideal to secure an early-game Grass powerhouse!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/525.png" alt="Boldore" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Boldore (Rock)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/587.png" alt="Emolga" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Emolga (Electric/Flying)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 7:</strong> An NPC inside the roadside house wants a Boldore in exchange for a highly nimble, fast-pacing Emolga!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/572.png" alt="Minccino" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Minccino (Normal)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/550.png" alt="Basculin" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Basculin (Water)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 4 (Gatehouse):</strong> Swap a Minccino to acquire a Red-Striped Basculin (Black) or Blue-Striped Basculin (White).</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="Ditto" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Ditto (Normal)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/479.png" alt="Rotom" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Rotom (Electric/Ghost)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 15 (Post-Game):</strong> Trade a wild Ditto in the camper van to receive Rotom, complete with appliance-shifting forms!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/573.png" alt="Cinccino" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; color: #cbd5e1; font-weight: bold;">Cinccino (Normal)</td>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/446.png" alt="Munchlax" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Munchlax (Normal)</td>
+              <td style="padding: 12px 16px;"><strong>Undella Town (Summer):</strong> An NPC visiting the beach mansion trades a highly rare Munchlax for your Cinccino.</td>
             </tr>
           </tbody>
         </table>

@@ -1,6 +1,6 @@
 export const BLACK2_CHAPTERS = [
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 1: Bình minh mới tại Aspertia City & Lựa chọn Starter Gen 5",
     order: 1,
     language: "vi",
@@ -53,7 +53,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 2: Phòng Gym 1: Thủ lĩnh Cheren & Bài học đầu đời tại Aspertia School",
     order: 2,
     language: "vi",
@@ -101,7 +101,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 3: Phòng Gym 2: Thủ lĩnh Roxie & Sân khấu Rock độc hại Virbank",
     order: 3,
     language: "vi",
@@ -149,7 +149,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 4: Đột nhập cống ngầm Castelia Sewers & Huy hiệu bọ Burgh",
     order: 4,
     language: "vi",
@@ -206,7 +206,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 5: Bão cát sa mạc gầm rú & Đấu trường lôi điện Elesa tại Nimbasa",
     order: 5,
     language: "vi",
@@ -263,7 +263,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 6: Giải đấu thế giới PWT hoành tráng & Mũi khoan thép Clay",
     order: 6,
     language: "vi",
@@ -321,7 +321,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 7: Chinh phục Reversal Mountain & Sân bay cất cánh Skyla",
     order: 7,
     language: "vi",
@@ -378,7 +378,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 8: Thung lũng Lentimas hoang dã & Trận bão rồng Drayden tại Opelucid",
     order: 8,
     language: "vi",
@@ -435,7 +435,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 9: Băng qua đường ống kính Marine Tube & Thủy thủy Marlon tại Humilau",
     order: 9,
     language: "vi",
@@ -492,7 +492,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 10: Tổng tấn công pháo đài chiến hạm bay Plasma Frigate",
     order: 10,
     language: "vi",
@@ -508,7 +508,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 11: Trận chiến Giant Chasm - Đè bẹp Ghetsis & Bạo chúa Black Kyurem xuất thế",
     order: 11,
     language: "vi",
@@ -554,7 +554,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 12: Con đường tàn tích Victory Road & Thách đấu Unova Elite Four",
     order: 12,
     language: "vi",
@@ -601,10 +601,232 @@ export const BLACK2_CHAPTERS = [
           </tr>
         </tbody>
       </table>
+
+      <h2>2. Chi tiết Đội hình & Chiến thuật Khắc chế Từng Cao Thủ</h2>
+
+      <h3 style="color: #c084fc; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/609.png" style="max-width: 32px; vertical-align: middle;" />
+        1. Cao thủ Shauntal (Chuyên hệ Ma / Ghost)
+      </h3>
+      <p>Shauntal sở hữu các linh hồn có khả năng gây bỏng và khống chế vật lý cực kỳ khó chịu. Hãy chuẩn bị các đòn đánh hệ Bóng Tối hoặc U Linh đặc biệt.</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(168, 85, 247, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: center; width: 80px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left; width: 80px;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left; width: 120px;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left;">Tuyệt chiêu & Chiến thuật khắc chế</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/563.png" alt="Cofagrigus" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cofagrigus</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ma</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Shadow Ball, Psychic, Will-O-Wisp, Grass Knot.<br/><strong>Khắc chế:</strong> Tránh dùng đòn tiếp xúc vật lý cận chiến để không dính đặc tính Mummy biến đổi hệ. Sử dụng đòn hệ Bóng Tối/Ma đặc biệt từ xa để dứt điểm nhanh, đề phòng bị bỏng làm giảm 50% sức công vật lý.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/623.png" alt="Golurk" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Golurk</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ma / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Shadow Punch, Earthquake, Heavy Slam, Curse.<br/><strong>Khắc chế:</strong> Người khổng lồ đá có tốc độ siêu chậm nhưng công vật lý cực khỏe. Dội nước lụt bằng đòn Nước (Surf của Samurott) hoặc đóng băng bằng đòn Băng để tiễn nó đi lẹ.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/354.png" alt="Banette" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Banette</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ma</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Shadow Claw, Psychic, Faint Attack, Will-O-Wisp.<br/><strong>Khắc chế:</strong> Chỉ số thủ cực kỳ giấy nhưng có đòn cào bóng tối vật lý khá thốn. Tấn công tốc độ cao bằng đòn Bóng tối hoặc Ma để thổi bay nó trong 1 nốt nhạc.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/609.png" alt="Chandelure" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Chandelure (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 58</td>
+            <td style="padding: 12px 16px;">Ma / Lửa</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Chiêu thức:</strong> Fire Blast, Shadow Ball, Energy Ball, Psychic.<br/><strong>Khắc chế:</strong> Đèn chùm u linh có chỉ số công đặc biệt (Sp. Atk) khổng lồ tột độ! Tuyệt đối không đưa hệ Cỏ hay Thép lên hứng chiêu Fire Blast cực bạo của nó. Khắc chế triệt để bằng đòn Đất (Earthquake của Krookodile) hoặc đòn Nước (Surf của Samurott) thổi bay ngọn lửa u linh tức thì!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: #818cf8; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/625.png" style="max-width: 32px; vertical-align: middle;" />
+        2. Cao thủ Grimsley (Chuyên hệ Bóng Tối / Dark)
+      </h3>
+      <p>Grimsley là tay chơi cờ bạc phong trần chuyên dùng quái thú hệ Bóng Tối sắc lẹm, có điểm yếu chí tử trước hệ Giác Đấu và Côn Trùng.</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(129, 140, 248, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(129, 140, 248, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: center; width: 80px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left; width: 80px;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left; width: 120px;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left;">Tuyệt chiêu & Chiến thuật khắc chế</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/510.png" alt="Liepard" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Liepard</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bóng Tối</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Night Slash, Aerial Ace, Attract, Fake Out.<br/><strong>Khắc chế:</strong> Thường mở màn bằng Fake Out gây hoảng sợ và Attract cực kỳ ức chế nếu khác giới tính. Hãy đưa võ sĩ Giác Đấu (Lucario/Conkeldurr) lên nện sập hầm bằng đòn đấm đá cận chiến thể chất lẹ làng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/560.png" alt="Scrafty" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Scrafty</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bóng Tối / Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Crunch, Brick Break, Rock Slide, Poison Jab.<br/><strong>Khắc chế:</strong> Thần thằn lằn tụt quần có giáp thủ cực trâu bò nhờ Intimidate hoặc Moxie tăng công vật lý. Dùng đòn Giác Đấu hoặc đòn hệ Bay (Air Slash) để khoan thủng lớp da dày của nó.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/553.png" alt="Krookodile" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Krookodile</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bóng Tối / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Earthquake, Crunch, Rock Slide, Dragon Claw.<br/><strong>Khắc chế:</strong> Sức công vật lý vô cùng bạo tàn với đòn động đất rung trời Earthquake. Tuyệt đối không đưa quái thú hệ Điện hay Thép lên hứng đòn. Giội nước bão táp bằng Surf (Samurott) hoặc đóng băng tuyết lở để hạ gục lẹ.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/625.png" alt="Bisharp" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Bisharp (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 58</td>
+            <td style="padding: 12px 16px;">Bóng Tối / Thép</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Chiêu thức:</strong> Night Slash, Iron Head, X-Scissor, Shadow Claw.<br/><strong>Khắc chế:</strong> Võ sĩ bọc thép sắc bén có lượng kháng tính dày đặc sừng sững nhưng gánh gối **điểm yếu nhân 4 chí tử với hệ Giác Đấu**! Đưa Lucario, Conkeldurr hoặc Sawk lên tung một cú đấm thép **Close Combat** hay **Brick Break** đập nát vụn giáp sắt dứt điểm tức khắc đoạt mạng Bisharp!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: #f472b6; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/576.png" style="max-width: 32px; vertical-align: middle;" />
+        3. Cao thủ Caitlin (Chuyên hệ Tâm Linh / Psychic)
+      </h3>
+      <p>Tiểu thư Caitlin lười biếng chuyên sử dụng ma thuật tâm linh bóp méo không gian, rất sợ hệ Côn Trùng, Ma và Bóng Tối.</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(244, 114, 182, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(244, 114, 182, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: center; width: 80px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left; width: 80px;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left; width: 120px;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left;">Tuyệt chiêu & Chiến thuật khắc chế</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/518.png" alt="Musharna" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Musharna</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Dream Eater, Psychic, Hypnosis, Reflect.<br/><strong>Khắc chế:</strong> Heo mộng mị siêu trâu bò có khả năng ru ngủ Hypnosis rồi hút máu bằng Dream Eater cực ức chế. Đưa Krookodile hệ Bóng Tối miễn nhiễm đòn tâm linh lên dùng đòn cắn bạo **Crunch** rã nát giấc mơ u sầu của nó lẹ.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/561.png" alt="Sigilyph" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sigilyph</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh / Bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Psychic, Air Slash, Ice Beam, Shadow Ball.<br/><strong>Khắc chế:</strong> Biểu tượng ma thuật bay lượn có tốc độ rất cao. Giật sập lôi điện sấm sét bằng đòn Điện (Zebstrika) hoặc bắn đá hạ gục từ xa lẹ làng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/579.png" alt="Reuniclus" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Reuniclus</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tâm Linh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Psychic, Focus Blast, Energy Ball, Recover.<br/><strong>Khắc chế:</strong> Tế bào thạch xanh có máu và công đặc biệt cực khủng, có đòn hồi máu Recover dai dẳng. Dùng đòn vật lý hệ Bóng Tối hoặc hệ Côn Trùng cực mạnh dứt điểm nhanh trước khi nó hồi máu.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/576.png" alt="Gothitelle" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Gothitelle (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 58</td>
+            <td style="padding: 12px 16px;">Tâm Linh</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Chiêu thức:</strong> Psychic, Thunderbolt, Calm Mind, Flatter.<br/><strong>Khắc chế:</strong> Tiểu thư Gothitelle có chỉ số thủ đặc biệt cực dày, spams Calm Mind tăng công thủ phép liên tục rất nguy hiểm. Tận dụng chỉ số thủ vật lý giấy của nó! Đưa Krookodile lên dồn đòn vật lý **Crunch** nghiền nát bét phòng tuyến ma pháp dứt điểm đoạt lấy ván thắng lẹ!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: #fbbf24; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/534.png" style="max-width: 32px; vertical-align: middle;" />
+        4. Cao thủ Marshal (Chuyên hệ Giác Đấu / Fighting)
+      </h3>
+      <p>Marshal là nhà vô địch thể hình thể chất chuyên dùng đấu sĩ lực lưỡng, gánh điểm yếu trước hệ Siêu Linh và Bay lượn.</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(251, 191, 36, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: center; width: 80px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left; width: 80px;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left; width: 120px;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left;">Tuyệt chiêu & Chiến thuật khắc chế</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/538.png" alt="Throh" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Throh</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Storm Throw, Bulldoze, Rock Tomb, Payback.<br/><strong>Khắc chế:</strong> Đô vật đỏ có máu và thủ cực kỳ sừng sững dã ngoại. Tránh dùng đòn có tỉ lệ bộc kích cao vì Storm Throw tự động gây bạo kích. Dùng ma thuật siêu linh (Psychic) hoặc đòn gió mổ rách vai đô vật cực lẹ.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/539.png" alt="Sawk" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sawk</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Close Combat, Stone Edge, Payback, Retaliate.<br/><strong>Khắc chế:</strong> Đô vật xanh có đai bảo hộ nội tại **Sturdy** chống bị đấm chết 1 hit cực kỳ khó chịu! Nó sẽ dùng trả đũa Payback dã ngoại. Hãy dùng đòn quét diện rộng trước hoặc đòn lặp lại, sau đó tung chiêu hệ Siêu Linh/Bay để tiễn nó bay màu.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/620.png" alt="Mienshao" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Mienshao</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác Đấu</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Chiêu thức:</strong> Hi Jump Kick, U-turn, Rock Slide, Bounce.<br/><strong>Khắc chế:</strong> Linh miêu võ sĩ có tốc độ cực nhanh và đòn đá siêu bạo **Hi Jump Kick**. Mẹo cực hay: dùng bảo hộ **Protect** khi nó định Hi Jump Kick, nó sẽ đá trượt tự hủy mất 50% máu tối đa!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/534.png" alt="Conkeldurr" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Conkeldurr (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 58</td>
+            <td style="padding: 12px 16px;">Giác Đấu</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Chiêu thức:</strong> Hammer Arm, Stone Edge, Buldoze, Retaliate.<br/><strong>Khắc chế:</strong> Lực sĩ xi măng cầm hai cây cột đá tàn phá vật lý khét tiếng. Tránh đối đầu vật lý tay đôi! Hãy đưa một bức tường tâm linh đặc biệt dội bão siêu linh **Psychic** (Reuniclus/Sigilyph) nã sập hầm cột đá dứt điểm lẹ đô vật lực sĩ đoạt lấy chiến thắng rạng ngời!</td>
+          </tr>
+        </tbody>
+      </table>
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 13: Trận chung kết vinh quang vạn cổ - Thách đấu Tân Nhà Vô Địch Iris",
     order: 13,
     language: "vi",
@@ -676,7 +898,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 14: Khám phá Hậu Game - Vượt tháp Black Tower, nhận Gible Shiny & Hợp thể rồng Black Kyurem",
     order: 14,
     language: "vi",
@@ -696,7 +918,7 @@ export const BLACK2_CHAPTERS = [
     `
   },
   {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: "Phần 15: Toàn tập HMs & Essential Competitive Items trong Black 2",
     order: 15,
     language: "vi",
@@ -719,6 +941,147 @@ export const BLACK2_CHAPTERS = [
         <li><strong>Eviolite:</strong> Nhận tại Castelia City bồi đắp 50% chỉ số thủ song phương cực bạo cho quái chưa tiến hóa hết.</li>
         <li><strong>Focus Sash / Life Orb / Choice Scarf:</strong> Đổi bằng điểm thắng BP tại sảnh quầy ga tàu điện ngầm Battle Subway Nimbasa City sầm uất.</li>
       </ul>
+    `
+  },
+  {
+    gameVersion: "black-2",
+    chapterTitle: "Phần 16: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt",
+    order: 16,
+    language: "vi",
+    content: `
+      <h1>Phần 16: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt</h1>
+      <p>Sau khi chiến thắng Nhà vô địch Iris, thế giới Unova trong Black 2 mở ra một loạt các mật cảnh ẩn chứa những vị thần tối cao huyền thoại bạo liệt từ khắp nơi trên thế giới!</p>
+
+      <h2>1. Thần hộ mệnh tâm linh Latios & Latias (Dreamyard - Level 68)</h2>
+      <p>Tại Dreamyard, bạn sẽ gặp rồng tâm linh siêu tốc **Latios** (Bản Black 2) hoặc **Latias** (Bản White 2) ở cấp độ 68 cực mạnh dã ngoại hoang dã!</p>
+      <div style="text-align: center; margin: 24px 0;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/381.png" alt="Latios" style="max-width: 90px;" />
+        <p style="font-style: italic; color: #3b82f6; margin-top: 8px;">Thần rồng tâm linh Latios bộc phát tốc độ ánh sáng!</p>
+      </div>
+
+      <h2>2. Bộ Ba Kiếm Sĩ Công Lý Thức Tỉnh (Level 45)</h2>
+      <p>Trong Black 2, ba kiếm sĩ thần thánh xuất hiện ngay trên các cung đường chính để thử thách lòng dũng cảm của bạn ở cấp độ 45:</p>
+      <ul>
+        <li><strong>Cobalion (Lvl 45):</strong> Xuất hiện chặn đường bạn tại sa lộ **Route 13**.</li>
+        <li><strong>Virizion (Lvl 45):</strong> Ngự trị sừng sững tại lối đi rừng **Route 11**.</li>
+        <li><strong>Terrakion (Lvl 45):</strong> Thách thức sức mạnh cơ bắp của bạn tại đỉnh đồi **Route 22**.</li>
+      </ul>
+
+      <h2>3. Bí Mật Cổ Mộ Đất Đá & Thần Khổng Lồ Regigigas</h2>
+      <p>Vượt qua hầm lò **Clay Tunnel** để tiến vào **Underground Ruins** kì bí:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Thần Tượng</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Cấp Độ & Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Cách Bắt & Điều Kiện</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/377.png" alt="Regirock" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Regirock</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đá (Rock)<br/><strong>Lvl 65</strong></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Giải câu đố ánh sáng ban ngày/ban đêm tại Underground Ruins để mở cửa điện thờ thu phục. Bắt xong nhận được chìa khóa mở Registeel hoặc Regice.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/486.png" alt="Regigigas" style="max-width:45px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Regigigas</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thường (Normal)<br/><strong>Lvl 68</strong></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Mang cả 3 Regi (Regirock, Regice, Registeel) trong tổ đội, tiến sâu vào hầm đóng băng ở **Twist Mountain** để thức tỉnh bức tượng Regigigas ngủ ngàn năm bạo phát!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4. Các Thần Thú Huyền Thoại Phương Xa Khác</h2>
+      <ul>
+        <li><strong>Cresselia (Lvl 68):</strong> Lấy chiếc lông vũ Lunar Wing từ Strange House kinh dị, tiến thẳng về cây cầu rực rỡ **Marvelous Bridge** để triệu gọi thần mặt trăng xinh đẹp.</li>
+        <li><strong>Heatran (Lvl 68):</strong> Nhận viên đá Magma Stone ở Route 18 hoang dã dã ngoại, mang đến hang núi lửa rực nhiệt **Reversal Mountain** để triệu hồi thần lửa thép tàn phá.</li>
+        <li><strong>Bộ Ba Vệ Thần Hồ Nước (Lvl 65):</strong> Tiếp cận hang động bí ẩn **Cave of Being** để thức tỉnh Uxie, Mesprit và Azelf phân tán khắp Unova dã ngoại!</li>
+      </ul>
+    `
+  },
+  {
+    gameVersion: "black-2",
+    chapterTitle: "Phần 17: Toàn tập Giao dịch với NPC - NPC Trades Guide",
+    order: 17,
+    language: "vi",
+    content: `
+      <h1>Phần 17: Toàn tập Giao dịch với NPC - NPC Trades Guide</h1>
+      <p>Hệ thống giao dịch NPC trong Pokémon Black 2 vô cùng phong phú, mang đến những bảo vật siêu hiếm ẩn giấu năng lực Hidden Ability (đặc tính ẩn) bộc phá cực mạnh dã ngoại hoang dã!</p>
+
+      <h2>1. Siêu Sự Kiện Hẹn Hò Vòng Quay & Nhận Pokémon Ẩn Tích Yancy / Curtis</h2>
+      <p>Sau khi nhặt được chiếc máy liên lạc đánh rơi tại Nimbasa City và thực hiện các cuộc gọi hẹn hò lãng mạn, bạn sẽ được đi vòng quay Ferris Wheel cùng **Yancy** (nếu chơi nam) hoặc **Curtis** (nếu chơi nữ). Họ sẽ đổi cho bạn những Pokémon cực kỳ quý giá mang Đặc tính ẩn dã ngoại bộc phát:</p>
+      <ul>
+        <li><strong>Ralts</strong> (Đặc tính ẩn: Telepathy - Đồng cảm)</li>
+        <li><strong>Snorlax</strong> (Đặc tính ẩn: Gluttony - Tham ăn)</li>
+        <li><strong>Spiritomb</strong> (Đặc tính ẩn: Infiltrator - Thâm nhập)</li>
+        <li><strong>Togepi</strong> (Đặc tính ẩn: Super Luck - Siêu may mắn)</li>
+      </ul>
+
+      <h2>2. Danh Sách Giao Dịch Bản Đồ Trực Tiếp</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(16, 185, 129, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Sprite Đổi</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Cần Giao Dịch</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Sprite Nhận</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Nhận Được</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Vị Trí NPC & Đặc Điểm Chiến Thuật</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/587.png" alt="Emolga" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Emolga (Sóc Điện)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/526.png" alt="Gigalith" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Gigalith (Hệ Đá)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 7:</strong> NPC đổi chú sóc Emolga hoang dã lấy pháo đài đá khổng lồ Gigalith (Lvl 35). Sức thủ vật lý và lực công phá sấm sét đá lăn tàn bạo!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/226.png" alt="Mantine" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Mantine (Cá Đuối)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/465.png" alt="Tangrowth" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Tangrowth (Dây Leo)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Humilau City:</strong> NPC đổi cá đuối Mantine lấy quái thú dây leo khổng lồ Tangrowth (Lvl 45) phòng ngự vật lý cực bạo.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/450.png" alt="Hippowdon" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Hippowdon (Hà Mã)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Alakazam (Thần Nhãn)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Accumula Town (Hậu Game):</strong> Đổi hà mã Hippowdon lấy siêu pháp sư thìa muỗng Alakazam ở cấp độ 65 tuyệt đỉnh phép thuật bạo kích dã ngoại!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/594.png" alt="Alomomola" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; color: #cbd5e1; font-weight: bold;">Alomomola (Cá Mặt Trăng)</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/424.png" alt="Ambipom" style="max-width:40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Ambipom (Khỉ Hai Đuôi)</td>
+            <td style="padding: 12px 16px;"><strong>Route 15:</strong> Giao dịch chú cá Alomomola để lấy khỉ hai đuôi Ambipom cực kỳ tinh nghịch tinh quái, tăng sát thương bộc bộc bạo!</td>
+          </tr>
+        </tbody>
+      </table>
     `
   }
 ];
@@ -1282,25 +1645,247 @@ export const ENGLISH_BLACK2_CHAPTERS = BLACK2_CHAPTERS.map(viChapter => {
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #c084fc;">Shauntal</td>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghost</td>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Cofagrigus, Golurk, Chandelure (Lvl 58)</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Avoid physical contact with Cofagrigus. Blast down Chandelure utilizing special Dark moves (Crunch of Krookodile) from range.</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Avoid physical contact with Cofagrigus to bypass Mummy. Blast Chandelure with Ground or Water moves instantly.</td>
             </tr>
             <tr>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #818cf8;">Grimsley</td>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Liepard, Krookodile, Bisharp (Lvl 58)</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Execute Bisharp using 4x effective physical Fighting-type moves (Low Kick or Brick Break) to easily end the dark game.</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Liepard, Krookodile, Bisharp (Lvl 58)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Shatter Bisharp using physical Fighting-type moves (Close Combat or Brick Break) for 4x effective damage.</td>
             </tr>
             <tr>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f472b6;">Caitlin</td>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Musharna, Reuniclus, Gothitelle (Lvl 58)</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Bring out heavy physical Dark-type attackers (Krookodile's Crunch) to easily chew through her sleep shields.</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Musharna, Reuniclus, Gothitelle (Lvl 58)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Deploy physical Dark-type attackers (Krookodile's Crunch) to chew through her bulky mental barriers.</td>
             </tr>
             <tr>
               <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Marshal</td>
               <td style="padding: 12px 16px;">Fighting</td>
               <td style="padding: 12px 16px; color: #cbd5e1;">Throh, Sawk, Mienshao, Conkeldurr (Lvl 58)</td>
-              <td style="padding: 12px 16px; color: #cbd5e1;">Launch Flying-type moves (Air Slash from Sigilyph or Unfezant) to easily bypass their physical bulk and clean up the arena.</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;">Utilize Psychic or Flying-type special moves (Air Slash, Psychic) to bypass high physical bulk.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>2. Detailed Team Rosters & Strategic Matchups</h2>
+
+        <h3 style="color: #c084fc; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/609.png" style="max-width: 32px; vertical-align: middle;" />
+          1. Elite Shauntal (Ghost Specialist)
+        </h3>
+        <p>Shauntal utilizes ghost spirits that are experts in disabling physical attackers and inflicting burns. Bring strong Special Dark or Ghost-type attacks.</p>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(168, 85, 247, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: center; width: 80px;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left; width: 80px;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left; width: 120px;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(168, 85, 247, 0.3); text-align: left;">Moves & Strategic Counters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/563.png" alt="Cofagrigus" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Cofagrigus</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghost</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Shadow Ball, Psychic, Will-O-Wisp, Grass Knot.<br/><strong>Counter:</strong> Avoid physical moves to prevent your ability from being changed by Mummy. Blast with Special Ghost or Dark-type moves to avoid getting burned.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/623.png" alt="Golurk" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Golurk</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghost / Ground</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Shadow Punch, Earthquake, Heavy Slam, Curse.<br/><strong>Counter:</strong> A slow titan but commands tremendous physical power. Wash it away with Water (Samurott's Surf) or shatter it with Ice-type attacks.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/354.png" alt="Banette" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Banette</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghost</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Shadow Claw, Psychic, Faint Attack, Will-O-Wisp.<br/><strong>Counter:</strong> Fragile defenses but high physical damage output. Blitz it down fast using Dark or Ghost-type attacks before it can attack or burn you.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/609.png" alt="Chandelure" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Chandelure (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 58</td>
+              <td style="padding: 12px 16px;">Ghost / Fire</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Moves:</strong> Fire Blast, Shadow Ball, Energy Ball, Psychic.<br/><strong>Counter:</strong> Boasts a gargantuan Special Attack stat! Do not switch Grass or Steel types into its Fire Blast. Extinguish this ghostly chandelier using Ground (Krookodile's Earthquake) or Water (Samurott's Surf) moves instantly!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="color: #818cf8; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/625.png" style="max-width: 32px; vertical-align: middle;" />
+          2. Elite Grimsley (Dark Specialist)
+        </h3>
+        <p>Grimsley is a calculated gambler dealing in sharp Dark-type threats. They collapse quickly against Fighting and Bug-type attacks.</p>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(129, 140, 248, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(129, 140, 248, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: center; width: 80px;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left; width: 80px;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left; width: 120px;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(129, 140, 248, 0.3); text-align: left;">Moves & Strategic Counters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/510.png" alt="Liepard" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Liepard</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Night Slash, Aerial Ace, Attract, Fake Out.<br/><strong>Counter:</strong> Will lead with Fake Out to flinch and Attract to cause infatuation. Bring out a strong Fighting-type (Lucario, Conkeldurr) to sweep it away immediately.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/560.png" alt="Scrafty" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Scrafty</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark / Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Crunch, Brick Break, Rock Slide, Poison Jab.<br/><strong>Counter:</strong> Possesses highly defensive stats, made even tougher with Intimidate or Moxie attack boosts. Chip it down utilizing Fighting or Flying-type moves.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/553.png" alt="Krookodile" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Krookodile</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark / Ground</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Earthquake, Crunch, Rock Slide, Dragon Claw.<br/><strong>Counter:</strong> Heavy physical hitter carrying high-power Earthquake. Keep Electric and Steel types far away. Bring Water-type (Samurott's Surf) or Ice-type counters to take it out.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/625.png" alt="Bisharp" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Bisharp (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 58</td>
+              <td style="padding: 12px 16px;">Dark / Steel</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Moves:</strong> Night Slash, Iron Head, X-Scissor, Shadow Claw.<br/><strong>Counter:</strong> Armored physical fighter with extensive type resistances, but bears a **fatal 4x weakness to Fighting-type moves**! Send in Lucario, Conkeldurr, or Sawk with a single **Close Combat** or **Brick Break** to shatter its defense instantly!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="color: #f472b6; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/576.png" style="max-width: 32px; vertical-align: middle;" />
+          3. Elite Caitlin (Psychic Specialist)
+        </h3>
+        <p>Caitlin weaves psychic illusions to distort battles, but suffers a severe vulnerability against Bug, Ghost, and Dark types.</p>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(244, 114, 182, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(244, 114, 182, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: center; width: 80px;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left; width: 80px;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left; width: 120px;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(244, 114, 182, 0.3); text-align: left;">Moves & Strategic Counters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/518.png" alt="Musharna" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Musharna</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Dream Eater, Psychic, Hypnosis, Reflect.<br/><strong>Counter:</strong> Extremely bulky; relies on Hypnosis sleep followed by Dream Eater to recover. Deploy a Dark-type (Krookodile) which is completely immune to Psychic moves, and chew it up with **Crunch**.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/561.png" alt="Sigilyph" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sigilyph</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic / Flying</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Psychic, Air Slash, Ice Beam, Shadow Ball.<br/><strong>Counter:</strong> A highly mobile and fast spellcaster. Strike it down using powerful Electric-type (Zebstrika) or Rock-type attacks.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/579.png" alt="Reuniclus" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Reuniclus</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Psychic, Focus Blast, Energy Ball, Recover.<br/><strong>Counter:</strong> High bulk and Special Attack with Recover to restore health. Use high physical damage Dark or Bug-type moves to destroy it quickly.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/576.png" alt="Gothitelle" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Gothitelle (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 58</td>
+              <td style="padding: 12px 16px;">Psychic</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Moves:</strong> Psychic, Thunderbolt, Calm Mind, Flatter.<br/><strong>Counter:</strong> Extremely high Special Defense; will set up Calm Mind repeatedly. Exploit its weak physical Defense! Bring in Krookodile for a crushing physical **Crunch** to easily end its magic run!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="color: #fbbf24; margin-top: 32px; display: flex; align-items: center; gap: 8px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/534.png" style="max-width: 32px; vertical-align: middle;" />
+          4. Elite Marshal (Fighting Specialist)
+        </h3>
+        <p>Marshal leads powerful athletic martial artists specializing in physical blows. They fold under Psychic and Flying-type moves.</p>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(251, 191, 36, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: center; width: 80px;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left;">Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left; width: 80px;">Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left; width: 120px;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 191, 36, 0.3); text-align: left;">Moves & Strategic Counters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/538.png" alt="Throh" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Throh</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Storm Throw, Bulldoze, Rock Tomb, Payback.<br/><strong>Counter:</strong> Incredibly high HP and Defense. Storm Throw will always crit, so defensive boosts are useless. Blast down quickly using Special Psychic or Flying moves.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/539.png" alt="Sawk" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sawk</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Close Combat, Stone Edge, Payback, Retaliate.<br/><strong>Counter:</strong> Extremely fast and carries **Sturdy** to survive a fatal hit and retaliate with double power Payback. Break Sturdy first, then clean up with Psychic or Flying-type attacks.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/620.png" alt="Mienshao" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Mienshao</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;"><strong>Moves:</strong> Hi Jump Kick, U-turn, Rock Slide, Bounce.<br/><strong>Counter:</strong> High Speed and heavy Hi Jump Kick. Pro-tip: Use **Protect** on its Hi Jump Kick turn; it will crash and lose 50% of its max HP!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/534.png" alt="Conkeldurr" style="max-width: 40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Conkeldurr (Signature)</td>
+              <td style="padding: 12px 16px;">Lvl 58</td>
+              <td style="padding: 12px 16px;">Fighting</td>
+              <td style="padding: 12px 16px; color: #cbd5e1;"><strong>Moves:</strong> Hammer Arm, Stone Edge, Buldoze, Retaliate.<br/><strong>Counter:</strong> Heavyweight champion carrying concrete pillars of doom. Do not engage physically! Put up a solid Special Psychic attacker (Reuniclus, Sigilyph) and sweep with **Psychic** to secure your win!</td>
             </tr>
           </tbody>
         </table>
@@ -1418,10 +2003,147 @@ export const ENGLISH_BLACK2_CHAPTERS = BLACK2_CHAPTERS.map(viChapter => {
         </ul>
       `;
       break;
+
+    case 16:
+      title = "Chapter 16: Secrets of Ultra Rare & Legendary Beasts";
+      content = `
+        <h1>Chapter 16: Secrets of Ultra Rare & Legendary Beasts</h1>
+        <p>Defeating Champion Iris is only the beginning! The post-game world of Unova in Black 2 opens a multitude of ancient dimensional chambers housing high-level mythical dragons and elemental deities from distant realms!</p>
+
+        <h2>1. The Legendary Eon Guardians Latios & Latias (Dreamyard - Level 68)</h2>
+        <p>At the post-game Dreamyard, you will encounter the super-speed Psychic/Dragon dragon **Latios** (Black 2 Exclusive) or **Latias** (White 2 Exclusive) in an epic Level 68 pursuit duel!</p>
+        <div style="text-align: center; margin: 24px 0;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/381.png" alt="Latios" style="max-width: 90px;" />
+          <p style="font-style: italic; color: #3b82f6; margin-top: 8px;">Latios - The brilliant supersonic high-flight Psychic Dragon guardian!</p>
+        </div>
+
+        <h2>2. Awakened Sacred Swordsmen (Level 45)</h2>
+        <p>Unlike the previous games, the legendary Musketeers challenge you directly during your main adventure route:</p>
+        <ul>
+          <li><strong>Cobalion (Lvl 45):</strong> Blocks your path on **Route 13**.</li>
+          <li><strong>Virizion (Lvl 45):</strong> Stands in the middle of the **Route 11** trail.</li>
+          <li><strong>Terrakion (Lvl 45):</strong> Challenges your raw power at the summit plateau of **Route 22**.</li>
+        </ul>
+
+        <h2>3. Secrets of the Underground Ruins & Colossus Regigigas</h2>
+        <p>Explore the newly opened **Clay Tunnel** to locate the mystical **Underground Ruins**:</p>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(239, 68, 68, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px; color: #ef4444;">Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Legendary Golem</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Type & Level</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left; color: #ef4444;">Encounter & Unlock Sequence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/377.png" alt="Regirock" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Regirock</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock<br/><strong>Lvl 65</strong></td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Solve the Sun/Moon light puzzle inside the ruins to open the chamber door. Capturing Regirock gives you the Unova Link key to activate Registeel or Regice chambers!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/486.png" alt="Regigigas" style="max-width:45px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Regigigas</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Normal<br/><strong>Lvl 68</strong></td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Bring all three legendary golems (Regirock, Regice, Registeel) in your party, then enter the frozen basement of **Twist Mountain** to awaken the monumental slumbering colossus!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>4. Additional Regional Legendary Encounters</h2>
+        <ul>
+          <li><strong>Cresselia (Lvl 68):</strong> Obtain the Lunar Wing from the creepy Strange House, then proceed to **Marvelous Bridge** to summon the majestic Lunar Pokémon.</li>
+          <li><strong>Heatran (Lvl 68):</strong> Retrieve the Magma Stone on Route 18, then explore the volcanic core of **Reversal Mountain** to summon the volcanic Steel beast.</li>
+          <li><strong>The Lake Guardians (Lvl 65):</strong> Discover the **Cave of Being** on Route 20 to prompt Uxie, Mesprit, and Azelf to scatter across Unova for you to track down and capture!</li>
+        </ul>
+      `;
+      break;
+
+    case 17:
+      title = "Chapter 17: NPC Trades Guide";
+      content = `
+        <h1>Chapter 17: NPC Trades Guide</h1>
+        <p>Pokémon Black 2 boasts a premium trading economy, offering the absolute best way to source rare species holding extremely powerful **Hidden Abilities**!</p>
+
+        <h2>1. The Ferris Wheel Sidequest (Yancy / Curtis Trades)</h2>
+        <p>After picking up the Dropped Item transponder in Nimbasa City and initiating calling interactions, you'll go on Ferris Wheel dates with **Yancy** (if male protagonist) or **Curtis** (if female protagonist). After the dates, you can trade any Pokémon to receive top-tier species with unique **Hidden Abilities**:</p>
+        <ul>
+          <li><strong>Ralts</strong> (Hidden Ability: Telepathy - competitive double-battle immunity!)</li>
+          <li><strong>Snorlax</strong> (Hidden Ability: Gluttony - immediate berry consumption!)</li>
+          <li><strong>Spiritomb</strong> (Hidden Ability: Infiltrator - bypasses protective walls!)</li>
+          <li><strong>Togepi</strong> (Hidden Ability: Super Luck - elevated critical hit rate!)</li>
+        </ul>
+
+        <h2>2. Direct Regional Trade Registries</h2>
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(16, 185, 129, 0.15);">
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Give Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Required Trade</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 80px; color: #10b981;">Receive Sprite</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Received Pokémon</th>
+              <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">NPC Location & Combat Utility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/587.png" alt="Emolga" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Emolga (Electric/Flying)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/526.png" alt="Gigalith" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Gigalith (Rock)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Route 7:</strong> Trade an Emolga inside the caravan to secure a ready-to-use Level 35 Gigalith. Features monumental defense and physical crushing capacity!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/226.png" alt="Mantine" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Mantine (Water/Flying)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/465.png" alt="Tangrowth" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Tangrowth (Grass)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Humilau City:</strong> Swap a Mantine in the beachfront cottages to get a Level 45 Tangrowth with superb physical bulk.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/450.png" alt="Hippowdon" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1; font-weight: bold;">Hippowdon (Ground)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Alakazam (Psychic)</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);"><strong>Accumula Town (Post-Game):</strong> Trade a Hippowdon to acquire a fully-trained Level 65 Alakazam. Boasts extreme special attacking speed!</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/594.png" alt="Alomomola" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; color: #cbd5e1; font-weight: bold;">Alomomola (Water)</td>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/424.png" alt="Ambipom" style="max-width:40px;" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #ec4899;">Ambipom (Normal)</td>
+              <td style="padding: 12px 16px;"><strong>Route 15:</strong> Trade a wild Alomomola to obtain a highly agile Ambipom with incredible multi-strike potential!</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      break;
   }
 
   return {
-    gameVersion: "black2",
+    gameVersion: "black-2",
     chapterTitle: title,
     order: viChapter.order,
     language: "en",
