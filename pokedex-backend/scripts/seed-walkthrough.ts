@@ -14,7 +14,7 @@ import { DIAMOND_CHAPTERS, ENGLISH_DIAMOND_CHAPTERS } from './data/walkthrough-d
 import { PEARL_CHAPTERS, ENGLISH_PEARL_CHAPTERS } from './data/walkthrough-pearl.js';
 import { PLATINUM_CHAPTERS, ENGLISH_PLATINUM_CHAPTERS } from './data/walkthrough-platinum.js';
 import { HEARTGOLD_CHAPTERS, ENGLISH_HEARTGOLD_CHAPTERS } from './data/walkthrough-heartgold.js';
-
+import { SOULSILVER_CHAPTERS, ENGLISH_SOULSILVER_CHAPTERS } from './data/walkthrough-soulsilver.js';
 
 const prisma = new PrismaClient();
 
@@ -23,10 +23,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum và HeartGold.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold và SoulSilver.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -266,6 +266,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [HeartGold EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp SoulSilver Tiếng Việt
+  for (const chapter of SOULSILVER_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [SoulSilver VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp SoulSilver Tiếng Anh
+  for (const chapter of ENGLISH_SOULSILVER_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [SoulSilver EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
