@@ -15,6 +15,7 @@ import { PEARL_CHAPTERS, ENGLISH_PEARL_CHAPTERS } from './data/walkthrough-pearl
 import { PLATINUM_CHAPTERS, ENGLISH_PLATINUM_CHAPTERS } from './data/walkthrough-platinum.js';
 import { HEARTGOLD_CHAPTERS, ENGLISH_HEARTGOLD_CHAPTERS } from './data/walkthrough-heartgold.js';
 import { SOULSILVER_CHAPTERS, ENGLISH_SOULSILVER_CHAPTERS } from './data/walkthrough-soulsilver.js';
+import { BLACK_CHAPTERS, ENGLISH_BLACK_CHAPTERS } from './data/walkthrough-black.js';
 
 const prisma = new PrismaClient();
 
@@ -23,10 +24,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold và SoulSilver.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver và Black.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -282,6 +283,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [SoulSilver EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Black Tiếng Việt
+  for (const chapter of BLACK_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Black VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Black Tiếng Anh
+  for (const chapter of ENGLISH_BLACK_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Black EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
