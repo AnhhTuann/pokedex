@@ -11,6 +11,7 @@ import { CRYSTAL_CHAPTERS, ENGLISH_CRYSTAL_CHAPTERS } from './data/walkthrough-c
 import { RUBY_CHAPTERS, ENGLISH_RUBY_CHAPTERS } from './data/walkthrough-ruby.js';
 import { SAPPHIRE_CHAPTERS, ENGLISH_SAPPHIRE_CHAPTERS } from './data/walkthrough-sapphire.js';
 import { DIAMOND_CHAPTERS, ENGLISH_DIAMOND_CHAPTERS } from './data/walkthrough-diamond.js';
+import { PEARL_CHAPTERS, ENGLISH_PEARL_CHAPTERS } from './data/walkthrough-pearl.js';
 
 
 const prisma = new PrismaClient();
@@ -20,10 +21,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire và Diamond.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond và Pearl.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -215,6 +216,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [Diamond EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pearl Tiếng Việt
+  for (const chapter of PEARL_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Pearl VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pearl Tiếng Anh
+  for (const chapter of ENGLISH_PEARL_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Pearl EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
