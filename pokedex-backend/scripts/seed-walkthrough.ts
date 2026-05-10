@@ -10,6 +10,7 @@ import { SILVER_CHAPTERS, ENGLISH_SILVER_CHAPTERS } from './data/walkthrough-sil
 import { CRYSTAL_CHAPTERS, ENGLISH_CRYSTAL_CHAPTERS } from './data/walkthrough-crystal.js';
 import { RUBY_CHAPTERS, ENGLISH_RUBY_CHAPTERS } from './data/walkthrough-ruby.js';
 import { SAPPHIRE_CHAPTERS, ENGLISH_SAPPHIRE_CHAPTERS } from './data/walkthrough-sapphire.js';
+import { DIAMOND_CHAPTERS, ENGLISH_DIAMOND_CHAPTERS } from './data/walkthrough-diamond.js';
 
 
 const prisma = new PrismaClient();
@@ -19,10 +20,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby và Sapphire.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire và Diamond.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -198,6 +199,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [Sapphire EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Diamond Tiếng Việt
+  for (const chapter of DIAMOND_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Diamond VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Diamond Tiếng Anh
+  for (const chapter of ENGLISH_DIAMOND_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Diamond EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
