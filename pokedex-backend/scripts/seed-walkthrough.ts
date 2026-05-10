@@ -17,6 +17,7 @@ import { HEARTGOLD_CHAPTERS, ENGLISH_HEARTGOLD_CHAPTERS } from './data/walkthrou
 import { SOULSILVER_CHAPTERS, ENGLISH_SOULSILVER_CHAPTERS } from './data/walkthrough-soulsilver.js';
 import { BLACK_CHAPTERS, ENGLISH_BLACK_CHAPTERS } from './data/walkthrough-black.js';
 import { WHITE_CHAPTERS, ENGLISH_WHITE_CHAPTERS } from './data/walkthrough-white.js';
+import { BLACK2_CHAPTERS, ENGLISH_BLACK2_CHAPTERS } from './data/walkthrough-black2.js';
 
 const prisma = new PrismaClient();
 
@@ -25,10 +26,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black và White.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White và Black 2.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -316,6 +317,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [White EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Black 2 Tiếng Việt
+  for (const chapter of BLACK2_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Black 2 VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Black 2 Tiếng Anh
+  for (const chapter of ENGLISH_BLACK2_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Black 2 EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
