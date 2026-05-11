@@ -39,6 +39,7 @@ export interface PokemonListItem {
   category?: string;
   regionalNumber?: number | null;
   speciesId?: number;
+  isMega?: boolean;
 }
 
 export interface Move {

@@ -73,14 +73,21 @@ export default function PokeCard({
       style={{ height: "100%" }}
     >
       <Card
-        elevation={isSelectedForCompare ? 12 : 2}
+        elevation={isSelectedForCompare ? 12 : pokemon.isMega ? 6 : 2}
         sx={{
           height: "100%",
           border: isSelectedForCompare
             ? `3px solid ${theme.palette.primary.main}`
-            : `1px solid ${alpha(primaryColor, 0.25)}`,
+            : pokemon.isMega
+              ? `2px solid ${primaryColor}`
+              : `1px solid ${alpha(primaryColor, 0.25)}`,
+          boxShadow: pokemon.isMega
+            ? `0 0 20px ${alpha(primaryColor, 0.5)}, inset 0 0 10px ${alpha(primaryColor, 0.2)}`
+            : undefined,
           opacity: isCompareMode && !isSelectedForCompare ? 0.55 : 1,
-          background: `linear-gradient(160deg, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.12 : 0.06)} 0%, ${theme.palette.background.paper} 60%)`,
+          background: pokemon.isMega
+            ? `linear-gradient(135deg, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.22 : 0.15)} 0%, ${theme.palette.background.paper} 50%, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.12 : 0.08)} 100%)`
+            : `linear-gradient(160deg, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.12 : 0.06)} 0%, ${theme.palette.background.paper} 60%)`,
           position: "relative",
           overflow: "visible",
         }}

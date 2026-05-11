@@ -8,6 +8,7 @@ import { Close, ChevronRight, AutoAwesome, VolumeUp, PlayArrow, Pause, Stop, Rec
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 import { formatSpeciesId } from '../lib/utils';
+import { lumioseDex, hyperspaceDex } from '../data/zaPokedex';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {
@@ -94,6 +95,46 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
 
     const fetchFromPokeApi = async () => {
       try {
+        // Kiểm tra xem có trong danh sách Z-A cục bộ không
+        const localPoke = [...lumioseDex, ...hyperspaceDex].find(p => p.id === id);
+        if (localPoke) {
+          const mapped: any = {
+            id: localPoke.id,
+            name: localPoke.name,
+            types: localPoke.types,
+            image: localPoke.image,
+            shinyImage: localPoke.shinyImage,
+            height: 12, // Decimeters (e.g. 1.2m)
+            weight: 520, // Hectograms (e.g. 52kg)
+            category: localPoke.category || "Regional Pokémon",
+            speciesId: localPoke.speciesId || localPoke.id,
+            stats: localPoke.stats || [
+              { name: "hp", value: 80 },
+              { name: "attack", value: 80 },
+              { name: "defense", value: 80 },
+              { name: "special-attack", value: 80 },
+              { name: "special-defense", value: 80 },
+              { name: "speed", value: 80 }
+            ],
+            abilities: localPoke.abilities || ["Overgrow"],
+            cry: undefined,
+            description: localPoke.description || "A legendary or custom form appearing in the Legends: Z-A campaign.",
+            gameVersions: ['legends-za'],
+            moves: [],
+            megaEvolutions: [],
+            alternativeForms: [],
+            evolutions: [],
+            matchups: [
+              { type: 'fire', multiplier: localPoke.types.includes('grass') ? 2 : localPoke.types.includes('water') ? 0.5 : 1 },
+              { type: 'water', multiplier: localPoke.types.includes('fire') ? 2 : localPoke.types.includes('water') ? 0.5 : 1 },
+              { type: 'grass', multiplier: localPoke.types.includes('water') ? 2 : localPoke.types.includes('grass') ? 0.5 : 1 },
+            ]
+          };
+          setApiPokemon(mapped);
+          setApiLoading(false);
+          return;
+        }
+
         const fetchId = isCustomMega ? (id - 10000) : id;
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${fetchId}`);
         if (!res.ok) throw new Error('Pokemon not found in PokéAPI');
