@@ -59,139 +59,177 @@ export default function PokemonDex() {
 
   const isZA = selectedVersion === 'legends-za';
 
-  // Fetch Legends: Z-A regional data directly from PokéAPI
+  // Fetch Legends: Z-A regional data directly from PokéAPI, merging custom starters with Central Kalos Pokédex
   useEffect(() => {
     if (!isZA) return;
 
     const fetchZADex = async () => {
       setZaLoading(true);
-      const results: PokemonListItem[] = [];
-      
-      for (let i = 0; i < ZA_REGIONAL_DEX.length; i++) {
-        const name = ZA_REGIONAL_DEX[i];
-        const regId = i + 1;
-        try {
-          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-          if (!res.ok) continue;
-          const data = await res.json();
-          
-          let category = 'Starter Pokémon';
-          if (name === 'greninja') category = 'Ninja Pokémon';
-          if (name === 'zygarde') category = 'Order Pokémon';
+      try {
+        // 1. Lấy danh sách Central Kalos Pokédex (ID: 12)
+        const kalosRes = await fetch('https://pokeapi.co/api/v2/pokedex/12/');
+        let kalosNames: string[] = [];
+        if (kalosRes.ok) {
+          const kalosData = await kalosRes.json();
+          kalosNames = kalosData.pokemon_entries.map((entry: any) => entry.pokemon_species.name);
+        }
 
-          const baseItem: PokemonListItem = {
-            id: data.id,
-            name: data.name,
-            types: data.types.map((t: any) => t.type.name),
-            image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
-            shinyImage: data.sprites.other['official-artwork'].front_shiny || data.sprites.front_shiny,
-            category: category,
-            regionalNumber: regId,
-            speciesId: data.id
-          };
-          results.push(baseItem);
+        // 2. Gộp danh sách Custom Z-A với Central Kalos Pokedex (Lọc trùng lặp)
+        const mergedNames = Array.from(new Set([...ZA_REGIONAL_DEX, ...kalosNames]));
 
-          // 3. Xử lý Mega Evolutions hiển thị liền kề:
-          // Tự động chèn form Mega ngay sau dạng tiến hóa cuối cùng của starter & gen 1 starters
+        // 3. Concurrently fetch details of each Pokemon
+        const fetchDetailsPromises = mergedNames.map(async (name) => {
+          try {
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+            if (!res.ok) return null;
+            const data = await res.json();
+
+            let category = 'Kalos Native';
+            if (ZA_REGIONAL_DEX.includes(name)) {
+              category = 'Starter Pokémon';
+              if (name === 'greninja') category = 'Ninja Pokémon';
+              if (name === 'zygarde') category = 'Order Pokémon';
+            }
+
+            return {
+              id: data.id,
+              name: data.name,
+              types: data.types.map((t: any) => t.type.name),
+              image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
+              shinyImage: data.sprites.other['official-artwork'].front_shiny || data.sprites.front_shiny,
+              category: category,
+              regionalNumber: 0, // Will be updated sequentially
+              speciesId: data.id
+            };
+          } catch (e) {
+            console.error(`Error fetching detail for ${name}:`, e);
+            return null;
+          }
+        });
+
+        const rawDetails = await Promise.all(fetchDetailsPromises);
+        const basePokemonList = rawDetails.filter((p): p is NonNullable<typeof p> => p !== null);
+
+        // 4. Gán lại ID khu vực (Regional ID) bắt đầu từ #001 tịnh tiến cho mảng base
+        basePokemonList.forEach((p, idx) => {
+          p.regionalNumber = idx + 1;
+        });
+
+        // 5. Chèn Mega Forms ngay sau dạng tiến hóa cuối cùng và gán cùng mã vùng
+        const finalResults: PokemonListItem[] = [];
+        for (const p of basePokemonList) {
+          finalResults.push(p);
+
+          const regId = p.regionalNumber;
+          const name = p.name;
+
           if (name === 'meganium') {
-            results.push({
-              id: data.id + 10000, // Custom unique ID for Mega Meganium
+            finalResults.push({
+              id: p.id + 10000,
               name: 'meganium-mega',
               types: ['grass', 'fairy'],
               image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png',
               shinyImage: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/154.png',
               category: 'Mega Form',
               regionalNumber: regId,
-              speciesId: data.id
+              speciesId: p.id
             });
           } else if (name === 'emboar') {
-            results.push({
-              id: data.id + 10000, // Custom unique ID for Mega Emboar
+            finalResults.push({
+              id: p.id + 10000,
               name: 'emboar-mega',
               types: ['fire', 'fighting'],
               image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png',
               shinyImage: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png',
               category: 'Mega Form',
               regionalNumber: regId,
-              speciesId: data.id
+              speciesId: p.id
             });
           } else if (name === 'feraligatr') {
-            results.push({
-              id: data.id + 10000, // Custom unique ID for Mega Feraligatr
+            finalResults.push({
+              id: p.id + 10000,
               name: 'feraligatr-mega',
               types: ['water', 'dark'],
               image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png',
               shinyImage: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/160.png',
               category: 'Mega Form',
               regionalNumber: regId,
-              speciesId: data.id
+              speciesId: p.id
             });
           } else if (name === 'venusaur') {
-            const megaRes = await fetch(`https://pokeapi.co/api/v2/pokemon/venusaur-mega`);
-            if (megaRes.ok) {
-              const megaData = await megaRes.json();
-              results.push({
-                id: megaData.id,
-                name: 'venusaur-mega',
-                types: megaData.types.map((t: any) => t.type.name),
-                image: megaData.sprites.other['official-artwork'].front_default || megaData.sprites.front_default,
-                shinyImage: megaData.sprites.other['official-artwork'].front_shiny || megaData.sprites.front_shiny,
-                category: 'Mega Form',
-                regionalNumber: regId,
-                speciesId: data.id
-              });
-            }
+            try {
+              const megaRes = await fetch(`https://pokeapi.co/api/v2/pokemon/venusaur-mega`);
+              if (megaRes.ok) {
+                const megaData = await megaRes.json();
+                finalResults.push({
+                  id: megaData.id,
+                  name: 'venusaur-mega',
+                  types: megaData.types.map((t: any) => t.type.name),
+                  image: megaData.sprites.other['official-artwork'].front_default || megaData.sprites.front_default,
+                  shinyImage: megaData.sprites.other['official-artwork'].front_shiny || megaData.sprites.front_shiny,
+                  category: 'Mega Form',
+                  regionalNumber: regId,
+                  speciesId: p.id
+                });
+              }
+            } catch (e) {}
           } else if (name === 'charizard') {
-            const megaXRes = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard-mega-x`);
-            if (megaXRes.ok) {
-              const megaXData = await megaXRes.json();
-              results.push({
-                id: megaXData.id,
-                name: 'charizard-mega-x',
-                types: megaXData.types.map((t: any) => t.type.name),
-                image: megaXData.sprites.other['official-artwork'].front_default || megaXData.sprites.front_default,
-                shinyImage: megaXData.sprites.other['official-artwork'].front_shiny || megaXData.sprites.front_shiny,
-                category: 'Mega Form X',
-                regionalNumber: regId,
-                speciesId: data.id
-              });
-            }
-            const megaYRes = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard-mega-y`);
-            if (megaYRes.ok) {
-              const megaYData = await megaYRes.json();
-              results.push({
-                id: megaYData.id,
-                name: 'charizard-mega-y',
-                types: megaYData.types.map((t: any) => t.type.name),
-                image: megaYData.sprites.other['official-artwork'].front_default || megaYData.sprites.front_default,
-                shinyImage: megaYData.sprites.other['official-artwork'].front_shiny || megaYData.sprites.front_shiny,
-                category: 'Mega Form Y',
-                regionalNumber: regId,
-                speciesId: data.id
-              });
-            }
+            try {
+              const megaXRes = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard-mega-x`);
+              if (megaXRes.ok) {
+                const megaXData = await megaXRes.json();
+                finalResults.push({
+                  id: megaXData.id,
+                  name: 'charizard-mega-x',
+                  types: megaXData.types.map((t: any) => t.type.name),
+                  image: megaXData.sprites.other['official-artwork'].front_default || megaXData.sprites.front_default,
+                  shinyImage: megaXData.sprites.other['official-artwork'].front_shiny || megaXData.sprites.front_shiny,
+                  category: 'Mega Form X',
+                  regionalNumber: regId,
+                  speciesId: p.id
+                });
+              }
+              const megaYRes = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard-mega-y`);
+              if (megaYRes.ok) {
+                const megaYData = await megaYRes.json();
+                finalResults.push({
+                  id: megaYData.id,
+                  name: 'charizard-mega-y',
+                  types: megaYData.types.map((t: any) => t.type.name),
+                  image: megaYData.sprites.other['official-artwork'].front_default || megaYData.sprites.front_default,
+                  shinyImage: megaYData.sprites.other['official-artwork'].front_shiny || megaYData.sprites.front_shiny,
+                  category: 'Mega Form Y',
+                  regionalNumber: regId,
+                  speciesId: p.id
+                });
+              }
+            } catch (e) {}
           } else if (name === 'blastoise') {
-            const megaRes = await fetch(`https://pokeapi.co/api/v2/pokemon/blastoise-mega`);
-            if (megaRes.ok) {
-              const megaData = await megaRes.json();
-              results.push({
-                id: megaData.id,
-                name: 'blastoise-mega',
-                types: megaData.types.map((t: any) => t.type.name),
-                image: megaData.sprites.other['official-artwork'].front_default || megaData.sprites.front_default,
-                shinyImage: megaData.sprites.other['official-artwork'].front_shiny || megaData.sprites.front_shiny,
-                category: 'Mega Form',
-                regionalNumber: regId,
-                speciesId: data.id
-              });
-            }
+            try {
+              const megaRes = await fetch(`https://pokeapi.co/api/v2/pokemon/blastoise-mega`);
+              if (megaRes.ok) {
+                const megaData = await megaRes.json();
+                finalResults.push({
+                  id: megaData.id,
+                  name: 'blastoise-mega',
+                  types: megaData.types.map((t: any) => t.type.name),
+                  image: megaData.sprites.other['official-artwork'].front_default || megaData.sprites.front_default,
+                  shinyImage: megaData.sprites.other['official-artwork'].front_shiny || megaData.sprites.front_shiny,
+                  category: 'Mega Form',
+                  regionalNumber: regId,
+                  speciesId: p.id
+                });
+              }
+            } catch (e) {}
           }
-        } catch (err) {
-          console.error('Error fetching from PokéAPI:', err);
         }
+
+        setZaPokemonList(finalResults);
+      } catch (err) {
+        console.error('Error fetching/merging Legends Z-A Pokédex:', err);
+      } finally {
+        setZaLoading(false);
       }
-      setZaPokemonList(results);
-      setZaLoading(false);
     };
 
     fetchZADex();
