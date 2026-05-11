@@ -8,7 +8,6 @@ import { Close, ChevronRight, AutoAwesome, VolumeUp, PlayArrow, Pause, Stop, Rec
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 import { formatSpeciesId } from '../lib/utils';
-import { lumioseDex, hyperspaceDex } from '../data/zaPokedex';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {
@@ -83,6 +82,40 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
     variables: { id, version: selectedVersion }, skip: !id || needsPokeApi,
   });
 
+  const parsePokeApiEvolutionChain = (chainNode: any): any[] => {
+    const result: any[] = [];
+    const parseNode = (node: any) => {
+      const speciesUrl = node.species.url;
+      const parts = speciesUrl.split('/').filter(Boolean);
+      const nodeId = parseInt(parts[parts.length - 1], 10);
+      const name = node.species.name.charAt(0).toUpperCase() + node.species.name.slice(1);
+      
+      let minLevel = undefined;
+      let trigger = 'level_up';
+      if (node.evolution_details && node.evolution_details.length > 0) {
+        minLevel = node.evolution_details[0].min_level || undefined;
+        trigger = node.evolution_details[0].trigger?.name?.replace('-', '_') || 'level_up';
+      }
+      
+      result.push({
+        id: nodeId,
+        name,
+        types: [],
+        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${nodeId}.png`,
+        shinyImage: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${nodeId}.png`,
+        minLevel,
+        trigger,
+        speciesId: nodeId
+      });
+      
+      if (node.evolves_to && node.evolves_to.length > 0) {
+        node.evolves_to.forEach((child: any) => parseNode(child));
+      }
+    };
+    parseNode(chainNode);
+    return result;
+  };
+
   useEffect(() => {
     if (!id || !needsPokeApi) {
       setApiPokemon(null);
@@ -95,65 +128,41 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
 
     const fetchFromPokeApi = async () => {
       try {
-        // Kiểm tra xem có trong danh sách Z-A cục bộ không
-        const localPoke = [...lumioseDex, ...hyperspaceDex].find(p => p.id === id);
-        if (localPoke) {
-          const mapped: any = {
-            id: localPoke.id,
-            name: localPoke.name,
-            types: localPoke.types,
-            image: localPoke.sprite,
-            shinyImage: localPoke.shinySprite,
-            height: 12, // Decimeters (e.g. 1.2m)
-            weight: 520, // Hectograms (e.g. 52kg)
-            category: localPoke.category || "Regional Pokémon",
-            speciesId: localPoke.id,
-            stats: localPoke.stats || [
-              { name: "hp", value: 80 },
-              { name: "attack", value: 80 },
-              { name: "defense", value: 80 },
-              { name: "special-attack", value: 80 },
-              { name: "special-defense", value: 80 },
-              { name: "speed", value: 80 }
-            ],
-            abilities: localPoke.abilities || ["Overgrow"],
-            cry: undefined,
-            description: localPoke.description || "A legendary or custom form appearing in the Legends: Z-A campaign.",
-            gameVersions: ['legends-za'],
-            moves: [],
-            megaEvolutions: [],
-            alternativeForms: [],
-            evolutions: [],
-            matchups: [
-              { type: 'fire', multiplier: localPoke.types.includes('grass') ? 2 : localPoke.types.includes('water') ? 0.5 : 1 },
-              { type: 'water', multiplier: localPoke.types.includes('fire') ? 2 : localPoke.types.includes('water') ? 0.5 : 1 },
-              { type: 'grass', multiplier: localPoke.types.includes('water') ? 2 : localPoke.types.includes('grass') ? 0.5 : 1 },
-            ]
-          };
-          setApiPokemon(mapped);
-          setApiLoading(false);
-          return;
-        }
-
-        const fetchId = isCustomMega ? (id - 10000) : id;
+        const fetchId = (id && id > 10000) ? (id - 10000) : id;
+        
+        // 1. Fetch official base information from PokéAPI first to ensure standard properties are fully loaded
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${fetchId}`);
         if (!res.ok) throw new Error('Pokemon not found in PokéAPI');
         const data = await res.json();
 
-        // Get species / category
-        let category = 'Starter Pokémon';
+        // Get species and evolution chain URLs from PokéAPI
+        let category = 'Regional Pokémon';
         let description = `A key Pokémon from the regional Pokedex of Legends Z-A. It boasts unique strengths.`;
+        let evolutionsList: any[] = [];
+
         try {
           const specRes = await fetch(data.species.url);
           if (specRes.ok) {
             const specData = await specRes.json();
-            const genus = specData.genera.find((g: any) => g.language.name === 'en');
+            const genus = specData.genera?.find((g: any) => g.language.name === 'en');
             if (genus) category = genus.genus;
 
-            const flavor = specData.flavor_text_entries.find((f: any) => f.language.name === 'en');
-            if (flavor) description = flavor.flavor_text.replace(/\f/g, ' ');
+            const flavor = specData.flavor_text_entries?.find((f: any) => f.language.name === 'en');
+            if (flavor) description = flavor.flavor_text.replace(/[\n\f\r\t]/g, ' ');
+
+            // Fetch official evolution chain dynamically
+            const evoChainUrl = specData.evolution_chain?.url;
+            if (evoChainUrl) {
+              const evoRes = await fetch(evoChainUrl);
+              if (evoRes.ok) {
+                const evoData = await evoRes.json();
+                evolutionsList = parsePokeApiEvolutionChain(evoData.chain);
+              }
+            }
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error("Error fetching species metadata:", e);
+        }
 
         const stats = data.stats.map((s: any) => ({
           name: s.stat.name,
@@ -178,14 +187,72 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
           moves: [],
           megaEvolutions: [],
           alternativeForms: [],
-          evolutions: [],
+          evolutions: evolutionsList,
           matchups: [
-            { type: 'fire', multiplier: data.types.map((t: any) => t.type.name).includes('grass') ? 2 : data.types.map((t: any) => t.type.name).includes('water') ? 0.5 : 1 },
-            { type: 'water', multiplier: data.types.map((t: any) => t.type.name).includes('fire') ? 2 : data.types.map((t: any) => t.type.name).includes('water') ? 0.5 : 1 },
-            { type: 'grass', multiplier: data.types.map((t: any) => t.type.name).includes('water') ? 2 : data.types.map((t: any) => t.type.name).includes('grass') ? 0.5 : 1 },
+            { type: 'fire', multiplier: data.types.map((t: any) => t.type.name).includes('grass') ? 2 : 1 },
+            { type: 'water', multiplier: data.types.map((t: any) => t.type.name).includes('fire') ? 2 : 1 },
+            { type: 'grass', multiplier: data.types.map((t: any) => t.type.name).includes('water') ? 2 : 1 },
           ]
         };
 
+        // 2. If viewing 'legends-za' version, enrich with custom Z-A Postgres database metadata
+        if (selectedVersion === 'legends-za') {
+          const zaRes = await fetch(`http://localhost:3000/api/pokedex/za/pokemon/${id}`);
+          if (zaRes.ok) {
+            const localPoke = await zaRes.json();
+            
+            // Override stats, types, name and descriptions using Z-A database values
+            mapped.id = localPoke.id;
+            mapped.name = localPoke.name;
+            mapped.types = localPoke.types;
+            mapped.category = localPoke.category || mapped.category;
+            mapped.description = localPoke.description || mapped.description;
+            
+            if (localPoke.stats) {
+              mapped.stats = localPoke.stats;
+            }
+            if (localPoke.abilities) {
+              mapped.abilities = localPoke.abilities;
+            }
+            if (localPoke.sprite) {
+              mapped.image = localPoke.sprite;
+            }
+            if (localPoke.shinySprite) {
+              mapped.shinyImage = localPoke.shinySprite;
+            }
+
+            // Map Mega Evolutions and Alternative Forms dynamically
+            mapped.megaEvolutions = localPoke.megaEvolutions ? localPoke.megaEvolutions.map((m: any) => ({
+              id: m.id,
+              name: m.name,
+              types: m.types,
+              image: m.sprite,
+              shinyImage: m.shinySprite,
+              isMega: m.isMega,
+              isAlternative: !m.isMega,
+              speciesId: localPoke.id
+            })) : [];
+
+            mapped.alternativeForms = localPoke.alternativeForms ? localPoke.alternativeForms.map((a: any) => ({
+              id: a.id,
+              name: a.name,
+              types: a.types,
+              image: a.sprite,
+              shinyImage: a.shinySprite,
+              isMega: a.isMega,
+              isAlternative: !a.isMega,
+              speciesId: localPoke.id
+            })) : [];
+
+            mapped.matchups = [
+              { type: 'fire', multiplier: localPoke.types.some((t: string) => t.toLowerCase() === 'grass') ? 2 : 1 },
+              { type: 'water', multiplier: localPoke.types.some((t: string) => t.toLowerCase() === 'fire') ? 2 : 1 },
+              { type: 'grass', multiplier: localPoke.types.some((t: string) => t.toLowerCase() === 'water') ? 2 : 1 },
+            ];
+          }
+        }
+
+        // 3. Fallback override for custom manual Megas if PokéAPI doesn't have them
         if (isCustomMega) {
           mapped.id = id;
           mapped.speciesId = fetchId;
@@ -357,6 +424,11 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               component="img"
               src={showShiny ? p?.shinyImage : p?.image}
               alt={p?.name}
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const target = e.currentTarget;
+                const baseId = id > 10000 ? (id - 10000) : (id % 10000);
+                target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+              }}
               sx={{ width: '80%', height: '80%', objectFit: 'contain', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
             />
           )}
@@ -786,7 +858,17 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                                 '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
                               }}
                             >
-                              <Box component="img" src={showShiny && evo.shinyImage ? evo.shinyImage : evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                              <Box
+                                component="img"
+                                src={showShiny && evo.shinyImage ? evo.shinyImage : evo.image}
+                                alt={evo.name}
+                                onError={(e: any) => {
+                                  const target = e.currentTarget;
+                                  const baseId = evo.speciesId || evo.id;
+                                  target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                                }}
+                                sx={{ width: 46, height: 46, objectFit: 'contain' }}
+                              />
                             </Box>
                           </Tooltip>
                           <Typography
@@ -896,6 +978,11 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                             component="img"
                             src={showShiny && form.shinyImage ? form.shinyImage : form.image}
                             alt={form.name}
+                            onError={(e: any) => {
+                              const target = e.currentTarget;
+                              const baseId = form.id > 10000 ? (form.id - 10000) : (form.id % 10000);
+                              target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                            }}
                             sx={{ width: 100, height: 100, objectFit: 'contain', my: 1, filter: 'drop-shadow(0px 6px 10px rgba(0,0,0,0.15))' }}
                           />
 
@@ -966,7 +1053,17 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                               }
                             }}
                           >
-                            <Box component="img" src={showShiny && form.shinyImage ? form.shinyImage : form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                            <Box
+                              component="img"
+                              src={showShiny && form.shinyImage ? form.shinyImage : form.image}
+                              alt={form.name}
+                              onError={(e: any) => {
+                                const target = e.currentTarget;
+                                const baseId = form.id > 10000 ? (form.id - 10000) : (form.id % 10000);
+                                target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                              }}
+                              sx={{ width: 46, height: 46, objectFit: 'contain' }}
+                            />
                           </Box>
                         </Tooltip>
                         <Typography

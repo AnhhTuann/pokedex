@@ -228,3 +228,24 @@ model Walkthrough {
 
   @@index([gameVersion, language])
 }
+
+// ==========================================
+// PHASE 7: LEGENDS Z-A POKEDEX MODULE
+// ==========================================
+
+model PokemonZA {
+  id           Int      @id
+  regionalId   String
+  name         String   @unique
+  types        String[]
+  isMega       Boolean
+  sprite       String
+  shinySprite  String
+  category     String
+  description  String
+  stats        Json
+  abilities    String[]
+  spriteUrl    String?
+  dexType      String   @default("lumiose")
+}
+

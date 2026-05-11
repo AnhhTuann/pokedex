@@ -41,6 +41,15 @@ const TYPE_COLORS: Record<string, string> = {
   fairy: "#f472b6",
 };
 
+// Helper function to generate clean gradient backgrounds
+const getCardGradient = (type: string): string => {
+  const color = TYPE_COLORS[type.toLowerCase()] || "#9ca3af";
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5, 7), 16);
+  return `linear-gradient(145deg, rgba(${r}, ${g}, ${b}, 0.15) 0%, rgba(17, 24, 39, 1) 80%)`;
+};
+
 interface PokeCardProps {
   pokemon: PokemonListItem;
   onClick: () => void;
@@ -60,7 +69,11 @@ export default function PokeCard({
   const { isFavorite, toggleFavorite } = useMyPokedex();
   const { isShinyMode } = useTeamStore();
   const isFav = isFavorite(pokemon.id);
-  const primaryColor = TYPE_COLORS[pokemon.types[0]] || "#9ca3af";
+  const primaryColor = TYPE_COLORS[pokemon.types[0].toLowerCase()] || "#9ca3af";
+
+  const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
+    ? pokemon.name.replace("Mega ", "") + "-Mega"
+    : pokemon.name;
 
   return (
     <motion.div
@@ -73,21 +86,15 @@ export default function PokeCard({
       style={{ height: "100%" }}
     >
       <Card
-        elevation={isSelectedForCompare ? 12 : pokemon.isMega ? 6 : 2}
+        elevation={isSelectedForCompare ? 12 : 2}
         sx={{
           height: "100%",
           border: isSelectedForCompare
             ? `3px solid ${theme.palette.primary.main}`
-            : pokemon.isMega
-              ? `2px solid ${primaryColor}`
-              : `1px solid ${alpha(primaryColor, 0.25)}`,
-          boxShadow: pokemon.isMega
-            ? `0 0 20px ${alpha(primaryColor, 0.5)}, inset 0 0 10px ${alpha(primaryColor, 0.2)}`
-            : undefined,
+            : `1px solid ${alpha(primaryColor, 0.25)}`,
+          boxShadow: undefined,
           opacity: isCompareMode && !isSelectedForCompare ? 0.55 : 1,
-          background: pokemon.isMega
-            ? `linear-gradient(135deg, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.22 : 0.15)} 0%, ${theme.palette.background.paper} 50%, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.12 : 0.08)} 100%)`
-            : `linear-gradient(160deg, ${alpha(primaryColor, theme.palette.mode === "dark" ? 0.12 : 0.06)} 0%, ${theme.palette.background.paper} 60%)`,
+          background: getCardGradient(pokemon.types[0]),
           position: "relative",
           overflow: "visible",
         }}
@@ -155,6 +162,11 @@ export default function PokeCard({
               src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
               alt={pokemon.name}
               loading="lazy"
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const target = e.currentTarget;
+                const baseId = pokemon.id > 10000 ? (pokemon.id - 10000) : (pokemon.id % 10000);
+                target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+              }}
               sx={{
                 width: 90,
                 height: 90,
@@ -193,7 +205,7 @@ export default function PokeCard({
                 letterSpacing: -0.5,
               }}
             >
-              {pokemon.name}
+              {displayName}
             </Typography>
 
             {/* Category */}
@@ -222,20 +234,27 @@ export default function PokeCard({
               }}
             >
               {pokemon.types.map((type) => (
-                <Chip
+                <Box
                   key={type}
-                  label={type}
-                  size="small"
                   sx={{
-                    bgcolor: alpha(TYPE_COLORS[type] || "#9ca3af", 0.85),
-                    color: "#fff",
-                    fontSize: 9,
+                    bgcolor: TYPE_COLORS[type.toLowerCase()] || "#9ca3af",
+                    color: "#FFFFFF",
+                    fontSize: "0.65rem",
                     fontWeight: 800,
-                    letterSpacing: 1.5,
+                    letterSpacing: "0.5px",
                     textTransform: "uppercase",
-                    height: 20,
+                    height: "20px",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "2px 8px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    lineHeight: 1,
                   }}
-                />
+                >
+                  {type}
+                </Box>
               ))}
             </Box>
           </CardContent>

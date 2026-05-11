@@ -4,7 +4,7 @@ import {
   Container, Box, Grid, Button, ButtonGroup, Typography, Alert, Skeleton, useTheme, alpha,
   Stack, Paper, Tooltip, Card, IconButton, Chip
 } from '@mui/material';
-import { AutoAwesome, Favorite, Compare, FavoriteBorder } from '@mui/icons-material';
+import { AutoAwesome, Favorite, Compare, FavoriteBorder, Star, StarBorder, RadioButtonUnchecked, CheckCircle } from '@mui/icons-material';
 import { AnimatePresence, motion } from 'motion/react';
 import PokeCard from './PokeCard';
 import SearchBar from './SearchBar';
@@ -14,7 +14,6 @@ import { PokemonListItem } from '../types';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
 import { VERSION_COLORS, getRegionAndGame } from '../App';
-import { lumioseDex, hyperspaceDex } from '../data/zaPokedex';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 const GET_POKEMON_LIST = gql`
@@ -45,6 +44,54 @@ const TYPE_COLORS: Record<string, string> = {
   dark: "#374151",
   steel: "#6b7280",
   fairy: "#f472b6",
+};
+
+const getPastelColor = (type: string): string => {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case 'grass': return '#c3deb0';
+    case 'fire': return '#f2ad7c';
+    case 'water': return '#6cbce5';
+    case 'electric': return '#f7df7e';
+    case 'bug': return '#ced272';
+    case 'normal': return '#d1d1cf';
+    case 'poison': return '#cfafd3';
+    case 'ground': return '#ebd39e';
+    case 'flying': return '#cfc6e9';
+    case 'fighting': return '#df9c95';
+    case 'psychic': return '#e8a2af';
+    case 'rock': return '#cabf95';
+    case 'ghost': return '#b6a3cc';
+    case 'dragon': return '#a3b5eb';
+    case 'dark': return '#a8a8a8';
+    case 'steel': return '#becad6';
+    case 'fairy': return '#e9b6cd';
+    default: return '#e2e8f0';
+  }
+};
+
+const getDarkGradient = (type: string): string => {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case 'grass': return 'linear-gradient(145deg, #143524 0%, #111827 100%)';
+    case 'fire': return 'linear-gradient(145deg, #3f1a1a 0%, #111827 100%)';
+    case 'water': return 'linear-gradient(145deg, #142e47 0%, #111827 100%)';
+    case 'electric': return 'linear-gradient(145deg, #383015 0%, #111827 100%)';
+    case 'bug': return 'linear-gradient(145deg, #272c11 0%, #111827 100%)';
+    case 'normal': return 'linear-gradient(145deg, #2d2d30 0%, #111827 100%)';
+    case 'poison': return 'linear-gradient(145deg, #2b1830 0%, #111827 100%)';
+    case 'ground': return 'linear-gradient(145deg, #302616 0%, #111827 100%)';
+    case 'flying': return 'linear-gradient(145deg, #1f1b30 0%, #111827 100%)';
+    case 'fighting': return 'linear-gradient(145deg, #351918 0%, #111827 100%)';
+    case 'psychic': return 'linear-gradient(145deg, #381525 0%, #111827 100%)';
+    case 'rock': return 'linear-gradient(145deg, #2b251a 0%, #111827 100%)';
+    case 'ghost': return 'linear-gradient(145deg, #1b162d 0%, #111827 100%)';
+    case 'dragon': return 'linear-gradient(145deg, #121d42 0%, #111827 100%)';
+    case 'dark': return 'linear-gradient(145deg, #1a1a1f 0%, #111827 100%)';
+    case 'steel': return 'linear-gradient(145deg, #1d2228 0%, #111827 100%)';
+    case 'fairy': return 'linear-gradient(145deg, #351c2a 0%, #111827 100%)';
+    default: return 'linear-gradient(145deg, #1f2937 0%, #111827 100%)';
+  }
 };
 
 type ViewMode = 'all' | 'favorites' | 'compare';
@@ -80,8 +127,33 @@ export default function PokemonDex() {
 
   // State for Legends: Z-A custom regional datasets
   const [zaRegion, setZaRegion] = useState<'lumiose' | 'hyperspace'>('lumiose');
-  const zaPokemonList = zaRegion === 'lumiose' ? lumioseDex : hyperspaceDex;
-  const zaLoading = false;
+  const [zaPokemonList, setZaPokemonList] = useState<any[]>([]);
+  const [zaLoading, setZaLoading] = useState<boolean>(false);
+  const [zaError, setZaError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isZA) return;
+
+    const fetchZAPokedex = async () => {
+      setZaLoading(true);
+      setZaError(null);
+      try {
+        const response = await fetch(`http://localhost:3000/api/pokedex/za/${zaRegion}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch Legends: Z-A Pokédex data for: ${zaRegion}`);
+        }
+        const data = await response.json();
+        setZaPokemonList(data);
+      } catch (err: any) {
+        console.error("Error fetching Z-A Pokédex:", err);
+        setZaError(err.message || "An error occurred while fetching Z-A Pokédex.");
+      } finally {
+        setZaLoading(false);
+      }
+    };
+
+    fetchZAPokedex();
+  }, [isZA, zaRegion]);
 
   const handleCardClick = (id: number) => {
     if (isCompareMode) {
@@ -116,11 +188,23 @@ export default function PokemonDex() {
 
   // Client-side search and type filtering for Legends: Z-A Custom Dex
   const filteredZaList = isZA 
-    ? zaPokemonList.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        const matchesType = typeFilter ? p.types.map(t => t.toLowerCase()).includes(typeFilter.toLowerCase()) : true;
-        return matchesSearch && matchesType;
-      })
+    ? zaPokemonList
+        .filter(p => {
+          const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+          const matchesType = typeFilter ? p.types.map(t => t.toLowerCase()).includes(typeFilter.toLowerCase()) : true;
+          return matchesSearch && matchesType;
+        })
+        .map(p => {
+          const baseForm = zaPokemonList.find(b => b.regionalId === p.regionalId && !b.isMega && b.id < 10000);
+          const speciesId = baseForm ? baseForm.id : p.id;
+          return {
+            ...p,
+            image: p.spriteUrl || p.sprite,
+            shinyImage: p.shinySprite || p.spriteUrl || p.sprite,
+            regionalNumber: parseInt(p.regionalId.replace('#', ''), 10) || p.id,
+            speciesId: speciesId
+          };
+        })
     : [];
 
   const pokemonList  = isZA ? filteredZaList : (data?.pokemonList?.results || []);
@@ -128,7 +212,7 @@ export default function PokemonDex() {
   const hasMore      = !isZA && pokemonList.length > 0 && pokemonList.length < totalCount;
 
   const isZALoading  = isZA ? zaLoading : loading;
-  const isZAError    = isZA ? null : error;
+  const isZAError    = isZA ? zaError : error;
 
   const loadMore = () => {
     if (isZA) return;
@@ -273,192 +357,11 @@ export default function PokemonDex() {
         <Alert severity="error" sx={{ borderRadius: 3 }}>
           Backend offline — start the server on port 3000.
         </Alert>
-      ) : isZA ? (
-        // Legends: Z-A List View Layout (Force horizontal rows in a Stack)
-        <Stack spacing={2} sx={{ width: '100%', mt: 3 }}>
-          <AnimatePresence mode="popLayout">
-            {pokemonList.map((p: any, idx: number) => {
-              const primaryColor = TYPE_COLORS[p.types[0].toLowerCase()] || '#9ca3af';
-              const isFav = favorites.includes(p.id);
-
-              return (
-                <motion.div
-                  key={p.id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.3, delay: idx * 0.03 }}
-                  style={{ width: '100%' }}
-                >
-                  <Card
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      height: '100px',
-                      width: '100%',
-                      borderRadius: '16px',
-                      position: 'relative',
-                      overflow: 'visible',
-                      cursor: 'pointer',
-                      border: p.isMega 
-                        ? `2px solid ${primaryColor}` 
-                        : `1px solid ${alpha(primaryColor, 0.25)}`,
-                      boxShadow: p.isMega 
-                        ? `0 0 16px ${alpha(primaryColor, 0.4)}, inset 0 0 8px ${alpha(primaryColor, 0.1)}` 
-                        : '0 4px 12px rgba(0,0,0,0.05)',
-                      background: p.isMega
-                        ? `linear-gradient(90deg, ${alpha(primaryColor, 0.16)} 0%, ${theme.palette.background.paper} 50%)`
-                        : `linear-gradient(90deg, ${alpha(primaryColor, 0.05)} 0%, ${theme.palette.background.paper} 80%)`,
-                      '&:hover': {
-                        boxShadow: `0 8px 24px ${alpha(primaryColor, 0.25)}`,
-                        transform: 'translateY(-2px)',
-                        transition: 'all 0.2s ease-in-out'
-                      }
-                    }}
-                    onClick={() => setSelectedId(p.id)}
-                  >
-                    {/* Bên trái (Width ~30%): regionalId & Tên Pokémon xếp dọc */}
-                    <Box sx={{ width: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'center', pl: { xs: 2, sm: 4 } }}>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: p.isMega ? primaryColor : 'text.disabled',
-                          fontWeight: 800,
-                          letterSpacing: 2,
-                          fontSize: '0.75rem',
-                          textTransform: 'uppercase'
-                        }}
-                      >
-                        {p.regionalId}
-                      </Typography>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontWeight: 800,
-                          color: 'text.primary',
-                          fontSize: { xs: '1rem', sm: '1.25rem' },
-                          textTransform: 'capitalize',
-                          letterSpacing: -0.5
-                        }}
-                      >
-                        {p.name}
-                      </Typography>
-                    </Box>
-
-                    {/* Ở giữa (Width ~40%): Các thẻ Type xếp ngang */}
-                    <Box sx={{ width: '40%', display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
-                      {p.types.map((t: string) => {
-                        const typeCol = TYPE_COLORS[t.toLowerCase()] || '#9ca3af';
-                        return (
-                          <Chip
-                            key={t}
-                            label={t}
-                            size="small"
-                            sx={{
-                              bgcolor: alpha(typeCol, 0.85),
-                              color: '#fff',
-                              fontWeight: 800,
-                              letterSpacing: 1,
-                              fontSize: '0.7rem',
-                              textTransform: 'uppercase',
-                              height: 22
-                            }}
-                          />
-                        );
-                      })}
-                      {p.isMega && (
-                        <Chip
-                          label="MEGA"
-                          size="small"
-                          color="secondary"
-                          icon={<AutoAwesome style={{ color: '#fff', fontSize: '0.75rem' }} />}
-                          sx={{
-                            fontWeight: 900,
-                            fontSize: '0.65rem',
-                            letterSpacing: 1,
-                            textTransform: 'uppercase',
-                            boxShadow: '0 0 10px rgba(236,72,153,0.4)',
-                            height: 22
-                          }}
-                        />
-                      )}
-                    </Box>
-
-                    {/* Bên phải (Width ~30%): Icon Caught (Favorite) và hình ảnh Sprite (tràn viền nhẹ, 3D effect) */}
-                    <Box sx={{ width: '30%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', pr: { xs: 2, sm: 4 }, height: '100%', position: 'relative' }}>
-                      {/* Favorite (Caught / Tracked status) */}
-                      <Tooltip title={isFav ? "Release from Pokédex" : "Catch Pokémon"}>
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(p.id);
-                          }}
-                          sx={{
-                            color: isFav ? 'secondary.main' : 'text.disabled',
-                            bgcolor: alpha(theme.palette.background.paper, 0.8),
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                            mr: { xs: 6, sm: 10 },
-                            zIndex: 3,
-                            '&:hover': {
-                              bgcolor: alpha(theme.palette.secondary.main, 0.1),
-                              color: 'secondary.main'
-                            }
-                          }}
-                        >
-                          {isFav ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />}
-                        </IconButton>
-                      </Tooltip>
-
-                      {/* 3D Overhanging Sprite */}
-                      <Box
-                        sx={{
-                          width: { xs: '80px', sm: '120px' },
-                          height: { xs: '80px', sm: '120px' },
-                          position: 'absolute',
-                          top: { xs: '-10px', sm: '-15px' },
-                          right: { xs: '5px', sm: '15px' },
-                          zIndex: 2,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        <Box
-                          component="img"
-                          src={isShinyMode && p.shinySprite ? p.shinySprite : p.sprite}
-                          alt={p.name}
-                          sx={{
-                            width: { xs: '75px', sm: '100px' },
-                            height: { xs: '75px', sm: '100px' },
-                            objectFit: 'contain',
-                            filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.25))',
-                            transition: 'transform 0.2s ease-in-out',
-                            '&:hover': {
-                              transform: 'scale(1.15) translateY(-4px)'
-                            }
-                          }}
-                        />
-                      </Box>
-                    </Box>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-
-          {pokemonList.length === 0 && (
-            <Box sx={{ textAlign: 'center', py: 10, color: 'text.disabled' }}>
-              <Typography variant="h6" sx={{ fontWeight: 700 }}>No Pokémon found in this sector.</Typography>
-            </Box>
-          )}
-        </Stack>
       ) : (
-        // Standard Grid View Layout
+        // Standard Grid View Layout (Unified across all pokedex versions!)
         <Grid container spacing={3}>
           <AnimatePresence mode="popLayout">
-            {pokemonList.map((p: PokemonListItem, idx: number) => (
+            {pokemonList.map((p: any, idx: number) => (
               <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                 <PokeCard
                   pokemon={p}
