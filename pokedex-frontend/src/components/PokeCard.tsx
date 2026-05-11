@@ -71,7 +71,11 @@ export default function PokeCard({
   const isFav = isFavorite(pokemon.id);
   const primaryColor = TYPE_COLORS[pokemon.types[0].toLowerCase()] || "#9ca3af";
 
-  const isMega = pokemon.isMega || pokemon.name.toLowerCase().includes("mega");
+  const isMega = !!pokemon.isMega || 
+    pokemon.name.toLowerCase().endsWith("-mega") ||
+    pokemon.name.toLowerCase().includes("-mega-") ||
+    pokemon.name.toLowerCase().startsWith("mega ") ||
+    pokemon.name.toLowerCase().endsWith(" mega");
   const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
     ? pokemon.name.replace("Mega ", "") + "-Mega"
     : pokemon.name;

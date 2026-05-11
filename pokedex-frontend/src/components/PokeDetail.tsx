@@ -174,7 +174,11 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
     >
       {/* ── Header / Left panel gradient ── */}
       {(() => {
-        const isMega = p?.isMega || p?.name?.toLowerCase().includes("mega");
+        const isMega = !!p?.isMega || 
+          p?.name?.toLowerCase().endsWith("-mega") ||
+          p?.name?.toLowerCase().includes("-mega-") ||
+          p?.name?.toLowerCase().startsWith("mega ") ||
+          p?.name?.toLowerCase().endsWith(" mega");
         return (
           <Box
             sx={{
