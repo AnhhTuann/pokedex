@@ -215,8 +215,19 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               alt={p?.name}
               onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                 const target = e.currentTarget;
-                const baseId = p?.speciesId || id;
-                target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                target.onerror = null;
+                const rawBaseId = p?.speciesId || id;
+                let baseId = rawBaseId;
+                if (rawBaseId && rawBaseId >= 10000) {
+                  if (rawBaseId === 100710) baseId = 71;
+                  else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
+                  else if (rawBaseId === 20036) baseId = 36;
+                  else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
+                  else baseId = rawBaseId % 1000;
+                }
+                target.src = showShiny
+                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
               }}
               sx={{ width: '80%', height: '80%', objectFit: 'contain', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
             />
@@ -655,8 +666,19 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                                 alt={evo.name}
                                 onError={(e: any) => {
                                   const target = e.currentTarget;
-                                  const baseId = evo.speciesId || evo.id;
-                                  target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                                  target.onerror = null;
+                                  const rawBaseId = evo.speciesId || evo.id;
+                                  let baseId = rawBaseId;
+                                  if (rawBaseId && rawBaseId >= 10000) {
+                                    if (rawBaseId === 100710) baseId = 71;
+                                    else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
+                                    else if (rawBaseId === 20036) baseId = 36;
+                                    else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
+                                    else baseId = rawBaseId % 1000;
+                                  }
+                                  target.src = showShiny
+                                    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                                    : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
                                 }}
                                 sx={{ width: 46, height: 46, objectFit: 'contain' }}
                               />
@@ -771,8 +793,19 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                             alt={form.name}
                             onError={(e: any) => {
                               const target = e.currentTarget;
-                              const baseId = form.speciesId || form.id;
-                              target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                              target.onerror = null;
+                              const rawBaseId = form.speciesId || form.id;
+                              let baseId = rawBaseId;
+                              if (rawBaseId && rawBaseId >= 10000) {
+                                if (rawBaseId === 100710) baseId = 71;
+                                else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
+                                else if (rawBaseId === 20036) baseId = 36;
+                                else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
+                                else baseId = rawBaseId % 1000;
+                              }
+                              target.src = showShiny
+                                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                                : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
                             }}
                             sx={{ width: 100, height: 100, objectFit: 'contain', my: 1, filter: 'drop-shadow(0px 6px 10px rgba(0,0,0,0.15))' }}
                           />
@@ -850,8 +883,19 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                               alt={form.name}
                               onError={(e: any) => {
                                 const target = e.currentTarget;
-                                const baseId = form.speciesId || form.id;
-                                target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                                target.onerror = null;
+                                const rawBaseId = form.speciesId || form.id;
+                                let baseId = rawBaseId;
+                                if (rawBaseId && rawBaseId >= 10000) {
+                                  if (rawBaseId === 100710) baseId = 71;
+                                  else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
+                                  else if (rawBaseId === 20036) baseId = 36;
+                                  else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
+                                  else baseId = rawBaseId % 1000;
+                                }
+                                target.src = showShiny
+                                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
                               }}
                               sx={{ width: 46, height: 46, objectFit: 'contain' }}
                             />

@@ -174,7 +174,10 @@ export default function PokeCard({
               onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                 const target = e.currentTarget;
                 const baseId = pokemon.speciesId || pokemon.id;
-                target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                target.onerror = null;
+                target.src = isShinyMode
+                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
               }}
               sx={{
                 width: 90,
