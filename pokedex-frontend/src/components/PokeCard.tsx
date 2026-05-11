@@ -71,6 +71,7 @@ export default function PokeCard({
   const isFav = isFavorite(pokemon.id);
   const primaryColor = TYPE_COLORS[pokemon.types[0].toLowerCase()] || "#9ca3af";
 
+  const isMega = pokemon.isMega || pokemon.name.toLowerCase().includes("mega");
   const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
     ? pokemon.name.replace("Mega ", "") + "-Mega"
     : pokemon.name;
@@ -91,8 +92,10 @@ export default function PokeCard({
           height: "100%",
           border: isSelectedForCompare
             ? `3px solid ${theme.palette.primary.main}`
+            : isMega
+            ? `2px solid ${alpha(primaryColor, 0.6)}`
             : `1px solid ${alpha(primaryColor, 0.25)}`,
-          boxShadow: undefined,
+          boxShadow: isMega ? `0 4px 20px ${alpha(primaryColor, 0.25)}` : undefined,
           opacity: isCompareMode && !isSelectedForCompare ? 0.55 : 1,
           background: getCardGradient(pokemon.types[0]),
           position: "relative",
@@ -150,6 +153,8 @@ export default function PokeCard({
                 primaryColor,
                 theme.palette.mode === "dark" ? 0.15 : 0.1,
               ),
+              boxShadow: isMega ? `0 0 20px ${alpha(primaryColor, 0.45)}` : undefined,
+              border: isMega ? `2px dashed ${alpha(primaryColor, 0.6)}` : undefined,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -164,7 +169,7 @@ export default function PokeCard({
               loading="lazy"
               onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                 const target = e.currentTarget;
-                const baseId = pokemon.id > 10000 ? (pokemon.id - 10000) : (pokemon.id % 10000);
+                const baseId = pokemon.speciesId || pokemon.id;
                 target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
               }}
               sx={{
@@ -176,6 +181,30 @@ export default function PokeCard({
                 transform: isShinyMode ? "scale(1.05)" : "scale(1)",
               }}
             />
+
+            {isMega && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: -4,
+                  right: -4,
+                  background: "linear-gradient(135deg, #ff007f 0%, #7f00ff 100%)",
+                  color: "#ffffff",
+                  fontSize: "0.6rem",
+                  fontWeight: 900,
+                  px: 1,
+                  py: 0.3,
+                  borderRadius: "6px",
+                  boxShadow: "0 0 10px rgba(255, 0, 127, 0.6)",
+                  letterSpacing: 1,
+                  textTransform: "uppercase",
+                  zIndex: 2,
+                  border: "1px solid rgba(255, 255, 255, 0.3)",
+                }}
+              >
+                Mega
+              </Box>
+            )}
           </Box>
 
           <CardContent sx={{ p: 0, width: "100%", textAlign: "center" }}>

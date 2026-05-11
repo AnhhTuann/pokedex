@@ -394,6 +394,39 @@ const hyperspaceNamesList = [
 async function main() {
   console.log("Seeding and correcting custom Z-A Megas & Dex Entries...");
 
+  console.log("Resetting regionalDexes and gameVersions for all Pokemon in DB...");
+  const pokesToReset = await prisma.pokemon.findMany({
+    where: {
+      OR: [
+        { regionalDexes: { hasSome: ["kalos-central-lumiose", "kalos-central-hyperspace"] } },
+        { gameVersions: { has: "legends-za" } },
+        { altFormAvailableIn: { has: "legends-za" } }
+      ]
+    }
+  });
+
+  for (const p of pokesToReset) {
+    const updatedDexes = p.regionalDexes.filter(d => d !== "kalos-central-lumiose" && d !== "kalos-central-hyperspace");
+    const updatedVersions = p.gameVersions.filter(v => v !== "legends-za");
+    const updatedAltForms = p.altFormAvailableIn.filter(v => v !== "legends-za");
+
+    await prisma.pokemon.update({
+      where: { id: p.id },
+      data: {
+        regionalDexes: updatedDexes,
+        gameVersions: updatedVersions,
+        altFormAvailableIn: updatedAltForms
+      }
+    });
+  }
+
+  console.log("Deleting old regional DexEntry records...");
+  await prisma.dexEntry.deleteMany({
+    where: {
+      regionName: { in: ["kalos-central-lumiose", "kalos-central-hyperspace"] }
+    }
+  });
+
   // Clean up any existing custom entries to avoid key constraint violations
   const customIds = customVarieties.map(v => v.id);
   const customNames: string[] = [];

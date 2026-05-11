@@ -173,29 +173,35 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
       }}
     >
       {/* ── Header / Left panel gradient ── */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${alpha(primaryColor, 0.25)} 0%, ${alpha(primaryColor, 0.05)} 100%)`,
-          p: 3,
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 3,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        }}
-      >
-        {/* Pokemon image */}
-        <Box
-          sx={{
-            width: { xs: 120, sm: 160 }, height: { xs: 120, sm: 160 }, flexShrink: 0,
-            borderRadius: '50%',
-            background: alpha(primaryColor, 0.15),
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: p?.shinyImage ? 'pointer' : 'default',
-            border: showShiny ? `3px solid #eab308` : 'none',
-            transition: 'border 0.3s',
-          }}
-          onClick={() => p?.shinyImage && setShowShiny(s => !s)}
-        >
+      {(() => {
+        const isMega = p?.isMega || p?.name?.toLowerCase().includes("mega");
+        return (
+          <Box
+            sx={{
+              background: isMega
+                ? `linear-gradient(135deg, ${alpha(primaryColor, 0.45)} 0%, rgba(127, 0, 255, 0.1) 50%, ${alpha(primaryColor, 0.05)} 100%)`
+                : `linear-gradient(135deg, ${alpha(primaryColor, 0.25)} 0%, ${alpha(primaryColor, 0.05)} 100%)`,
+              p: 3,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 3,
+              borderBottom: `1px solid ${theme.palette.divider}`,
+            }}
+          >
+            {/* Pokemon image */}
+            <Box
+              sx={{
+                width: { xs: 120, sm: 160 }, height: { xs: 120, sm: 160 }, flexShrink: 0,
+                borderRadius: '50%',
+                background: alpha(primaryColor, 0.15),
+                boxShadow: isMega ? `0 0 30px ${alpha(primaryColor, 0.65)}` : undefined,
+                border: isMega ? `3px dashed ${alpha(primaryColor, 0.8)}` : showShiny ? `3px solid #eab308` : 'none',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: p?.shinyImage ? 'pointer' : 'default',
+                transition: 'all 0.3s',
+              }}
+              onClick={() => p?.shinyImage && setShowShiny(s => !s)}
+            >
           {loadingState ? (
             <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: 'action.hover' }} />
           ) : (
@@ -205,7 +211,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               alt={p?.name}
               onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                 const target = e.currentTarget;
-                const baseId = id > 10000 ? (id - 10000) : (id % 10000);
+                const baseId = p?.speciesId || id;
                 target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
               }}
               sx={{ width: '80%', height: '80%', objectFit: 'contain', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
@@ -281,7 +287,9 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
         <IconButton onClick={onClose} id="close-modal" size="small" sx={{ color: 'text.secondary', alignSelf: 'flex-start' }}>
           <Close />
         </IconButton>
-      </Box>
+          </Box>
+        );
+      })()}
 
       {/* ── Content ── */}
       <DialogContent
@@ -759,7 +767,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                             alt={form.name}
                             onError={(e: any) => {
                               const target = e.currentTarget;
-                              const baseId = form.id > 10000 ? (form.id - 10000) : (form.id % 10000);
+                              const baseId = form.speciesId || form.id;
                               target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
                             }}
                             sx={{ width: 100, height: 100, objectFit: 'contain', my: 1, filter: 'drop-shadow(0px 6px 10px rgba(0,0,0,0.15))' }}
@@ -838,7 +846,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                               alt={form.name}
                               onError={(e: any) => {
                                 const target = e.currentTarget;
-                                const baseId = form.id > 10000 ? (form.id - 10000) : (form.id % 10000);
+                                const baseId = form.speciesId || form.id;
                                 target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
                               }}
                               sx={{ width: 46, height: 46, objectFit: 'contain' }}
