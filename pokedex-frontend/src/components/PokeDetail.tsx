@@ -199,6 +199,14 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
               component="img"
               src={showShiny ? p?.shinyImage : p?.image}
               alt={p?.name}
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const target = e.currentTarget;
+                const baseId = p?.speciesId || id;
+                target.onerror = null;
+                target.src = showShiny
+                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+              }}
               sx={{ width: '80%', height: '80%', objectFit: 'contain', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
             />
           )}
@@ -628,7 +636,20 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                                 '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
                               }}
                             >
-                              <Box component="img" src={showShiny && evo.shinyImage ? evo.shinyImage : evo.image} alt={evo.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                              <Box
+                                component="img"
+                                src={showShiny && evo.shinyImage ? evo.shinyImage : evo.image}
+                                alt={evo.name}
+                                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                                  const target = e.currentTarget;
+                                  const baseId = evo.speciesId || evo.id;
+                                  target.onerror = null;
+                                  target.src = showShiny
+                                    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                                    : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                                }}
+                                sx={{ width: 46, height: 46, objectFit: 'contain' }}
+                              />
                             </Box>
                           </Tooltip>
                           <Typography
@@ -738,6 +759,14 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                             component="img"
                             src={showShiny && form.shinyImage ? form.shinyImage : form.image}
                             alt={form.name}
+                            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                              const target = e.currentTarget;
+                              const baseId = form.speciesId || form.id;
+                              target.onerror = null;
+                              target.src = showShiny
+                                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                                : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                            }}
                             sx={{ width: 100, height: 100, objectFit: 'contain', my: 1, filter: 'drop-shadow(0px 6px 10px rgba(0,0,0,0.15))' }}
                           />
 
@@ -808,7 +837,20 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
                               }
                             }}
                           >
-                            <Box component="img" src={showShiny && form.shinyImage ? form.shinyImage : form.image} alt={form.name} sx={{ width: 46, height: 46, objectFit: 'contain' }} />
+                            <Box
+                              component="img"
+                              src={showShiny && form.shinyImage ? form.shinyImage : form.image}
+                              alt={form.name}
+                              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                                const target = e.currentTarget;
+                                const baseId = form.speciesId || form.id;
+                                target.onerror = null;
+                                target.src = showShiny
+                                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                              }}
+                              sx={{ width: 46, height: 46, objectFit: 'contain' }}
+                            />
                           </Box>
                         </Tooltip>
                         <Typography
