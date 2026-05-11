@@ -119,41 +119,11 @@ export default function PokemonDex() {
   const [selectedId, setSelectedId]   = useState<number | null>(null);
   const [viewMode, setViewMode]       = useState<ViewMode>('all');
   const [compareIds, setCompareIds]   = useState<number[]>([]);
+  const [zaTab, setZaTab]             = useState<'lumiose' | 'hyperspace'>('lumiose');
 
   const { favorites } = useMyPokedex();
   const isCompareMode = viewMode === 'compare';
   const showFavorites = viewMode === 'favorites';
-  const isZA = selectedVersion === 'legends-za';
-
-  // State for Legends: Z-A custom regional datasets
-  const [zaRegion, setZaRegion] = useState<'lumiose' | 'hyperspace'>('lumiose');
-  const [zaPokemonList, setZaPokemonList] = useState<any[]>([]);
-  const [zaLoading, setZaLoading] = useState<boolean>(false);
-  const [zaError, setZaError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!isZA) return;
-
-    const fetchZAPokedex = async () => {
-      setZaLoading(true);
-      setZaError(null);
-      try {
-        const response = await fetch(`http://localhost:3000/api/pokedex/za/${zaRegion}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch Legends: Z-A Pokédex data for: ${zaRegion}`);
-        }
-        const data = await response.json();
-        setZaPokemonList(data);
-      } catch (err: any) {
-        console.error("Error fetching Z-A Pokédex:", err);
-        setZaError(err.message || "An error occurred while fetching Z-A Pokédex.");
-      } finally {
-        setZaLoading(false);
-      }
-    };
-
-    fetchZAPokedex();
-  }, [isZA, zaRegion]);
 
   const handleCardClick = (id: number) => {
     if (isCompareMode) {
@@ -167,8 +137,12 @@ export default function PokemonDex() {
   };
 
   const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
-  const queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
+  let queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
   const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+
+  if (selectedVersion === 'legends-za') {
+    queryRegion = zaTab === 'lumiose' ? 'kalos-central-lumiose' : 'kalos-central-hyperspace';
+  }
 
   const { data, loading, error, fetchMore } = useQuery<{
     pokemonList: { results: PokemonListItem[]; totalCount: number };
@@ -182,40 +156,14 @@ export default function PokemonDex() {
       ids: showFavorites ? favorites : null,
       region: queryRegion,
       game: queryGame
-    },
-    skip: isZA // Skip GraphQL query completely for Legends: Z-A custom regional dex
+    }
   });
 
-  // Client-side search and type filtering for Legends: Z-A Custom Dex
-  const filteredZaList = isZA 
-    ? zaPokemonList
-        .filter(p => {
-          const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-          const matchesType = typeFilter ? p.types.map(t => t.toLowerCase()).includes(typeFilter.toLowerCase()) : true;
-          return matchesSearch && matchesType;
-        })
-        .map(p => {
-          const baseForm = zaPokemonList.find(b => b.regionalId === p.regionalId && !b.isMega && b.id < 10000);
-          const speciesId = baseForm ? baseForm.id : p.id;
-          return {
-            ...p,
-            image: p.spriteUrl || p.sprite,
-            shinyImage: p.shinySprite || p.spriteUrl || p.sprite,
-            regionalNumber: parseInt(p.regionalId.replace('#', ''), 10) || p.id,
-            speciesId: speciesId
-          };
-        })
-    : [];
-
-  const pokemonList  = isZA ? filteredZaList : (data?.pokemonList?.results || []);
-  const totalCount   = isZA ? filteredZaList.length : (data?.pokemonList?.totalCount || 0);
-  const hasMore      = !isZA && pokemonList.length > 0 && pokemonList.length < totalCount;
-
-  const isZALoading  = isZA ? zaLoading : loading;
-  const isZAError    = isZA ? zaError : error;
+  const pokemonList  = data?.pokemonList?.results || [];
+  const totalCount   = data?.pokemonList?.totalCount || 0;
+  const hasMore      = pokemonList.length > 0 && pokemonList.length < totalCount;
 
   const loadMore = () => {
-    if (isZA) return;
     fetchMore({ variables: { offset: pokemonList.length } });
   };
 
@@ -230,73 +178,6 @@ export default function PokemonDex() {
           genValue={genFilter}   onGenChange={setGenFilter}
         />
       </Box>
-
-      {/* Legends: Z-A Regional Tabs */}
-      {isZA && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-          <ToggleButtonGroup
-            value={zaRegion}
-            exclusive
-            onChange={(_, value) => value && setZaRegion(value)}
-            sx={{
-              bgcolor: 'background.paper',
-              p: 0.5,
-              borderRadius: '16px',
-              border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-              boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-            }}
-          >
-            <ToggleButton
-              value="lumiose"
-              sx={{
-                px: 4,
-                py: 1,
-                borderRadius: '12px !important',
-                fontWeight: 800,
-                textTransform: 'none',
-                color: 'text.secondary',
-                border: 'none !important',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                '&.Mui-selected': {
-                  bgcolor: alpha('#22c55e', 0.15),
-                  color: '#22c55e',
-                  textShadow: '0 0 10px rgba(34, 197, 94, 0.4)',
-                  boxShadow: '0 0 12px rgba(34, 197, 94, 0.15)',
-                  '&:hover': {
-                    bgcolor: alpha('#22c55e', 0.25),
-                  }
-                }
-              }}
-            >
-              Lumiose City Dex
-            </ToggleButton>
-            <ToggleButton
-              value="hyperspace"
-              sx={{
-                px: 4,
-                py: 1,
-                borderRadius: '12px !important',
-                fontWeight: 800,
-                textTransform: 'none',
-                color: 'text.secondary',
-                border: 'none !important',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                '&.Mui-selected': {
-                  bgcolor: alpha('#06b6d4', 0.15),
-                  color: '#06b6d4',
-                  textShadow: '0 0 10px rgba(6, 182, 212, 0.4)',
-                  boxShadow: '0 0 12px rgba(6, 182, 212, 0.15)',
-                  '&:hover': {
-                    bgcolor: alpha('#06b6d4', 0.25),
-                  }
-                }
-              }}
-            >
-              Hyperspace Dex
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-      )}
 
       {/* View Mode Toggle & Global Action bar */}
       <Box
@@ -328,8 +209,58 @@ export default function PokemonDex() {
         </ButtonGroup>
       </Box>
 
+      {/* Legends: Z-A Regional Tabs */}
+      {selectedVersion === 'legends-za' && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+          <ToggleButtonGroup
+            value={zaTab}
+            exclusive
+            onChange={(_, val) => { if (val) setZaTab(val); }}
+            aria-label="Legends Z-A Pokédex Sections"
+            sx={{
+              background: isDark ? 'rgba(30, 41, 59, 0.4)' : 'rgba(243, 244, 246, 0.8)',
+              backdropFilter: 'blur(8px)',
+              padding: '4px',
+              borderRadius: '16px',
+              border: '1px solid',
+              borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+              '& .MuiToggleButton-root': {
+                border: 'none',
+                borderRadius: '12px',
+                px: 4,
+                py: 1,
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                letterSpacing: 1,
+                textTransform: 'uppercase',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)',
+                '&.Mui-selected': {
+                  background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)',
+                },
+                '&:hover': {
+                  background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+                  '&.Mui-selected': {
+                    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                  }
+                }
+              }
+            }}
+          >
+            <ToggleButton value="lumiose" id="za-tab-lumiose">
+              Lumiose City Dex
+            </ToggleButton>
+            <ToggleButton value="hyperspace" id="za-tab-hyperspace">
+              Hyperspace Dex
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+      )}
+
       {/* Count */}
-      {!isZALoading && !isZAError && (
+      {!loading && !error && (
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2, textAlign: 'center', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 700 }}>
           {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
         </Typography>
@@ -345,7 +276,7 @@ export default function PokemonDex() {
       )}
 
       {/* Pokemon List / Grid */}
-      {isZALoading ? (
+      {loading ? (
         <Grid container spacing={3}>
           {[...Array(12)].map((_, i) => (
             <Grid key={i} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
@@ -353,22 +284,21 @@ export default function PokemonDex() {
             </Grid>
           ))}
         </Grid>
-      ) : isZAError ? (
+      ) : error ? (
         <Alert severity="error" sx={{ borderRadius: 3 }}>
           Backend offline — start the server on port 3000.
         </Alert>
       ) : (
-        // Standard Grid View Layout (Unified across all pokedex versions!)
-        <Grid container spacing={3}>
-          <AnimatePresence mode="popLayout">
+        <Grid container spacing={3} key={`${selectedVersion}-${zaTab}-${viewMode}`}>
+          <AnimatePresence mode="wait">
             {pokemonList.map((p: any, idx: number) => (
               <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                 <PokeCard
-                  pokemon={p}
-                  index={idx % 12}
-                  onClick={() => handleCardClick(p.id)}
-                  isCompareMode={isCompareMode}
-                  isSelectedForCompare={compareIds.includes(p.id)}
+                   pokemon={p}
+                   index={idx % 12}
+                   onClick={() => handleCardClick(p.id)}
+                   isCompareMode={isCompareMode}
+                   isSelectedForCompare={compareIds.includes(p.id)}
                 />
               </Grid>
             ))}
@@ -384,7 +314,7 @@ export default function PokemonDex() {
         </Grid>
       )}
 
-      {!isZALoading && hasMore && (
+      {!loading && hasMore && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5, mb: 10 }}>
           <Button variant="outlined" size="large" onClick={loadMore} sx={{ px: 6, borderRadius: 50 }}>
             Load More

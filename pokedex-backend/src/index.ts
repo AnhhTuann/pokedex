@@ -1031,54 +1031,7 @@ async function startServer() {
 
   app.get('/api/ping', (req, res) => res.send('pong from Prisma backend!'));
 
-  app.get('/api/pokedex/za/:region', async (req, res) => {
-    try {
-      const { region } = req.params;
-      const results = await prisma.pokemonZA.findMany({
-        where: { dexType: region.toLowerCase() },
-        orderBy: [
-          { regionalId: 'asc' },
-          { id: 'asc' }
-        ]
-      });
-      res.json(results);
-    } catch (err) {
-      console.error(`Error fetching ${req.params.region} Pokédex:`, err);
-      res.status(500).json({ error: 'Server error' });
-    }
-  });
 
-  app.get('/api/pokedex/za/pokemon/:id', async (req, res) => {
-    try {
-      const id = parseInt(req.params.id, 10);
-      const result = await prisma.pokemonZA.findUnique({
-        where: { id }
-      });
-      if (!result) {
-        return res.status(404).json({ error: 'Pokémon not found' });
-      }
-
-      // Fetch other forms of the same species sharing the same regionalId
-      const relatedForms = await prisma.pokemonZA.findMany({
-        where: {
-          regionalId: result.regionalId,
-          id: { not: id }
-        }
-      });
-
-      const megaEvolutions = relatedForms.filter(f => f.isMega);
-      const alternativeForms = relatedForms.filter(f => !f.isMega);
-
-      res.json({
-        ...result,
-        megaEvolutions,
-        alternativeForms
-      });
-    } catch (err) {
-      console.error(`Error fetching ZA Pokemon details for ${req.params.id}:`, err);
-      res.status(500).json({ error: 'Server error' });
-    }
-  });
 
   // Bulletproof proxy download endpoint to solve browser extension filename corruption (e.g., IDM, dynamic blob downloads)
   app.post('/api/download-session', (req, res) => {
