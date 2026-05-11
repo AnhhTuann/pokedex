@@ -1,105 +1,108 @@
-import { PokemonListItem } from "../types";
-
-export interface ZAPokemon extends PokemonListItem {
-  regionalNumber: number; // For clean display as number
+export interface ZAPokemon {
+  id: number;
+  regionalId: string;
+  name: string;
+  types: string[];
   isMega: boolean;
-  abilities?: string[];
+  sprite: string;
+  shinySprite?: string;
+  category?: string;
   description?: string;
   stats?: { name: string; value: number }[];
+  abilities?: string[];
 }
 
 export const lumioseDex: ZAPokemon[] = [
   {
-    id: 495,
-    name: "Snivy",
-    types: ["grass"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/495.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/495.png",
-    category: "Starter Pokémon",
-    regionalNumber: 1,
+    id: 152,
+    regionalId: "#001",
+    name: "Chikorita",
+    types: ["Grass"],
     isMega: false,
-    abilities: ["Overgrow", "Contrary"],
-    description: "It is very intelligent and calm. Being exposed to sunlight makes its movements much faster.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/152.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/152.png",
+    category: "Leaf Pokémon",
+    description: "It uses the leaf on its head to determine the temperature and humidity. It loves to sunbathe.",
     stats: [
       { name: "hp", value: 45 },
-      { name: "attack", value: 45 },
-      { name: "defense", value: 55 },
-      { name: "special-attack", value: 45 },
-      { name: "special-defense", value: 55 },
-      { name: "speed", value: 63 }
-    ]
+      { name: "attack", value: 49 },
+      { name: "defense", value: 65 },
+      { name: "special-attack", value: 49 },
+      { name: "special-defense", value: 65 },
+      { name: "speed", value: 45 }
+    ],
+    abilities: ["Overgrow", "Leaf Guard"]
   },
   {
-    id: 496,
-    name: "Servine",
-    types: ["grass"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/496.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/496.png",
-    category: "Starter Pokémon",
-    regionalNumber: 2,
+    id: 153,
+    regionalId: "#002",
+    name: "Bayleef",
+    types: ["Grass"],
     isMega: false,
-    abilities: ["Overgrow", "Contrary"],
-    description: "It runs along the ground to light-footed-ly dodge attacks. It smartly retaliates with its whipping vines.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/153.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/153.png",
+    category: "Leaf Pokémon",
+    description: "A spicy aroma emanates from around its neck. The scent acts as a stimulant to restore energy.",
     stats: [
       { name: "hp", value: 60 },
-      { name: "attack", value: 60 },
-      { name: "defense", value: 75 },
-      { name: "special-attack", value: 60 },
-      { name: "special-defense", value: 75 },
-      { name: "speed", value: 83 }
-    ]
+      { name: "attack", value: 62 },
+      { name: "defense", value: 80 },
+      { name: "special-attack", value: 63 },
+      { name: "special-defense", value: 80 },
+      { name: "speed", value: 60 }
+    ],
+    abilities: ["Overgrow", "Leaf Guard"]
   },
   {
-    id: 497,
-    name: "Serperior",
-    types: ["grass"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/497.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/497.png",
-    category: "Starter Pokémon",
-    regionalNumber: 3,
+    id: 154,
+    regionalId: "#003",
+    name: "Meganium",
+    types: ["Grass"],
     isMega: false,
-    abilities: ["Overgrow", "Contrary"],
-    description: "It only gives its all against strong opponents who are not intimidated by the glare of its noble eyes.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/154.png",
+    category: "Herb Pokémon",
+    description: "The aroma that rises from its petals has a calming effect. In battle, it releases more of this aroma.",
     stats: [
-      { name: "hp", value: 75 },
-      { name: "attack", value: 75 },
-      { name: "defense", value: 95 },
-      { name: "special-attack", value: 75 },
-      { name: "special-defense", value: 95 },
-      { name: "speed", value: 113 }
-    ]
+      { name: "hp", value: 80 },
+      { name: "attack", value: 82 },
+      { name: "defense", value: 100 },
+      { name: "special-attack", value: 83 },
+      { name: "special-defense", value: 100 },
+      { name: "speed", value: 80 }
+    ],
+    abilities: ["Overgrow", "Leaf Guard"]
   },
   {
-    id: 49700,
-    name: "Serperior-Mega",
-    types: ["grass", "dragon"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/497.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/497.png",
-    category: "Mega Form",
-    regionalNumber: 3,
+    id: 15400,
+    regionalId: "#003",
+    name: "Mega Meganium",
+    types: ["Grass", "Fairy"],
     isMega: true,
-    abilities: ["Contrary"],
-    description: "Mega Evolution unleashes Serperior's hidden draconic lineage. Its scales harden like diamonds, and its glare can paralyze even legendary foes.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/154.png",
+    category: "Mega Herb Pokémon",
+    description: "Mega Evolution enwreathes Meganium in ancient fae power, making its scent strong enough to heal any physical or spiritual ailments instantly.",
     stats: [
-      { name: "hp", value: 75 },
-      { name: "attack", value: 95 },
-      { name: "defense", value: 115 },
-      { name: "special-attack", value: 115 },
-      { name: "special-defense", value: 115 },
-      { name: "speed", value: 133 }
-    ]
+      { name: "hp", value: 80 },
+      { name: "attack", value: 102 },
+      { name: "defense", value: 120 },
+      { name: "special-attack", value: 123 },
+      { name: "special-defense", value: 120 },
+      { name: "speed", value: 80 }
+    ],
+    abilities: ["Triage"]
   },
   {
     id: 498,
+    regionalId: "#004",
     name: "Tepig",
-    types: ["fire"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/498.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/498.png",
-    category: "Starter Pokémon",
-    regionalNumber: 4,
+    types: ["Fire"],
     isMega: false,
-    abilities: ["Blaze", "Thick Fat"],
-    description: "It can deftly dodge foe's attacks while shooting fireballs from its snout. It roasts berries with this fire before eating them.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/498.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/498.png",
+    category: "Fire Pig Pokémon",
+    description: "It blows fire from its snout, but when it catches cold, the fire turns into pitch-black smoke.",
     stats: [
       { name: "hp", value: 65 },
       { name: "attack", value: 63 },
@@ -107,19 +110,19 @@ export const lumioseDex: ZAPokemon[] = [
       { name: "special-attack", value: 45 },
       { name: "special-defense", value: 45 },
       { name: "speed", value: 45 }
-    ]
+    ],
+    abilities: ["Blaze", "Thick Fat"]
   },
   {
     id: 499,
+    regionalId: "#005",
     name: "Pignite",
-    types: ["fire", "fighting"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/499.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/499.png",
-    category: "Starter Pokémon",
-    regionalNumber: 5,
+    types: ["Fire", "Fighting"],
     isMega: false,
-    abilities: ["Blaze", "Thick Fat"],
-    description: "The more food it eats, the hotter the fire inside its stomach burns. When its internal fire flares, its speed increases.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/499.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/499.png",
+    category: "Fire Pig Pokémon",
+    description: "The hotter the fire inside its body, the faster it moves. It can crush boulders with heavy strikes.",
     stats: [
       { name: "hp", value: 90 },
       { name: "attack", value: 93 },
@@ -127,19 +130,19 @@ export const lumioseDex: ZAPokemon[] = [
       { name: "special-attack", value: 70 },
       { name: "special-defense", value: 55 },
       { name: "speed", value: 55 }
-    ]
+    ],
+    abilities: ["Blaze", "Thick Fat"]
   },
   {
     id: 500,
+    regionalId: "#006",
     name: "Emboar",
-    types: ["fire", "fighting"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png",
-    category: "Starter Pokémon",
-    regionalNumber: 6,
+    types: ["Fire", "Fighting"],
     isMega: false,
-    abilities: ["Blaze", "Reckless"],
-    description: "It can grow a beard of fire. It cares deeply about its friends and utilizes rapid, heavy punches to protect them.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png",
+    category: "Mega Fire Pig Pokémon",
+    description: "It has mastered fast and powerful fighting moves. Its chin burns with a fierce beard of flames.",
     stats: [
       { name: "hp", value: 110 },
       { name: "attack", value: 123 },
@@ -147,19 +150,19 @@ export const lumioseDex: ZAPokemon[] = [
       { name: "special-attack", value: 100 },
       { name: "special-defense", value: 65 },
       { name: "speed", value: 65 }
-    ]
+    ],
+    abilities: ["Blaze", "Reckless"]
   },
   {
-    id: 10500,
-    name: "Emboar-Mega",
-    types: ["fire", "fighting"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png",
-    category: "Mega Form",
-    regionalNumber: 6,
+    id: 50000,
+    regionalId: "#006",
+    name: "Mega Emboar",
+    types: ["Fire", "Fighting"],
     isMega: true,
-    abilities: ["Drought"],
-    description: "Enwrapped in explosive columns of pure flame, Mega Emboar utilizes unmatched physical strength to deliver devastating blazes to any challenger.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png",
+    category: "Mega Fire Pig Pokémon",
+    description: "Under the effect of Mega Evolution, its body turns into a living furnace of martial combat.",
     stats: [
       { name: "hp", value: 110 },
       { name: "attack", value: 158 },
@@ -167,59 +170,99 @@ export const lumioseDex: ZAPokemon[] = [
       { name: "special-attack", value: 135 },
       { name: "special-defense", value: 75 },
       { name: "speed", value: 75 }
-    ]
+    ],
+    abilities: ["Drought"]
   },
   {
-    id: 150,
-    name: "Mewtwo",
-    types: ["psychic"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/150.png",
-    category: "Genetic Pokémon",
-    regionalNumber: 150,
+    id: 158,
+    regionalId: "#007",
+    name: "Totodile",
+    types: ["Water"],
     isMega: false,
-    abilities: ["Pressure", "Unnerve"],
-    description: "A Pokémon created by recombining Mew's genes. It's said to have the most savage heart among Pokémon.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/158.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/158.png",
+    category: "Big Jaw Pokémon",
+    description: "It is small but rough and tough. It will bite at anything that moves within its sight.",
     stats: [
-      { name: "hp", value: 106 },
-      { name: "attack", value: 110 },
-      { name: "defense", value: 90 },
-      { name: "special-attack", value: 154 },
-      { name: "special-defense", value: 90 },
-      { name: "speed", value: 130 }
-    ]
+      { name: "hp", value: 50 },
+      { name: "attack", value: 65 },
+      { name: "defense", value: 64 },
+      { name: "special-attack", value: 44 },
+      { name: "special-defense", value: 48 },
+      { name: "speed", value: 43 }
+    ],
+    abilities: ["Torrent", "Sheer Force"]
   },
   {
-    id: 10043,
-    name: "Mewtwo-Mega-X",
-    types: ["psychic", "fighting"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10043.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10043.png",
-    category: "Mega Form X",
-    regionalNumber: 150,
-    isMega: true,
-    abilities: ["Steadfast"],
-    description: "Mega Mewtwo X boasts unparalleled psychokinetic and physical power. Its tensed muscles give it physical limits far beyond any normal creature.",
+    id: 159,
+    regionalId: "#008",
+    name: "Croconaw",
+    types: ["Water"],
+    isMega: false,
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/159.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/159.png",
+    category: "Big Jaw Pokémon",
+    description: "Once it bites down, it won't let go until its teeth fall out. Its teeth grow back quickly.",
     stats: [
-      { name: "hp", value: 106 },
-      { name: "attack", value: 190 },
+      { name: "hp", value: 65 },
+      { name: "attack", value: 80 },
+      { name: "defense", value: 80 },
+      { name: "special-attack", value: 59 },
+      { name: "special-defense", value: 63 },
+      { name: "speed", value: 58 }
+    ],
+    abilities: ["Torrent", "Sheer Force"]
+  },
+  {
+    id: 160,
+    regionalId: "#009",
+    name: "Feraligatr",
+    types: ["Water"],
+    isMega: false,
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/160.png",
+    category: "Big Jaw Pokémon",
+    description: "It opens its huge mouth to intimidate enemies. It is quick on land despite its massive bulk.",
+    stats: [
+      { name: "hp", value: 85 },
+      { name: "attack", value: 105 },
       { name: "defense", value: 100 },
-      { name: "special-attack", value: 154 },
-      { name: "special-defense", value: 100 },
-      { name: "speed", value: 130 }
-    ]
+      { name: "special-attack", value: 79 },
+      { name: "special-defense", value: 83 },
+      { name: "speed", value: 78 }
+    ],
+    abilities: ["Torrent", "Sheer Force"]
+  },
+  {
+    id: 16000,
+    regionalId: "#009",
+    name: "Mega Feraligatr",
+    types: ["Water", "Dark"],
+    isMega: true,
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/160.png",
+    category: "Big Jaw Pokémon",
+    description: "Mega Evolution transforms Feraligatr into a dark apex predator, crashing down with hyper-aggressive biting attacks.",
+    stats: [
+      { name: "hp", value: 85 },
+      { name: "attack", value: 145 },
+      { name: "defense", value: 120 },
+      { name: "special-attack", value: 99 },
+      { name: "special-defense", value: 103 },
+      { name: "speed", value: 98 }
+    ],
+    abilities: ["Strong Jaw"]
   },
   {
     id: 718,
-    name: "Zygarde-50%",
-    types: ["dragon", "ground"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/718.png",
-    category: "Order Pokémon",
-    regionalNumber: 230,
+    regionalId: "#230",
+    name: "Zygarde",
+    types: ["Dragon", "Ground"],
     isMega: false,
-    abilities: ["Aura Break", "Power Construct"],
-    description: "It monitors the ecosystem from deep inside caverns. When the ecosystem falls into chaos, it appears and unleashes its power.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/718.png",
+    category: "Order Pokémon",
+    description: "It monitors the ecosystem to ensure balance is maintained throughout the region.",
     stats: [
       { name: "hp", value: 108 },
       { name: "attack", value: 100 },
@@ -227,19 +270,19 @@ export const lumioseDex: ZAPokemon[] = [
       { name: "special-attack", value: 81 },
       { name: "special-defense", value: 95 },
       { name: "speed", value: 95 }
-    ]
+    ],
+    abilities: ["Aura Break"]
   },
   {
     id: 71800,
-    name: "Zygarde-Mega",
-    types: ["dragon", "ground"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10115.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10115.png",
-    category: "Mega Form",
-    regionalNumber: 230,
+    regionalId: "#230",
+    name: "Mega Zygarde",
+    types: ["Dragon", "Ground"],
     isMega: true,
-    abilities: ["Power Construct"],
-    description: "Born from the perfect synthesis of 100% of Zygarde's core cells, Mega Zygarde dominates hyperspace and Lumiose city to protect the world's ecosystem.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10115.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10115.png",
+    category: "Complete Form",
+    description: "The complete, perfect order form of Zygarde, unlocked through mega energy. Truly an unstoppable force.",
     stats: [
       { name: "hp", value: 216 },
       { name: "attack", value: 140 },
@@ -247,22 +290,22 @@ export const lumioseDex: ZAPokemon[] = [
       { name: "special-attack", value: 121 },
       { name: "special-defense", value: 125 },
       { name: "speed", value: 85 }
-    ]
+    ],
+    abilities: ["Power Construct"]
   }
 ];
 
 export const hyperspaceDex: ZAPokemon[] = [
   {
     id: 1,
+    regionalId: "#010",
     name: "Bulbasaur",
-    types: ["grass", "poison"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png",
-    category: "Seed Pokémon",
-    regionalNumber: 10,
+    types: ["Grass", "Poison"],
     isMega: false,
-    abilities: ["Overgrow", "Chlorophyll"],
-    description: "There is a plant seed on its back from the day this Pokémon is born. The seed slowly grows larger.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png",
+    category: "Seed Pokémon",
+    description: "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.",
     stats: [
       { name: "hp", value: 45 },
       { name: "attack", value: 49 },
@@ -270,19 +313,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 65 },
       { name: "special-defense", value: 65 },
       { name: "speed", value: 45 }
-    ]
+    ],
+    abilities: ["Overgrow", "Chlorophyll"]
   },
   {
     id: 3,
+    regionalId: "#012",
     name: "Venusaur-Mega",
-    types: ["grass", "poison"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10033.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10033.png",
-    category: "Mega Form",
-    regionalNumber: 12,
+    types: ["Grass", "Poison"],
     isMega: true,
-    abilities: ["Thick Fat"],
-    description: "Mega Evolution strengthens Venusaur's trunk and foliage. The flower on its back blooms magnificently, spreading calming scents.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10033.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10033.png",
+    category: "Mega Form",
+    description: "Mega Evolution expands its strength. Its leaves grow as thick as a jungle.",
     stats: [
       { name: "hp", value: 80 },
       { name: "attack", value: 100 },
@@ -290,19 +333,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 122 },
       { name: "special-defense", value: 120 },
       { name: "speed", value: 80 }
-    ]
+    ],
+    abilities: ["Thick Fat"]
   },
   {
     id: 4,
+    regionalId: "#013",
     name: "Charmander",
-    types: ["fire"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/4.png",
-    category: "Lizard Pokémon",
-    regionalNumber: 13,
+    types: ["Fire"],
     isMega: false,
-    abilities: ["Blaze", "Solar Power"],
-    description: "The flame that burns at the tip of its tail is an indication of its emotions. The flame wavers when Charmander is happy.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/4.png",
+    category: "Lizard Pokémon",
+    description: "The flame on its tail indicates its health and emotion. It burns brightly when it is healthy.",
     stats: [
       { name: "hp", value: 39 },
       { name: "attack", value: 52 },
@@ -310,19 +353,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 60 },
       { name: "special-defense", value: 50 },
       { name: "speed", value: 65 }
-    ]
+    ],
+    abilities: ["Blaze", "Solar Power"]
   },
   {
     id: 600,
+    regionalId: "#015",
     name: "Charizard-Mega-X",
-    types: ["fire", "dragon"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10034.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10034.png",
-    category: "Mega Form X",
-    regionalNumber: 15,
+    types: ["Fire", "Dragon"],
     isMega: true,
-    abilities: ["Tough Claws"],
-    description: "Its body turns coal-black, engulfed in blazing blue fires. Its sharp claws can shred any solid matter into ashes.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10034.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10034.png",
+    category: "Mega Form X",
+    description: "Its black color is proof of its extreme raw physical power, wrapped in intense blue flame.",
     stats: [
       { name: "hp", value: 78 },
       { name: "attack", value: 130 },
@@ -330,19 +373,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 130 },
       { name: "special-defense", value: 85 },
       { name: "speed", value: 100 }
-    ]
+    ],
+    abilities: ["Tough Claws"]
   },
   {
     id: 383,
+    regionalId: "#080",
     name: "Groudon",
-    types: ["ground"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/383.png",
-    category: "Continent Pokémon",
-    regionalNumber: 80,
+    types: ["Ground"],
     isMega: false,
-    abilities: ["Drought"],
-    description: "Said to have expanded the continents by evaporating water with intense heat and light.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/383.png",
+    category: "Continent Pokémon",
+    description: "It has expanded lands through extreme volcanic activity. Legendary rival of Kyogre.",
     stats: [
       { name: "hp", value: 100 },
       { name: "attack", value: 150 },
@@ -350,19 +393,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 100 },
       { name: "special-defense", value: 90 },
       { name: "speed", value: 90 }
-    ]
+    ],
+    abilities: ["Drought"]
   },
   {
     id: 10078,
-    name: "Primal-Groudon",
-    types: ["ground", "fire"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10078.png",
-    category: "Primal Reversion",
-    regionalNumber: 80,
+    regionalId: "#080",
+    name: "Primal Groudon",
+    types: ["Ground", "Fire"],
     isMega: true,
-    abilities: ["Desolate Land"],
-    description: "Through Primal Reversion, Groudon absorbs the planet's baseline energy to resume its true prime form. Its heat can vaporize entire oceans instantly.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10078.png",
+    category: "Primal Reversion",
+    description: "Its magma body radiates volcanic temperatures, instantly turning oceans to vapor.",
     stats: [
       { name: "hp", value: 100 },
       { name: "attack", value: 180 },
@@ -370,19 +413,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 150 },
       { name: "special-defense", value: 90 },
       { name: "speed", value: 90 }
-    ]
+    ],
+    abilities: ["Desolate Land"]
   },
   {
     id: 807,
+    regionalId: "#120",
     name: "Zeraora",
-    types: ["electric"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/807.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/807.png",
-    category: "Thunderclap Pokémon",
-    regionalNumber: 120,
+    types: ["Electric"],
     isMega: false,
-    abilities: ["Volt Absorb"],
-    description: "It electrifies its claws and tears its opponents apart. Even if they dodge, they are electrocuted by the sparks.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/807.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/807.png",
+    category: "Thunderclap Pokémon",
+    description: "It runs at speed matching lightning, electrocuting anything that steps within range.",
     stats: [
       { name: "hp", value: 88 },
       { name: "attack", value: 112 },
@@ -390,19 +433,19 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 102 },
       { name: "special-defense", value: 80 },
       { name: "speed", value: 143 }
-    ]
+    ],
+    abilities: ["Volt Absorb"]
   },
   {
     id: 80700,
-    name: "Zeraora-Mega",
-    types: ["electric", "fighting"],
-    image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/807.png",
-    shinyImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/807.png",
-    category: "Mega Form",
-    regionalNumber: 120,
+    regionalId: "#120",
+    name: "Mega Zeraora",
+    types: ["Electric", "Fighting"],
     isMega: true,
-    abilities: ["Plasma Fists"],
-    description: "Mega Zeraora's body overflows with intense plasma, giving it speed matching a lightning strike and striking power that can crack mountains.",
+    sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/807.png",
+    shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/807.png",
+    category: "Plasma Storm Pokémon",
+    description: "Its overflow of aura enables instantaneous travel and devastating strikes.",
     stats: [
       { name: "hp", value: 88 },
       { name: "attack", value: 142 },
@@ -410,6 +453,7 @@ export const hyperspaceDex: ZAPokemon[] = [
       { name: "special-attack", value: 122 },
       { name: "special-defense", value: 95 },
       { name: "speed", value: 158 }
-    ]
+    ],
+    abilities: ["Plasma Fists"]
   }
 ];

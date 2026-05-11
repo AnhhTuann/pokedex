@@ -102,12 +102,12 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
             id: localPoke.id,
             name: localPoke.name,
             types: localPoke.types,
-            image: localPoke.image,
-            shinyImage: localPoke.shinyImage,
+            image: localPoke.sprite,
+            shinyImage: localPoke.shinySprite,
             height: 12, // Decimeters (e.g. 1.2m)
             weight: 520, // Hectograms (e.g. 52kg)
             category: localPoke.category || "Regional Pokémon",
-            speciesId: localPoke.speciesId || localPoke.id,
+            speciesId: localPoke.id,
             stats: localPoke.stats || [
               { name: "hp", value: 80 },
               { name: "attack", value: 80 },
@@ -457,7 +457,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
         }}
       >
         {loadingState && <LinearProgress sx={{ borderRadius: 2, mb: 2 }} />}
-        {errorState && <Typography color="error">Failed to load: {errorState}</Typography>}
+        {errorState && <Typography color="error">Failed to load: {typeof errorState === 'string' ? errorState : errorState.message}</Typography>}
 
         {p && (
           <Stack spacing={3}>

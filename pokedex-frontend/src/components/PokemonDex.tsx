@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
-  Container, Box, Grid, Button, ButtonGroup, Typography, Alert, Skeleton, useTheme, alpha
+  Container, Box, Grid, Button, ButtonGroup, Typography, Alert, Skeleton, useTheme, alpha,
+  Stack, Paper, Tooltip, Card, IconButton, Chip
 } from '@mui/material';
-import { AutoAwesome, Favorite, Compare } from '@mui/icons-material';
-import { AnimatePresence } from 'motion/react';
+import { AutoAwesome, Favorite, Compare, FavoriteBorder } from '@mui/icons-material';
+import { AnimatePresence, motion } from 'motion/react';
 import PokeCard from './PokeCard';
 import SearchBar from './SearchBar';
 import PokeDetail from './PokeDetail';
@@ -25,6 +26,27 @@ const GET_POKEMON_LIST = gql`
   }
 `;
 
+const TYPE_COLORS: Record<string, string> = {
+  normal: "#9ca3af",
+  fire: "#f97316",
+  water: "#3b82f6",
+  electric: "#eab308",
+  grass: "#22c55e",
+  ice: "#06b6d4",
+  fighting: "#ef4444",
+  poison: "#a855f7",
+  ground: "#d97706",
+  flying: "#818cf8",
+  psychic: "#ec4899",
+  bug: "#84cc16",
+  rock: "#78716c",
+  ghost: "#7c3aed",
+  dragon: "#1d4ed8",
+  dark: "#374151",
+  steel: "#6b7280",
+  fairy: "#f472b6",
+};
+
 type ViewMode = 'all' | 'favorites' | 'compare';
 
 // Custom Regional Dex for Legends: Z-A containing the starter lines and key Pokémon
@@ -42,7 +64,7 @@ const ZA_REGIONAL_DEX = [
 export default function PokemonDex() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const { selectedVersion } = useTeamStore();
+  const { selectedVersion, isShinyMode } = useTeamStore();
 
   const [search, setSearch]           = useState('');
   const [typeFilter, setTypeFilter]   = useState('');
@@ -238,7 +260,7 @@ export default function PokemonDex() {
         </Alert>
       )}
 
-      {/* Grid */}
+      {/* Pokemon List / Grid */}
       {isZALoading ? (
         <Grid container spacing={3}>
           {[...Array(12)].map((_, i) => (
@@ -251,7 +273,189 @@ export default function PokemonDex() {
         <Alert severity="error" sx={{ borderRadius: 3 }}>
           Backend offline — start the server on port 3000.
         </Alert>
+      ) : isZA ? (
+        // Legends: Z-A List View Layout (Force horizontal rows in a Stack)
+        <Stack spacing={2} sx={{ width: '100%', mt: 3 }}>
+          <AnimatePresence mode="popLayout">
+            {pokemonList.map((p: any, idx: number) => {
+              const primaryColor = TYPE_COLORS[p.types[0].toLowerCase()] || '#9ca3af';
+              const isFav = favorites.includes(p.id);
+
+              return (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.3, delay: idx * 0.03 }}
+                  style={{ width: '100%' }}
+                >
+                  <Card
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      height: '100px',
+                      width: '100%',
+                      borderRadius: '16px',
+                      position: 'relative',
+                      overflow: 'visible',
+                      cursor: 'pointer',
+                      border: p.isMega 
+                        ? `2px solid ${primaryColor}` 
+                        : `1px solid ${alpha(primaryColor, 0.25)}`,
+                      boxShadow: p.isMega 
+                        ? `0 0 16px ${alpha(primaryColor, 0.4)}, inset 0 0 8px ${alpha(primaryColor, 0.1)}` 
+                        : '0 4px 12px rgba(0,0,0,0.05)',
+                      background: p.isMega
+                        ? `linear-gradient(90deg, ${alpha(primaryColor, 0.16)} 0%, ${theme.palette.background.paper} 50%)`
+                        : `linear-gradient(90deg, ${alpha(primaryColor, 0.05)} 0%, ${theme.palette.background.paper} 80%)`,
+                      '&:hover': {
+                        boxShadow: `0 8px 24px ${alpha(primaryColor, 0.25)}`,
+                        transform: 'translateY(-2px)',
+                        transition: 'all 0.2s ease-in-out'
+                      }
+                    }}
+                    onClick={() => setSelectedId(p.id)}
+                  >
+                    {/* Bên trái (Width ~30%): regionalId & Tên Pokémon xếp dọc */}
+                    <Box sx={{ width: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'center', pl: { xs: 2, sm: 4 } }}>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: p.isMega ? primaryColor : 'text.disabled',
+                          fontWeight: 800,
+                          letterSpacing: 2,
+                          fontSize: '0.75rem',
+                          textTransform: 'uppercase'
+                        }}
+                      >
+                        {p.regionalId}
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontWeight: 800,
+                          color: 'text.primary',
+                          fontSize: { xs: '1rem', sm: '1.25rem' },
+                          textTransform: 'capitalize',
+                          letterSpacing: -0.5
+                        }}
+                      >
+                        {p.name}
+                      </Typography>
+                    </Box>
+
+                    {/* Ở giữa (Width ~40%): Các thẻ Type xếp ngang */}
+                    <Box sx={{ width: '40%', display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
+                      {p.types.map((t: string) => {
+                        const typeCol = TYPE_COLORS[t.toLowerCase()] || '#9ca3af';
+                        return (
+                          <Chip
+                            key={t}
+                            label={t}
+                            size="small"
+                            sx={{
+                              bgcolor: alpha(typeCol, 0.85),
+                              color: '#fff',
+                              fontWeight: 800,
+                              letterSpacing: 1,
+                              fontSize: '0.7rem',
+                              textTransform: 'uppercase',
+                              height: 22
+                            }}
+                          />
+                        );
+                      })}
+                      {p.isMega && (
+                        <Chip
+                          label="MEGA"
+                          size="small"
+                          color="secondary"
+                          icon={<AutoAwesome style={{ color: '#fff', fontSize: '0.75rem' }} />}
+                          sx={{
+                            fontWeight: 900,
+                            fontSize: '0.65rem',
+                            letterSpacing: 1,
+                            textTransform: 'uppercase',
+                            boxShadow: '0 0 10px rgba(236,72,153,0.4)',
+                            height: 22
+                          }}
+                        />
+                      )}
+                    </Box>
+
+                    {/* Bên phải (Width ~30%): Icon Caught (Favorite) và hình ảnh Sprite (tràn viền nhẹ, 3D effect) */}
+                    <Box sx={{ width: '30%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', pr: { xs: 2, sm: 4 }, height: '100%', position: 'relative' }}>
+                      {/* Favorite (Caught / Tracked status) */}
+                      <Tooltip title={isFav ? "Release from Pokédex" : "Catch Pokémon"}>
+                        <IconButton
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(p.id);
+                          }}
+                          sx={{
+                            color: isFav ? 'secondary.main' : 'text.disabled',
+                            bgcolor: alpha(theme.palette.background.paper, 0.8),
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            mr: { xs: 6, sm: 10 },
+                            zIndex: 3,
+                            '&:hover': {
+                              bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                              color: 'secondary.main'
+                            }
+                          }}
+                        >
+                          {isFav ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />}
+                        </IconButton>
+                      </Tooltip>
+
+                      {/* 3D Overhanging Sprite */}
+                      <Box
+                        sx={{
+                          width: { xs: '80px', sm: '120px' },
+                          height: { xs: '80px', sm: '120px' },
+                          position: 'absolute',
+                          top: { xs: '-10px', sm: '-15px' },
+                          right: { xs: '5px', sm: '15px' },
+                          zIndex: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          src={isShinyMode && p.shinySprite ? p.shinySprite : p.sprite}
+                          alt={p.name}
+                          sx={{
+                            width: { xs: '75px', sm: '100px' },
+                            height: { xs: '75px', sm: '100px' },
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.25))',
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': {
+                              transform: 'scale(1.15) translateY(-4px)'
+                            }
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+
+          {pokemonList.length === 0 && (
+            <Box sx={{ textAlign: 'center', py: 10, color: 'text.disabled' }}>
+              <Typography variant="h6" sx={{ fontWeight: 700 }}>No Pokémon found in this sector.</Typography>
+            </Box>
+          )}
+        </Stack>
       ) : (
+        // Standard Grid View Layout
         <Grid container spacing={3}>
           <AnimatePresence mode="popLayout">
             {pokemonList.map((p: PokemonListItem, idx: number) => (
