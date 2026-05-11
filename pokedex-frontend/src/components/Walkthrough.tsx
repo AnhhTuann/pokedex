@@ -52,10 +52,16 @@ const GAME_OPTIONS = [
   { value: 'moon', label: 'Moon' },
   { value: 'ultra-sun', label: 'Ultra Sun' },
   { value: 'ultra-moon', label: 'Ultra Moon' },
+  { value: 'lets-go-pikachu', label: "Let's Go Pikachu" },
+  { value: 'lets-go-eevee', label: "Let's Go Eevee" },
   { value: 'sword', label: 'Sword' },
   { value: 'shield', label: 'Shield' },
+  { value: 'brilliant-diamond', label: 'Brilliant Diamond' },
+  { value: 'shining-pearl', label: 'Shining Pearl' },
+  { value: 'legends-arceus', label: 'Legends: Arceus' },
   { value: 'scarlet', label: 'Scarlet' },
-  { value: 'violet', label: 'Violet' }
+  { value: 'violet', label: 'Violet' },
+  { value: 'legends-za', label: 'Legends: Z-A' }
 ];
 
 export default function Walkthrough() {

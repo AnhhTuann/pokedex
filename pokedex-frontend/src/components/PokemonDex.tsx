@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Container, Box, Grid, Button, ButtonGroup, Typography, Alert, Skeleton, useTheme, alpha
@@ -25,6 +25,18 @@ const GET_POKEMON_LIST = gql`
 
 type ViewMode = 'all' | 'favorites' | 'compare';
 
+// Custom Regional Dex for Legends: Z-A containing the starter lines and key Pokémon
+const ZA_REGIONAL_DEX = [
+  'chikorita', 'bayleef', 'meganium',
+  'tepig', 'pignite', 'emboar',
+  'totodile', 'croconaw', 'feraligatr',
+  'bulbasaur', 'ivysaur', 'venusaur',
+  'charmander', 'charmeleon', 'charizard',
+  'squirtle', 'wartortle', 'blastoise',
+  'pikachu', 'raichu',
+  'greninja', 'zygarde'
+];
+
 export default function PokemonDex() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
@@ -37,9 +49,153 @@ export default function PokemonDex() {
   const [viewMode, setViewMode]       = useState<ViewMode>('all');
   const [compareIds, setCompareIds]   = useState<number[]>([]);
 
+  // State for Legends: Z-A custom PokéAPI fetch
+  const [zaPokemonList, setZaPokemonList] = useState<PokemonListItem[]>([]);
+  const [zaLoading, setZaLoading]         = useState(false);
+
   const { favorites } = useMyPokedex();
   const isCompareMode = viewMode === 'compare';
   const showFavorites = viewMode === 'favorites';
+
+  const isZA = selectedVersion === 'legends-za';
+
+  // Fetch Legends: Z-A regional data directly from PokéAPI
+  useEffect(() => {
+    if (!isZA) return;
+
+    const fetchZADex = async () => {
+      setZaLoading(true);
+      const results: PokemonListItem[] = [];
+      
+      for (let i = 0; i < ZA_REGIONAL_DEX.length; i++) {
+        const name = ZA_REGIONAL_DEX[i];
+        const regId = i + 1;
+        try {
+          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+          if (!res.ok) continue;
+          const data = await res.json();
+          
+          let category = 'Starter Pokémon';
+          if (name === 'greninja') category = 'Ninja Pokémon';
+          if (name === 'zygarde') category = 'Order Pokémon';
+
+          const baseItem: PokemonListItem = {
+            id: data.id,
+            name: data.name,
+            types: data.types.map((t: any) => t.type.name),
+            image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
+            shinyImage: data.sprites.other['official-artwork'].front_shiny || data.sprites.front_shiny,
+            category: category,
+            regionalNumber: regId,
+            speciesId: data.id
+          };
+          results.push(baseItem);
+
+          // 3. Xử lý Mega Evolutions hiển thị liền kề:
+          // Tự động chèn form Mega ngay sau dạng tiến hóa cuối cùng của starter & gen 1 starters
+          if (name === 'meganium') {
+            results.push({
+              id: data.id + 10000, // Custom unique ID for Mega Meganium
+              name: 'meganium-mega',
+              types: ['grass', 'fairy'],
+              image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png',
+              shinyImage: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/154.png',
+              category: 'Mega Form',
+              regionalNumber: regId,
+              speciesId: data.id
+            });
+          } else if (name === 'emboar') {
+            results.push({
+              id: data.id + 10000, // Custom unique ID for Mega Emboar
+              name: 'emboar-mega',
+              types: ['fire', 'fighting'],
+              image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png',
+              shinyImage: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png',
+              category: 'Mega Form',
+              regionalNumber: regId,
+              speciesId: data.id
+            });
+          } else if (name === 'feraligatr') {
+            results.push({
+              id: data.id + 10000, // Custom unique ID for Mega Feraligatr
+              name: 'feraligatr-mega',
+              types: ['water', 'dark'],
+              image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png',
+              shinyImage: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/160.png',
+              category: 'Mega Form',
+              regionalNumber: regId,
+              speciesId: data.id
+            });
+          } else if (name === 'venusaur') {
+            const megaRes = await fetch(`https://pokeapi.co/api/v2/pokemon/venusaur-mega`);
+            if (megaRes.ok) {
+              const megaData = await megaRes.json();
+              results.push({
+                id: megaData.id,
+                name: 'venusaur-mega',
+                types: megaData.types.map((t: any) => t.type.name),
+                image: megaData.sprites.other['official-artwork'].front_default || megaData.sprites.front_default,
+                shinyImage: megaData.sprites.other['official-artwork'].front_shiny || megaData.sprites.front_shiny,
+                category: 'Mega Form',
+                regionalNumber: regId,
+                speciesId: data.id
+              });
+            }
+          } else if (name === 'charizard') {
+            const megaXRes = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard-mega-x`);
+            if (megaXRes.ok) {
+              const megaXData = await megaXRes.json();
+              results.push({
+                id: megaXData.id,
+                name: 'charizard-mega-x',
+                types: megaXData.types.map((t: any) => t.type.name),
+                image: megaXData.sprites.other['official-artwork'].front_default || megaXData.sprites.front_default,
+                shinyImage: megaXData.sprites.other['official-artwork'].front_shiny || megaXData.sprites.front_shiny,
+                category: 'Mega Form X',
+                regionalNumber: regId,
+                speciesId: data.id
+              });
+            }
+            const megaYRes = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard-mega-y`);
+            if (megaYRes.ok) {
+              const megaYData = await megaYRes.json();
+              results.push({
+                id: megaYData.id,
+                name: 'charizard-mega-y',
+                types: megaYData.types.map((t: any) => t.type.name),
+                image: megaYData.sprites.other['official-artwork'].front_default || megaYData.sprites.front_default,
+                shinyImage: megaYData.sprites.other['official-artwork'].front_shiny || megaYData.sprites.front_shiny,
+                category: 'Mega Form Y',
+                regionalNumber: regId,
+                speciesId: data.id
+              });
+            }
+          } else if (name === 'blastoise') {
+            const megaRes = await fetch(`https://pokeapi.co/api/v2/pokemon/blastoise-mega`);
+            if (megaRes.ok) {
+              const megaData = await megaRes.json();
+              results.push({
+                id: megaData.id,
+                name: 'blastoise-mega',
+                types: megaData.types.map((t: any) => t.type.name),
+                image: megaData.sprites.other['official-artwork'].front_default || megaData.sprites.front_default,
+                shinyImage: megaData.sprites.other['official-artwork'].front_shiny || megaData.sprites.front_shiny,
+                category: 'Mega Form',
+                regionalNumber: regId,
+                speciesId: data.id
+              });
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching from PokéAPI:', err);
+        }
+      }
+      setZaPokemonList(results);
+      setZaLoading(false);
+    };
+
+    fetchZADex();
+  }, [isZA]);
 
   const handleCardClick = (id: number) => {
     if (isCompareMode) {
@@ -69,13 +225,29 @@ export default function PokemonDex() {
       region: queryRegion,
       game: queryGame
     },
+    skip: isZA // Skip GraphQL query completely for Legends: Z-A custom regional dex
   });
 
-  const pokemonList  = data?.pokemonList?.results || [];
-  const totalCount   = data?.pokemonList?.totalCount || 0;
-  const hasMore      = pokemonList.length > 0 && pokemonList.length < totalCount;
+  // Client-side search and type filtering for Legends: Z-A Custom Dex
+  const filteredZaList = isZA 
+    ? zaPokemonList.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+        const matchesType = typeFilter ? p.types.map(t => t.toLowerCase()).includes(typeFilter.toLowerCase()) : true;
+        return matchesSearch && matchesType;
+      })
+    : [];
 
-  const loadMore = () => fetchMore({ variables: { offset: pokemonList.length } });
+  const pokemonList  = isZA ? filteredZaList : (data?.pokemonList?.results || []);
+  const totalCount   = isZA ? filteredZaList.length : (data?.pokemonList?.totalCount || 0);
+  const hasMore      = !isZA && pokemonList.length > 0 && pokemonList.length < totalCount;
+
+  const isZALoading  = isZA ? zaLoading : loading;
+  const isZAError    = isZA ? null : error;
+
+  const loadMore = () => {
+    if (isZA) return;
+    fetchMore({ variables: { offset: pokemonList.length } });
+  };
 
   return (
     <Container maxWidth="xl" sx={{ pt: 3, px: { xs: 2, sm: 3 } }}>
@@ -120,7 +292,7 @@ export default function PokemonDex() {
       </Box>
 
       {/* Count */}
-      {!loading && !error && (
+      {!isZALoading && !isZAError && (
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2, textAlign: 'center', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 700 }}>
           {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
         </Typography>
@@ -136,7 +308,7 @@ export default function PokemonDex() {
       )}
 
       {/* Grid */}
-      {loading ? (
+      {isZALoading ? (
         <Grid container spacing={3}>
           {[...Array(12)].map((_, i) => (
             <Grid key={i} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
@@ -144,7 +316,7 @@ export default function PokemonDex() {
             </Grid>
           ))}
         </Grid>
-      ) : error ? (
+      ) : isZAError ? (
         <Alert severity="error" sx={{ borderRadius: 3 }}>
           Backend offline — start the server on port 3000.
         </Alert>
@@ -174,7 +346,7 @@ export default function PokemonDex() {
         </Grid>
       )}
 
-      {!loading && hasMore && (
+      {!isZALoading && hasMore && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5, mb: 10 }}>
           <Button variant="outlined" size="large" onClick={loadMore} sx={{ px: 6, borderRadius: 50 }}>
             Load More

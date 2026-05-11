@@ -71,9 +71,123 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
     };
   }, [id]);
 
+  const [apiPokemon, setApiPokemon] = useState<any>(null);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  const isCustomMega = id ? (id === 10154 || id === 10500 || id === 10160) : false; // Meganium, Emboar, Feraligatr custom megas
+  const needsPokeApi = id ? (id > 151 || selectedVersion === 'legends-za') : false;
+
   const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { id, version: selectedVersion }, skip: !id,
+    variables: { id, version: selectedVersion }, skip: !id || needsPokeApi,
   });
+
+  useEffect(() => {
+    if (!id || !needsPokeApi) {
+      setApiPokemon(null);
+      return;
+    }
+    
+    setApiLoading(true);
+    setApiPokemon(null);
+    setApiError(null);
+
+    const fetchFromPokeApi = async () => {
+      try {
+        const fetchId = isCustomMega ? (id - 10000) : id;
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${fetchId}`);
+        if (!res.ok) throw new Error('Pokemon not found in PokéAPI');
+        const data = await res.json();
+
+        // Get species / category
+        let category = 'Starter Pokémon';
+        let description = `A key Pokémon from the regional Pokedex of Legends Z-A. It boasts unique strengths.`;
+        try {
+          const specRes = await fetch(data.species.url);
+          if (specRes.ok) {
+            const specData = await specRes.json();
+            const genus = specData.genera.find((g: any) => g.language.name === 'en');
+            if (genus) category = genus.genus;
+
+            const flavor = specData.flavor_text_entries.find((f: any) => f.language.name === 'en');
+            if (flavor) description = flavor.flavor_text.replace(/\f/g, ' ');
+          }
+        } catch (e) {}
+
+        const stats = data.stats.map((s: any) => ({
+          name: s.stat.name,
+          value: s.base_stat
+        }));
+
+        let mapped: any = {
+          id: data.id,
+          name: data.name,
+          types: data.types.map((t: any) => t.type.name),
+          image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
+          shinyImage: data.sprites.other['official-artwork'].front_shiny || data.sprites.front_shiny,
+          height: data.height,
+          weight: data.weight,
+          category: category,
+          speciesId: data.id,
+          stats: stats,
+          abilities: data.abilities.map((a: any) => a.ability.name),
+          cry: data.cries?.latest || data.cries?.legacy,
+          description: description,
+          gameVersions: ['legends-za'],
+          moves: [],
+          megaEvolutions: [],
+          alternativeForms: [],
+          evolutions: [],
+          matchups: [
+            { type: 'fire', multiplier: data.types.map((t: any) => t.type.name).includes('grass') ? 2 : data.types.map((t: any) => t.type.name).includes('water') ? 0.5 : 1 },
+            { type: 'water', multiplier: data.types.map((t: any) => t.type.name).includes('fire') ? 2 : data.types.map((t: any) => t.type.name).includes('water') ? 0.5 : 1 },
+            { type: 'grass', multiplier: data.types.map((t: any) => t.type.name).includes('water') ? 2 : data.types.map((t: any) => t.type.name).includes('grass') ? 0.5 : 1 },
+          ]
+        };
+
+        if (isCustomMega) {
+          mapped.id = id;
+          mapped.speciesId = fetchId;
+          if (id === 10154) {
+            mapped.name = 'meganium-mega';
+            mapped.types = ['grass', 'fairy'];
+            mapped.category = 'Mega Form';
+            mapped.stats = stats.map((s: any) => ({
+              name: s.name,
+              value: s.name === 'special-attack' || s.name === 'special-defense' ? s.value + 35 : s.value + 10
+            }));
+            mapped.description = `Upon Mega Evolution, Meganium's flower petals release a powerful scent that calms fighting spirits and fills spectators with immense joy.`;
+          } else if (id === 10500) {
+            mapped.name = 'emboar-mega';
+            mapped.types = ['fire', 'fighting'];
+            mapped.category = 'Mega Form';
+            mapped.stats = stats.map((s: any) => ({
+              name: s.name,
+              value: s.name === 'attack' || s.name === 'special-attack' ? s.value + 35 : s.value + 10
+            }));
+            mapped.description = `Enwrapped in explosive columns of pure flame, Mega Emboar utilizes unmatched physical strength to deliver devastating blazes to any challenger.`;
+          } else if (id === 10160) {
+            mapped.name = 'feraligatr-mega';
+            mapped.types = ['water', 'dark'];
+            mapped.category = 'Mega Form';
+            mapped.stats = stats.map((s: any) => ({
+              name: s.name,
+              value: s.name === 'attack' || s.name === 'speed' ? s.value + 35 : s.value + 10
+            }));
+            mapped.description = `Harnessing the dark currents of underwater trenches, Mega Feraligatr tears through opponents with jaw power capable of crushing steel.`;
+          }
+        }
+
+        setApiPokemon(mapped);
+      } catch (err: any) {
+        setApiError(err.message || 'Error fetching details');
+      } finally {
+        setApiLoading(false);
+      }
+    };
+
+    fetchFromPokeApi();
+  }, [id, selectedVersion]);
 
   useEffect(() => {
     setShowShiny(isShinyMode);
@@ -81,7 +195,10 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
 
   if (!id) return null;
 
-  const p = data?.pokemon;
+  const p = needsPokeApi ? apiPokemon : data?.pokemon;
+  const loadingState = needsPokeApi ? apiLoading : loading;
+  const errorState = needsPokeApi ? apiError : error;
+
   const inTeam = team.some(m => m.id === id);
   const primaryColor = TYPE_COLORS[p?.types?.[0]] || '#6366f1';
   const totalStats = p?.stats?.reduce((acc: number, s: any) => acc + s.value, 0) || 0;
@@ -192,7 +309,7 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
           }}
           onClick={() => p?.shinyImage && setShowShiny(s => !s)}
         >
-          {loading ? (
+          {loadingState ? (
             <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: 'action.hover' }} />
           ) : (
             <Box
@@ -298,8 +415,8 @@ export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
           scrollbarColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.15) transparent',
         }}
       >
-        {loading && <LinearProgress sx={{ borderRadius: 2, mb: 2 }} />}
-        {error && <Typography color="error">Failed to load: {error.message}</Typography>}
+        {loadingState && <LinearProgress sx={{ borderRadius: 2, mb: 2 }} />}
+        {errorState && <Typography color="error">Failed to load: {errorState}</Typography>}
 
         {p && (
           <Stack spacing={3}>

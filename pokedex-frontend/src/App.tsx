@@ -44,10 +44,16 @@ export const VERSION_COLORS: Record<string, string> = {
   moon: '#4338ca',
   'ultra-sun': '#d97706',
   'ultra-moon': '#312e81',
+  'lets-go-pikachu': '#facc15',
+  'lets-go-eevee': '#b45309',
   sword: '#06b6d4',
   shield: '#e11d48',
+  'brilliant-diamond': '#06b6d4',
+  'shining-pearl': '#ec4899',
+  'legends-arceus': '#fbbf24',
   scarlet: '#be123c',
   violet: '#6d28d9',
+  'legends-za': '#22c55e',
 };
 
 export const GENERATION_VERSIONS = [
@@ -111,21 +117,27 @@ export const GENERATION_VERSIONS = [
       { name: "sun", label: "Sun" },
       { name: "moon", label: "Moon" },
       { name: "ultra-sun", label: "Ultra Sun" },
-      { name: "ultra-moon", label: "Ultra Moon" }
+      { name: "ultra-moon", label: "Ultra Moon" },
+      { name: "lets-go-pikachu", label: "Let's Go Pikachu" },
+      { name: "lets-go-eevee", label: "Let's Go Eevee" }
     ]
   },
   {
     gen: "Generation VIII",
     games: [
       { name: "sword", label: "Sword" },
-      { name: "shield", label: "Shield" }
+      { name: "shield", label: "Shield" },
+      { name: "brilliant-diamond", label: "Brilliant Diamond" },
+      { name: "shining-pearl", label: "Shining Pearl" },
+      { name: "legends-arceus", label: "Legends: Arceus" }
     ]
   },
   {
     gen: "Generation IX",
     games: [
       { name: "scarlet", label: "Scarlet" },
-      { name: "violet", label: "Violet" }
+      { name: "violet", label: "Violet" },
+      { name: "legends-za", label: "Legends: Z-A" }
     ]
   }
 ];
@@ -159,10 +171,16 @@ export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   moon: 'original-alola',
   'ultra-sun': 'updated-alola',
   'ultra-moon': 'updated-alola',
+  'lets-go-pikachu': 'kanto',
+  'lets-go-eevee': 'kanto',
   sword: 'galar',
   shield: 'galar',
+  'brilliant-diamond': 'original-sinnoh',
+  'shining-pearl': 'original-sinnoh',
+  'legends-arceus': 'extended-sinnoh',
   scarlet: 'paldea',
   violet: 'paldea',
+  'legends-za': 'kalos-central',
 };
 
 export function getRegionAndGame(versionName: string) {

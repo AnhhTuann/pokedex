@@ -493,6 +493,11 @@ export default function MainLayout() {
                       vColor = '#555555';
                     }
 
+                    const isArceus = game.name === 'legends-arceus';
+                    const isZA = game.name === 'legends-za';
+                    const isSpecial = isArceus || isZA;
+                    const specialColor = isArceus ? '#fbbf24' : '#22c55e'; // Gold/Yellow vs Green Neon
+
                     return (
                       <Grid size={{ xs: 6, sm: 4, md: 2.4 }} key={game.name}>
                         <Button
@@ -505,20 +510,26 @@ export default function MainLayout() {
                             fontWeight: 'bold',
                             letterSpacing: '0.5px',
                             borderRadius: '10px',
-                            border: isActive ? `2px solid ${vColor}` : `2px solid ${alpha(vColor, 0.5)}`,
+                            border: isActive 
+                              ? `2.5px solid ${isSpecial ? specialColor : vColor}` 
+                              : `1.5px solid ${isSpecial ? specialColor : alpha(vColor, 0.45)}`,
                             color: '#ffffff',
-                            bgcolor: isActive ? alpha(vColor, 0.45) : alpha(vColor, 0.15),
-                            boxShadow: isActive ? `0 6px 20px ${alpha(vColor, 0.5)}` : 'none',
+                            bgcolor: isActive 
+                              ? (isSpecial ? alpha(specialColor, 0.35) : alpha(vColor, 0.45)) 
+                              : (isSpecial ? alpha(specialColor, 0.15) : alpha(vColor, 0.15)),
+                            boxShadow: isActive 
+                              ? `0 6px 20px ${isSpecial ? specialColor : alpha(vColor, 0.5)}` 
+                              : (isSpecial ? `0 0 10px ${alpha(specialColor, 0.25)}` : 'none'),
                             textTransform: 'capitalize',
                             height: '42px',
                             transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                             '&:hover': {
-                              bgcolor: alpha(vColor, 0.3),
-                              borderColor: vColor,
+                              bgcolor: isSpecial ? alpha(specialColor, 0.3) : alpha(vColor, 0.3),
+                              borderColor: isSpecial ? specialColor : vColor,
                               borderStyle: 'solid',
-                              borderWidth: '2px',
-                              transform: 'scale(1.03) translateY(-1px)',
-                              boxShadow: `0 4px 12px ${alpha(vColor, 0.35)}`,
+                              borderWidth: isSpecial ? '2.5px' : '2px',
+                              transform: 'scale(1.04) translateY(-2px)',
+                              boxShadow: `0 8px 18px ${isSpecial ? alpha(specialColor, 0.5) : alpha(vColor, 0.35)}`,
                             }
                           }}
                         >

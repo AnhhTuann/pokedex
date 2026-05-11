@@ -18,6 +18,8 @@ import { SOULSILVER_CHAPTERS, ENGLISH_SOULSILVER_CHAPTERS } from './data/walkthr
 import { BLACK_CHAPTERS, ENGLISH_BLACK_CHAPTERS } from './data/walkthrough-black.js';
 import { WHITE_CHAPTERS, ENGLISH_WHITE_CHAPTERS } from './data/walkthrough-white.js';
 import { BLACK2_CHAPTERS, ENGLISH_BLACK2_CHAPTERS } from './data/walkthrough-black2.js';
+import { NEW_GAMES_VI_CHAPTERS, NEW_GAMES_EN_CHAPTERS } from './data/walkthrough-new-games.js';
+
 
 const prisma = new PrismaClient();
 
@@ -26,10 +28,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2', 'black-2'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2', 'black-2', 'lets-go-pikachu', 'lets-go-eevee', 'brilliant-diamond', 'shining-pearl', 'legends-arceus', 'legends-za'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White và Black 2.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White, Black 2, Let\'s Go Pikachu/Eevee, BDSP, Legends: Arceus và Legends: Z-A.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -333,6 +335,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [Black 2 EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp các game mới Tiếng Việt
+  for (const chapter of NEW_GAMES_VI_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [New Games VI] Đã nạp ${chapter.gameVersion}: ${chapter.chapterTitle}`);
+  }
+
+  // Nạp các game mới Tiếng Anh
+  for (const chapter of NEW_GAMES_EN_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [New Games EN] Đã nạp ${chapter.gameVersion}: ${chapter.chapterTitle}`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
