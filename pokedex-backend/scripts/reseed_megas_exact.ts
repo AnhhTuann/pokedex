@@ -38,10 +38,24 @@ const customVarieties = [
   { id: 10718, baseId: 718, name: "Zygarde-Core", types: ["dragon", "ground"], isMega: false, isAlternative: true, hp: 50, attack: 50, defense: 50, specialAttack: 50, specialDefense: 50, speed: 50, desc: "The core of Zygarde's life force, monitoring the ecosystem and directing cells to merge when danger arises.", image: "/custom_sprites/230-zygarde-core.png", shinyImage: "/custom_sprites/shiny/718-mega.png" },
   { id: 11718, baseId: 718, name: "Zygarde-Cell", types: ["dragon", "ground"], isMega: false, isAlternative: true, hp: 30, attack: 30, defense: 30, specialAttack: 30, specialDefense: 30, speed: 30, desc: "Scattered across Kalos, Zygarde cells have no consciousness but act as the eyes and ears of the ecosystem.", image: "/custom_sprites/230-zygarde-cell.png", shinyImage: "/custom_sprites/shiny/718-mega.png" },
   { id: 12718, baseId: 718, name: "Zygarde-Mega", types: ["dragon", "ground"], isMega: true, isAlternative: false, hp: 216, attack: 140, defense: 151, specialAttack: 121, specialDefense: 125, speed: 95, desc: "Zygarde's ultimate power. Its dragon body unleashes energy beams capable of restoring planetary balance.", image: "/custom_sprites/230-mega-zygarde.png", shinyImage: "/custom_sprites/shiny/718-mega.png" },
-  { id: 80700, baseId: 807, name: "Zeraora-Mega", types: ["electric", "fighting"], isMega: true, isAlternative: false, hp: 88, attack: 142, defense: 95, specialAttack: 122, specialDefense: 100, speed: 153, desc: "Its lightning speed breaks space-time, channeling cosmic storm power into every punch.", image: "/custom_sprites/807.png", shinyImage: "/custom_sprites/shiny/807-mega.png" },
+  { id: 80700, baseId: 807, name: "Zeraora-Mega", types: ["electric"], isMega: true, isAlternative: false, hp: 88, attack: 142, defense: 95, specialAttack: 122, specialDefense: 100, speed: 153, desc: "Its lightning speed breaks space-time, channeling cosmic storm power into every punch.", image: "/custom_sprites/807.png", shinyImage: "/custom_sprites/shiny/807-mega.png" },
   { id: 10026, baseId: 681, name: "Aegislash-Blade", types: ["steel", "ghost"], isMega: false, isAlternative: true, hp: 60, attack: 150, defense: 50, specialAttack: 150, specialDefense: 50, speed: 60, desc: "Its stance shifts to absolute attack, focusing all shield-energy into a piercing giant blade.", image: "/custom_sprites/073-blade-aegislash.png", shinyImage: "/custom_sprites/shiny/681-mega.png" },
   { id: 10071, baseId: 80, name: "Slowbro-Mega", types: ["water", "psychic"], isMega: true, isAlternative: false, hp: 95, attack: 75, defense: 180, specialAttack: 130, specialDefense: 80, speed: 30, desc: "Shellder swallows Slowbro entirely, acting as iron armor that completely blocks physical moves.", image: "/custom_sprites/10071.png", shinyImage: "/custom_sprites/shiny/80-mega.png" },
-  { id: 10036, baseId: 9, name: "Blastoise-Mega", types: ["water"], isMega: true, isAlternative: false, hp: 79, attack: 103, defense: 120, specialAttack: 135, specialDefense: 115, speed: 78, desc: "The three water cannons on its back merge into a singular immense launcher, blowing away hills with water pressure.", image: "/custom_sprites/10036.png", shinyImage: "/custom_sprites/shiny/9-mega.png" }
+  { id: 10036, baseId: 9, name: "Blastoise-Mega", types: ["water"], isMega: true, isAlternative: false, hp: 79, attack: 103, defense: 120, specialAttack: 135, specialDefense: 115, speed: 78, desc: "The three water cannons on its back merge into a singular immense launcher, blowing away hills with water pressure.", image: "/custom_sprites/10036.png", shinyImage: "/custom_sprites/shiny/9-mega.png" },
+  { id: 100951, baseId: 951, name: "Scovillain-Mega", types: ["grass", "fire"], isMega: true, isAlternative: false, hp: 65, attack: 138, defense: 105, specialAttack: 138, specialDefense: 105, speed: 95, desc: "Mega Evolution amplifies its split brains, unleashing double-headed torrents of spicy fire and seeds.", image: "/custom_sprites/951-mega.png", shinyImage: "/custom_sprites/shiny/951-mega.png" },
+  { id: 100970, baseId: 970, name: "Glimmora-Mega", types: ["rock", "poison"], isMega: true, isAlternative: false, hp: 83, attack: 70, defense: 120, specialAttack: 170, specialDefense: 111, speed: 106, desc: "Its crystallized petals open completely, discharging dense toxic stardust that crystallizes upon impact.", image: "/custom_sprites/970-mega.png", shinyImage: "/custom_sprites/shiny/970-mega.png" },
+  { id: 100978, baseId: 978, name: "Tatsugiri-Curly-Mega", types: ["dragon", "water"], isMega: true, isAlternative: false, hp: 68, attack: 70, defense: 80, specialAttack: 150, specialDefense: 115, speed: 112, desc: "The curly mega form uses its vibrant colors to hypnotize giant fish-like hosts, commanding them with psychic dragon aura.", image: "/custom_sprites/978-mega.png", shinyImage: "/custom_sprites/shiny/978-mega.png" },
+  { id: 110978, baseId: 978, name: "Tatsugiri-Droopy-Mega", types: ["dragon", "water"], isMega: true, isAlternative: false, hp: 68, attack: 70, defense: 80, specialAttack: 150, specialDefense: 115, speed: 112, desc: "Looking deceptively helpless, Mega Droopy Tatsugiri's bait glows with immense energy, tricking predators into heavy counter-attacks.", image: "/custom_sprites/978-mega.png", shinyImage: "/custom_sprites/shiny/978-mega.png" },
+  { id: 120978, baseId: 978, name: "Tatsugiri-Stretchy-Mega", types: ["dragon", "water"], isMega: true, isAlternative: false, hp: 68, attack: 70, defense: 80, specialAttack: 150, specialDefense: 115, speed: 112, desc: "Expanding its dragon body, Mega Stretchy Tatsugiri executes incredibly swift maneuvers, escaping any threat while launching precise water cannons.", image: "/custom_sprites/978-mega.png", shinyImage: "/custom_sprites/shiny/978-mega.png" },
+  { id: 100998, baseId: 998, name: "Baxcalibur-Mega", types: ["dragon", "ice"], isMega: true, isAlternative: false, hp: 115, attack: 185, defense: 112, specialAttack: 95, specialDefense: 116, speed: 107, desc: "Its glaive spine grows into an colossal sword of absolute-zero ice, allowing it to slice through glaciers with physical ease.", image: "/custom_sprites/998-mega.png", shinyImage: "/custom_sprites/shiny/998-mega.png" },
+  { id: 100358, baseId: 358, name: "Chimecho-Mega", types: ["psychic", "fairy"], isMega: true, isAlternative: false, hp: 75, attack: 50, defense: 100, specialAttack: 135, specialDefense: 120, speed: 95, desc: "Its metallic bells echo with chime energy, creating continuous acoustic forcefields that heal allies and disorient rivals.", image: "/custom_sprites/358-mega.png", shinyImage: "/custom_sprites/shiny/358-mega.png" },
+  { id: 100768, baseId: 768, name: "Golisopod-Mega", types: ["bug", "steel"], isMega: true, isAlternative: false, hp: 75, attack: 155, defense: 160, specialAttack: 60, specialDefense: 115, speed: 65, desc: "Its shell hardens into ultimate iron armor, transforming its claws into heavy armored cleavers that slice with mechanical precision.", image: "/custom_sprites/768-mega.png", shinyImage: "/custom_sprites/shiny/768-mega.png" },
+  { id: 100623, baseId: 623, name: "Golurk-Mega", types: ["ground", "ghost"], isMega: true, isAlternative: false, hp: 89, attack: 164, defense: 110, specialAttack: 75, specialDefense: 110, speed: 75, desc: "With the seal of its core completely unleased, Mega Golurk transforms its arms into twin rocket cannons, firing pure spectral energy.", image: "/custom_sprites/623-mega.png", shinyImage: "/custom_sprites/shiny/623-mega.png" },
+  { id: 100398, baseId: 398, name: "Staraptor-Mega", types: ["fighting", "flying"], isMega: true, isAlternative: false, hp: 85, attack: 150, defense: 90, specialAttack: 50, specialDefense: 80, speed: 125, desc: "Its wings harden into martial shields, enabling it to swoop at extreme speeds while delivering devastating fighting combat moves.", image: "/custom_sprites/398-mega.png", shinyImage: "/custom_sprites/shiny/398-mega.png" },
+  { id: 100740, baseId: 740, name: "Crabominable-Mega", types: ["fighting", "ice"], isMega: true, isAlternative: false, hp: 97, attack: 162, defense: 117, specialAttack: 62, specialDefense: 107, speed: 55, desc: "Its pincers freeze into gargantuan solid ice blocks, delivering freezing punches that shatter boulders on impact.", image: "/custom_sprites/740-mega.png", shinyImage: "/custom_sprites/shiny/740-mega.png" },
+  { id: 100485, baseId: 485, name: "Heatran-Mega", types: ["fire", "steel"], isMega: true, isAlternative: false, hp: 91, attack: 110, defense: 136, specialAttack: 160, specialDefense: 136, speed: 87, desc: "Its volcanic shell heats up to cosmic temperatures, melting steel defenses instantly while creating a rain of molten magma.", image: "/custom_sprites/485-mega.png", shinyImage: "/custom_sprites/shiny/485-mega.png" },
+  { id: 100491, baseId: 491, name: "Darkrai-Mega", types: ["dark"], isMega: true, isAlternative: false, hp: 70, attack: 110, defense: 110, specialAttack: 175, specialDefense: 110, speed: 145, desc: "The lord of nightmares. Mega Darkrai's aura of darkness completely envelops its target, inducing continuous horrific dreams.", image: "/custom_sprites/491-mega.png", shinyImage: "/custom_sprites/shiny/491-mega.png" },
+  { id: 100801, baseId: 801, name: "Magearna-Mega", types: ["steel", "fairy"], isMega: true, isAlternative: false, hp: 80, attack: 115, defense: 135, specialAttack: 160, specialDefense: 135, speed: 85, desc: "Its artificial heart sparkles with infinite energy, casting spectacular fairy spells that harmonize the surrounding ecosystem.", image: "/custom_sprites/801-mega.png", shinyImage: "/custom_sprites/shiny/801-mega.png" }
 ];
 
 // Complete name list for Lumiose Dex (exactly as specified by the user)
@@ -378,17 +392,317 @@ const lumioseNamesList = [
 ];
 
 const hyperspaceNamesList = [
-  { name: "groudon", regNum: 1 },
-  { name: "groudon-primal", regNum: 2 },
-  { name: "kyogre", regNum: 3 },
-  { name: "kyogre-primal", regNum: 4 },
-  { name: "rayquaza", regNum: 5 },
-  { name: "rayquaza-mega", regNum: 6 },
-  { name: "zeraora", regNum: 7 },
-  { name: "zeraora-mega", regNum: 8 },
-  { name: "hoopa", regNum: 9 },
-  { name: "hoopa-unbound", regNum: 10 },
-  { name: "volcanion", regNum: 11 }
+  // #001 Mankey, #002 Primeape, #003 Annihilape
+  { name: "mankey", regNum: 1 },
+  { name: "primeape", regNum: 2 },
+  { name: "annihilape", regNum: 3 },
+
+  // #004 Meowth, #004 Alolan Meowth, #004 Galarian Meowth, #005 Persian, #005 Alolan Persian, #006 Perrserker
+  { name: "meowth", regNum: 4 },
+  { name: "meowth-alola", regNum: 4 },
+  { name: "meowth-galar", regNum: 4 },
+  { name: "persian", regNum: 5 },
+  { name: "persian-alola", regNum: 5 },
+  { name: "perrserker", regNum: 6 },
+
+  // #007 Farfetch'd, #007 Galarian Farfetch'd, #008 Sirfetch'd
+  { name: "farfetchd", regNum: 7 },
+  { name: "farfetchd-galar", regNum: 7 },
+  { name: "sirfetchd", regNum: 8 },
+
+  // #009 Cubone, #010 Marowak, #010 Alolan Marowak
+  { name: "cubone", regNum: 9 },
+  { name: "marowak", regNum: 10 },
+  { name: "marowak-alola", regNum: 10 },
+
+  // #011 Porygon, #012 Porygon2, #013 Porygon-Z
+  { name: "porygon", regNum: 11 },
+  { name: "porygon2", regNum: 12 },
+  { name: "porygon-z", regNum: 13 },
+
+  // #014 Capsakid, #015 Scovillain, #015 Mega Scovillain (Custom)
+  { name: "capsakid", regNum: 14 },
+  { name: "scovillain", regNum: 15 },
+  { name: "scovillain-mega", regNum: 15 },
+
+  // #016 Tinkatink, #017 Tinkatuff, #018 Tinkaton
+  { name: "tinkatink", regNum: 16 },
+  { name: "tinkatuff", regNum: 17 },
+  { name: "tinkaton", regNum: 18 },
+
+  // #019 Cyclizar
+  { name: "cyclizar", regNum: 19 },
+
+  // #020 Glimmet, #021 Glimmora, #021 Mega Glimmora (Custom)
+  { name: "glimmet", regNum: 20 },
+  { name: "glimmora", regNum: 21 },
+  { name: "glimmora-mega", regNum: 21 },
+
+  // #022 Rotom, #022 Heat Rotom, #022 Wash Rotom, #022 Frost Rotom, #022 Fan Rotom, #022 Mow Rotom
+  { name: "rotom", regNum: 22 },
+  { name: "rotom-heat", regNum: 22 },
+  { name: "rotom-wash", regNum: 22 },
+  { name: "rotom-frost", regNum: 22 },
+  { name: "rotom-fan", regNum: 22 },
+  { name: "rotom-mow", regNum: 22 },
+
+  // #023 Greavard, #024 Houndstone
+  { name: "greavard", regNum: 23 },
+  { name: "houndstone", regNum: 24 },
+
+  // #025 Sandygast, #026 Palossand
+  { name: "sandygast", regNum: 25 },
+  { name: "palossand", regNum: 26 },
+
+  // #027 Kecleon, #028 Flamigo, #029 Cryogonal, #030 Dondozo
+  { name: "kecleon", regNum: 27 },
+  { name: "flamigo", regNum: 28 },
+  { name: "cryogonal", regNum: 29 },
+  { name: "dondozo", regNum: 30 },
+
+  // #031 Curly Tatsugiri, #031 Droopy Tatsugiri, #031 Stretchy Tatsugiri, #031 Mega Curly Tatsugiri (Custom), #031 Mega Droopy Tatsugiri (Custom), #031 Mega Stretchy Tatsugiri (Custom)
+  { name: "tatsugiri-curly", regNum: 31 },
+  { name: "tatsugiri-droopy", regNum: 31 },
+  { name: "tatsugiri-stretchy", regNum: 31 },
+  { name: "tatsugiri-curly-mega", regNum: 31 },
+  { name: "tatsugiri-droopy-mega", regNum: 31 },
+  { name: "tatsugiri-stretchy-mega", regNum: 31 },
+
+  // #032 Frigibax, #033 Arctibax, #034 Baxcalibur, #034 Mega Baxcalibur (Custom)
+  { name: "frigibax", regNum: 32 },
+  { name: "arctibax", regNum: 33 },
+  { name: "baxcalibur", regNum: 34 },
+  { name: "baxcalibur-mega", regNum: 34 },
+
+  // #035 Chest Gimmighoul, #035 Roaming Gimmighoul, #036 Gholdengo
+  { name: "gimmighoul", regNum: 35 },
+  { name: "gimmighoul-roaming", regNum: 35 },
+  { name: "gholdengo", regNum: 36 },
+
+  // #037 Qwilfish, #037 Hisuian Qwilfish, #038 Overqwil
+  { name: "qwilfish", regNum: 37 },
+  { name: "qwilfish-hisui", regNum: 37 },
+  { name: "overqwil", regNum: 38 },
+
+  // #039 Treecko, #040 Grovyle, #041 Sceptile, #041 Mega Sceptile
+  { name: "treecko", regNum: 39 },
+  { name: "grovyle", regNum: 40 },
+  { name: "sceptile", regNum: 41 },
+  { name: "sceptile-mega", regNum: 41 },
+
+  // #042 Torchic, #043 Combusken, #044 Blaziken, #044 Mega Blaziken
+  { name: "torchic", regNum: 42 },
+  { name: "combusken", regNum: 43 },
+  { name: "blaziken", regNum: 44 },
+  { name: "blaziken-mega", regNum: 44 },
+
+  // #045 Mudkip, #046 Marshtomp, #047 Swampert, #047 Mega Swampert
+  { name: "mudkip", regNum: 45 },
+  { name: "marshtomp", regNum: 46 },
+  { name: "swampert", regNum: 47 },
+  { name: "swampert-mega", regNum: 47 },
+
+  // #048 Feebas, #049 Milotic
+  { name: "feebas", regNum: 48 },
+  { name: "milotic", regNum: 49 },
+
+  // #050 Chingling, #051 Chimecho, #051 Mega Chimecho (Custom)
+  { name: "chingling", regNum: 50 },
+  { name: "chimecho", regNum: 51 },
+  { name: "chimecho-mega", regNum: 51 },
+
+  // #052 Indeedee (Male), #052 Female Indeedee
+  { name: "indeedee-male", regNum: 52 },
+  { name: "indeedee-female", regNum: 52 },
+
+  // #053 Purrloin, #054 Liepard
+  { name: "purrloin", regNum: 53 },
+  { name: "liepard", regNum: 54 },
+
+  // #055 Munna
+  { name: "munna", regNum: 55 },
+
+  // #056 Musharna, #057 Throh, #058 Sawk
+  { name: "musharna", regNum: 56 },
+  { name: "throh", regNum: 57 },
+  { name: "sawk", regNum: 58 },
+
+  // #059 Yamask, #059 Galarian Yamask, #060 Cofagrigus, #061 Runerigus
+  { name: "yamask", regNum: 59 },
+  { name: "yamask-galar", regNum: 59 },
+  { name: "cofagrigus", regNum: 60 },
+  { name: "runerigus", regNum: 61 },
+
+  // #062 Wimpod, #063 Golisopod, #063 Mega Golisopod (Custom - Hệ Bug/Steel)
+  { name: "wimpod", regNum: 62 },
+  { name: "golisopod", regNum: 63 },
+  { name: "golisopod-mega", regNum: 63 },
+
+  // #064 Nickit, #065 Thievul
+  { name: "nickit", regNum: 64 },
+  { name: "thievul", regNum: 65 },
+
+  // #066 Clobbopus, #067 Grapploct
+  { name: "clobbopus", regNum: 66 },
+  { name: "grapploct", regNum: 67 },
+
+  // #068 Mimikyu, #069 Kleavor
+  { name: "mimikyu", regNum: 68 },
+  { name: "kleavor", regNum: 69 },
+
+  // #070 Morpeko, #070 Hangry Morpeko
+  { name: "morpeko", regNum: 70 },
+  { name: "morpeko-hangry", regNum: 70 },
+
+  // #071 Golett, #072 Golurk, #072 Mega Golurk (Custom - Hệ Ground/Ghost)
+  { name: "golett", regNum: 71 },
+  { name: "golurk", regNum: 72 },
+  { name: "golurk-mega", regNum: 72 },
+
+  // #073 Rookidee, #074 Corvisquire, #075 Corviknight
+  { name: "rookidee", regNum: 73 },
+  { name: "corvisquire", regNum: 74 },
+  { name: "corviknight", regNum: 75 },
+
+  // #076 Igglybuff, #077 Jigglypuff, #078 Wigglytuff
+  { name: "igglybuff", regNum: 76 },
+  { name: "jigglypuff", regNum: 77 },
+  { name: "wigglytuff", regNum: 78 },
+
+  // #079 Fidough, #080 Dachsbun
+  { name: "fidough", regNum: 79 },
+  { name: "dachsbun", regNum: 80 },
+
+  // #081 Starly, #082 Staravia, #083 Staraptor, #083 Mega Staraptor (Custom - Đổi hệ thành Fighting/Flying)
+  { name: "starly", regNum: 81 },
+  { name: "staravia", regNum: 82 },
+  { name: "staraptor", regNum: 83 },
+  { name: "staraptor-mega", regNum: 83 },
+
+  // #084 Spoink, #085 Grumpig
+  { name: "spoink", regNum: 84 },
+  { name: "grumpig", regNum: 85 },
+
+  // #086 Green Squawkabilly, #086 Blue Squawkabilly, #086 Yellow Squawkabilly, #086 White Squawkabilly
+  { name: "squawkabilly-green-plumage", regNum: 86 },
+  { name: "squawkabilly-blue-plumage", regNum: 86 },
+  { name: "squawkabilly-yellow-plumage", regNum: 86 },
+  { name: "squawkabilly-white-plumage", regNum: 86 },
+
+  // #087 Crabrawler, #088 Crabominable, #088 Mega Crabominable (Custom - Hệ Fighting/Ice)
+  { name: "crabrawler", regNum: 87 },
+  { name: "crabominable", regNum: 88 },
+  { name: "crabominable-mega", regNum: 88 },
+
+  // #089 Nacli, #090 Naclstack, #091 Garganacl
+  { name: "nacli", regNum: 89 },
+  { name: "naclstack", regNum: 90 },
+  { name: "garganacl", regNum: 91 },
+
+  // #092 Gulpin, #093 Swalot
+  { name: "gulpin", regNum: 92 },
+  { name: "swalot", regNum: 93 },
+
+  // #094 Zubat, #095 Golbat, #096 Crobat
+  { name: "zubat", regNum: 94 },
+  { name: "golbat", regNum: 95 },
+  { name: "crobat", regNum: 96 },
+
+  // #097 Charcadet, #098 Armarouge, #099 Ceruledge
+  { name: "charcadet", regNum: 97 },
+  { name: "armarouge", regNum: 98 },
+  { name: "ceruledge", regNum: 99 },
+
+  // #100 Maschiff, #101 Mabosstiff
+  { name: "maschiff", regNum: 100 },
+  { name: "mabosstiff", regNum: 101 },
+
+  // #102 Toxel, #103 Toxtricity, #103 Low Key Toxtricity
+  { name: "toxel", regNum: 102 },
+  { name: "toxtricity-amped", regNum: 103 },
+  { name: "toxtricity-low-key", regNum: 103 },
+
+  // #104 Shroodle, #105 Grafaiai
+  { name: "shroodle", regNum: 104 },
+  { name: "grafaiai", regNum: 105 },
+
+  // #106 Zangoose, #107 Seviper
+  { name: "zangoose", regNum: 106 },
+  { name: "seviper", regNum: 107 },
+
+  // #108 Mime Jr., #109 Mr. Mime, #109 Galarian Mr. Mime, #110 Mr. Rime
+  { name: "mime-jr", regNum: 108 },
+  { name: "mr-mime", regNum: 109 },
+  { name: "mr-mime-galar", regNum: 109 },
+  { name: "mr-rime", regNum: 110 },
+
+  // #111 Foongus, #112 Amoonguss
+  { name: "foongus", regNum: 111 },
+  { name: "amoonguss", regNum: 112 },
+
+  // #113 Heatran, #113 Mega Heatran (Custom - Hệ Fire/Steel)
+  { name: "heatran", regNum: 113 },
+  { name: "heatran-mega", regNum: 113 },
+
+  // #114 Volcanion, #115 Cobalion, #116 Terrakion, #117 Virizion
+  { name: "volcanion", regNum: 114 },
+  { name: "cobalion", regNum: 115 },
+  { name: "terrakion", regNum: 116 },
+  { name: "virizion", regNum: 117 },
+
+  // #118 Keldeo, #118 Resolute Keldeo
+  { name: "keldeo", regNum: 118 },
+  { name: "keldeo-resolute", regNum: 118 },
+
+  // #119 Meloetta, #119 Pirouette Meloetta
+  { name: "meloetta-aria", regNum: 119 },
+  { name: "meloetta-pirouette", regNum: 119 },
+
+  // #120 Genesect
+  { name: "genesect", regNum: 120 },
+
+  // #121 Hoopa, #121 Hoopa Unbound
+  { name: "hoopa", regNum: 121 },
+  { name: "hoopa-unbound", regNum: 121 },
+
+  // #122 Marshadow
+  { name: "marshadow", regNum: 122 },
+
+  // #123 Meltan
+  { name: "meltan", regNum: 123 },
+
+  // #124 Melmetal
+  { name: "melmetal", regNum: 124 },
+
+  // #125 Darkrai, #125 Mega Darkrai (Custom - Hệ Dark)
+  { name: "darkrai", regNum: 125 },
+  { name: "darkrai-mega", regNum: 125 },
+
+  // #126 Latias
+  { name: "latias", regNum: 126 },
+
+  // #127 Latios
+  { name: "latios", regNum: 127 },
+
+  // #128 Kyogre, #128 Primal Kyogre
+  { name: "kyogre", regNum: 128 },
+  { name: "kyogre-primal", regNum: 128 },
+
+  // #129 Groudon, #129 Primal Groudon
+  { name: "groudon", regNum: 129 },
+  { name: "groudon-primal", regNum: 129 },
+
+  // #130 Rayquaza, #130 Mega Rayquaza
+  { name: "rayquaza", regNum: 130 },
+  { name: "rayquaza-mega", regNum: 130 },
+
+  // #131 Magearna, #131 Mega Magearna (Custom - Hệ Steel/Fairy)
+  { name: "magearna", regNum: 131 },
+  { name: "magearna-mega", regNum: 131 },
+
+  // #132 Zeraora, #132 Mega Zeraora (Custom - Hệ Electric)
+  { name: "zeraora", regNum: 132 },
+  { name: "zeraora-mega", regNum: 132 }
 ];
 
 async function main() {
@@ -547,6 +861,130 @@ async function main() {
     });
   }
 
+async function getOrFetchPokemon(nameSearch: string) {
+  // 1. Try to find by exact name
+  let dbPoke = await prisma.pokemon.findFirst({
+    where: { name: { equals: nameSearch, mode: "insensitive" } }
+  });
+
+  if (!dbPoke) {
+    // 2. Try to find by contains name
+    dbPoke = await prisma.pokemon.findFirst({
+      where: { name: { contains: nameSearch, mode: "insensitive" } }
+    });
+  }
+
+  if (dbPoke) {
+    return dbPoke;
+  }
+
+  // 3. Not found, let's fetch from PokeAPI!
+  console.log(`Dynamically fetching and seeding missing species: ${nameSearch}...`);
+  try {
+    let apiName = nameSearch.toLowerCase()
+      .replace(/ /g, "-")
+      .replace(/'/g, "")
+      .replace(/\./g, "")
+      .replace(/\(male\)/, "-male")
+      .replace(/\(female\)/, "-female")
+      .replace(/female-/, "")
+      .replace(/-ordinary/, "");
+
+    if (apiName === "farfetchd") apiName = "farfetchd";
+    if (apiName === "sirfetchd") apiName = "sirfetchd";
+    if (apiName === "mr-mime") apiName = "mr-mime";
+    if (apiName === "mr-rime") apiName = "mr-rime";
+    if (apiName === "mime-jr") apiName = "mime-jr";
+    if (apiName === "squawkabilly-green-plumage") apiName = "squawkabilly-green";
+    if (apiName === "squawkabilly-blue-plumage") apiName = "squawkabilly-blue";
+    if (apiName === "squawkabilly-yellow-plumage") apiName = "squawkabilly-yellow";
+    if (apiName === "squawkabilly-white-plumage") apiName = "squawkabilly-white";
+    if (apiName === "toxtricity-amped") apiName = "toxtricity-amped";
+    if (apiName === "toxtricity-low-key") apiName = "toxtricity-low-key";
+
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${apiName}`);
+    if (!res.ok) {
+      console.warn(`Could not fetch ${nameSearch} (apiName: ${apiName}) from PokeAPI`);
+      return null;
+    }
+    const d = await res.json();
+
+    let speciesId = d.id;
+    if (d.species && d.species.url) {
+      const speciesUrlParts = d.species.url.split('/').filter(Boolean);
+      speciesId = parseInt(speciesUrlParts[speciesUrlParts.length - 1], 10);
+    }
+
+    let category: string | null = null;
+    let description: string | null = null;
+    try {
+      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
+      if (speciesRes.ok) {
+        const speciesData = await speciesRes.json();
+        const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
+        if (genusObj) category = genusObj.genus;
+
+        const englishEntries = speciesData.flavor_text_entries?.filter((entry: any) => entry.language?.name === "en") || [];
+        if (englishEntries.length > 0) {
+          description = englishEntries[englishEntries.length - 1].flavor_text
+            .replace(/[\n\f\r\t]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+        }
+      }
+    } catch (e) {
+      // Ignore species details errors
+    }
+
+    const stats = d.stats.reduce((acc: any, s: any) => {
+      const statName = s.stat.name;
+      if (statName === "hp") acc.hp = s.base_stat;
+      if (statName === "attack") acc.attack = s.base_stat;
+      if (statName === "defense") acc.defense = s.base_stat;
+      if (statName === "special-attack") acc.specialAttack = s.base_stat;
+      if (statName === "special-defense") acc.specialDefense = s.base_stat;
+      if (statName === "speed") acc.speed = s.base_stat;
+      return acc;
+    }, {});
+
+    const baseNameFormatted = nameSearch.charAt(0).toUpperCase() + nameSearch.slice(1);
+
+    const created = await prisma.pokemon.create({
+      data: {
+        pokedexNumber: d.id,
+        name: baseNameFormatted,
+        isDefault: d.is_default ?? true,
+        speciesId: speciesId,
+        generation: d.id <= 151 ? 1 : d.id <= 251 ? 2 : d.id <= 386 ? 3 : d.id <= 493 ? 4 : d.id <= 649 ? 5 : d.id <= 721 ? 6 : d.id <= 809 ? 7 : d.id <= 905 ? 8 : 9,
+        category: category || "Unknown",
+        description: description || `A fascinating species from the Pokémon world.`,
+        regionalDexes: [],
+        altFormAvailableIn: [],
+        gameVersions: [],
+        imageUrl: d.sprites?.other?.['official-artwork']?.front_default || d.sprites?.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d.id}.png`,
+        shinyImageUrl: d.sprites?.other?.['official-artwork']?.front_shiny || d.sprites?.front_shiny || null,
+        hp: stats.hp || 50,
+        attack: stats.attack || 50,
+        defense: stats.defense || 50,
+        specialAttack: stats.specialAttack || 50,
+        specialDefense: stats.specialDefense || 50,
+        speed: stats.speed || 50,
+        types: {
+          connectOrCreate: d.types.map((t: any) => ({
+            where: { name: t.type.name },
+            create: { name: t.type.name }
+          }))
+        }
+      }
+    });
+
+    return created;
+  } catch (err) {
+    console.error(`Error dynamically seeding ${nameSearch}:`, err);
+    return null;
+  }
+}
+
   // 2. Resolve database entities and map regional indexes
   console.log("Resolving and mapping Lumiose City Dex...");
   for (const entry of lumioseNamesList) {
@@ -561,15 +999,7 @@ async function main() {
     if (nameSearch === "zygarde") nameSearch = "zygarde-50";
     if (nameSearch === "zygarde-10") nameSearch = "zygarde-10-power-construct";
 
-    let dbPoke = await prisma.pokemon.findFirst({
-      where: { name: { equals: nameSearch, mode: "insensitive" } }
-    });
-
-    if (!dbPoke) {
-      dbPoke = await prisma.pokemon.findFirst({
-        where: { name: { contains: nameSearch, mode: "insensitive" } }
-      });
-    }
+    const dbPoke = await getOrFetchPokemon(nameSearch);
 
     if (dbPoke) {
       const updatedGameVersions = Array.from(new Set([...dbPoke.gameVersions, "legends-za"]));
@@ -598,15 +1028,25 @@ async function main() {
   console.log("Resolving and mapping Hyperspace Dex...");
   for (const entry of hyperspaceNamesList) {
     let nameSearch = entry.name;
-    let dbPoke = await prisma.pokemon.findFirst({
-      where: { name: { equals: nameSearch, mode: "insensitive" } }
-    });
+    if (nameSearch === "scovillain-mega") nameSearch = "Scovillain-Mega";
+    if (nameSearch === "glimmora-mega") nameSearch = "Glimmora-Mega";
+    if (nameSearch === "tatsugiri-curly-mega") nameSearch = "Tatsugiri-Curly-Mega";
+    if (nameSearch === "tatsugiri-droopy-mega") nameSearch = "Tatsugiri-Droopy-Mega";
+    if (nameSearch === "tatsugiri-stretchy-mega") nameSearch = "Tatsugiri-Stretchy-Mega";
+    if (nameSearch === "baxcalibur-mega") nameSearch = "Baxcalibur-Mega";
+    if (nameSearch === "chimecho-mega") nameSearch = "Chimecho-Mega";
+    if (nameSearch === "golisopod-mega") nameSearch = "Golisopod-Mega";
+    if (nameSearch === "golurk-mega") nameSearch = "Golurk-Mega";
+    if (nameSearch === "staraptor-mega") nameSearch = "Staraptor-Mega";
+    if (nameSearch === "crabominable-mega") nameSearch = "Crabominable-Mega";
+    if (nameSearch === "heatran-mega") nameSearch = "Heatran-Mega";
+    if (nameSearch === "darkrai-mega") nameSearch = "Darkrai-Mega";
+    if (nameSearch === "magearna-mega") nameSearch = "Magearna-Mega";
+    if (nameSearch === "zeraora-mega") nameSearch = "Zeraora-Mega";
 
-    if (!dbPoke) {
-      dbPoke = await prisma.pokemon.findFirst({
-        where: { name: { contains: nameSearch, mode: "insensitive" } }
-      });
-    }
+    if (nameSearch === "tatsugiri-curly") nameSearch = "tatsugiri";
+
+    const dbPoke = await getOrFetchPokemon(nameSearch);
 
     if (dbPoke) {
       const updatedGameVersions = Array.from(new Set([...dbPoke.gameVersions, "legends-za"]));
