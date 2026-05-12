@@ -24,6 +24,8 @@ import { X_CHAPTERS, ENGLISH_X_CHAPTERS } from './data/walkthrough-x.js';
 import { Y_CHAPTERS, ENGLISH_Y_CHAPTERS } from './data/walkthrough-y.js';
 import { OMEGA_RUBY_CHAPTERS } from './data/walkthrough-omega-ruby.js';
 import { ALPHA_SAPPHIRE_CHAPTERS } from './data/walkthrough-alpha-sapphire.js';
+import { SUN_CHAPTERS } from './data/walkthrough-sun.js';
+import { MOON_CHAPTERS } from './data/walkthrough-moon.js';
 
 
 const prisma = new PrismaClient();
@@ -33,7 +35,7 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2', 'black-2', 'white-2', 'lets-go-pikachu', 'lets-go-eevee', 'brilliant-diamond', 'shining-pearl', 'legends-arceus', 'legends-za', 'x', 'y', 'omega-ruby', 'alpha-sapphire'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2', 'black-2', 'white-2', 'lets-go-pikachu', 'lets-go-eevee', 'brilliant-diamond', 'shining-pearl', 'legends-arceus', 'legends-za', 'x', 'y', 'omega-ruby', 'alpha-sapphire', 'sun', 'moon'] } }
   });
 
   console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White, Black 2, White 2, Let\'s Go Pikachu/Eevee, BDSP, Legends: Arceus, Legends: Z-A và Pokémon X & Y.');
@@ -420,6 +422,22 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [Alpha Sapphire] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pokémon Sun
+  for (const chapter of SUN_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Sun] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pokémon Moon
+  for (const chapter of MOON_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Moon] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
