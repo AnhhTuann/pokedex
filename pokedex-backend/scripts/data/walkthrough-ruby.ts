@@ -392,7 +392,29 @@ export const RUBY_CHAPTERS = EMERALD_CHAPTERS.map(chapter => {
             </tr>
             <tr>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-                <img s  // Chapter 11: Legendary (Latios roaming, Groudon caught in story, Kyogre uncatchable, Rayquaza Sky Pillar post-game, Regis Wailord 1st and Relicanth last)
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/348.png" alt="Armaldo" />
+              </td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Armaldo</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đá / Côn trùng</td>
+              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Sức công vật lý cực lớn với Water Pulse/Slash. Hạ gục bằng đòn hệ Nước (Water), Đá hoặc Thép.</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/376.png" alt="Metagross" />
+              </td>
+              <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Metagross (Át chủ bài)</td>
+              <td style="padding: 12px 16px;">Lvl 58</td>
+              <td style="padding: 12px 16px;">Thép / Siêu linh</td>
+              <td style="padding: 12px 16px; color: #ef4444;">Át chủ bài tối thượng mang theo nhãn hiệu Meteor Mash và Earthquake càn quét. Trị bằng đòn hệ Đất (Earthquake) hoặc Lửa cực mạnh!</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Hạ gục thành công Steven Stone để giành ngôi vị Tân vô địch Pokémon Hoenn League tối cao, ghi danh vào bảng vàng lịch sử Hall of Fame của <strong>Pokémon Ruby</strong>!</p>`
+      );
+  }
+
+  // Chapter 11: Legendary (Latios roaming, Groudon caught in story, Kyogre uncatchable, Rayquaza Sky Pillar post-game, Regis Wailord 1st and Relicanth last)
   if (chapter.order === 11) {
     content = content
       // Replace Section 2 Latias & Latios roaming with Latios only
@@ -445,8 +467,6 @@ export const RUBY_CHAPTERS = EMERALD_CHAPTERS.map(chapter => {
       .replace(
         /Xếp <strong>Relicanth<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/369.png" style="max-width:20px; vertical-align:middle;" \/> ở vị trí <strong>ĐẦU TIÊN<\/strong> và <strong>Wailord<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/321.png" style="max-width:20px; vertical-align:middle;" \/> ở vị trí <strong>CUỐI CÙNG<\/strong> trong đội hình/,
         `Xếp <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>ĐẦU TIÊN</strong> và <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>CUỐI CÙNG</strong> trong đội hình`
-      );
-  }i vị Tân vô địch Pokémon Hoenn League tối cao, ghi danh vào bảng vàng lịch sử Hall of Fame của <strong>Pokémon Ruby</strong>!</p>`
       );
   }
 

@@ -1077,53 +1077,123 @@ export const EMERALD_CHAPTERS = [
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
           <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-botto  {
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Cách hóa giải tối ưu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" alt="Wailord" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Wailord</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Lượng máu (HP) cực lớn. Sẽ sử dụng <em>Rain Dance</em> để tăng sức mạnh cho hệ Nước. Khắc chế nhanh bằng đòn Điện (Electric) hoặc Thảo (Grass).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/73.png" alt="Tentacruel" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Tentacruel</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 55</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước / Độc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Kháng hệ Thảo nhờ hệ Độc phụ. Điểm yếu lớn nhất là hệ Đất (Ground) và Siêu Linh (Psychic). Thủ đặc biệt cực cao, nên dùng đòn vật lý để dứt điểm.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/272.png" alt="Ludicolo" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Ludicolo</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước / Cỏ</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Kháng cả Điện lẫn Nước! Sử dụng combo khó chịu <em>Double Team</em>, <em>Giga Drain</em> và <em>Leech Seed</em>. Khắc chế tối ưu bằng chiêu hệ Bay (Flying), Côn trùng (Bug) hoặc Độc (Poison).</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/340.png" alt="Whiscash" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Whiscash</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Miễn nhiễm hoàn toàn với hệ Điện. Nhận <strong>sát thương gấp 4 lần từ hệ Cỏ (Grass)</strong>! Sử dụng chiêu hệ Cỏ mạnh để tiễn đưa em nó trong 1 nốt nhạc.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/130.png" alt="Gyarados" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Gyarados</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước / Bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Nhận <strong>gấp 4 lần sát thương từ hệ Điện (Electric)</strong>! Tuyệt đối không để nó tăng chỉ số bằng <em>Dragon Dance</em>. Một đòn <em>Thunderbolt</em> sẽ hạ gục nó ngay lập tức.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/350.png" alt="Milotic" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #a855f7;">Milotic (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 58</td>
+            <td style="padding: 12px 16px;">Nước</td>
+            <td style="padding: 12px 16px; color: #10b981;">Con át chủ bài cực trâu bò with lượng thủ và thủ đặc biệt lớn, sử dụng <em>Recover</em> liên tục và <em>Ice Beam</em> trị hệ Cỏ/Bay. Hãy dùng đòn Điện hoặc Cỏ đặc biệt mạnh, hoặc đưa nó vào trạng thái tê liệt/độc để hạ gục dứt điểm.</td>
+          </tr>
+        </tbody>
+      </table>
+      <blockquote>
+        <strong>Mẹo vô địch:</strong> Hãy chuẩn bị sẵn một Pokémon hệ Điện mạnh (như Manectric hoặc Magneton) để quét sạch Gyarados, Wailord, Tentacruel, và một Pokémon hệ Cỏ (như Sceptile, Ludicolo, Vileplume) để diệt Whiscash và hồi phục máu trước Ludicolo.
+      </blockquote>
+      <p>Sau khi giành chiến thắng, bạn sẽ chính thức đăng quang ngôi vị Tân Vô Địch vùng Hoenn và ghi danh vào Sảnh Huyền Thoại (Hall of Fame)! Chúc mừng bạn đã hoàn thành xuất sắc cốt truyện chính!</p>
+    `
+  },
+  {
     gameVersion: "emerald",
-    chapterTitle: "Phần 11: Bí mật Pokémon Siêu Hiếm & Huyền Thoại (Late-game / Post-game)",
+    chapterTitle: "Phần 11: Bí mật các Thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo",
     order: 11,
     language: "vi",
     content: `
-      <h1>Phần 11: Bí mật Pokémon Siêu Hiếm & Huyền Thoại (Late-game / Post-game)</h1>
-      <p>Bên cạnh cốt truyện chính, Pokémon Emerald còn chứa đựng một thế giới bí ẩn khổng lồ với những loài Pokémon huyền thoại và siêu hiếm mà bất kỳ nhà huấn luyện nào cũng khao khát sở hữu.</p>
+      <h1>Phần 11: Bí mật các Thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo</h1>
+      <p>Bên cạnh mạch truyện chính đầy kịch tính, vùng đất Hoenn rộng lớn còn ẩn giấu những thực thể mang sức mạnh tối thượng, những vị thần cổ đại có khả năng kiến tạo hay hủy diệt cả thế giới. Dưới đây là cẩm nang bạo liệt nhất để bạn săn lùng và chinh phục tất cả các thần thú huyền thoại này!</p>
 
-      <!-- SECTION 1: HOÀNG ĐẾ BẦU TRỜI RAYQUAZA -->
-      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Thiên Long Vũ Trụ: Thần Long Rayquaza</h2>
+      <!-- SECTION 1: RAYQUAZA MASCOT CARD -->
+      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Thiên Đế Bầu Trời - Rayquaza</h2>
       <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3); margin-bottom: 24px;">
         <div style="flex: 1; text-align: center; min-width: 150px;">
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="Rayquaza" style="max-width: 140px; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
         <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Siêu Linh Vật - Hoàng Đế Bầu Trời</span>
-          <h3 style="color: #34d399; margin: 8px 0; font-size: 22px;">Hoàng Đế Bầu Trời: Rayquaza (#384)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng / Bay | <strong>Cấp độ:</strong> 70</p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Vị trí & Cách bắt:</strong> Đỉnh tháp cao chọc trời <strong>Sky Pillar</strong> (Route 131). Sau khi thức tỉnh nó tại Sootopolis để dẹp yên cuộc chiến của Groudon và Kyogre, bạn có thể lập tức quay lại tháp để đối diện và bắt giữ nó ngay <strong>trước khi đấu Elite Four</strong>! Hãy mang theo <strong>Mach Bike</strong> chuẩn xác để phóng qua các vết nứt hiểm trở trên đường lên đỉnh tháp.</p>
+          <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Biểu Tượng - Hoàng Đế Không Phận</span>
+          <h3 style="color: #34d399; margin: 8px 0; font-size: 22px;">Cổ Đại Long Thần: Rayquaza (#384)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng (Dragon) / Bay (Flying) | <strong>Cấp độ:</strong> 70</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Vị trí & Cách thu phục:</strong> Rayquaza ngự trị tại đỉnh cao lộng gió của tòa tháp đổ nát <strong>Sky Pillar</strong> (Route 131). Sau khi thức tỉnh Rayquaza tại Sootopolis City để dập tắt trận chiến long trời lở đất giữa Groudon và Kyogre, bạn có thể lập tức quay lại đây và thách thức nó **trước cả khi khiêu chiến Elite Four**! Hãy nhớ mang theo chiếc xe đạp tốc độ cao <strong>Mach Bike</strong> để phóng qua những viên gạch nứt sụp đổ đầy nguy hiểm.</p>
         </div>
       </div>
 
-      <!-- SECTION 2: SONG LONG KHỞI NGUYÊN LATIAS & LATIOS -->
-      <h2 style="color: #ec4899; border-left: 4px solid #ec4899; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Song Long Khởi Nguyên: Latias & Latios</h2>
+      <!-- SECTION 2: LATIAS & LATIOS ROAMING -->
+      <h2 style="color: #ec4899; border-left: 4px solid #ec4899; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Song Thần Hộ Mệnh Nam Dương: Latias & Latios</h2>
       <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(236, 72, 153, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.2); margin-bottom: 24px;">
         <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center; gap: 15px;">
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png" alt="Latias" style="max-width: 80px; filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png" alt="Latios" style="max-width: 80px; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1) rotate(-5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
         </div>
         <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Di Trú hoang dã (Roaming)</span>
+          <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Di Động - Song Vân Phi Thiên</span>
           <h3 style="color: #f472b6; margin: 8px 0; font-size: 22px;">Latias (#380) & Latios (#381)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng / Siêu Linh | <strong>Cấp độ:</strong> 40</p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách triệu hồi & săn bắt:</strong> Sau khi đánh bại Elite Four, bạn sẽ thức dậy ở nhà mình tại Littleroot Town. Hãy xuống nhà xem TV, mẹ của bạn sẽ hỏi chú Pokémon bí ẩn xuất hiện trên bản tin có màu gì:
-            <br/>• <strong>Chọn Red (Đỏ):</strong> Latias sẽ xuất hiện hoang dã bay lượn ngẫu nhiên trên toàn bản đồ Hoenn.
-            <br/>• <strong>Chọn Blue (Xanh):</strong> Latios sẽ xuất hiện hoang dã bay lượn ngẫu nhiên trên toàn bản đồ Hoenn.
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng (Dragon) / Tâm Linh (Psychic) | <strong>Cấp độ:</strong> 40</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Kích hoạt sự kiện:</strong> Sau khi đánh bại Elite Four và được ghi danh vào Sảnh Danh Vọng (Hall of Fame), khi quay về nhà, mẹ bạn sẽ hỏi về màu sắc của một Pokémon kỳ bí vừa được chiếu trên TV:
+            <br/>• <strong>Chọn Đỏ (Red):</strong> Latias sẽ xuất hiện di động ngẫu nhiên khắp các thảm cỏ và vùng biển của Hoenn.
+            <br/>• <strong>Chọn Xanh (Blue):</strong> Latios sẽ xuất hiện di động ngẫu nhiên khắp các thảm cỏ và vùng biển của Hoenn.
           </p>
         </div>
       </div>
-      <blockquote>
-        <strong>Mẹo bắt Lati@s:</strong> Do chúng liên tục đổi Route ngẫu nhiên mỗi khi bạn di chuyển, hãy mang theo Pokémon có chiêu <em>Mean Look</em> (như Crobat, Golbat) hoặc Pokémon có đặc tính <em>Shadow Tag</em> (như Wobbuffet) để ngăn chúng bỏ chạy. Ném Master Ball ngay lập tức hoặc làm suy yếu và quăng Ultra Ball!
+      <blockquote style="border-left: 3px solid #ec4899; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 14px; line-height: 1.6;">
+        <strong>Chiến thuật triệt hạ & săn bắt:</strong> Do chúng sẽ lập tức bỏ chạy ngay lượt đầu tiên, hãy dẫn đầu đội hình bằng một Pokémon có chiêu khóa chân <em>Mean Look</em> (như Crobat, Golbat) hoặc sở hữu đặc tính giữ chân <em>Shadow Tag</em> (như Wobbuffet). Rút máu chúng xuống mức đỏ và tung Ultra Ball hoặc ném thẳng quả Master Ball của bạn!
       </blockquote>
 
-      <!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->
-      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Thần Thú Địa Cầu: Groudon & Kyogre</h2>
-      <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">Pokémon Emerald cho phép bạn bắt cả cặp kỳ phùng địch thủ huyền thoại kiến tạo địa cầu vùng Hoenn ở cấp độ 70 tuyệt đối:</p>
+      <!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->
+      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Cự Thần Khởi Nguyên: Groudon & Kyogre</h2>
+      <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">Khác với hai bản Ruby/Sapphire, phiên bản Emerald ưu ái ban cho bạn quyền năng thu phục **cả hai đại kình địch** ở cấp độ 70 tại phần hậu game:</p>
 
       <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
         <!-- GROUDON CARD -->
@@ -1132,10 +1202,10 @@ export const EMERALD_CHAPTERS = [
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png" alt="Groudon" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
           <div style="flex: 3; min-width: 250px;">
-            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Đất Cổ Đại - Thần Lục Địa</span>
-            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Kiến Tạo Lục Địa: Groudon (#383)</h3>
-            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Đất | <strong>Cấp độ:</strong> 70</p>
-            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách sở hữu:</strong> Sau khi phá đảo, hãy tới Viện Thời Tiết (Weather Institute) trên Route 119 trò chuyện với giáo sư tầng 2. Nếu ông báo <strong>"Hạn hán" (Drought)</strong> tại một Route, hãy lập tức bay tới đó tìm cửa hang đá <strong>Terra Cave</strong> để khiêu chiến Groudon!</p>
+            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Chúa Tể Địa Lục - Cự Thần Kiến Tạo Đất Đai</span>
+            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Đại Địa Thần Ma: Groudon (#383)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Đất (Ground) | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách thu phục:</strong> Đến gặp nhà khoa học ở tầng 2 Viện Thời Tiết <strong>Weather Institute</strong> (Route 119). Khi ông báo tin có một hiện tượng thiên tai <strong>"Hạn hán cực hạn" (Drought)</strong> tại một Route cụ thể, hãy di chuyển thần tốc đến đó để tìm kiếm lối vào tạm thời của hang động dung nham <strong>Terra Cave</strong>.</p>
           </div>
         </div>
 
@@ -1145,19 +1215,19 @@ export const EMERALD_CHAPTERS = [
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
           <div style="flex: 3; min-width: 250px;">
-            <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Đại Dương - Chúa Tể Biển Sâu</span>
-            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Kiến Tạo Đại Dương: Kyogre (#382)</h3>
-            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước | <strong>Cấp độ:</strong> 70</p>
-            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách sở hữu:</strong> Nói chuyện với giáo sư Viện Thời Tiết tầng 2. Nếu ông báo <strong>"Mưa lớn" (Heavy Rain)</strong> tại một vùng biển, hãy bay ngay tới Route đó, lướt sóng (Surf) và sử dụng chiêu lặn (Dive) xuống dòng nước ngầm tìm hang đại dương <strong>Marine Cave</strong> đánh bại Kyogre!</p>
+            <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Vương Thần Biển Cả - Cự Thần Kiến Tạo Đại Dương</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Thâm Hải Long Vương: Kyogre (#382)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước (Water) | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách thu phục:</strong> Tương tự Groudon, khi nhà nghiên cứu thời tiết báo tin có hiện tượng <strong>"Mưa xối xả" (Heavy Rain)</strong> ở một vùng biển, hãy cưỡi sóng đến ngay Route đó. Sử dụng <strong>Surf</strong> và <strong>Dive</strong> để lặn sâu xuống những rãnh vực thẳm và khám phá hang nước ngầm <strong>Marine Cave</strong>.</p>
           </div>
         </div>
       </div>
-      <blockquote>
-        <strong>Lưu ý cực kỳ quan trọng:</strong> Hãy đến các hang động này ngay lập tức! Nếu bạn đổi bản đồ quá nhiều lần hoặc chần chừ quá lâu, thời tiết sẽ trở lại bình thường và hang động sẽ ngẫu nhiên di chuyển sang Route khác, buộc bạn phải quay lại hỏi giáo sư thời tiết.
+      <blockquote style="border-left: 3px solid #ef4444; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 14px; line-height: 1.6;">
+        <strong>CẢNH BÁO TỐI KHẨN:</strong> Hãy săn lùng chúng ngay khi nhận được tin báo! Nếu bạn dây dưa đi đánh trận hoặc chuyển vùng quá nhiều, thời tiết sẽ bình thường hóa, các hang động ngầm sẽ lập tức tự hủy và dịch chuyển ngẫu nhiên sang các Route khác!
       </blockquote>
 
-      <!-- SECTION 4: BỘ BA TƯỢNG ĐÁ CỔ ĐẠI REGIS -->
-      <h2 style="color: #fbbf24; border-left: 4px solid #fbbf24; padding-left: 12px; margin-top: 32px; font-size: 22px;">4. Bộ Ba Tượng Đá Golem Cổ Đại (Regis)</h2>
+      <!-- SECTION 4: LEGENDARY TITANS REGIS -->
+      <h2 style="color: #fbbf24; border-left: 4px solid #fbbf24; padding-left: 12px; margin-top: 32px; font-size: 22px;">4. Di Sản Ba Cổ Vật Nghìn Năm: Nhóm Regis</h2>
       <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(251, 191, 36, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.2); margin-bottom: 24px;">
         <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center; gap: 8px;">
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/377.png" alt="Regirock" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(217, 119, 6, 0.6));" />
@@ -1165,20 +1235,21 @@ export const EMERALD_CHAPTERS = [
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/379.png" alt="Registeel" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(148, 163, 184, 0.6));" />
         </div>
         <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(251, 191, 36, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Bộ Ba Vệ Thần Cổ Cự Thạch</span>
+          <span style="background-color: rgba(251, 191, 36, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Hộ Vệ Golem Cổ Đại</span>
           <h3 style="color: #fbbf24; margin: 8px 0; font-size: 22px;">Regirock (#377) | Regice (#378) | Registeel (#379)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Cấp độ:</strong> 40 | <strong>Kích hoạt:</strong> Sealed Chamber</p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Mở khóa đền thờ:</strong> Xếp <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>ĐẦU TIÊN</strong> và <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>CUỐI CÙNG</strong> trong đội hình. Lướt sóng ra vùng nước xiết Route 134, lặn xuống hang ngầm <strong>Sealed Chamber</strong>. Đọc bảng chữ nổi Braille, dùng chiêu <strong>Dig</strong> để mở thông phòng trong rồi đọc tấm bia cuối để tạo ra tiếng động chấn động mở 3 đền thờ trên thế giới!</p>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Cấp độ:</strong> 40 | <strong>Chìa khóa kích hoạt:</strong> Thất Điện Sealed Chamber</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Giải phong ấn cổ đại:</strong> Sắp xếp đội hình với <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>ĐẦU TIÊN</strong> và <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>CUỐI CÙNG</strong>. Đi vào thung lũng nước xiết tại Route 134, lặn xuống vùng biển lặng giữa dòng để vào cổ tự <strong>Sealed Chamber</strong> dưới lòng biển sâu. Đứng trước bức tường chữ nổi Braille, dùng chiêu <strong>Dig</strong> để phá vỡ vách đá, tiến vào căn phòng trong cùng và đọc văn bản đá cổ để đánh thức phong ấn Regis trên toàn Hoenn!</p>
         </div>
       </div>
 
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+2026-05-12T08:50:05Z
         <thead>
           <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Golem</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Địa điểm</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Câu đố mở khóa</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Bản thể</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tên Thần Thú</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Ngôi Đền Cổ</th>
+            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Mã Giải Đố Phong Ấn Đền</th>
           </tr>
         </thead>
         <tbody>
@@ -1187,30 +1258,30 @@ export const EMERALD_CHAPTERS = [
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/377.png" alt="Regirock" />
             </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #b45309;">Regirock (Lvl 40)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sa mạc Route 111 (Desert Ruins)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc bảng chữ nổi, đi sang trái 2 bước, lùi xuống 2 bước, sau đó dùng chiêu <strong>Rock Smash</strong>.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Desert Ruins (Sa mạc Route 111)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc chữ nổi giữa đền, đi sang Trái 2 bước, xuống Dưới 2 bước, sau đó sử dụng chiêu <strong>Rock Smash</strong>.</td>
           </tr>
           <tr>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/378.png" alt="Regice" />
             </td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Regice (Lvl 40)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Biển phía tây Route 105 (Island Cave)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc bảng chữ nổi, chạy dọc theo sát mép tường căn phòng đúng một vòng tròn không dừng.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Island Cave (Đảo Route 105)</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc chữ nổi ở vách tường đền, sau đó chạy bộ áp sát tường đúng một vòng tròn 360 độ xung quanh căn phòng (không được ngừng lại giữa chừng).</td>
           </tr>
           <tr>
             <td style="padding: 12px 16px; text-align: center;">
               <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/379.png" alt="Registeel" />
             </td>
             <td style="padding: 12px 16px; font-weight: bold; color: #94a3b8;">Registeel (Lvl 40)</td>
-            <td style="padding: 12px 16px;">Vùng đồi Route 120 (Ancient Tomb)</td>
-            <td style="padding: 12px 16px;">Đọc bảng chữ nổi, di chuyển ra đúng tâm căn phòng và sử dụng chiêu <strong>Flash</strong>.</td>
+            <td style="padding: 12px 16px;">Ancient Tomb (Sườn núi Route 120)</td>
+            <td style="padding: 12px 16px;">Đọc chữ nổi giữa đền, di chuyển thẳng ra tâm căn phòng (đứng chính giữa) và sử dụng chiêu sáng hang <strong>Flash</strong>.</td>
           </tr>
         </tbody>
       </table>
 
-      <!-- SECTION 5: THẦN THÚ HUYỀN ẢO JIRACHI, DEOXYS & MEW -->
-      <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">5. Cổ Thần Tối Cao & Thần Thú Huyền Ảo (Mythical Events)</h2>
+      <!-- SECTION 5: MYTHICAL JIRACHI, DEOXYS & MEW -->
+      <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">5. Thần Thú Huyền Ảo Thiên Hà & Hải Đảo Đã Mất: Jirachi, Deoxys & Mew</h2>
       <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2); margin-bottom: 24px;">
         <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center; gap: 10px;">
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/385.png" alt="Jirachi" style="max-width: 60px; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
@@ -1218,366 +1289,16 @@ export const EMERALD_CHAPTERS = [
           <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" style="max-width: 60px; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
         <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Cựu Thần Huyền Ảo Ngoại Truyện</span>
+          <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Huyền Ảo - Sự Kiện Đặc Biệt</span>
           <h3 style="color: #c084fc; margin: 8px 0; font-size: 22px;">Jirachi (#385) | Deoxys (#386) | Mew (#151)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Huyền Ảo Thượng Cổ</strong></p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách triệu hồi & tham gia sự kiện:</strong>
-            <br/>• <strong>Deoxys (Lvl 30):</strong> Sử dụng vé sự kiện <strong>Aurora Ticket</strong> lên tàu S.S. Tidal tại Lilycove cập cảng hòn đảo biệt lập hình tam giác <strong>Birth Island</strong>. Hoàn thành câu đố đẩy tảng đá tam giác đỏ ngắn nhất để đánh thức Deoxys ngoài hành tinh xuất hiện thách thức!
-            <br/>• <strong>Mew (Lvl 30):</strong> Sử dụng bản đồ cổ sự kiện <strong>Old Sea Map</strong> lên tàu S.S. Tidal đi tới hòn đảo rừng rậm sương mù <strong>Faraway Island</strong>. Chạy đuổi theo bắt Mew ẩn nấp tàng hình trong các lùm cỏ rậm rạp hoang sơ.
-            <br/>• <strong>Jirachi (Lvl 5):</strong> Được chuyển giao đặc quyền sang tệp lưu game GBA Emerald từ đĩa sự kiện Bonus Disc của tựa game <em>Pokémon Colosseum</em> trên hệ máy GameCube (hoặc từ tựa game <em>Pokémon Channel</em> tại thị trường châu Âu).
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hội Ngộ Thần Thú Từ Sự Kiện Huyền Thoại</strong></p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách triệu hồi & truy lùng:</strong>
+            <br/>• <strong>Deoxys (Lvl 30):</strong> Nhận vật phẩm sự kiện cổ điển <strong>Aurora Ticket</strong> để khởi hành du thuyền S.S. Tidal từ Lilycove City đến đảo đá tam giác <strong>Birth Island</strong>. Tại đây, giải mật mã tam giác đá đỏ chuyển nhiệt bằng các bước di chuyển ngắn nhất để triệu hồi quái vật biến dị vũ trụ Deoxys! (Ở Emerald, Deoxys sẽ tự động biến đổi sang dạng Speed Form).
+            <br/>• <strong>Mew (Lvl 30):</strong> Sở hữu tấm bản đồ cổ <strong>Old Sea Map</strong> để đi tàu tới hòn đảo sương mù biệt lập <strong>Faraway Island</strong>. Truy đuổi bóng hình tinh nghịch, bán tàng hình của Mew xuyên qua các mê cung cỏ rậm rạp hoang vu.
+            <br/>• <strong>Jirachi (Lvl 5):</strong> Được tải về đặc quyền bằng cáp kết nối GBA-GameCube thông qua Bonus Disc huyền thoại của game <em>Pokémon Colosseum</em> hoặc <em>Pokémon Channel</em>.
           </p>
         </div>
       </div>
-
-      <h2>6. Săn Pokémon siêu hiếm và trao đổi</h2>
-      <ul>
-        <li><strong>Bagon (Metagross tương lai):</strong> Quay lại hang Meteor Falls, dùng Surf và Waterfall leo thác lên tầng sâu nhất. Bagon <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/371.png" style="max-width:24px; vertical-align:middle;" /> chỉ xuất hiện tại dải đất nhỏ hẹp chứa đĩa TM02 Dragon Claw với tỉ lệ 25%.</li>
-        <li><strong>Feebas & Milotic:</strong> Chỉ xuất hiện tại 6 ô nước ngẫu nhiên trên toàn bộ dòng sông Route 119. Hãy dùng cần câu Old Rod câu thử từng ô nước một vài lần. Cho Feebas <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/349.png" style="max-width:24px; vertical-align:middle;" /> ăn Pokéblock màu Xanh (Blended từ Pamtre hoặc Kelpsy Berry) để max chỉ số Beauty trước khi cho lên cấp để tiến hóa thành Milotic.</li>
-        <li><strong>Beldum (Steven's Gift):</strong> Hậu game, ghé thăm nhà Steven ở Mossdeep City để nhận Beldum <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/374.png" style="max-width:24px; vertical-align:middle;" /> level 5 đặt sẵn trong quả Pokéball trên bàn.</li>
-        <li><strong>NPC Trades (Trao đổi trong game):</strong>
-          <ul>
-            <li><strong>Seedot:</strong> Đổi Ralts với NPC ở Rustboro City (nhận Seedot tên DOTS).</li>
-            <li><strong>Plusle:</strong> Đổi Volbeat với NPC ở Fortree City (nhận Plusle tên PLUSES).</li>
-            <li><strong>Horsea:</strong> Đổi Bagon với NPC ở Pacifidlog Town (nhận Horsea tên SEASOR).</li>
-            <li><strong>Meowth:</strong> Đổi Skitty với NPC ở Battle Frontier (nhận Meowth tên MEOWOW).</li>
-          </ul>
-        </li>
-      </ul>
-    `
-  }, chuyện với giáo sư ở tầng 2.</li>
-        <li>Nếu ông báo <strong>"Hạn hán" (Drought)</strong> tại một Route: Hãy đến ngay đó tìm hang đá <strong>Terra Cave</strong> để bắt Groudon.</li>
-        <li>Nếu ông báo <strong>"Mưa lớn" (Heavy Rain)</strong> tại một vùng biển: Hãy dùng Surf/Dive đến đó tìm hang nước ngầm <strong>Marine Cave</strong> để bắt Kyogre.</li>
-      </ol>
-      <blockquote>
-        <strong>Lưu ý:</strong> Hãy đến bắt ngay lập tức! Nếu bạn đổi bản đồ hoặc chần chừ quá lâu, thời tiết sẽ thay đổi và hang động sẽ di chuyển sang Route khác.
-      </blockquote>
-
-      <h2>3. Bộ ba tượng đá Golem cổ đại (Regis)</h2>
-      <p>Để mở khóa ba hang đá của Regirock, Regice, và Registeel, bạn cần giải mã Sealed Chamber hóc búa nhất game:</p>
-      <ul>
-        <li><strong>Chuẩn bị:</strong> Pokémon có chiêu <em>Dig, Surf, Dive</em>. Bắt một con <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:24px; vertical-align:middle;" /> (dưới đáy biển Sootopolis) và một con <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:24px; vertical-align:middle;" /> (tiến hóa từ Wailmer ở level 40).</li>
-        <li><strong>Mở cửa hang cổ đại:</strong> Xếp Relicanth ở vị trí <strong>ĐẦU TIÊN</strong> và Wailord ở vị trí <strong>CUỐI CÙNG</strong> trong đội hình của bạn. Lướt sóng ra vùng nước xiết Route 134, lặn xuống hang ngầm Sealed Chamber. Lên bờ, đọc bảng chữ nổi Braille và dùng chiêu <strong>Dig</strong> để mở thông phòng trong. Đọc tấm bia cuối cùng để kích hoạt tiếng động mở hang Regis trên toàn bản đồ.</li>
-      </ul>
-
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Golem</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Địa điểm</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Câu đố mở khóa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/377.png" alt="Regirock" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #b45309;">Regirock (Lvl 40)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sa mạc Route 111 (Desert Ruins)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc bảng chữ nổi, đi sang trái 2 bước, lùi xuống 2 bước, sau đó dùng chiêu <strong>Rock Smash</strong>.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/378.png" alt="Regice" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Regice (Lvl 40)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Biển phía tây Route 105 (Island Cave)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đọc bảng chữ nổi, chạy dọc theo sát mép tường căn phòng đúng một vòng tròn không dừng.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/379.png" alt="Registeel" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #94a3b8;">Registeel (Lvl 40)</td>
-            <td style="padding: 12px 16px;">Vùng đồi Route 120 (Ancient Tomb)</td>
-            <td style="padding: 12px 16px;">Đọc bảng chữ nổi, di chuyển ra đúng tâm căn phòng và sử dụng chiêu <strong>Flash</strong>.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>4. Săn Pokémon siêu hiếm và trao đổi</h2>
-      <ul>
-        <li><strong>Bagon (Metagross tương lai):</strong> Quay lại hang Meteor Falls, dùng Surf và Waterfall leo thác lên tầng sâu nhất. Bagon <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/371.png" style="max-width:24px; vertical-align:middle;" /> chỉ xuất hiện tại dải đất nhỏ hẹp chứa đĩa TM02 Dragon Claw với tỉ lệ 25%.</li>
-        <li><strong>Feebas & Milotic:</strong> Chỉ xuất hiện tại 6 ô nước ngẫu nhiên trên toàn bộ dòng sông Route 119. Hãy dùng cần câu Old Rod câu thử từng ô nước một vài lần. Cho Feebas <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/349.png" style="max-width:24px; vertical-align:middle;" /> ăn Pokéblock màu Xanh (Blended từ Pamtre hoặc Kelpsy Berry) để max chỉ số Beauty trước khi cho lên cấp để tiến hóa thành Milotic.</li>
-        <li><strong>Beldum (Steven's Gift):</strong> Hậu game, ghé thăm nhà Steven ở Mossdeep City để nhận Beldum <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/374.png" style="max-width:24px; vertical-align:middle;" /> level 5 đặt sẵn trong quả Pokéball trên bàn.</li>
-        <li><strong>NPC Trades (Trao đổi trong game):</strong>
-          <ul>
-            <li><strong>Seedot:</strong> Đổi Ralts với NPC ở Rustboro City (nhận Seedot tên DOTS).</li>
-            <li><strong>Plusle:</strong> Đổi Volbeat với NPC ở Fortree City (nhận Plusle tên PLUSES).</li>
-            <li><strong>Horsea:</strong> Đổi Bagon với NPC ở Pacifidlog Town (nhận Horsea tên SEASOR).</li>
-            <li><strong>Meowth:</strong> Đổi Skitty với NPC ở Battle Frontier (nhận Meowth tên MEOWOW).</li>
-          </ul>
-        </li>
-      </ul>
-    `
-  },
-  {
-    gameVersion: "emerald",
-    chapterTitle: "Phần 12: Toàn tập Hậu game, Battle Frontier & Vật phẩm Trấn phái",
-    order: 12,
-    language: "vi",
-    content: `
-      <h1>Phần 12: Toàn tập Hậu game, Battle Frontier & Vật phẩm Trấn phái</h1>
-      <p>Sau khi bước lên ngôi vị vô địch Pokémon League, vùng đất Hoenn vẫn còn vô vàn thử thách khắc nghiệt đang chờ đón bạn.</p>
-
-      <h2>1. Đấu trường đỉnh cao: Battle Frontier</h2>
-      <p>Mua vé tàu tại Slateport hoặc Lilycove City để đi đến hòn đảo biệt lập <strong>Battle Frontier</strong> - thử thách "end-game" thực sự của Pokémon Emerald với độ khó cực đại, bao gồm 7 cơ sở thử thách độc đáo:</p>
-      <ul>
-        <li><strong>Battle Tower:</strong> Đấu tháp truyền thống, chiến đấu liên tục 7 trận đơn/đôi.</li>
-        <li><strong>Battle Factory:</strong> Sử dụng Pokémon "thuê" (Rental), thử thách khả năng ứng biến chiến thuật.</li>
-        <li><strong>Battle Dome:</strong> Đấu giải đấu loại trực tiếp (Tournament) vô cùng hồi hộp.</li>
-        <li><strong>Battle Pike & Battle Pyramid:</strong> Thử thách sinh tồn, di chuyển qua mê cung chứa đầy bẫy, trạng thái xấu và Pokémon hoang dã.</li>
-        <li><strong>Battle Arena & Battle Palace:</strong> Đấu hiệp giới hạn lượt và đấu tự động phụ thuộc vào Bản tính (Nature) của Pokémon.</li>
-      </ul>
-      <p><em>Mục tiêu tối thượng:</em> Đánh bại các Frontier Brains để nhận Huy hiệu Bạc (Silver Symbol) và Huy hiệu Vàng (Gold Symbol) danh giá.</p>
-
-      <h2>2. Safari Zone mở rộng (Bắt Pokémon vùng Johto)</h2>
-      <p>Quay lại Safari Zone ở Route 121 sau khi phá đảo. Phía đông của khu bảo tồn sẽ được mở rộng thêm hai phân khu mới. Tại đây, bạn có thể bắt được những Pokémon hiếm vùng Johto (Gen 2) như: Mareep <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/179.png" style="max-width:24px; vertical-align:middle;" />, Houndour <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/228.png" style="max-width:24px; vertical-align:middle;" />, Gligar <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/207.png" style="max-width:24px; vertical-align:middle;" />, Teddiursa, Pineco...</p>
-
-      <h2>3. Các tính năng hậu game lý thú</h2>
-      <ul>
-        <li><strong>Tái đấu Gym Leaders (Match Call):</strong> PokéNav của bạn thỉnh thoảng sẽ reo chuông báo Gym Leader cũ muốn tái đấu. Đội hình tái đấu của họ sẽ là Đấu Đôi (Double Battle) với level cực cao (50-60+) và chiêu thức tối ưu.</li>
-        <li><strong>Xây Căn cứ bí mật (Secret Bases):</strong> Mua đĩa TM43 Secret Power ở chợ Slateport và dùng lên các gốc cây to rủ lá, hốc đá trên tường hoặc bụi rậm để tạo lập không gian riêng, tự do trang trí bàn ghế và poster mua tại siêu thị Lilycove.</li>
-        <li><strong>Pokémon Contests:</strong> Ghé Lilycove City tham gia các cuộc thi sắc đẹp Pokémon với 5 hạng mục: Cool, Beauty, Cute, Smart và Tough.</li>
-        <li><strong>Pokémon Sự Kiện (Event Pokémon):</strong> Sử dụng cheat/RetroArch để mở khóa vé tàu:
-          <ul>
-            <li><strong>Aurora Ticket:</strong> Đến Birth Island giải đố tam giác để bắt Deoxys <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/386.png" style="max-width:24px; vertical-align:middle;" /> (Lvl 30).</li>
-            <li><strong>Old Sea Map:</strong> Đến Faraway Island bắt Mew <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png" style="max-width:24px; vertical-align:middle;" /> (Lvl 30) ẩn trong bụi cỏ.</li>
-            <li><strong>Mystic Ticket:</strong> Đến Navel Rock bắt Lugia <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:24px; vertical-align:middle;" /> hoặc Ho-Oh <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" style="max-width:24px; vertical-align:middle;" /> (Lvl 70).</li>
-          </ul>
-        </li>
-      </ul>
-
-      <h2>4. Các vật phẩm và kỹ năng (TM) trấn phái</h2>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tên vật phẩm / TM</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tác dụng</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Cách sở hữu</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Exp. Share</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Chia sẻ kinh nghiệm cho Pokémon không cần ra trận</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nói chuyện với Mr. Stone tại Devon Corp sau khi chuyển thư cho Steven ở Dewford.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Amulet Coin</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhân đôi tiền thưởng nhận được sau mỗi trận đấu</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nói chuyện với mẹ tại nhà ở Littleroot sau khi thắng Norman (Gym 5).</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Macho Brace</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Nhân đôi chỉ số nỗ lực (EV) nhận được khi luyện cấp</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đánh bại cả 4 thành viên gia đình Winstrate tại căn nhà nhỏ trên Route 111.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Soothe Bell</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tăng nhanh điểm thân thiết (Happiness)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận tại Pokémon Fan Club trong thành phố Slateport City.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">TM13 Ice Beam</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Chiêu hệ Băng cực mạnh trị rồng và bay</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tìm thấy trong phòng ngầm tàu bỏ hoang Abandoned Ship ở Route 108 (cần Surf & Dive).</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">TM24 Thunderbolt</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sát thương hệ Điện ổn định nhất game</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ Wattson sau khi tắt máy phát điện ngầm New Mauville.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">TM26 Earthquake</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Đòn hệ Đất mạnh nhất game</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nằm sâu dưới lòng hang đáy biển Seafloor Cavern.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Đá Tiến Hóa</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Dùng để tiến hóa Pokémon</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lượm các mảnh Shard (Red, Blue, Yellow, Green) dưới lòng biển sâu rồi đem đổi với Treasure Hunter tại Route 124.</td>
-          </tr>
-        </tbody>
-      </table>
-      </table>
-    `
-  },
-  {
-    gameVersion: "emerald",
-    chapterTitle: "Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon",
-    order: 13,
-    language: "vi",
-    content: `
-      <h1>Phần 13: Toàn tập HMs, Vật phẩm Nhiệm vụ & Trao đổi Pokémon</h1>
-      <p>Bản tra cứu nhanh toàn bộ các máy di chuyển đặc biệt (HMs), vật phẩm nhiệm vụ cốt lõi và các giao dịch Pokémon độc quyền với các NPC trong bản game Pokémon Emerald (vùng đất Hoenn)!</p>
-
-      <h2>1. Danh sách vị trí sở hữu tất cả 8 HM (Hidden Machines)</h2>
-      <p>Tại vùng đất Hoenn, bạn cần thu thập đủ 8 chiếc máy HM để khám phá toàn bộ thế giới hải đảo rộng lớn:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(59, 130, 246, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">HM / Chiêu thức</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Tác dụng ngoài trận</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Vị trí lấy cụ thể</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Huy hiệu yêu cầu</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">HM01: Cut (Chặt cây)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Chặt cây bụi chặn đường để mở lối đi ẩn.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ ông chủ <strong>Cut Master</strong> trong ngôi nhà nằm ngay bên trái Pokémon Center thành phố Rustboro City.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Stone Badge (Gym 1)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">HM02: Fly (Bay nhanh)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bay tức thời tới bất kỳ thành phố nào bạn từng ghé thăm.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Được tặng bởi Đối thủ (Brendan/May) sau khi bạn đánh bại họ trên đường mòn <strong>Route 110</strong> (sau khi ra khỏi Slateport City).</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Feather Badge (Gym 6)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">HM03: Surf (Lướt sóng)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bơi trên nước để vượt biển, sông ngòi.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ bố của Wally đứng ngoài cửa sau khi bạn đánh bại Gym Leader Norman tại Petalburg City.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #ec4899;">Balance Badge (Gym 5)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a1a1aa;">HM04: Strength (Sức mạnh)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đẩy các tảng đá tròn lớn trong hang động.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghé thăm hang động <strong>Rusturf Tunnel</strong>, dùng Rock Smash đập vỡ tảng đá nứt để giúp đôi tình nhân đoàn tụ. Anh chàng sẽ tặng bạn HM04 để trả ơn.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #e11d48;">Heat Badge (Gym 4)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f59e0b;">HM05: Flash (Thắp sáng)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thắp sáng các hang động tối tăm như Granite Cave.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ nhà thám hiểm đứng ngay lối vào tầng hầm 1 của hang <strong>Granite Cave</strong> (mạn trái thị trấn Dewford Town).</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Knuckle Badge (Gym 2)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #84cc16;">HM06: Rock Smash (Đập đá)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đập vụn các tảng đá nứt chặn đường mòn.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ghé ngôi nhà <strong>Rock Smash Guy</strong> ở khu vực phía đông nam thành phố điện Mauville City và trò chuyện với ông chủ.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Dynamo Badge (Gym 3)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #2563eb;">HM07: Waterfall (Leo thác)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Leo ngược dòng các dòng thác nước dốc đứng.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhận từ nhà vô địch Wallace tại Cave of Origin (hoặc Sootopolis City) sau khi hoàn tất cốt truyện dẹp loạn hai quái thú thần thoại Groudon & Kyogre.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #3b82f6;">Rain Badge (Gym 8)</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #1e3a8a;">HM08: Dive (Lặn biển)</td>
-            <td style="padding: 12px 16px;">Lặn xuống lòng đại dương sâu thẳm tại các rãnh nước sâu màu xanh đậm.</td>
-            <td style="padding: 12px 16px;">Được Steven Stone trao tặng tại ngôi nhà riêng của anh ta ở góc tây bắc thành phố vũ trụ Mossdeep City (sau khi giải cứu trạm không gian Space Center).</td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #8b5cf6;">Mind Badge (Gym 7)</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>2. Bản tra cứu các Vật phẩm làm Nhiệm vụ Cốt truyện chính</h2>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(234, 88, 12, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left; width: 150px;">Vật phẩm</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left;">Cách thức sở hữu</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(234, 88, 12, 0.3); text-align: left;">Mục đích / Nhiệm vụ cốt truyện</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Letter (Thư gửi Steven)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Chủ tịch tập đoàn Devon Corporation tại Rustboro City giao phó sau khi bạn cứu nhân viên của ông ta.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đem giao cho Steven Stone đang nghiên cứu tranh đá cổ sâu trong hang <strong>Granite Cave</strong> (Dewford Town). Bạn sẽ được tặng TM47 Steel Wing.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Devon Parts</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đánh bại tên trộm Aqua Grunt trong hang Rusturf Tunnel để giành lại bưu kiện bị cướp.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đem giao cho thuyền trưởng Stern tại xưởng đóng tàu cảng Slateport City để tiếp tục tiến trình cốt truyện.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Devon Scope</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Steven Stone trao tặng tại cây cầu bắc qua sông trên Route 120 (gần Fortree City).</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dùng để dò quét phát hiện các chú tắc kè hoa **Kecleon** tàng hình đang chắn lối đi vào Gym Fortree và các lối rẽ bí mật.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Meteorite (Mảnh thiên thạch)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Gỡ mảnh đá phát sáng ra khỏi cỗ máy khoa học tại đỉnh núi lửa <strong>Mt. Chimney</strong> sau khi đánh bại thủ lĩnh băng phản diện.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mang đến Fallarbor Town trao trả cho Giáo sư Cozmo bị bắt cóc để nhận đĩa chiêu thức TM27 Return rất mạnh.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Go-Goggles (Kính cát)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đối thủ trao tặng ngay trước cửa Petalburg Gym sau khi bạn đánh bại ông bố Norman.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dùng để bảo vệ mắt, cho phép đi xuyên qua cơn bão cát khổng lồ càn quét sa mạc Route 111 (nơi có tháp Mirage Tower).</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #ec4899;">Magma Emblem</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nhặt được tại đỉnh núi mộ cổ Mt. Pyre mạn sườn đồi sương mù.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Mở ra cánh cổng đá bí mật dẫn vào tổng bộ căn cứ ngầm Magma Hideout ẩn sâu trên sườn dốc Jagged Pass.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Scanner (Máy quét cổ)</td>
-            <td style="padding: 12px 16px;">Tìm thấy phát sáng dưới khoang tàu đắm ngập nước sâu của xác tàu Abandoned Ship (Route 108) (cần chiêu Dive để lặn).</td>
-            <td style="padding: 12px 16px;">Đem giao cho thuyền trưởng Stern tại Slateport cảng để đổi lấy vật phẩm tiến hóa cực hiếm cho Clamperl: <strong>DeepSeaTooth</strong> hoặc <strong>DeepSeaScale</strong>.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>3. Các giao dịch trao đổi Pokémon NPC (In-Game Trades)</h2>
-      <p>Các NPC hữu ích dọc hành trình Hoenn sẵn lòng trao đổi những quái thú đặc hữu hiếm gặp:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(16, 185, 129, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Địa điểm NPC đứng</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center;">Bạn trao (Give)</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center;">Bạn nhận (Get)</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left;">Đánh giá chỉ số & Biệt danh Pokémon nhận</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà gỗ bên cạnh Gym (Rustboro City)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/280.png" style="max-width:32px;" /><br/>Ralts
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/273.png" style="max-width:32px;" /><br/><span style="color:#10b981; font-weight:bold;">Seedot</span>
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>DOTS</strong>. Giúp bạn sở hữu sớm Seedot (hệ Cỏ) để luyện cấp tiến hóa thành Shiftry cực ngầu mang song hệ Cỏ/Bóng Tối gánh team rất ổn định.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà nhỏ mạn nam Fortree City</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/313.png" style="max-width:32px;" /><br/>Volbeat
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/312.png" style="max-width:32px;" /><br/><span style="color:#fbbf24; font-weight:bold;">Plusle</span>
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>PULS-LE</strong>. Mang sẵn vật phẩm <strong>Wood Charcoal</strong> tăng sát thương hệ Lửa. Chú chuột điện Plusle này thăng cấp cực nhanh và có đòn giật điện tốc độ cao rất lợi hại để trị hệ Nước.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold;">Căn nhà nổi mạn nam thị trấn Pacifidlog Town</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/371.png" style="max-width:32px;" /><br/>Bagon
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/116.png" style="max-width:32px;" /><br/><span style="color:#60a5fa; font-weight:bold;">Horsea</span>
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Biệt danh: <strong>SEASOR</strong>. Pokémon mang kèm Dragon Scale. Bạn có thể huấn luyện nó tiến hóa lên Kingdra - một trong những kỵ sĩ rồng biển rực rỡ nhất game Hoenn!</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold;">Căn nhà tranh ở mạn đông khu Battle Frontier</td>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/300.png" style="max-width:32px;" /><br/>Skitty
-            </td>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" style="max-width:32px;" /><br/><span style="color:#cbd5e1; font-weight:bold;">Meowth</span>
-            </td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Biệt danh: <strong>MEOWTHY</strong>. Cách duy nhất để lấy được chú mèo chiêu tài Meowth chính chủ Gen 1 tại vùng Hoenn. Nó mang sẵn Retro Mail rất dễ thương để sưu tầm!</td>
-          </tr>
-        </tbody>
-      </table>
     `
   }
 ];
@@ -1690,159 +1411,6 @@ export const ENGLISH_EMERALD_CHAPTERS = [
       <blockquote>
         <strong>Victory Reward:</strong> The <strong>Stone Badge</strong> (which allows you to use HM01 Cut outside of battle) and the TM move <strong>TM39 Rock Tomb</strong>.
       </blockquote>
-    `
-  },
-  {
-    gameVersion: "emerald",
-    chapterTitle: "Chapter 11: Rare & Legendary Pokémon Secrets (Late-game / Post-game)",
-    order: 11,
-    language: "en",
-    content: `
-      <h1>Chapter 11: Rare & Legendary Pokémon Secrets (Late-game / Post-game)</h1>
-      <p>Beyond the main storyline, Hoenn holds an extraordinary post-game filled with legendary giants and extremely rare mythical species waiting to be captured.</p>
-
-      <!-- SECTION 1: RAYQUAZA MASCOT CARD -->
-      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. The Emperor of the Skies: Rayquaza</h2>
-      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3); margin-bottom: 24px;">
-        <div style="flex: 1; text-align: center; min-width: 150px;">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="Rayquaza" style="max-width: 140px; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
-        </div>
-        <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Mascot - Sovereign of the Sky</span>
-          <h3 style="color: #34d399; margin: 8px 0; font-size: 22px;">Sky High Deity: Rayquaza (#384)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Dragon / Flying | <strong>Level:</strong> 70</p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location & Capture Guide:</strong> Resting at the apex of the chasm-ridden <strong>Sky Pillar</strong> (Route 131). After awakening Rayquaza to resolve the climate crisis in Sootopolis City, you can immediately ascend the tower and challenge it <strong>before facing the Elite Four</strong>! Be sure to bring the high-speed <strong>Mach Bike</strong> to dash across the fragile, collapsing floor tiles.</p>
-        </div>
-      </div>
-
-      <!-- SECTION 2: LATIAS & LATIOS ROAMING -->
-      <h2 style="color: #ec4899; border-left: 4px solid #ec4899; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. The Eon Guardians: Latias & Latios</h2>
-      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(236, 72, 153, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.2); margin-bottom: 24px;">
-        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center; gap: 15px;">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png" alt="Latias" style="max-width: 80px; filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png" alt="Latios" style="max-width: 80px; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1) rotate(-5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
-        </div>
-        <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Roaming Wilderness Guardians</span>
-          <h3 style="color: #f472b6; margin: 8px 0; font-size: 22px;">Latias (#380) & Latios (#381)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Dragon / Psychic | <strong>Level:</strong> 40</p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Sensing the Eon Pair:</strong> After successfully registering in the Hall of Fame, your mother will ask you about a colored Pokémon seen on the TV downstairs:
-            <br/>• <strong>Select Red:</strong> Latias will roam Hoenn's grass patches and sea routes completely at random.
-            <br/>• <strong>Select Blue:</strong> Latios will roam Hoenn's grass patches and sea routes completely at random.
-          </p>
-        </div>
-      </div>
-      <blockquote>
-        <strong>Eon Capturing Strategy:</strong> Since they flee immediately on turn one, lead with a Pokémon using <em>Mean Look</em> (e.g., Crobat, Golbat) or a Pokémon with the <em>Shadow Tag</em> ability (e.g., Wobbuffet). Chip down their HP and throw Ultra Balls or use your Master Ball!
-      </blockquote>
-
-      <!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->
-      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. The Ancient Masters: Groudon & Kyogre</h2>
-      <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">Unlike Ruby/Sapphire, Emerald grants you access to both primals at Level 70 during the post-game:</p>
-
-      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
-        <!-- GROUDON CARD -->
-        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2);">
-          <div style="flex: 1; text-align: center; min-width: 140px;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png" alt="Groudon" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
-          </div>
-          <div style="flex: 3; min-width: 250px;">
-            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Colossus of the Continents</span>
-            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Landmass Colossus: Groudon (#383)</h3>
-            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Ground | <strong>Level:</strong> 70</p>
-            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Capture Guide:</strong> Report to the lead scientist on the second floor of the Weather Institute (Route 119). When he signals a major <strong>"Drought"</strong>, travel swiftly to the designated land Route to locate the temporary entrance of the subterranean <strong>Terra Cave</strong>.</p>
-          </div>
-        </div>
-
-        <!-- KYOGRE CARD -->
-        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);">
-          <div style="flex: 1; text-align: center; min-width: 140px;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
-          </div>
-          <div style="flex: 3; min-width: 250px;">
-            <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Titan of the Deep Oceans</span>
-            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Sea Basin Ruler: Kyogre (#382)</h3>
-            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Water | <strong>Level:</strong> 70</p>
-            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Capture Guide:</strong> When the Weather Institute scientist points out extreme <strong>"Heavy Rain"</strong>, sail immediately to the indicated marine Route. Use Surf and Dive to submerge into deep ocean trenches to discover the submarine <strong>Marine Cave</strong>.</p>
-          </div>
-        </div>
-      </div>
-      <blockquote>
-        <strong>Urgent Warning:</strong> Hunt these titans down immediately! If you enter too many battles or spend too much time on other routes, the weather conditions will normalize, and the caves will move to completely different random Routes.
-      </blockquote>
-
-      <!-- SECTION 4: LEGENDARY TITANS REGIS -->
-      <h2 style="color: #fbbf24; border-left: 4px solid #fbbf24; padding-left: 12px; margin-top: 32px; font-size: 22px;">4. The Legacy of Stone, Ice & Steel: The Regis</h2>
-      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(251, 191, 36, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.2); margin-bottom: 24px;">
-        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center; gap: 8px;">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/377.png" alt="Regirock" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(217, 119, 6, 0.6));" />
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/378.png" alt="Regice" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));" />
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/379.png" alt="Registeel" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(148, 163, 184, 0.6));" />
-        </div>
-        <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(251, 191, 36, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Ancient Golem Defenders</span>
-          <h3 style="color: #fbbf24; margin: 8px 0; font-size: 22px;">Regirock (#377) | Regice (#378) | Registeel (#379)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Level:</strong> 40 | <strong>Key Trigger:</strong> Sealed Chamber</p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Breaking the Seal:</strong> Prepare a party with <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> in the <strong>FIRST</strong> slot and <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> in the <strong>LAST</strong> slot. Surf into the strong currents on Route 134, Dive down into the underwater cavern, and read the braille symbols. Use <strong>Dig</strong> to breach the inner room, and read the final tablet to awaken the seals worldwide.</p>
-        </div>
-      </div>
-
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Golem</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Location</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Puzzle Solution</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/377.png" alt="Regirock" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #b45309;">Regirock (Lvl 40)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Desert Ruins (Route 111 Desert)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Read the Braille message, walk Left 2 steps, Down 2 steps, and execute <strong>Rock Smash</strong>.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/378.png" alt="Regice" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Regice (Lvl 40)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Island Cave (Route 105 Ocean)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Read the Braille message, then run a single complete lap around the perimeter of the room without stopping.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/379.png" alt="Registeel" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #94a3b8;">Registeel (Lvl 40)</td>
-            <td style="padding: 12px 16px;">Ancient Tomb (Route 120 Ridge)</td>
-            <td style="padding: 12px 16px;">Read the Braille message, stand directly in the dead center of the room, and use <strong>Flash</strong>.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- SECTION 5: MYTHICAL JIRACHI, DEOXYS & MEW -->
-      <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">5. Cosmic Myths & Lost Horizons: Jirachi, Deoxys & Mew</h2>
-      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2); margin-bottom: 24px;">
-        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center; gap: 10px;">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/385.png" alt="Jirachi" style="max-width: 60px; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png" alt="Deoxys" style="max-width: 60px; filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" style="max-width: 60px; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
-        </div>
-        <div style="flex: 3; min-width: 250px;">
-          <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Legendary Mythical Event Species</span>
-          <h3 style="color: #c084fc; margin: 8px 0; font-size: 22px;">Jirachi (#385) | Deoxys (#386) | Mew (#151)</h3>
-          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Cosmic Mythical Encounters</strong></p>
-          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>How to trigger their exclusive events:</strong>
-            <br/>• <strong>Deoxys (Lvl 30):</strong> Use the rare event item <strong>Aurora Ticket</strong> to board the S.S. Tidal at Lilycove. Land at the isolated triangular reef of <strong>Birth Island</strong> and solve the sliding red triangle puzzle in the fewest steps to summon this alien invader!
-            <br/>• <strong>Mew (Lvl 30):</strong> Use the mythical item <strong>Old Sea Map</strong> to sail the S.S. Tidal to the misty jungles of <strong>Faraway Island</strong>. Pursue Mew's playful, transparent silhouette through the sprawling tall grass.
-            <br/>• <strong>Jirachi (Lvl 5):</strong> Downloadable exclusively via the official GBA-GameCube link cable from the bonus disc of <em>Pokémon Colosseum</em> or <em>Pokémon Channel</em> (European version).
-          </p>
-        </div>
-      </div>
     `
   },
   {
