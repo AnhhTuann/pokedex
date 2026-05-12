@@ -1016,69 +1016,177 @@ export const X_CHAPTERS = [
     language: 'vi',
     content: `
       <h1>Phần 15: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt</h1>
-      <p>Kalos là nơi ẩn náu của những Pokémon huyền thoại tối cao đến từ cả Kanto cổ đại lẫn Kalos sinh thái. Hãy cùng khám phá và thu phục chúng!</p>
+      <p>Vùng đất Kalos ẩn chứa những thực thể quyền năng tối thượng, từ các vị thần sinh thái điều hòa thế giới cho đến những Pokémon nhân tạo hay sinh vật huyền ảo ngoài tầm hiểu biết. Dưới đây là cẩm nang toàn diện để tìm kiếm, đối đầu và thu phục toàn bộ các thần thú tối cao trong game!</p>
 
-      <h2>1. Siêu Thú Nhân Tạo: Mewtwo (#150)</h2>
-      <p>Sau khi phá đảo Pokémon League, hang động bí mật <strong>Unknown Dungeon</strong> nằm sâu bên trong khu rừng <strong>Pokémon Village</strong> (phía tây nam Snowbelle City) sẽ mở cửa:</p>
-      <ul>
-        <li>Vượt qua mê cung nước sâu tiến vào hang, bạn sẽ chạm trán trực tiếp với siêu phẩm nhân tạo <strong>Mewtwo (Level 70)</strong> sừng sững trên bục đá cổ.</li>
-        <li><strong>Trận chiến thu phục:</strong> Mewtwo có sát thương phép cực kỳ khủng khiếp. Hãy đem theo Pokémon hệ Bóng tối để miễn nhiễm hoàn toàn đòn Psychic của nó, rút máu và sử dụng Ultra Ball hoặc Master Ball để thu phục.</li>
-        <li><strong>Đá Tiến Hóa Mega:</strong> Ngay sau khi bắt thành công Mewtwo, bạn sẽ nhận được viên đá tiến hóa tối thượng tương ứng: <strong>Mewtwonite X</strong> (trong bản X, biến Mewtwo thành hệ Siêu linh/Giác đấu với sát thương vật lý hủy diệt) hoặc <strong>Mewtwonite Y</strong> (trong bản Y).</li>
-      </ul>
+      <!-- 1. XERNEAS / YVELTAL CARD -->
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 24px; margin: 24px 0; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 1; min-width: 200px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/716.png" alt="Xerneas" style="max-width: 200px; filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 2; min-width: 300px;">
+          <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Pokémon Huyền Thoại Độc Quyền</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 24px;">Thần Nai Sinh Mệnh: Xerneas (#716)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">Đại diện cho sự vĩnh cửu và sinh mệnh ngời sáng, vị thần tối cao của Kalos sẽ thức tỉnh từ hình dạng gốc cây cổ thụ để đối mặt với bạn tại hang ổ của Team Flare.</p>
+          <ul style="color: #cbd5e1; line-height: 1.6; padding-left: 20px; margin: 0;">
+            <li><strong>Vị trí:</strong> Đáy hầm <strong>Team Flare Secret HQ</strong> tại Geosenge Town (bắt buộc theo cốt truyện trước khi đấu Lysandre lần cuối).</li>
+            <li><strong>Thông số:</strong> Đạt cấp độ 50, sở hữu hệ Tiên (Fairy) thuần túy với đặc tính siêu mạnh <strong>Fairy Aura</strong> tăng 33% sát thương Tiên thuật.</li>
+            <li><strong>Chiêu thức:</strong> Gravity, Geomancy, Moonblast, Megahorn.</li>
+            <li><strong>Mẹo chiến đấu:</strong> Hãy đem theo hệ Thép (Steel) hoặc Độc (Poison) để kháng các đòn Tiên thuật của Xerneas. Rút máu từ từ và sử dụng Ultra Ball. Do bắt buộc theo cốt truyện, tỉ lệ bắt của Xerneas cực kỳ cao!</li>
+          </ul>
+        </div>
+      </div>
 
-      <h2>2. Thần Rồng Sinh Thái: Zygarde (#718)</h2>
-      <p>Nằm ẩn sâu trong lòng đất là thần rồng sinh thái bảo hộ Kalos - <strong>Zygarde</strong>:</p>
-      <ul>
-        <li>Tiến đến <strong>Route 18</strong>, đi xuống hầm mỏ bỏ hoang <strong>Terminus Cave</strong>. Để chuẩn bị tốt nhất, bạn cần mang theo Pokémon biết chiêu Rock Smash và Flash.</li>
-        <li>Vượt qua tầng hầm sâu nhất của hang động tối tăm, bạn sẽ thấy thần rồng <strong>Zygarde (Form 50%, Level 70)</strong> mang song hệ Rồng/Đất (Dragon/Ground) uy nghi ngự trị.</li>
-        <li>Hãy dùng các đòn đánh hệ Băng (Ice) cẩn thận để rút máu (Zygarde nhận x4 sát thương từ Băng) và dùng Dusk Ball hoặc Ultra Ball để thu phục.</li>
-      </ul>
+      <!-- 2. MEWTWO & MEGAS CARD -->
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 24px; margin: 24px 0; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 2; min-width: 300px;">
+          <span style="background-color: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Siêu Thú Cổ Đại Nhân Tạo</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 24px;">Vua Siêu Linh: Mewtwo (#150)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">Sau khi đăng quang Champion tại Pokémon League, hang động cấm địa <strong>Unknown Dungeon</strong> ẩn sâu trong khu rừng Pokémon Village (Tây Nam Snowbelle City) sẽ chính thức mở cửa để chào đón vị vua thực sự.</p>
+          <ul style="color: #cbd5e1; line-height: 1.6; padding-left: 20px; margin: 0;">
+            <li><strong>Vị trí:</strong> Đáy hang <strong>Unknown Dungeon</strong>.</li>
+            <li><strong>Thông số:</strong> Đạt cấp độ 70 sừng sững, mang hệ Siêu Linh (Psychic). Sát thương phép vô địch thiên hạ.</li>
+            <li><strong>Chiêu thức:</strong> Psychic, Amnesia, Aura Sphere, Recover (Tự hồi máu cực kỳ ức chế!).</li>
+            <li><strong>Mẹo bắt giữ:</strong> Đem theo một Pokémon hệ Bóng Tối (Dark) như Aegislash hoặc Hydreigon để miễn nhiễm hoàn toàn chiêu Psychic cực mạnh của nó. Chuẩn bị đòn ru ngủ (Spore/Yawn) và ném Dusk Ball khi tối trời hoặc Master Ball để ăn ngay!</li>
+            <li><strong>Tiến hóa Mega tối thượng:</strong> Sau khi thu phục thành công, bạn sẽ nhặt được viên đá Tiến hóa Mega độc quyền tương ứng: <strong>Mewtwonite X</strong> (Biến Mewtwo thành Mega Mewtwo X mang song hệ Siêu Linh/Giác Đấu với chỉ số Tấn công Vật lý 190 hủy diệt) hoặc <strong>Mewtwonite Y</strong> (Biến thành Mega Mewtwo Y cực mạnh phép thuật).</li>
+          </ul>
+        </div>
+        <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 140px; filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));" />
+          <div style="display: flex; gap: 8px;">
+            <div style="text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png" alt="Mega Mewtwo X" style="max-width: 70px;" />
+              <div style="font-size: 10px; color: #a78bfa; font-weight: bold; margin-top: 4px;">Mega X</div>
+            </div>
+            <div style="text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10045.png" alt="Mega Mewtwo Y" style="max-width: 70px;" />
+              <div style="font-size: 10px; color: #c084fc; font-weight: bold; margin-top: 4px;">Mega Y</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <h2>3. Bộ Ba Chim Huyền Thoại Kanto Roaming</h2>
-      <p>Một trong ba thần điêu huyền thoại vùng Kanto sẽ xuất hiện bay lượn hoang dã quanh Kalos tùy thuộc vào Pokémon khởi đầu thế hệ 6 bạn đã chọn ban đầu:</p>
+      <!-- 3. ZYGARDE CARD -->
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px; margin: 24px 0; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 1; min-width: 200px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png" alt="Zygarde" style="max-width: 180px; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5));" />
+          <div style="font-size: 11px; color: #10b981; font-weight: bold; margin-top: 8px;">Dạng 50% Sinh Thái</div>
+        </div>
+        <div style="flex: 2; min-width: 300px;">
+          <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Long Bảo Hộ Sinh Thái</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 24px;">Hộ Vệ Trái Đất: Zygarde (#718)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">Người bảo hộ vĩ đại của trật tự sinh thái Kalos ẩn nấp sâu dưới lòng đất, quan sát thế giới và chuẩn bị thức tỉnh hình dạng Complete Form khi hành tinh gặp họa diệt vong.</p>
+          <ul style="color: #cbd5e1; line-height: 1.6; padding-left: 20px; margin: 0;">
+            <li><strong>Vị trí:</strong> Ca tầng sâu nhất của hầm mỏ bỏ hoang <strong>Terminus Cave</strong> (Route 18). Cần chuẩn bị Pokémon học chiêu Rock Smash và Flash để soi đường.</li>
+            <li><strong>Thông số:</strong> Cấp độ 70, mang song hệ Rồng / Đất (Dragon / Ground) với đặc tính Aura Break.</li>
+            <li><strong>Mẹo bắt giữ:</strong> Tuy có HP siêu khủng, Zygarde cực kỳ sợ hệ Băng (nhận x4 sát thương). Hãy dùng đòn hệ Băng thật cẩn thận để rút máu nhanh, sau đó gây trạng thái Tê liệt hoặc Ngủ để dễ dàng thu phục bằng Dusk Ball.</li>
+          </ul>
+        </div>
+      </div>
 
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; width: 120px;">Starter ban đầu</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Thần thú xuất hiện</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Hệ</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Quy trình thu phục đặc biệt</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Chespin (Cỏ)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Băng / Bay</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);" rowspan="3">
-              1. Thần thú sẽ xuất hiện ngẫu nhiên trong bụi cỏ trên khắp Kalos. Ngay khi bắt đầu trận, nó sẽ <strong>chạy trốn ngay lập tức</strong> trước khi bạn kịp ra đòn.<br/>
-              2. Sử dụng bản đồ Pokédex để theo dõi dấu vết của nó. Bạn phải chạm trán với nó đủ <strong>11 lần</strong>.<br/>
-              3. Sau lần thứ 11, chim thần sẽ di chuyển cố định về hòn đảo nhỏ phía bắc Route 12 - <strong>Sea Spirit's Den</strong>. Hãy chèo thuyền tới đó để bắt đầu trận đấu thu phục thực sự ở cấp độ 70!
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Fennekin (Lửa)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #eab308;">Zapdos</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện / Bay</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #3b82f6;">Froakie (Nước)</td>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Moltres</td>
-            <td style="padding: 12px 16px;">Lửa / Bay</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- 4. ROAMING BIRDS -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 24px; margin: 24px 0;">
+        <h2 style="margin: 0 0 12px 0; color: #f1f5f9; font-size: 22px; border-left: 4px solid #ef4444; padding-left: 12px;">3. Chim Thần Di Trú Kanto Roaming</h2>
+        <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 20px 0;">Tùy thuộc vào Pokémon khởi đầu mà bạn chọn ban đầu tại Aquacorde Town, một trong ba chim thần huyền thoại vùng Kanto sẽ bắt đầu bay lượn ngẫu nhiên trên bãi cỏ hoang của Kalos:</p>
+
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(255, 255, 255, 0.04);">
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; width: 130px; color: #cbd5e1;">Hệ Starter</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 120px; color: #cbd5e1;">Artwork</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; color: #cbd5e1;">Chim Thần Thách Đấu</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; color: #cbd5e1;">Hệ</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; color: #cbd5e1;">Phương thức săn tìm bí truyền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Chespin (Hệ Cỏ)</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" style="max-width: 65px; filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.4));" />
+              </td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Băng Điểu: Articuno</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #94a3b8;">Băng / Bay</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);" rowspan="3">
+                <strong>Hành trình đầy gian khổ:</strong><br/>
+                1. Chim thần sẽ xuất hiện ngẫu nhiên trong các bụi cỏ hoang trên toàn Kalos. Ngay khi chạm trán lượt đầu tiên, chúng sẽ <strong>chạy trốn ngay tức khắc</strong> trước khi bạn kịp hành động.<br/>
+                2. Bạn phải mở Pokédex, liên tục di chuyển giữa các bạt cỏ và chạm mặt nó đủ <strong>11 lần</strong>.<br/>
+                3. Sau lần thứ 11, chim thần sẽ mệt mỏi và bay về ẩn náu cố định tại hòn đảo nhỏ phía bắc Route 12 - <strong>Sea Spirit's Den</strong>. Hãy chèo thuyền tới đây, bước vào hang để chính thức kích hoạt trận chiến thu phục thực sự ở cấp độ 70!
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Fennekin (Hệ Lửa)</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" style="max-width: 65px; filter: drop-shadow(0 0 5px rgba(234, 179, 8, 0.4));" />
+              </td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #eab308;">Lôi Điểu: Zapdos</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #94a3b8;">Điện / Bay</td>
+            </tr>
+            <tr>
+              <td style="padding: 16px; font-weight: bold; color: #3b82f6;">Froakie (Hệ Nước)</td>
+              <td style="padding: 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" style="max-width: 65px; filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4));" />
+              </td>
+              <td style="padding: 16px; font-weight: bold; color: #ef4444;">Hỏa Điểu: Moltres</td>
+              <td style="padding: 16px; color: #94a3b8;">Lửa / Bay</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MYTHICAL SECTION -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 16px; padding: 24px; margin: 32px 0;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <span style="background: linear-gradient(90deg, #ec4899, #8b5cf6); color: #ffffff; padding: 6px 16px; border-radius: 9999px; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Mật Lệnh Sự Kiện</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 26px;">Bí Mật Sự Kiện Các Thần Thú Huyền Ảo (Mythical Pokémon)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; max-width: 600px; margin: 0 auto;">Những Pokémon Huyền Ảo siêu cấp quý hiếm không thể thu phục bằng cách thông thường, chỉ xuất hiện qua các sự kiện đặc biệt của Nintendo hoặc chuyển giao dữ liệu!</p>
+        </div>
+
+        <!-- DIANCIE CARD -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/719.png" alt="Diancie" style="max-width: 110px; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10075.png" alt="Mega Diancie" style="max-width: 90px; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3));" />
+            <span style="font-size: 10px; color: #ec4899; font-weight: bold;">Mega Diancie</span>
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #ec4899; font-size: 20px;">1. Công Chúa Đá Quý: Diancie (#719)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Mang song hệ Đá / Tiên (Rock / Fairy). Diancie được tạo ra từ một đột biến đột ngột của Carbink dưới áp lực địa tầng khổng lồ sâu trong lòng đất Kalos.</p>
+            <blockquote style="border-left: 3px solid #ec4899; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Bí mật Tiến hóa Mega:</strong> Chuyển giao Diancie vào đội hình của bạn, sau đó bước vào bất kỳ <strong>Pokémon Center</strong> nào tại Hoenn (trong Omega Ruby/Alpha Sapphire) hoặc Kalos. Một sự kiện đặc biệt sẽ kích hoạt khi các nhân vật quản lý xuất hiện và trao cho bạn viên đá tiến hóa thần thánh <strong>Diancite</strong>! Giúp Diancie biến thành Mega Diancie rực rỡ tuyệt mỹ.
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- HOOPA CARD -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/720.png" alt="Hoopa Confined" style="max-width: 110px; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10086.png" alt="Hoopa Unbound" style="max-width: 110px; filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));" />
+            <span style="font-size: 10px; color: #a855f7; font-weight: bold;">Hoopa Giải Thoát (Unbound)</span>
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #a855f7; font-size: 20px;">2. Thần Ma Vòng Tròn: Hoopa (#720)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Trong dạng thông thường (Confined), Hoopa mang song hệ Siêu Linh / Ma (Psychic / Ghost). Chú ma tinh nghịch này sở hữu những chiếc vòng ma thuật bẻ cong không gian để dịch chuyển vạn vật qua hàng ngàn dặm.</p>
+            <blockquote style="border-left: 3px solid #a855f7; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Sự kiện Giải thoát Xiềng Xích (Prison Bottle):</strong> Khi bạn mang theo Hoopa trong đội hình tiến vào bất kỳ cửa hàng tiện lợi <strong>Poké Mart</strong> nào, nhân viên thu ngân sẽ sợ hãi kể cho bạn câu chuyện rùng rợn về một chiếc bình cổ trong kho. Anh ta sẽ trao cho bạn chiếc <strong>Prison Bottle (Nồi Giam Giữ)</strong>. Sử dụng bảo vật này lên Hoopa để phá vỡ phong ấn, biến đổi nó thành thực thể khổng lồ 6 tay hủy diệt **Hoopa Unbound (Hoopa Giải Thoát)** mang song hệ Siêu Linh / Bóng Tối cực mạnh!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- VOLCANION CARD -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/721.png" alt="Volcanion" style="max-width: 125px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #f87171; font-size: 20px;">3. Cỗ Máy Hơi Nước: Volcanion (#721)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Pokémon đầu tiên và duy nhất sở hữu song hệ tương khắc tuyệt đối: **Lửa / Nước (Fire / Water)**. Nó tạo ra áp suất hơi nước cực đại trong khoang động cơ của mình để thổi bay cả những dãy núi lớn.</p>
+            <blockquote style="border-left: 3px solid #f87171; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Bí mật Tư liệu Toà Soạn Lumiose:</strong> Mang theo Volcanion ghé thăm trụ sở toà soạn báo **Lumiose Press** tại thành phố Lumiose City (trong bản X/Y) hoặc đài truyền hình **TV Mauville** (trong bản ORAS). Bạn sẽ kích hoạt sự kiện độc thoại với một nhà báo tâm huyết, mở khóa hồ sơ tài liệu tuyệt mật nghiên cứu về xuất thân bí ẩn của cỗ máy hơi nước cơ khí này sâu trong rặng núi hoang vu của Kalos.
+            </blockquote>
+          </div>
+        </div>
+      </div>
     `
   },
   {
@@ -2157,69 +2265,177 @@ export const ENGLISH_X_CHAPTERS = [
     language: 'en',
     content: `
       <h1>Chapter 15: Secrets of Ultra Rare & Legendary Beasts</h1>
-      <p>Kalos hides ancient powerhouses from both the original Kanto region and its own ecosystem. Here's how to hunt down and secure these legendary titans!</p>
+      <p>The beautiful region of Kalos shelters ancient entities of colossal power. From the ecosystem guardians of order to custom bio-engineered weapons and event-exclusive mythical beings, here is your definitive, premium guide to hunting and securing them all!</p>
 
-      <h2>1. The Genetic Monster - Mewtwo (#150)</h2>
-      <p>After conquering the Pokémon League, the locked cave in <strong>Pokémon Village</strong> (southwest of Snowbelle City) known as the <strong>Unknown Dungeon</strong> will open:</p>
-      <ul>
-        <li>In its deepest chamber, you'll find <strong>Mewtwo (Level 70)</strong> waiting on a stone dais.</li>
-        <li><strong>Capture Strategy:</strong> Mewtwo uses extremely powerful psychic moves. Dark-type Pokémon are completely immune, making them the perfect walls. Put it to sleep, lower its HP, and use Dusk/Ultra Balls or your Master Ball.</li>
-        <li><strong>Mega Stones:</strong> Upon capturing Mewtwo, you will immediately receive its version-exclusive Mega Stone: <strong>Mewtwonite X</strong> (in Pokémon X, transforms Mewtwo into a physical powerhouse, Psychic/Fighting type) or <strong>Mewtwonite Y</strong> (in Pokémon Y).</li>
-      </ul>
+      <!-- 1. XERNEAS / YVELTAL CARD -->
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 24px; margin: 24px 0; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 1; min-width: 200px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/716.png" alt="Xerneas" style="max-width: 200px; filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 2; min-width: 300px;">
+          <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Version Exclusive Legendary</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 24px;">The Life Deity: Xerneas (#716)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">Representing eternity and the brilliance of life, Kalos's crown jewel awakens from its tree-like dormant state to face you in the depths of Team Flare's headquarters.</p>
+          <ul style="color: #cbd5e1; line-height: 1.6; padding-left: 20px; margin: 0;">
+            <li><strong>Location:</strong> Deepest chamber of the <strong>Team Flare Secret HQ</strong> in Geosenge Town (mandatory story event before fighting Lysandre for the final time).</li>
+            <li><strong>Stats & Details:</strong> Level 50, pure Fairy-type. Its signature <strong>Fairy Aura</strong> ability raises the power of all Fairy-type attacks on the field by 33.3%!</li>
+            <li><strong>Moveset:</strong> Gravity, Geomancy, Moonblast, Megahorn.</li>
+            <li><strong>Battle Strategy:</strong> Bring Steel-type or Poison-type Pokémon to counter and resist its devastating Fairy moves. Lower its HP slowly and throw Ultra/Dusk Balls. Since catching it is mandatory for story progression, its catch rate is exceptionally generous!</li>
+          </ul>
+        </div>
+      </div>
 
-      <h2>2. Ecosystem Guardian - Zygarde (#718)</h2>
-      <p>The dragon god of order resides deep beneath the surface:</p>
-      <ul>
-        <li>Head to <strong>Route 18</strong> and enter the abandoned coal mine, <strong>Terminus Cave</strong>. Bring Pokémon with Rock Smash and Flash.</li>
-        <li>Descend to the deepest floor to find <strong>Zygarde (50% Form, Level 70)</strong>, the magnificent Dragon/Ground guardian.</li>
-        <li>Be extremely careful as it takes 4x damage from Ice moves. Dusk/Ultra Balls are ideal here.</li>
-      </ul>
+      <!-- 2. MEWTWO & MEGAS CARD -->
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 24px; margin: 24px 0; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 2; min-width: 300px;">
+          <span style="background-color: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Artificial Psychic Deity</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 24px;">Gen 1 Masterpiece: Mewtwo (#150)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">After you claim the title of Champion at the Pokémon League, the locked gates of the <strong>Unknown Dungeon</strong> inside the misty forest of Pokémon Village (southwest of Snowbelle City) will open to receive you.</p>
+          <ul style="color: #cbd5e1; line-height: 1.6; padding-left: 20px; margin: 0;">
+            <li><strong>Location:</strong> Deepest cavern of <strong>Unknown Dungeon</strong>.</li>
+            <li><strong>Stats & Details:</strong> Level 70, pure Psychic-type. Unmatched special attacking power.</li>
+            <li><strong>Moveset:</strong> Psychic, Amnesia, Aura Sphere, Recover (highly annoying self-healing!).</li>
+            <li><strong>Capture Tip:</strong> Lead with a Dark-type wall (like Hydreigon or Aegislash with immunity) to fully neutralize its Psychic spam. Put it to sleep, reduce its HP to red, and throw Dusk/Ultra Balls, or simply deploy your Master Ball.</li>
+            <li><strong>Ultimate Mega Evolution:</strong> Upon successful capture, you will receive its version-exclusive Mega Stone: <strong>Mewtwonite X</strong> (in Pokémon X, transforms Mewtwo into a physical powerhouse, Psychic/Fighting type) or Mewtwonite Y (in Pokémon Y).</li>
+          </ul>
+        </div>
+        <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 140px; filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));" />
+          <div style="display: flex; gap: 8px;">
+            <div style="text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png" alt="Mega Mewtwo X" style="max-width: 70px;" />
+              <div style="font-size: 10px; color: #a78bfa; font-weight: bold; margin-top: 4px;">Mega X</div>
+            </div>
+            <div style="text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10045.png" alt="Mega Mewtwo Y" style="max-width: 70px;" />
+              <div style="font-size: 10px; color: #c084fc; font-weight: bold; margin-top: 4px;">Mega Y</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <h2>3. The Roaming Legendary Birds of Kanto</h2>
-      <p>One of Kanto's legendary birds will roam Kalos based on which Kalos Starter you selected at the start of your journey:</p>
+      <!-- 3. ZYGARDE CARD -->
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px; margin: 24px 0; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 1; min-width: 200px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png" alt="Zygarde" style="max-width: 180px; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5));" />
+          <div style="font-size: 11px; color: #10b981; font-weight: bold; margin-top: 8px;">50% Forme (Order Deity)</div>
+        </div>
+        <div style="flex: 2; min-width: 300px;">
+          <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Ecosystem Order Guardian</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 24px;">The Dragon Warden: Zygarde (#718)</h2>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">Watching silently from the shadows deep within the Earth, the warden of ecosystem balance is preparing to unite its cells into its Complete Forme should Kalos face planetary catastrophe.</p>
+          <ul style="color: #cbd5e1; line-height: 1.6; padding-left: 20px; margin: 0;">
+            <li><strong>Location:</strong> The deepest cavern floor of the abandoned mine, <strong>Terminus Cave</strong> (Route 18). Ensure you bring Pokémon with Flash and Rock Smash to navigate.</li>
+            <li><strong>Stats & Details:</strong> Level 70, Dragon / Ground type with the Aura Break ability.</li>
+            <li><strong>Strategy:</strong> Zygarde is highly vulnerable to Ice-type moves (4x damage!). Carefully land non-lethal Ice attacks to drain its HP to red, inflict sleep or paralysis, and capture using Dusk Balls.</li>
+          </ul>
+        </div>
+      </div>
 
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(255, 255, 255, 0.04);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; width: 120px;">Your Starter</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Legendary Bird</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Type</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">How to Capture</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Chespin (Grass)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ice / Flying</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);" rowspan="3">
-              1. The bird will start roaming the wild grass of Kalos. It will <strong>flee instantly</strong> as soon as the battle begins.<br/>
-              2. Use your Pokédex map to track its locations. You must encounter it <strong>11 times</strong>.<br/>
-              3. After the 11th encounter, it will fly to <strong>Sea Spirit's Den</strong> (Route 12). Land there to engage in a true Level 70 boss battle to capture it!
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Fennekin (Fire)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #eab308;">Zapdos</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Electric / Flying</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #3b82f6;">Froakie (Water)</td>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #ef4444;">Moltres</td>
-            <td style="padding: 12px 16px;">Fire / Flying</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- 4. ROAMING BIRDS -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 24px; margin: 24px 0;">
+        <h2 style="margin: 0 0 12px 0; color: #f1f5f9; font-size: 22px; border-left: 4px solid #ef4444; padding-left: 12px;">3. The Roaming Legendary Birds of Kanto</h2>
+        <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 20px 0;">Depending on which Kalos Starter you originally chose at the beginning of your adventure, one of Kanto's legendary birds will begin roaming the wild grass of Kalos:</p>
+
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+          <thead>
+            <tr style="background-color: rgba(255, 255, 255, 0.04);">
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; width: 130px; color: #cbd5e1;">Starter Type</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center; width: 120px; color: #cbd5e1;">Artwork</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; color: #cbd5e1;">Legendary Bird</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; color: #cbd5e1;">Type</th>
+              <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left; color: #cbd5e1;">How to Track & Capture</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Chespin (Grass)</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" style="max-width: 65px; filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.4));" />
+              </td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #94a3b8;">Ice / Flying</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);" rowspan="3">
+                <strong>An Arduous Journey:</strong><br/>
+                1. The bird will start roaming the wild grass of Kalos. As soon as you enter a battle, it will <strong>flee instantly</strong> before any moves can be commanded.<br/>
+                2. Use your Pokédex map tracking system to monitor its location. You must encounter it <strong>11 times</strong>.<br/>
+                3. After the 11th encounter, it will grow weary and roost permanently at <strong>Sea Spirit's Den</strong> (Route 12). Surf to the den and walk inside to engage in an epic, stationary Level 70 boss battle where you can finally catch it!
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Fennekin (Fire)</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" style="max-width: 65px; filter: drop-shadow(0 0 5px rgba(234, 179, 8, 0.4));" />
+              </td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #eab308;">Zapdos</td>
+              <td style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #94a3b8;">Electric / Flying</td>
+            </tr>
+            <tr>
+              <td style="padding: 16px; font-weight: bold; color: #3b82f6;">Froakie (Water)</td>
+              <td style="padding: 16px; text-align: center;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" style="max-width: 65px; filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4));" />
+              </td>
+              <td style="padding: 16px; font-weight: bold; color: #ef4444;">Moltres</td>
+              <td style="padding: 16px; color: #94a3b8;">Fire / Flying</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MYTHICAL SECTION -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 16px; padding: 24px; margin: 32px 0;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <span style="background: linear-gradient(90deg, #ec4899, #8b5cf6); color: #ffffff; padding: 6px 16px; border-radius: 9999px; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Event Mythicals</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 26px;">Secrets of the Elusive Mythical Pokémon</h2>
+          <p style="color: #94a3b8; line-height: 1.6; max-width: 600px; margin: 0 auto;">Mythical Pokémon cannot be caught through normal gameplay. They represent ultimate rarities obtainable via special Nintendo events or file transfers!</p>
+        </div>
+
+        <!-- DIANCIE CARD -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/719.png" alt="Diancie" style="max-width: 110px; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10075.png" alt="Mega Diancie" style="max-width: 90px; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3));" />
+            <span style="font-size: 10px; color: #ec4899; font-weight: bold;">Mega Diancie</span>
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #ec4899; font-size: 20px;">1. The Jewel Princess: Diancie (#719)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Rock / Fairy type. Diancie is born from a sudden, unexplained mutation of Carbink deep within the underground subterranean chambers of Kalos.</p>
+            <blockquote style="border-left: 3px solid #ec4899; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Mega Diancite Event:</strong> Transfer Diancie into your party and walk into any <strong>Pokémon Center</strong> in ORAS or X/Y. A special cinematic trigger will execute as the center staff recognizes Diancie and presents you with the rare <strong>Diancite</strong> Mega Stone to awaken Mega Diancie!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- HOOPA CARD -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/720.png" alt="Hoopa Confined" style="max-width: 110px; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10086.png" alt="Hoopa Unbound" style="max-width: 110px; filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));" />
+            <span style="font-size: 10px; color: #a855f7; font-weight: bold;">Hoopa Unbound</span>
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #a855f7; font-size: 20px;">2. The Djinn Ringmaster: Hoopa (#720)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">In its base (Confined) state, Hoopa is Psychic / Ghost. This trickster uses its golden hoops to wrap and warp space, warping massive objects across space.</p>
+            <blockquote style="border-left: 3px solid #a855f7; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Prison Bottle Unbinding Event:</strong> Walk into any <strong>Poké Mart</strong> with Hoopa in your active party. The cashier will relate a spooky story regarding a mysterious box item hidden in the back. He will gift you the <strong>Prison Bottle</strong>. Using this key item on Hoopa releases its spatial bonds, transforming it into the titanic 6-armed **Hoopa Unbound** (Psychic / Dark)!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- VOLCANION CARD -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/721.png" alt="Volcanion" style="max-width: 125px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #f87171; font-size: 20px;">3. Steam Turbine Juggernaut: Volcanion (#721)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">The only Pokémon in existence to bear the absolute contradictory dual typing of **Fire / Water**. It generates extreme thermal steam in its chest turbine to blow away entire mountains.</p>
+            <blockquote style="border-left: 3px solid #f87171; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Lumiose Press Hidden Files Event:</strong> Carry Volcanion to the <strong>Lumiose Press</strong> office in X/Y or <strong>TV Mauville</strong> station in ORAS. You'll trigger a secret monologue with a reporter, uncovering lost files on Volcanion's origins in the volcanic mountains of Kalos.
+            </blockquote>
+          </div>
+        </div>
+      </div>
     `
   },
   {

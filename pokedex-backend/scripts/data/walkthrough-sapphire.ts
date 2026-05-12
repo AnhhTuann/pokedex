@@ -411,22 +411,56 @@ export const SAPPHIRE_CHAPTERS = EMERALD_CHAPTERS.map(chapter => {
   // Chapter 11: Legendary (Latias roaming, Kyogre caught in story, Groudon uncatchable, Rayquaza Sky Pillar post-game, Regis Wailord 1st and Relicanth last)
   if (chapter.order === 11) {
     content = content
+      // Replace Section 2 Latias & Latios roaming with Latias only
       .replace(
-        /<li><strong>Chọn Red[\s\S]+?<\/ul>/,
-        `<li>Trong bản Sapphire, chú Pokémon rồng huyền thoại tinh nghịch <strong>Latias</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/380.png" style="max-width:32px; vertical-align:middle;" /> sẽ mặc định xuất hiện hoang dã bay lượn ngẫu nhiên trên toàn vùng biển Hoenn sau khi bạn phá đảo (không có lựa chọn màu sắc và không có Latios xuất hiện).</li>`
+        /<!-- SECTION 2: SONG LONG KHỞI NGUYÊN LATIAS & LATIOS -->[\s\S]+?<!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->/,
+        `<!-- SECTION 2: SONG LONG KHỞI NGUYÊN LATIAS & LATIOS -->
+      <h2 style="color: #ec4899; border-left: 4px solid #ec4899; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Thiên Long Di Trú: Latias</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(236, 72, 153, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png" alt="Latias" style="max-width: 120px; filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Di Trú hoang dã (Roaming)</span>
+          <h3 style="color: #f472b6; margin: 8px 0; font-size: 22px;">Thiên Long Di Trú: Latias (#380)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng / Siêu Linh | <strong>Cấp độ:</strong> 40</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách săn bắt:</strong> Trong phiên bản Sapphire, sau khi đánh bại Elite Four, bạn sẽ thức dậy ở nhà mình tại Littleroot Town. Hãy xuống nhà xem TV, bạn sẽ nghe bản tin về một Pokémon màu đỏ rực rỡ xuất hiện ở Hoenn. Chú rồng huyền thoại <strong>Latias</strong> sẽ lập tức xuất hiện hoang dã bay lượn ngẫu nhiên trên toàn bộ vùng biển Hoenn (không có Latios roaming).</p>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Mẹo bắt Latias:</strong> Do nó liên tục đổi Route ngẫu nhiên mỗi khi bạn di chuyển, hãy mang theo Pokémon có chiêu <em>Mean Look</em> (như Crobat, Golbat) hoặc Pokémon có đặc tính <em>Shadow Tag</em> (như Wobbuffet) để ngăn nó bỏ chạy. Ném Master Ball ngay lập tức hoặc làm suy yếu và quăng Ultra Ball!
+      </blockquote>
+
+      <!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->`
       )
+      // Replace Section 3 weather trio with Kyogre only
       .replace(
-        /<h2>2\. Thần thú Địa cầu: Groudon & Kyogre<\/h2>[\s\S]+?<\/blockquote>/,
-        `<h2>2. Rồng thần Vũ trụ: Rayquaza</h2>
-        <p>Trong phiên bản Sapphire, Kyogre đã được bạn thu phục hoặc hạ gục trực tiếp tại Cave of Origin trong cốt truyện chính. Hậu game, hòn đảo biển sâu sẽ mở cửa cho bạn thách thức Rồng thần:</p>
-        <ul>
-          <li><strong>Rayquaza (Lvl 70):</strong> Hãy mang theo xe đạp Mach Bike bay tới Route 131, tiến sâu vào tòa tháp cao chọc trời <strong>Sky Pillar</strong>. Vượt qua những vết nứt sụt lún đòi hỏi kỹ thuật di chuyển xe đạp khéo léo để leo lên đỉnh tháp, chạm trán và thu phục Rayquaza ở cấp độ 70 siêu bá đạo!</li>
-          <li><em>Lưu ý:</em> Groudon và Kyogre hậu game (Terra Cave/Marine Cave) không tồn tại trong bản Sapphire. Groudon là độc quyền của bản Ruby.</li>
-        </ul>`
+        /<!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->[\s\S]+?<!-- SECTION 4: BỘ BA TƯỢNG ĐÁ CỔ ĐẠI REGIS -->/,
+        `<!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->
+      <h2 style="color: #3b82f6; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Thần Thú Địa Cầu: Kyogre</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Đại Dương - Chúa Tể Biển Sâu</span>
+          <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Kiến Tạo Đại Dương: Kyogre (#382)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước | <strong>Cấp độ:</strong> 45</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Thu phục trong cốt truyện chính:</strong> Trong phiên bản Sapphire, Kyogre là linh vật đại diện được đánh thức bởi Team Aqua và bạn đã thu phục hoặc hạ gục nó tại Cave of Origin (Sootopolis City) trong cốt truyện chính ở Level 45. Vì thế, ở phần hậu game, các hang động thời tiết thời gian thực (Terra Cave/Marine Cave) không tồn tại. Groudon là độc quyền của bản Ruby và không thể bắt được trong bản Sapphire.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 4: BỘ BA TƯỢNG ĐÁ CỔ ĐẠI REGIS -->`
       )
+      // Adjust Rayquaza timing from pre-elite to post-elite
       .replace(
-        /xếp Relicanth ở vị trí <strong>ĐẦU TIÊN<\/strong> và Wailord ở vị trí <strong>CUỐI CÙNG<\/strong>/,
-        "xếp **Wailord** ở vị trí **ĐẦU TIÊN** và **Relicanth** ở vị trí **CUỐI CÙNG** trong đội hình"
+        "bắt giữ nó ngay <strong>trước khi đấu Elite Four</strong>!",
+        "bắt giữ nó ở phần hậu game (sau khi đánh bại Elite Four, khi tháp Sky Pillar chính thức mở cửa trở lại)!"
+      )
+      // Swap Relicanth and Wailord positions
+      .replace(
+        /Xếp <strong>Relicanth<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/369.png" style="max-width:20px; vertical-align:middle;" \/> ở vị trí <strong>ĐẦU TIÊN<\/strong> và <strong>Wailord<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/321.png" style="max-width:20px; vertical-align:middle;" \/> ở vị trí <strong>CUỐI CÙNG<\/strong> trong đội hình/,
+        `Xếp <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>ĐẦU TIÊN</strong> và <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>CUỐI CÙNG</strong> trong đội hình`
       );
   }
 
@@ -887,22 +921,56 @@ export const ENGLISH_SAPPHIRE_CHAPTERS = ENGLISH_EMERALD_CHAPTERS.map(chapter =>
   // Chapter 11: English legendary
   if (chapter.order === 11) {
     content = content
+      // Replace Section 2 Latias & Latios roaming with Latias only (English)
       .replace(
-        /<li><strong>Choose Red[\s\S]+?<\/ul>/,
-        `<li>In Sapphire, the legendary dragon <strong>Latias</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/380.png" style="max-width:32px; vertical-align:middle;" /> will automatically roam wild across the oceans of Hoenn after the elite four victory (no color choice, and Latios does not roam by default).</li>`
+        /<!-- SECTION 2: LATIAS & LATIOS ROAMING -->[\s\S]+?<!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->/,
+        `<!-- SECTION 2: LATIAS & LATIOS ROAMING -->
+      <h2 style="color: #ec4899; border-left: 4px solid #ec4899; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. The Eon Guardian: Latias</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(236, 72, 153, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png" alt="Latias" style="max-width: 120px; filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Roaming Wilderness Guardian</span>
+          <h3 style="color: #f472b6; margin: 8px 0; font-size: 22px;">The Roaming Dragon: Latias (#380)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Dragon / Psychic | <strong>Level:</strong> 40</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Capturing Latias:</strong> In the Sapphire version, after completing the Elite Four and entering the Hall of Fame, you will awaken in your home in Littleroot Town. Downstairs, a special TV broadcast will mention a brilliant red Pokémon flying over Hoenn. The legendary <strong>Latias</strong> will immediately start roaming wild across the tall grass and ocean routes of Hoenn (Latios is not available to roam in Sapphire).</p>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Eon Capturing Strategy:</strong> Since Latias flees immediately on turn one, lead with a Pokémon using <em>Mean Look</em> (e.g., Crobat, Golbat) or a Pokémon with the <em>Shadow Tag</em> ability (e.g., Wobbuffet). Chip down its HP and throw Ultra Balls or use your Master Ball!
+      </blockquote>
+
+      <!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->`
       )
+      // Replace Section 3 weather trio with Kyogre only (English)
       .replace(
-        /<h2>2\. Kyogre & Groudon<\/h2>[\s\S]+?<\/blockquote>/,
-        `<h2>2. Sky Overlord: Rayquaza</h2>
-        <p>In Sapphire, Kyogre is caught during the main storyline inside the Cave of Origin. Post-game, you can seek out the third legendary titan:</p>
-        <ul>
-          <li><strong>Rayquaza (Lvl 70):</strong> Bring your Mach Bike to Route 131, enter the tall chasm of the <strong>Sky Pillar</strong>. Master the cracked floors at top speed to scale the summit and capture Rayquaza at level 70!</li>
-          <li><em>Note:</em> Groudon and post-game Kyogre locations (Terra Cave/Marine Cave) do not exist in Sapphire. Groudon is exclusive to Ruby.</li>
-        </ul>`
+        /<!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->[\s\S]+?<!-- SECTION 4: LEGENDARY TITANS REGIS -->/,
+        `<!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->
+      <h2 style="color: #3b82f6; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. The Ocean Creator: Kyogre</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Story Legendary - Ocean Titan</span>
+          <h3 style="color: #60a5fa; margin: 8px 0; font-size: 22px;">Sea Basin Ruler: Kyogre (#382)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Water | <strong>Level:</strong> 45</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Story Capture:</strong> In Pokémon Sapphire, Kyogre is the focus of Team Aqua and is encountered and captured (or defeated) at Level 45 inside the **Cave of Origin** (Sootopolis City) during the main storyline. In the post-game, there are no dynamic weather caves (Terra Cave or Marine Cave) in Sapphire. Groudon is exclusive to Ruby and is completely uncatchable in Sapphire.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 4: LEGENDARY TITANS REGIS -->`
       )
+      // Adjust Rayquaza timing in English
       .replace(
-        /Place Relicanth in the <strong>FIRST<\/strong> slot and Wailord in the <strong>LAST<\/strong> slot/,
-        "place **Wailord** in the **FIRST** slot and **Relicanth** in the **LAST** slot of your party"
+        "challenge it <strong>before facing the Elite Four</strong>!",
+        "challenge it in the post-game (after defeating the Elite Four, when the Sky Pillar officially opens to the public)!"
+      )
+      // Swap Relicanth and Wailord positions in English
+      .replace(
+        /Prepare a party with <strong>Relicanth<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/369.png" style="max-width:20px; vertical-align:middle;" \/> in the <strong>FIRST<\/strong> slot and <strong>Wailord<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/321.png" style="max-width:20px; vertical-align:middle;" \/> in the <strong>LAST<\/strong> slot/,
+        `Prepare a party with <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> in the <strong>FIRST</strong> slot and <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> in the <strong>LAST</strong> slot`
       );
   }
 

@@ -1155,71 +1155,101 @@ export const RED_CHAPTERS = [
 ,
   {
     gameVersion: "red",
-    chapterTitle: "Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại",
+    chapterTitle: "Phần 14: Bí mật các thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo bạo liệt",
     order: 14,
     language: "vi",
     content: `
-      <h1>Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại</h1>
-      <p>Vùng đất Kanto nguyên bản ẩn chứa những bí ẩn huyền thoại đầu tiên của toàn bộ thế giới Pokémon. Hãy cùng khám phá và bắt trọn bộ!</p>
+      <h1>Phần 14: Bí mật các thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo bạo liệt</h1>
+      <p>Vùng đất Kanto cổ xưa là cái nôi khởi nguồn của những truyền thuyết vĩ đại nhất giới Pokémon. Dưới đây là cẩm nang hướng dẫn chi tiết cách giải mã, đối đầu và chinh phục những thực thể tối thượng mang sức mạnh thiên nhiên khốc liệt!</p>
 
-      <h2>1. Mewtwo - Quái Thú Tiến Hóa Tối Thượng <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
-      <p>Sau khi chiến thắng Liên Minh Pokémon và bước vào sảnh danh vọng Hall of Fame, hang động bí ẩn <strong>Cerulean Cave</strong> (nằm phía tây bắc Cerulean City) sẽ mở cửa:</p>
+      <!-- SECTION 1: BỘ BA CHIM HUYỀN THOẠI -->
+      <h2 style="color: #38bdf8; border-left: 4px solid #38bdf8; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Bộ Ba Chim Huyền Thoại Hộ Vệ Nguyên Tố (Legendary Birds)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Những hộ vệ tối cổ ngự trị tại các hiểm địa khắc nghiệt nhất Kanto ở cấp độ 50:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- ARTICUNO CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Băng Tuyết</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Băng Điểu Cổ Đại: Articuno (#144)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Băng / Bay | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm:</strong> Đáy sâu ngục tối <strong>Seafoam Islands</strong> (Tuyến đường biển Route 20).<br/><strong>Mẹo giải đố & bắt giữ:</strong> Sử dụng chiêu <strong>Strength</strong> để đẩy các tảng đá tròn lấp đầy các hố sâu, chặn dòng nước biển chảy xiết bên dưới giúp bạn an toàn bơi lướt sóng tới mỏm đá ngự trị của Articuno. Sử dụng đòn gây tê liệt (Thunder Wave) hoặc ngủ ngon, rỉa máu xuống vùng đỏ rồi ném Ultra Ball.</p>
+          </div>
+        </div>
+
+        <!-- ZAPDOS CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Sấm Sét</span>
+            <h3 style="color: #fbbf24; margin: 8px 0; font-size: 20px;">Lôi Điểu Cuồng Nộ: Zapdos (#145)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Điện / Bay | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm:</strong> Sâu bên trong nhà máy điện bỏ hoang <strong>Power Plant</strong> (Lướt sóng từ Route 10 rẽ nhánh đi men theo dòng sông nhỏ xuống phía nam).<br/><strong>Mẹo bắt giữ:</strong> Hãy cẩn thận né các quả cầu đỏ lơ lửng trên mặt đất vì đó có thể là Electrode ngụy trang bộc phá tự sát dã ngoại hoang dã. Đưa Pokémon hệ Đất miễn sấm sét để chịu đòn của Zapdos rồi từ từ quăng bóng thu phục.</p>
+          </div>
+        </div>
+
+        <!-- MOLTRES CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Lửa Thiêng</span>
+            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Hỏa Điểu Bất Tử: Moltres (#146)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Lửa / Bay | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm:</strong> Ngự trị tại tầng 2F của hầm ngục hiểm trở <strong>Victory Road</strong> trước thềm liên minh.<br/><strong>Mẹo bắt giữ:</strong> Trong Gen 1, Moltres không nằm trên đỉnh núi mà nằm ngay trong mê cung Victory Road! Hãy mang theo Pokémon hệ Nước hoặc Đá trâu bò để gánh chiêu lửa của nó, ru ngủ dã ngoại hoang dã rồi thu phục bằng Ultra Ball.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: SIÊU THẦN THÚ NHÂN TẠO & HUYỀN ẢO -->
+      <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Thần Thú Tối Thượng & Bí Ẩn Huyền Ảo (Mewtwo & Mew)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Những sinh vật nắm giữ quyền năng tâm linh bẻ cong mọi định luật vật lý:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- MEWTWO CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Chúa Tể Siêu Linh</span>
+            <h3 style="color: #c084fc; margin: 8px 0; font-size: 22px;">Quái Thú Nhân Tạo Tối Thượng: Mewtwo (#150)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Siêu Linh | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 12px 0;"><strong>Địa điểm:</strong> Đáy sâu tối tăm vô tận của hang động cấm địa <strong>Cerulean Cave</strong> (chỉ mở cửa sau khi bạn chiến thắng Champion danh giá tại sảnh danh vọng Hall of Fame).<br/><strong>Mẹo chinh phục cực hạn:</strong> Mewtwo sở hữu chỉ số Special vô địch lịch sử Gen 1, mang chiêu tự hồi máu <strong>Recover</strong> siêu ức chế kèm đòn tấn công bạo kích <strong>Psychic</strong> quét sạch mọi vật cản. Đừng tốn công dây dưa! Hãy quăng quả bóng tối thượng <strong>Master Ball</strong> thu hoạch được từ Silph Co. ngay lượt đầu tiên để bắt sống trọn vẹn vị vua này!</p>
+          </div>
+        </div>
+
+        <!-- MEW CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" style="max-width: 115px; filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Pokémon Huyền Ảo Thủy Tổ (Mythical)</span>
+            <h3 style="color: #f472b6; margin: 8px 0; font-size: 22px;">Khởi Nguyên Vũ Trụ: Mew (#151)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Siêu Linh | <strong>Cấp độ:</strong> 7 (Thông qua lỗi game glitch hoài niệm)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 12px 0;"><strong>Bí mật Mew Glitch huyền thoại:</strong> Trong nguyên bản thế hệ 1, không có sự kiện bắt Mew chính thức ngoại trừ phân phối của Nintendo. Tuy nhiên bạn có thể kích hoạt lỗi game huyền thoại:<br/>
+            1. Đứng trước một huấn luyện viên có tầm nhìn xa (ví dụ: HLV ẩn trong bãi cỏ Route 8 hoặc Route 24), nhấn nút <strong>START</strong> đồng thời di chuyển để mở bảng chọn trước khi trận đấu bắt đầu, sử dụng chiêu <strong>Fly</strong> hoặc <strong>Teleport</strong> để bay đi.<br/>
+            2. Đi chiến đấu với một HLV cụ thể khác để thiết lập lại chỉ số ID gặp mặt Pokémon (như võ sĩ gác cầu Nugget Bridge).<br/>
+            3. Quay trở lại tuyến đường Lavender Town, bảng chọn tự động hiện ra và ngay khi bạn tắt đi, một chú **Mew hoang dã cấp độ 7** rực rỡ sẽ xuất hiện thách thức bạn!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: SAFARI ZONE -->
+      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Các Thần Thú Siêu Hiếm Tại Đầm Lầy Safari Zone</h2>
+      <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">Khu bảo tồn thiên nhiên hoang dã Fuchsia Safari Zone chứa đựng những loài sinh vật quý hiếm bậc nhất với tỷ lệ gặp cực thấp cùng cơ chế chạy trốn dã ngoại hoang dã vô cùng khắc nghiệt:</p>
       <ul>
-        <li><strong>Vị trí:</strong> Tầng sâu nhất (B1F) ẩn sau mê cung đá và dòng nước xiết.</li>
-        <li><strong>Cấp độ:</strong> 70.</li>
-        <li><strong>Chiến thuật:</strong> Mewtwo sở hữu chỉ số Special vô địch thế hệ 1, có thể quét sạch đội hình bạn bằng Psychic và tự hồi máu bằng Recover. Quả bóng <strong>Master Ball</strong> nhận được từ chủ tịch Silph Co. là lựa chọn hoàn hảo nhất tại đây.</li>
-      </ul>
-
-      <h2>2. Bộ Ba Chim Huyền Thoại (Legendary Birds)</h2>
-      <p>Ba hộ vệ nguyên tố phân bố tại ba địa danh hiểm trở nhất vùng Kanto, xuất hiện tĩnh ở Level 50:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(59, 130, 246, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Hệ</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Vị trí ẩn ngụ</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Mẹo giải đố & Chinh phục</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Băng / Bay</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Seafoam Islands (Đảo Bọt Biển)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sử dụng chiêu <strong>Strength</strong> để đẩy các tảng đá tròn rơi xuống các hố sâu, chặn dòng nước chảy xiết bên dưới để có thể bơi lướt sóng tiếp cận chú chim băng giá.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Zapdos</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện / Bay</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Power Plant (Nhà máy Điện Bỏ Hoang)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bơi xuôi dòng nước từ Route 10 xuống mạn đông bắc. Zapdos nằm ở căn phòng sâu nhất của nhà máy bỏ hoang, xung quanh là vô số Electrode tàng hình chặn đường.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #f97316;">Moltres</td>
-            <td style="padding: 12px 16px;">Lửa / Bay</td>
-            <td style="padding: 12px 16px;">Victory Road (Đường Chiến Thắng)</td>
-            <td style="padding: 12px 16px;">Nằm ở tầng 2F của mê cung hang động dẫn đến đỉnh Liên Minh. Hãy giải đố đẩy đá lên công tắc để mở lối rẽ tiếp cận Moltres ẩn mình sâu trong hang lửa.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>3. Các Pokémon Siêu Hiếm Tại Khu Bảo Tồn Safari Zone</h2>
-      <p>Khu bảo tồn hoang dã Fuchsia Safari Zone chứa đựng những Pokémon có tỷ lệ xuất hiện cực kỳ thấp và vô cùng khó bắt giữ (do dễ hoảng sợ bỏ chạy):</p>
-      <ul>
-        <li><strong>Chansey (Lvl 26) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/113.png" style="max-width:24px; vertical-align:middle;" />:</strong> Tỉ lệ xuất hiện chỉ 1% đến 4% tại Khu vực Trung Tâm và Khu Vực 2. Sở hữu lượng máu khổng lồ vô địch game.</li>
-        <li><strong>Scyther <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" style="max-width:24px; vertical-align:middle;" /> / Pinsir <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/127.png" style="max-width:24px; vertical-align:middle;" />:</strong> Độc quyền phiên bản với tỉ lệ chỉ 1% đến 4%. Sát thủ côn trùng lý tưởng cho bộ sưu tập.</li>
-        <li><strong>Tauros <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/128.png" style="max-width:24px; vertical-align:middle;" /> & Kangaskhan <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png" style="max-width:24px; vertical-align:middle;" />:</strong> Những mãnh thú vật lý hệ Thường cực kỳ hung dữ, tỉ lệ gặp cực thấp tại Khu Vực 1 và Khu Vực 3.</li>
-        <li><strong>Mẹo bắt Safari:</strong> Đừng quăng đá khiến chúng dễ hoảng sợ bỏ chạy dã ngoại. Hãy quăng mồi dụ để chúng bình tĩnh hơn, hoặc ném ngay Safari Ball khi chúng đứng yên sơ hở.</li>
+        <li><strong>Chansey (#113) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/113.png" style="max-width:24px; vertical-align:middle;" />:</strong> Tỉ lệ xuất hiện chỉ 1% đến 4% tại Khu vực Trung Tâm. Sở hữu lượng máu dồi dào vô dịch thiên hạ.</li>
+        <li><strong>Scyther (#123) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" style="max-width:24px; vertical-align:middle;" /> / Pinsir (#127) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/127.png" style="max-width:24px; vertical-align:middle;" />:</strong> Độc quyền theo từng phiên bản Red/Blue với tỉ lệ gặp cực kì mỏng manh chỉ 1%-4%.</li>
+        <li><strong>Tauros (#128) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/128.png" style="max-width:24px; vertical-align:middle;" /> & Kangaskhan (#115) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png" style="max-width:24px; vertical-align:middle;" />:</strong> Thần thú tấn công vật lý siêu trâu bò hệ Thường, lẩn khuất ở Khu Vực 1 và Khu Vực 3.</li>
+        <li><strong>Chiến thuật chinh phục Safari:</strong> Tuyệt đối không ném đá (khiến chúng dễ hoảng sợ bỏ chạy dã ngoại ngay lập tức). Hãy ném mồi ngon dụ dỗ để chúng bình tĩnh nán lại lâu hơn, rồi ném Safari Ball dứt khoát!</li>
       </ul>
     `
   },
@@ -2432,71 +2462,101 @@ export const ENGLISH_RED_CHAPTERS = [
 ,
   {
     gameVersion: "red",
-    chapterTitle: "Chapter 14: Rare & Legendary Pokémon Secrets",
+    chapterTitle: "Chapter 14: Secrets of Ultra Rare, Legendary & Mythical Beasts",
     order: 14,
     language: "en",
     content: `
-      <h1>Chapter 14: Rare & Legendary Pokémon Secrets</h1>
-      <p>Discover the origin stories of Pokémon's first mythological gods hidden deep inside the classic Kanto wilderness.</p>
+      <h1>Chapter 14: Secrets of Ultra Rare, Legendary & Mythical Beasts</h1>
+      <p>Discover the origin stories of Pokémon's first mythological gods hidden deep inside the classic Kanto wilderness. Master the techniques to encounter, battle, and capture these legendary entities!</p>
 
-      <h2>1. Mewtwo - The Gene-Spliced Overlord <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
-      <p>After conquering the Elite Four and claiming your Championship, the barrier blocking the northwestern cavern of <strong>Cerulean Cave</strong> collapses:</p>
+      <!-- SECTION 1: LEGENDARY ELEMENTAL BIRDS -->
+      <h2 style="color: #38bdf8; border-left: 4px solid #38bdf8; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. The Legendary Elemental Bird Trio</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">These three original elemental guardians rest in static encounters across Kanto's most hazardous environments at Level 50:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- ARTICUNO CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">The Ice Deity</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Ancient Frozen Phoenix: Articuno (#144)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Ice / Flying | <strong>Level:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Bottom chamber of <strong>Seafoam Islands</strong> (Water Route 20).<br/><strong>Puzzle & Catch Strategy:</strong> Use HM04 <strong>Strength</strong> to push circular stone boulders into open cavern holes. This blocks the fierce, sweeping water currents below, allowing you to safely swim to Articuno's isolated island platform. Apply Thunder Wave or Sleep, chip its health to red, and deploy Ultra Balls.</p>
+          </div>
+        </div>
+
+        <!-- ZAPDOS CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">The Thunder Deity</span>
+            <h3 style="color: #fbbf24; margin: 8px 0; font-size: 20px;">Wrath of the Thundercloud: Zapdos (#145)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Electric / Flying | <strong>Level:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Inside the abandoned <strong>Power Plant</strong> (Surf downstream from Route 10's northern riverbank).<br/><strong>Catch Strategy:</strong> Watch out for glowing red items on the floor—many are wild Electrode that will self-destruct. Bring a Ground-type Pokémon to completely absorb Zapdos's Electric attacks while you safely secure the capture.</p>
+          </div>
+        </div>
+
+        <!-- MOLTRES CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">The Flame Deity</span>
+            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">The Undying Firebird: Moltres (#146)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Fire / Flying | <strong>Level:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Roosting on floor 2F of the treacherous <strong>Victory Road</strong> labyrinth before the Indigo Plateau.<br/><strong>Catch Strategy:</strong> In Gen 1, Moltres lives in Victory Road rather than a mountain peak! Use bulky Rock or Water-types to resist its fire attacks, inflict status conditions, and use Ultra Balls to capture it.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: ULTIMATE DEITIES -->
+      <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. The Ultimate Engineered Overlord & Mythical Mystery (Mewtwo & Mew)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">These psychic powerhouses bend all physical laws and possess devastating combat capabilities:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- MEWTWO CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Artificial Overlord</span>
+            <h3 style="color: #c084fc; margin: 8px 0; font-size: 22px;">The Gene-Spliced Masterpiece: Mewtwo (#150)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic | <strong>Level:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 12px 0;"><strong>Location:</strong> Bottom floor (B1F) past twisting labyrinths and strong water currents inside the forbidden <strong>Cerulean Cave</strong> (only unlocks after entering the Hall of Fame).<br/><strong>Battle Tactics:</strong> Mewtwo boasts the highest Special stat in Gen 1, sweeping teams with Psychic and healing itself instantly with <strong>Recover</strong>. Do not waste turns! Throw your <strong>Master Ball</strong> immediately on turn 1 to secure this supreme psychic king.</p>
+          </div>
+        </div>
+
+        <!-- MEW CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" style="max-width: 115px; filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Mythical Ancestor</span>
+            <h3 style="color: #f472b6; margin: 8px 0; font-size: 22px;">Origin of Species: Mew (#151)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic | <strong>Level:</strong> 7 (via legendary glitch)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0 0 12px 0;"><strong>The Mythical Mew Glitch:</strong> Mew was originally event-only, but you can capture it in-game using this legendary developer glitch:<br/>
+            1. Stand in front of a long-range trainer (like the Gambler on Route 8 or the Jr. Trainer in the grass of Route 24). Press <strong>START</strong> to open your menu before he spots you, then use <strong>Fly</strong> or <strong>Teleport</strong> to escape.<br/>
+            2. Battle a specific trainer (such as the slowpoke kid on Nugget Bridge) to configure the memory register for the next encounter's species ID.<br/>
+            3. Return to Lavender Town. Upon walking onto Route 8, your menu will pop open. Close it, and a wild, majestic **Level 7 Mew** will instantly challenge you!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: SAFARI ZONE -->
+      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Snaring Elusive Safari Zone Species</h2>
+      <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">The Fuchsia Safari Zone contains extremely rare species with extremely high escape rates. Patience and precision are your greatest tools:</p>
       <ul>
-        <li><strong>Location:</strong> Bottom floor (B1F) past twisting labyrinths and strong water currents.</li>
-        <li><strong>Level:</strong> 70.</li>
-        <li><strong>Battle Strategy:</strong> Mewtwo possesses the highest Special stat in Generation 1 history, sweep-capable Psychic attacks, and instant healing with Recover. It is the absolute prime target for your <strong>Master Ball</strong>.</li>
-      </ul>
-
-      <h2>2. The Legendary Elemental Bird Trio</h2>
-      <p>The three original elemental guardians rest in static encounters across Kanto's most hazardous environments at Level 50:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(59, 130, 246, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Type</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Nesting Location</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Puzzles & Tactics</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #60a5fa;">Articuno</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ice / Flying</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Seafoam Islands</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Use HM04 <strong>Strength</strong> to push stone boulders into open cavern holes, blocking the fierce water currents below so you can safely swim to its island platform.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Zapdos</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Electric / Flying</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Abandoned Power Plant</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Surf downstream from the Route 10 river inlet. Zapdos blocks the exit of the deepest machine room, surrounded by fake Item Balls that turn out to be wild Electrode.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #f97316;">Moltres</td>
-            <td style="padding: 12px 16px;">Fire / Flying</td>
-            <td style="padding: 12px 16px;">Victory Road Caverns</td>
-            <td style="padding: 12px 16px;">Perched on floor 2F of the League-qualifying cave system. Complete the boulder-pushing puzzle to unlock the side wall leading to this fiery phoenix.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>3. Snaring Elusive Safari Zone Species</h2>
-      <p>The Fuchsia Safari Zone contains extremely rare species with extremely high escape rates. Patience is your greatest tool:</p>
-      <ul>
-        <li><strong>Chansey (Lvl 26) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/113.png" style="max-width:24px; vertical-align:middle;" />:</strong> Boasts a tiny 1% to 4% encounter rate in the Center Area and Area 2. Possesses god-tier HP reserves.</li>
-        <li><strong>Scyther <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" style="max-width:24px; vertical-align:middle;" /> / Pinsir <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/127.png" style="max-width:24px; vertical-align:middle;" />:</strong> Version exclusives at tiny 1%-4% encounter rates. Phenomenal Bug-type physical sweepers.</li>
-        <li><strong>Tauros <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/128.png" style="max-width:24px; vertical-align:middle;" /> & Kangaskhan <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png" style="max-width:24px; vertical-align:middle;" />:</strong> Devastating Normal-type sweepers with tiny spawn rates in Area 1 and Area 3.</li>
-        <li><strong>Safari Capture Formula:</strong> Avoid throwing rocks (boosts catch rate but triggers instant escape). Throwing Bait makes them stay but cuts catch rates. Learn to throw Safari Balls immediately when they stand surprised!</li>
+        <li><strong>Chansey (#113) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/113.png" style="max-width:24px; vertical-align:middle;" />:</strong> Boasts a tiny 1% to 4% encounter rate in the Center Area and Area 2. Possesses god-tier HP reserves.</li>
+        <li><strong>Scyther (#123) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" style="max-width:24px; vertical-align:middle;" /> / Pinsir (#127) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/127.png" style="max-width:24px; vertical-align:middle;" />:</strong> Version exclusives at tiny 1%-4% encounter rates. Phenomenal Bug-type physical sweepers.</li>
+        <li><strong>Tauros (#128) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/128.png" style="max-width:24px; vertical-align:middle;" /> & Kangaskhan (#115) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png" style="max-width:24px; vertical-align:middle;" />:</strong> Devastating Normal-type physical powerhouses in Area 1 and Area 3.</li>
+        <li><strong>Safari Tactics:</strong> Avoid throwing rocks (boosts catch rate but triggers instant escape). Throwing Bait makes them stay but cuts catch rates. Throw Safari Balls immediately when they stand surprised to secure them!</li>
       </ul>
     `
   },

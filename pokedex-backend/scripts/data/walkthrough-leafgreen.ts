@@ -1525,63 +1525,145 @@ export const LEAFGREEN_CHAPTERS = [
       <h1>Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại</h1>
       <p>Sau khi khôi phục hệ thống mạng liên kết vùng Hoenn tại Sevii Islands, thế giới Pokémon rộng mở ra những bí ẩn cổ xưa nhất vùng Kanto.</p>
 
-      <h2>1. Săn lùng Bộ Ba Chó Huyền Thoại Chạy Hoang</h2>
-      <p>Sau khi chiến thắng Tứ Đại Thiên Vương và hoàn thành nhiệm vụ Ruby/Sapphire của Celio, một trong ba Thần Thú vùng Johto sẽ xuất hiện ngẫu nhiên hoang dã khắp Kanto ở Level 50. Con thú nào xuất hiện phụ thuộc hoàn toàn vào Pokémon khởi đầu của bạn:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(59, 130, 246, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: center; width: 100px;">Hình ảnh</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Pokémon</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Hệ</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Yêu cầu Starter</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(59, 130, 246, 0.3); text-align: left;">Chiến thuật săn bắt</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" alt="Raikou" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Raikou</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Điện</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #38bdf8;">Squirtle</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Cực kỳ nhanh. Hãy dùng kỹ năng chặn chạy trốn như <strong>Mean Look</strong> hoặc ném ngay quả <strong>Master Ball</strong> để thu phục lập tức!</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" alt="Entei" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f97316;">Entei</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lửa</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Bulbasaur</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sở hữu đòn gầm rú Roar có thể ép trận đấu kết thúc tức thì (Lỗi game khiến biến mất vĩnh viễn). Nên dùng <strong>Master Ball</strong> trước khi quăng bóng dã ngoại.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" alt="Suicune" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Suicune</td>
-            <td style="padding: 12px 16px;">Nước</td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #f43f5e;">Charmander</td>
-            <td style="padding: 12px 16px;">Chống chịu tốt, di chuyển vừa phải. Sử dụng trạng thái ngủ hoặc đóng băng để tối ưu tỷ lệ bắt giữ.</td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>1. Thần Thú Tối Thượng: Mewtwo</h2>
+      <div style="background: linear-gradient(135deg, rgba(88, 28, 135, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 120px; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Siêu Thú Đột Biến Gen - Mạnh Nhất Kanto</span>
+          <h3 style="color: #c084fc; margin: 8px 0; font-size: 22px;">Mewtwo (#150)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Siêu Linh | <strong>Cấp độ:</strong> 70</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm xuất hiện:</strong> Hang Động Cerulean (Cerulean Cave) nằm ở phía tây bắc thành phố Cerulean. Lối vào sẽ chính thức mở cửa sau khi bạn phục hồi mạng lưới liên vùng Sevii. Mewtwo đứng đợi ở đáy sâu nhất của mê cung.</p>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Mẹo bắt Mewtwo:</strong> Mewtwo sở hữu đòn <em>Recover</em> hồi máu liên tục và <em>Safeguard</em> chống mọi trạng thái bất lợi cực kỳ khó chịu. Hãy ném quả <strong>Master Ball</strong> của bạn ngay từ lượt đầu tiên để bắt giữ nó lập tức và không cần tốn công sức làm suy yếu!</p>
+      </blockquote>
 
-      <h2>2. Mewtwo - Siêu Thú Tối Thượng tại Cerulean Cave <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /></h2>
-      <p>Sau khi kết nối hoàn tất máy thời không của Celio, lối vào hang động <strong>Cerulean Cave</strong> (mạn bắc Cerulean City) sẽ chính thức mở cửa. Tại đáy sâu nhất của mê cung, bạn sẽ diện kiến <strong>Mewtwo (Level 70)</strong>.</p>
-      <ul>
-        <li><strong>Đội hình mang theo:</strong> Mang theo Pokémon hệ Bóng Tối (Dark) để miễn nhiễm đòn siêu linh nguy hiểm hoặc Pokémon có đòn ru ngủ ổn định.</li>
-        <li><strong>Cách bắt tốt nhất:</strong> Mewtwo có khả năng tự phục hồi bằng đòn Recover cực kỳ khó chịu. Quả <strong>Master Ball</strong> là cứu cánh hoàn hảo nhất tại đây.</li>
-      </ul>
+      <h2>2. Bộ Ba Thần Điểu Huyền Thoại (Kanto Birds)</h2>
+      <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <!-- Articuno -->
+        <div style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #60a5fa; margin: 0 0 4px 0; font-size: 18px;">Băng Điểu: Articuno (#144) - Cấp độ 50</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Băng / Bay | <strong>Vị trí:</strong> Sâu bên trong Quần Đảo Bọt Biển (Seafoam Islands - Route 20).</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Cách thu phục:</strong> Bạn cần dùng chiêu <em>Strength</em> đẩy các khối đá sụt xuống các tầng hang dưới để ngăn dòng nước chảy xiết nguy hiểm, từ đó có thể Surf bơi ra hòn đảo nơi Articuno đang ngự trị.</p>
+          </div>
+        </div>
 
-      <h2>3. Khám Phá Bí Mật Khải Sinh Đảo: Deoxys & Sứ Mệnh Navel Rock</h2>
-      <p>Sử dụng vé sự kiện đặc biệt để mở khóa các hải đảo bí ẩn nhất thế giới Sevii:</p>
-      <ul>
-        <li><strong>Birth Island (Đảo Khai Sinh - Deoxys) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/386.png" style="max-width:28px; vertical-align:middle;" />:</strong> Sử dụng Aurora Ticket để cập bến hòn đảo hình tam giác. Bạn phải giải câu đố đẩy khối tam giác màu đỏ theo số bước tối ưu nhất. Khi khối đá nổ tung, <strong>Deoxys (Level 30)</strong> sẽ xuất hiện! (Trong FireRed, nó sẽ mang Dạng Tấn công; trong LeafGreen mang Dạng Phòng thủ).</li>
-        <li><strong>Navel Rock (Đá Rốn - Lugia & Ho-Oh):</strong> Sử dụng Mystic Ticket để đi đến ngọn tháp đá kỳ vĩ này. Ở đáy sâu thẳm ngập nước là nơi trú ngụ của <strong>Lugia (Level 70)</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:28px; vertical-align:middle;" />, còn ở đỉnh tháp nhọn cao chọc trời là tổ phượng hoàng lửa <strong>Ho-Oh (Level 70)</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" style="max-width:28px; vertical-align:middle;" />.</li>
-      </ul>
-    `
+        <!-- Zapdos -->
+        <div style="background: linear-gradient(135deg, rgba(146, 64, 14, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #fbbf24; margin: 0 0 4px 0; font-size: 18px;">Lôi Điểu: Zapdos (#145) - Cấp độ 50</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Điện / Bay | <strong>Vị trí:</strong> Nhà Máy Điện Bỏ Hoang (Abandoned Power Plant - Route 10).</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Cách thu phục:</strong> Sử dụng Surf lướt sóng xuôi dòng nước từ Route 10 xuống phía nam để tiếp cận nhà máy điện bỏ hoang này, tiến sâu vào phòng máy phát điện ở góc trong cùng.</p>
+          </div>
+        </div>
+
+        <!-- Moltres -->
+        <div style="background: linear-gradient(135deg, rgba(153, 27, 27, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #f87171; margin: 0 0 4px 0; font-size: 18px;">Hỏa Điểu: Moltres (#146) - Cấp độ 50</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Lửa / Bay | <strong>Vị trí:</strong> Đỉnh núi lửa Mt. Ember (One Island).</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Cách thu phục:</strong> Đi về phía bắc Đảo 1 dọc theo con đường nước, leo qua sườn núi lửa Mt. Ember dốc đá gồ ghề để lên đến chiếc tổ dung nham cao nhất.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>3. Thần Thú Chạy Hoang (Johto Roaming Beasts)</h2>
+      <p>Sau khi chiến thắng Elite Four lần một và hoàn thành xong nhiệm vụ của Celio tại Sevii Islands, một Thần thú hộ vệ vùng Johto sẽ tự động xuất hiện hoang dã chạy ngẫu nhiên khắp lục địa Kanto ở cấp độ 50. Thần thú xuất hiện phụ thuộc vào Pokémon khởi đầu của bạn:</p>
+      <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <!-- Raikou -->
+        <div style="background: linear-gradient(135deg, rgba(146, 64, 14, 0.4), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png" alt="Raikou" style="max-width: 75px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4));" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #fbbf24; margin: 0 0 4px 0; font-size: 18px;">Lôi Thú: Raikou (#243) (Nếu chọn Squirtle)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Điện | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Săn bắt:</strong> Raikou cực nhanh và có đòn bộc phá sấm sét. Nó sẽ lập tức bỏ chạy ngay trong lượt đầu tiên. Mang theo Pokémon có đặc tính <em>Shadow Tag</em> (Wobbuffet) hoặc chiêu <em>Mean Look</em> để ngăn chặn chạy trốn.</p>
+          </div>
+        </div>
+
+        <!-- Entei -->
+        <div style="background: linear-gradient(135deg, rgba(153, 27, 27, 0.4), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png" alt="Entei" style="max-width: 75px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4));" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #f87171; margin: 0 0 4px 0; font-size: 18px;">Viêm Thú: Entei (#244) (Nếu chọn Bulbasaur)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Lửa | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Cảnh báo cực kỳ nghiêm trọng:</strong> Entei sở hữu chiêu <em>Roar</em> (Gầm rú) làm trận đấu kết thúc ngay lập tức. Lỗi game trong bản FireRed/LeafGreen khiến nếu Entei dùng Roar bỏ chạy, nó sẽ <strong>biến mất vĩnh viễn khỏi game</strong>! Khuyến nghị ném ngay <strong>Master Ball</strong> hoặc ru ngủ ngay lập tức trước khi nó cất tiếng gầm!</p>
+          </div>
+        </div>
+
+        <!-- Suicune -->
+        <div style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.4), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png" alt="Suicune" style="max-width: 75px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #60a5fa; margin: 0 0 4px 0; font-size: 18px;">Thủy Thú: Suicune (#245) (Nếu chọn Charmander)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Nước | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Săn bắt:</strong> Suicune trâu bò nhất trong ba con thú, ít nguy hiểm hơn Entei nhưng cũng bơi lội đổi Route liên tục mỗi khi bạn đổi bản đồ. Hãy dùng các đòn ru ngủ hoặc đóng băng để tối ưu hóa khả năng bắt.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>4. Sự Kiện Đặc Biệt: Đảo Khai Sinh Deoxys & Đảo Rốn Lugia/Ho-Oh</h2>
+      <p>Sử dụng vé sự kiện đặc biệt để mở khóa các hải đảo bí ẩn nhất nằm ngoài khơi xa quần đảo Sevii:</p>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- Deoxys -->
+        <div style="background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(244, 63, 94, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png" alt="Deoxys" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #fb7185; margin: 0 0 4px 0; font-size: 18px;">Bí Ẩn Birth Island: Thần Thú Không Gian Deoxys (#386)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Hệ:</strong> Siêu Linh | <strong>Cấp độ:</strong> 30</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0 0 8px 0;"><strong>Cách triệu hồi:</strong> Sử dụng vé <em>Aurora Ticket</em> đi tàu tới Birth Island hoang vắng hình tam giác. Bạn phải hoàn thành câu đố di chuyển khối tam giác đen theo số bước tối ưu ngắn nhất cho tới khi nó chuyển sang màu đỏ rực rỡ và nổ tung.</p>
+            <p style="color: #e2e8f0; font-size: 13px; margin: 0;"><strong>Dạng đặc thù phiên bản:</strong> Khi bị thu phục, Deoxys sẽ biến đổi thành <strong>Dạng Tấn Công (Attack Form)</strong> trong bản FireRed và <strong>Dạng Phòng Thủ (Defense Form)</strong> trong bản LeafGreen!</p>
+          </div>
+        </div>
+
+        <!-- Lugia & Ho-Oh -->
+        <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(30, 41, 59, 0.8)); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+          <h4 style="color: #ffffff; margin: 0; font-size: 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">Đại Bản Doanh Navel Rock: Lugia & Ho-Oh</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Sử dụng vé cổ <em>Mystic Ticket</em> để dong buồm cập bến đảo đá sừng sững <strong>Navel Rock</strong>. Đây là hòn đảo độc nhất vô nhị giam giữ song thần tối cao của vùng Johto ở Cấp độ 70:</p>
+          <div style="display: flex; flex-direction: row; gap: 16px; flex-wrap: wrap;">
+            <!-- Lugia -->
+            <div style="flex: 1; min-width: 200px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));" />
+              <div>
+                <h5 style="color: #60a5fa; margin: 0 0 4px 0; font-size: 15px;">Thần Biển Lugia (#249)</h5>
+                <p style="color: #94a3b8; font-size: 12px; margin: 0;">Ẩn náu tại lòng đại dương sâu thẳm dưới đáy tháp đá ẩm ướt.</p>
+              </div>
+            </div>
+            <!-- Ho-Oh -->
+            <div style="flex: 1; min-width: 200px; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.4));" />
+              <div>
+                <h5 style="color: #fbbf24; margin: 0 0 4px 0; font-size: 15px;">Phượng Hoàng Ho-Oh (#250)</h5>
+                <p style="color: #94a3b8; font-size: 12px; margin: 0;">Ngự trị trên đỉnh tháp nhọn cao nhất chọc trời lộng gió.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Chuẩn bị bắt:</strong> Hãy chắc chắn mang theo thật nhiều Ultra Ball và các Pokémon hỗ trợ ru ngủ/tê liệt cấp cao trước khi dám bước vào thử thách bắt giữ các sinh vật tối cổ và vũ trụ tối thượng này!
+      </blockquote>
+`
   },
   {
     gameVersion: "leafgreen",
@@ -2587,81 +2669,145 @@ export const ENGLISH_LEAFGREEN_CHAPTERS = [
       <h1>Chapter 12: Legendary Pokémon & Secrets</h1>
       <p>Now that Celio's network is fully operational, you are ready to complete your Master Index by tracking down the most powerful ancient beasts across Kanto.</p>
 
-      <h2>1. Capture the Legendary Birds</h2>
-      <p>All three legendary birds are level 50 and are extremely difficult to capture. Stock up on Ultra Balls and apply status moves like sleep or paralysis before trying to catch them!</p>
-      <ul>
-        <li><strong>Articuno (Ice - Lvl 50):</strong> Deep inside the frozen <strong>Seafoam Islands</strong> (Route 20). Use Strength to drop boulders into the fast-flowing water streams to stop the current and swim to its island.</li>
-        <li><strong>Zapdos (Electric - Lvl 50):</strong> Inside the abandoned <strong>Power Plant</strong> in eastern Kanto. Swim south down the stream from Route 10 to access the plant.</li>
-        <li><strong>Moltres (Fire - Lvl 50):</strong> Located at the fiery summit of Mt. Ember on One Island.</li>
-      </ul>
-
-      <h2>2. Capturing the Ultimate Weapon: Mewtwo (Lvl 70)</h2>
-      <p>Once Celio's network is running, the mysterious locked cave in western Cerulean City, the <strong>Cerulean Cave</strong>, unlocks.</p>
-      <p>This cave is loaded with extremely high-level wild Pokémon (levels 50-60+). At the deepest chamber, you will stand face-to-face with the ultimate psychic creation, <strong>Mewtwo</strong>, sitting at level 70!</p>
+      <h2>1. The Genetic Masterpiece: Mewtwo</h2>
+      <div style="background: linear-gradient(135deg, rgba(88, 28, 135, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 120px; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Genetic Apex Weapon - Ultimate Psychic</span>
+          <h3 style="color: #c084fc; margin: 8px 0; font-size: 22px;">Mewtwo (#150)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic | <strong>Level:</strong> 70</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Cerulean Cave (northwest of Cerulean City). The entrance is opened once Celio's network link is established. Mewtwo stands at the deepest level of this cavernous maze.</p>
+        </div>
+      </div>
       <blockquote>
-        <strong>Mewtwo Capture Tip:</strong> Mewtwo uses Recover to instantly heal its health and Safeguard to block all status effects. It will sweep your team easily with its psychic moves. It is highly recommended to immediately throw your <strong>Master Ball</strong> (received from the Silph Co. president) on the very first turn to capture it instantly!
+        <strong>Mewtwo Capture Tip:</strong> Mewtwo uses <em>Recover</em> to instantly restore half its HP and <em>Safeguard</em> to block all status moves. It is highly recommended to immediately throw your <strong>Master Ball</strong> (obtained from the Silph Co. president) on turn one for an effortless capture!
       </blockquote>
 
-      <h2>3. Johto Roaming Beasts Mechanic</h2>
-      <p>Once the post-game quest is complete, one of the three legendary beasts of Johto begins roaming the grassy routes of Kanto. The beast that appears is determined by your initial Starter choice:</p>
-      <ul>
-        <li><strong>Selected Bulbasaur:</strong> The Fire-type beast <strong>Entei</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" style="max-width:32px; vertical-align:middle;" /> will begin roaming Kanto.</li>
-        <li><strong>Selected Squirtle:</strong> The Electric-type beast <strong>Raikou</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" style="max-width:32px; vertical-align:middle;" /> will begin roaming Kanto.</li>
-        <li><strong>Selected Charmander:</strong> The Water-type beast <strong>Suicune</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:32px; vertical-align:middle;" /> will begin roaming Kanto.</li>
-      </ul>
-      <blockquote>
-        <strong>Roaming Catch Tip:</strong> Roaming beasts will flee immediately on the very first turn. Lead your team with a Pokémon possessing <em>Mean Look</em> (Gengar, Crobat) or the <em>Shadow Tag</em> ability (Wobbuffet) to lock them down, then weaken them and capture.
-      </blockquote>
+      <h2>2. Legendary Bird Trio (Kanto Birds)</h2>
+      <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <!-- Articuno -->
+        <div style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #60a5fa; margin: 0 0 4px 0; font-size: 18px;">Ice Guardian: Articuno (#144) - Level 50</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Ice / Flying | <strong>Location:</strong> Deep within Seafoam Islands (Route 20).</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>How to capture:</strong> Use <em>Strength</em> to push large boulders down through the holes in the floor to block the swift, sweeping ocean currents, letting you Surf out to its frozen cavern.</p>
+          </div>
+        </div>
 
-      <h2>4. Valuable Legacy Move Tutors</h2>
-      <p>Meet these martial mentors hidden across Kanto to teach your Pokémon highly powerful moves for free (one-time teach only):</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(234, 88, 12, 0.1);">
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Move Name</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Type / Power</th>
-            <th style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">Tutor Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #10b981;">Mega Punch / Mega Kick</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Normal (80 / 120 Power)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Taught by the two black-belts training outside Mt. Moon's east exit.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f87171;">Counter</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting (Counters twice the physical damage)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">2nd floor of the Celadon Department Store, talk to the counter boy.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Rock Slide</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock (75 Power - High flinch chance)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Taught by the martial artist near the end of Victory Road.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #c084fc;">Dream Eater</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Psychic (100 Power - Restores user HP)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Taught by the sleepy man in southwest Viridian City.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #a855f7;">Substitute</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Normal (Creates a decoy substitute)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Taught by the girl standing near the grass in Celadon City.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Explosion</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Normal (250 Power - Faints the user)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Taught by the climber in the Mt. Ember ruins on One Island.</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; color: #cbd5e1;">Swords Dance</td>
-            <td style="padding: 12px 16px;">Normal (Sharply raises physical Attack by 2 stages)</td>
-            <td style="padding: 12px 16px;">Taught by the master on the wood bridge at Cinnabar Island.</td>
-          </tr>
-        </tbody>
-      </table>
-    `
+        <!-- Zapdos -->
+        <div style="background: linear-gradient(135deg, rgba(146, 64, 14, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #fbbf24; margin: 0 0 4px 0; font-size: 18px;">Lightning Guardian: Zapdos (#145) - Level 50</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Electric / Flying | <strong>Location:</strong> Abandoned Power Plant (Route 10).</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>How to capture:</strong> Surf south down the waterway from Route 10 to access the eastern entrance of the generator plant, then weave through the rubble to the final generator room.</p>
+          </div>
+        </div>
+
+        <!-- Moltres -->
+        <div style="background: linear-gradient(135deg, rgba(153, 27, 27, 0.6), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #f87171; margin: 0 0 4px 0; font-size: 18px;">Flame Guardian: Moltres (#146) - Level 50</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Fire / Flying | <strong>Location:</strong> Summit of Mt. Ember (One Island).</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>How to capture:</strong> Traverse the volcanic path at the north of One Island, scaling the craggy magma-infused slopes of Mt. Ember to reach the nest at the very peak.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>3. Roaming Johto Beasts</h2>
+      <p>Once you defeat the Elite Four and Celio's Sevii network is complete, one of the three Legendary Beasts of Johto will automatically begin roaming Kanto's grassy routes at Level 50. The beast that appears is completely determined by your initial Starter choice:</p>
+      <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <!-- Raikou -->
+        <div style="background: linear-gradient(135deg, rgba(146, 64, 14, 0.4), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png" alt="Raikou" style="max-width: 75px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4));" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #fbbf24; margin: 0 0 4px 0; font-size: 18px;">The Thunder Tiger: Raikou (#243) (If you chose Squirtle)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Electric | <strong>Level:</strong> 50</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Capturing Raikou:</strong> Exceedingly swift and dangerous. Raikou flees instantly on turn one. Lead with a Wobbuffet (using its <em>Shadow Tag</em> ability) or a Crobat/Gengar using <em>Mean Look</em> to lock it down before attempting to chip its health.</p>
+          </div>
+        </div>
+
+        <!-- Entei -->
+        <div style="background: linear-gradient(135deg, rgba(153, 27, 27, 0.4), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png" alt="Entei" style="max-width: 75px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4));" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #f87171; margin: 0 0 4px 0; font-size: 18px;">The Volcano Lion: Entei (#244) (If you chose Bulbasaur)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Fire | <strong>Level:</strong> 50</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>CRITICAL BUG WARNING:</strong> Entei knows the move <em>Roar</em>. Due to an infamous coding bug in FireRed/LeafGreen, if Entei uses Roar to escape battle, it will <strong>permanently disappear from the game</strong>! Sleep it on turn one or throw your <strong>Master Ball</strong> immediately to avoid losing it forever!</p>
+          </div>
+        </div>
+
+        <!-- Suicune -->
+        <div style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.4), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png" alt="Suicune" style="max-width: 75px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #60a5fa; margin: 0 0 4px 0; font-size: 18px;">The Aurora Beast: Suicune (#245) (If you chose Charmander)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Water | <strong>Level:</strong> 50</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;"><strong>Capturing Suicune:</strong> The bulkiest of the trio. It does not carry Roar, making it safer to capture than Entei. Use status-inflicting moves like sleep or freeze to secure this magnificent beast.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>4. Event Island Secrets: Birth Island Deoxys & Navel Rock Lugia/Ho-Oh</h2>
+      <p>Use special event tickets to unlock hidden mystical islands far off the Sevii coast:</p>
+      <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <!-- Deoxys -->
+        <div style="background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(244, 63, 94, 0.4); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 100px; display: flex; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png" alt="Deoxys" style="max-width: 80px; filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 4; min-width: 200px;">
+            <h4 style="color: #fb7185; margin: 0 0 4px 0; font-size: 18px;">Birth Island Puzzle: Alien Mythical Deoxys (#386)</h4>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 4px 0;"><strong>Type:</strong> Psychic | <strong>Level:</strong> 30</p>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0 0 8px 0;"><strong>How to summon:</strong> Take the ferry to the triangular Birth Island using the <em>Aurora Ticket</em>. You must solve the puzzle by interacting with the black triangular stone, pushing it in the fewest steps possible. When done correctly, the stone turns brilliant red and explodes, summoning Deoxys!</p>
+            <p style="color: #e2e8f0; font-size: 13px; margin: 0;"><strong>Version Form Split:</strong> Upon capture, Deoxys will permanently adopt its <strong>Attack Form</strong> in FireRed and its <strong>Defense Form</strong> in LeafGreen!</p>
+          </div>
+        </div>
+
+        <!-- Lugia & Ho-Oh -->
+        <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(30, 41, 59, 0.8)); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+          <h4 style="color: #ffffff; margin: 0; font-size: 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">Navel Rock Spire: Lugia & Ho-Oh</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Sail to the gargantuan stone monolith of <strong>Navel Rock</strong> using the <em>Mystic Ticket</em>. This incredible landmark holds the two supreme titans of Johto at Level 70:</p>
+          <div style="display: flex; flex-direction: row; gap: 16px; flex-wrap: wrap;">
+            <!-- Lugia -->
+            <div style="flex: 1; min-width: 200px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));" />
+              <div>
+                <h5 style="color: #60a5fa; margin: 0 0 4px 0; font-size: 15px;">Diving Guardian: Lugia (#249)</h5>
+                <p style="color: #94a3b8; font-size: 12px; margin: 0;">Roosting deep within the flooded chamber at the bottom of the cavern.</p>
+              </div>
+            </div>
+            <!-- Ho-Oh -->
+            <div style="flex: 1; min-width: 200px; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-width: 50px; filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.4));" />
+              <div>
+                <h5 style="color: #fbbf24; margin: 0 0 4px 0; font-size: 15px;">Rainbow Guardian: Ho-Oh (#250)</h5>
+                <p style="color: #94a3b8; font-size: 12px; margin: 0;">Guarding its sacred golden nest at the very apex of the windy summit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Capture Preparation:</strong> Make sure to bring plenty of Ultra Balls and high-level support status inflicters before attempting to challenge these ultimate ancient and space-borne entities!
+      </blockquote>
+`
   },
   {
     gameVersion: "leafgreen",

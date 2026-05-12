@@ -41,8 +41,13 @@ export const Y_CHAPTERS = X_CHAPTERS.map(chapter => {
   // Chapter 15: Mewtwonite X -> Mewtwonite Y for Pokémon Y
   if (chapter.order === 15) {
     content = content
-      .replace(/Mewtwonite X \(trong bản X, biến Mewtwo thành hệ Siêu linh\/Giác đấu với sát thương vật lý hủy diệt\) hoặc Mewtwonite Y \(trong bản Y\)/g,
-        'Mewtwonite Y (trong bản Y, biến Mewtwo thành hệ Siêu linh thuần túy với sức mạnh Tấn công đặc biệt tối thượng chạm đỉnh vũ trụ) hoặc Mewtwonite X (trong bản X)');
+      .replace(/<strong>Mewtwonite X<\/strong> \(Biến Mewtwo thành Mega Mewtwo X mang song hệ Siêu Linh\/Giác Đấu với chỉ số Tấn công Vật lý 190 hủy diệt\) hoặc <strong>Mewtwonite Y<\/strong> \(Biến thành Mega Mewtwo Y cực mạnh phép thuật\)/g,
+        '<strong>Mewtwonite Y</strong> (Biến Mewtwo thành Mega Mewtwo Y mang hệ Siêu Linh thuần túy với sức mạnh Tấn công đặc biệt tối thượng chạm đỉnh vũ trụ) hoặc <strong>Mewtwonite X</strong> (Biến thành Mega Mewtwo X cực mạnh vật lý)')
+      .replace(/Thần Nai Sinh Mệnh: Xerneas/g, 'Thần Chim Hủy Diệt: Yveltal')
+      .replace(/716\.png/g, '717.png')
+      .replace(/Fairy-type/g, 'Dark/Flying-type')
+      .replace(/hệ Tiên \(Fairy\) thuần túy/g, 'song hệ Bóng Tối / Bay (Dark/Flying)')
+      .replace(/Fairy Aura/g, 'Dark Aura');
   }
 
   let chapterTitle = chapter.chapterTitle
@@ -96,8 +101,12 @@ export const ENGLISH_Y_CHAPTERS = ENGLISH_X_CHAPTERS.map(chapter => {
   // Chapter 15: Mewtwonite X -> Mewtwonite Y for Pokémon Y
   if (chapter.order === 15) {
     content = content
-      .replace(/Mewtwonite X \(in Pokémon X, transforms Mewtwo into a physical powerhouse, Psychic\/Fighting type\) or Mewtwonite Y \(in Pokémon Y\)/g,
-        'Mewtwonite Y (in Pokémon Y, transforms Mewtwo into a special attack deity, pure Psychic type) or Mewtwonite X (in Pokémon X)');
+      .replace(/<strong>Mewtwonite X<\/strong> \(in Pokémon X, transforms Mewtwo into a physical powerhouse, Psychic\/Fighting type\) or Mewtwonite Y \(in Pokémon Y\)/g,
+        '<strong>Mewtwonite Y</strong> (in Pokémon Y, transforms Mewtwo into a special attack deity, pure Psychic type) or Mewtwonite X (in Pokémon X)')
+      .replace(/The Life Deity: Xerneas/g, 'The Destruction Deity: Yveltal')
+      .replace(/716\.png/g, '717.png')
+      .replace(/pure Fairy-type/g, 'Dark / Flying-type')
+      .replace(/Fairy Aura/g, 'Dark Aura');
   }
 
   let chapterTitle = chapter.chapterTitle

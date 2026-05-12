@@ -1419,24 +1419,133 @@ export const HEARTGOLD_CHAPTERS = [
   },
   {
     gameVersion: "heartgold",
-    chapterTitle: "Phần 14: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt",
+    chapterTitle: "Phần 14: Bí mật các Thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo",
     order: 14,
     language: "vi",
     content: `
-      <h1>Phần 14: Bí mật các thần thú Siêu Hiếm & Huyền Thoại bạo liệt</h1>
-      <p>HeartGold mở ra thánh địa săn lùng thần thú vĩ đại nhất của toàn dòng game thế hệ 4:</p>
+      <h1>Phần 14: Bí mật các Thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo</h1>
+      <p>Thế hệ 4 làm lại mang đến thánh địa săn lùng thần thú vĩ đại và hoàng tráng bậc nhất lịch sử Pokémon vùng Johto và Kanto!</p>
 
-      <h2>1. Thần hộ mệnh đại dương Lugia (Whirl Islands - Level 70)</h2>
-      <p>Sau khi đoạt được quả chuông bạc **Silver Wing** từ cụ già tại Pewter City mạn Kanto, hãy dùng Whirlpool bơi sâu vào hốc đảo xoáy nước Whirl Islands để diện kiến **Lugia (Level 70)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:32px; vertical-align:middle;" /> vĩ đại!</p>
+      <!-- SECTION 1: LINH VẬT ĐẠI DIỆN -->
+      <h2 style="color: #fbbf24; border-left: 4px solid #fbbf24; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Phượng Hoàng Thần Mặt Trời (HeartGold Mascot)</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(234, 179, 8, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Linh Vật Tối Cao - Thần Mặt Trời</span>
+          <h3 style="color: #fbbf24; margin: 8px 0; font-size: 22px;">Hỏa Thần Phục Sinh: Ho-Oh (#250)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Lửa / Bay | <strong>Cấp độ:</strong> 45 (Bắt buộc cốt truyện)</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Vị trí & Cách bắt:</strong> Độc quyền sự kiện cốt truyện chính của HeartGold! Sau khi đánh bại 5 cô gái Kimono và có lông vũ **Rainbow Wing**, hãy leo lên đỉnh tháp rực lửa **Bell Tower** (Ecruteak City). Trận chiến linh thiêng nổ ra với nhạc nền thế hệ 4 cực kỳ hào hùng. Dốc hết bóng giữ mạng hoặc ru ngủ dứt điểm để thu phục!</p>
+        </div>
+      </div>
 
-      <h2>2. Theo dấu thần nước ngọc thanh tú Suicune (Cerulean Cape - Level 40)</h2>
-      <p>Khác bản gốc, Suicune trong HGSS sẽ không chạy hoang dã dã ngoại! Bạn phải liên tục diện kiến nó ở 5 địa điểm bí ẩn (Violet City, Route 36, Cianwood City, Route 42, Vermilion City) rồi tiến thẳng lên Cerulean Cape mạn đông bắc Kanto để so tài thu phục **Suicune (Level 40)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:32px; vertical-align:middle;" />!</p>
+      <!-- SECTION 2: BỘ BA THẦN THÚ VÀ HỘ VỆ ĐẠI DƯƠNG -->
+      <h2 style="color: #38bdf8; border-left: 4px solid #38bdf8; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Thần Hộ Vệ Đại Dương & Bộ Ba Thần Thú</h2>
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- LUGIA CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Biển Cả - Hậu Game</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Hải Thần Đại Dương: Lugia (#249)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Siêu Linh / Bay | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách bắt:</strong> Trong HeartGold, Lugia sẽ ngự trị ở cấp 70 hậu game dã ngoại. Hãy tới thành phố **Pewter City** bên mạn Kanto, gặp ông cụ đứng ở vách đồi phía đông để nhận lông vũ bạc **Silver Wing**. Vượt qua xoáy nước khổng lồ tại **Whirl Islands** để tiến sâu vào lòng thác ngầm đối mặt thử thách biển khơi!</p>
+          </div>
+        </div>
 
-      <h2>3. Thần bóng đêm Mewtwo ngủ vạn năm (Cerulean Cave - Level 70)</h2>
-      <p>Vượt qua dòng nước chảy siết mạn tây Cerulean City để đột nhập hang động cổ Cerulean Cave. Ở sâu thẳm đáy mê cung đá bay, thu phục **Mewtwo (Level 70)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /> siêu bạo phát!</p>
+        <!-- SUICUNE CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png" alt="Suicune" style="max-width: 115px; filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(14, 165, 233, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Nước Tĩnh Tâm</span>
+            <h3 style="color: #38bdf8; margin: 8px 0; font-size: 20px;">Thủy Quân Ngọc Thanh: Suicune (#245)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước | <strong>Cấp độ:</strong> 40</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách săn đuổi:</strong> Suicune không chạy ngẫu nhiên hoang dã dã ngoại! Bạn phải chạm trán nó theo chuỗi cốt truyện ở các vị trí: Bắc Violet City, Route 36, Cianwood City, Route 42 (sau khi dùng Cut), Vermilion City (Kanto) và cuối cùng nó sẽ dừng tĩnh thách đấu bạn tại **Route 25 (Cerulean Cape)**.</p>
+          </div>
+        </div>
 
-      <h2>4. Khởi nguồn Sáng Thế: Kyogre & Rayquaza huyền thoại (Embedded Tower)</h2>
-      <p>Post-game đỉnh cao, nhận ngọc lam **Blue Orb** từ tiên ông Mr. Pokémon để bước vào tháp cổ **Embedded Tower** mạn tây Route 47, thách thức thủy thần khổng lồ đại dương **Kyogre (Level 50)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/382.png" style="max-width:32px; vertical-align:middle;" />. Đặc biệt nếu bạn trade được chú Groudon từ bản SoulSilver sang, mang cả cặp Kyogre & Groudon tới diện kiến Oak để nhận ngọc xanh lục triệu gọi thần long vũ trụ **Rayquaza (Level 50)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/384.png" style="max-width:32px; vertical-align:middle;" /> xuất thế thách đấu!</p>
+        <!-- RAIKOU & ENTEI CO-CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 140px; display: flex; justify-content: center; gap: 10px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png" alt="Raikou" style="max-width: 70px; filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png" alt="Entei" style="max-width: 70px; filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Chạy Hoang Dã</span>
+            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Lôi Hoàng Raikou & Viêm Đế Entei</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Điện / Lửa | <strong>Cấp độ:</strong> 40 (Chạy trốn tự do vùng Johto)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Săn lùng:</strong> Sau khi thức tỉnh tại **Burned Tower**, bộ đôi này sẽ chạy ngẫu nhiên trên bản đồ Johto. Hãy dùng bản đồ Pokégear để theo dõi dấu vết, chặn chạy trốn bằng chiêu **Mean Look** và ru ngủ dứt điểm cực nhanh.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: THẦN KIẾT GIỚI KANTO & SIÊU PHÁT PHÁT MEWTWO -->
+      <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Thần bóng tối tối thượng vùng Kanto</h2>
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- MEWTWO CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 115px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Chiến Binh Tâm Linh Nhân Tạo</span>
+            <h3 style="color: #c084fc; margin: 8px 0; font-size: 20px;">Vua Tâm Linh Hủy Diệt: Mewtwo (#150)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Tâm Linh | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Nơi ẩn náu:</strong> Sau khi đánh bại Red và thu thập 16 huy hiệu, hãy b bơi mạn tây thành phố Cerulean City đột kích mê cung đá thạch sâu thẳm **Cerulean Cave**. Tại tầng đáy cùng ngầm dưới lòng đất, Mewtwo siêu cấp bạo bạo khí đang ngủ say thách thức dũng sĩ!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: KHỞI NGUỒN SÁNG THẾ (EXCLUSIVE KYOGRE & RAYQUAZA) -->
+      <h2 style="color: #f43f5e; border-left: 4px solid #f43f5e; padding-left: 12px; margin-top: 32px; font-size: 22px;">4. Khởi Nguồn Sáng Thế (Độc quyền Embedded Tower)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">HeartGold đem lại cơ hội sở hữu thần thú kiến tạo lục địa siêu bạo kích:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- KYOGRE CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);">
+          <div style="flex: 1; text-align: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" style="max-width: 125px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Biển Khơi Cổ Đại - Độc Quyền HG</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Vua Biển Cổ Đại: Kyogre (#382)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách triệu hồi:</strong> Hậu game dã ngoại, nhận bảo vật ngọc lam **Blue Orb** từ tiên ông Mr. Pokémon. Tiến về con đường cheo leo Route 47, leo sâu vào tháp đá cổ **Embedded Tower** để đánh thức cơn bão tố ngàn năm của đại hải tặc Kyogre!</p>
+          </div>
+        </div>
+
+        <!-- RAYQUAZA CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);">
+          <div style="flex: 1; text-align: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="Rayquaza" style="max-width: 130px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Long Vũ Trụ</span>
+            <h3 style="color: #34d399; margin: 8px 0; font-size: 20px;">Hoàng Đế Bầu Trời: Rayquaza (#384)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng / Bay | <strong>Cấp độ:</strong> 50</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách triệu hồi vinh quang:</strong> Bạn phải thu phục Kyogre trong bản HG của mình, sau đó **nhập khẩu trao đổi (trade) thần đất Groudon từ bản SoulSilver** vào cùng một tệp save. Mang cả song thần tới diện kiến Giáo sư Oak ở Pallet Town để nhận ngọc lục bảo **Jade Orb**. Đem ngọc lên **Embedded Tower** triệu hồi rồng thiêng vũ trụ vinh quang!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: THẦN RỪNG HUYỀN ẢO CELEBI -->
+      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">5. Thần rừng Hộ vệ Thời không (Mythical Celebi Event)</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+        <div style="flex: 1; text-align: center; min-width: 150px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Huyền Ảo - Sự Kiện Cổ</span>
+          <h3 style="color: #34d399; margin: 8px 0; font-size: 22px;">Hộ Vệ Thời Không: Celebi (#251)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Cỏ / Tâm Linh | <strong>Cấp độ:</strong> 30</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Sự kiện Du hành thời không cốt truyện:</strong> Nếu bạn kích hoạt sự kiện phân phối Celebi đặc thù dã ngoại, mang bé đi đầu dẫn tới ngôi miếu cổ linh thiêng **Ilex Forest Shrine** dã ngoại. Ngay lập tức, một hố đen thời không sẽ hút bạn quay lại quá khứ để tìm hiểu bí ẩn cuộc đối đầu giữa Silver và bố hắn - trùm tối cao **Giovanni** của Team Rocket tại thác Tohjo Falls!</p>
+        </div>
+      </div>
     `
   },
   {
@@ -2899,22 +3008,131 @@ export const ENGLISH_HEARTGOLD_CHAPTERS = HEARTGOLD_CHAPTERS.map(viChapter => {
       break;
 
     case 14:
-      title = "Chapter 14: Rare & Legendary Pokémon Secrets in HeartGold";
+      title = "Chapter 14: Rare, Legendary & Mythical Pokémon Secrets";
       content = `
-        <h1>Chapter 14: Rare & Legendary Pokémon Secrets in HeartGold</h1>
-        <p>HeartGold offers the grandest sanctuary for hunting legendary titans in Gen 4:</p>
+        <h1>Chapter 14: Rare, Legendary & Mythical Pokémon Secrets</h1>
+        <p>The Gen 4 remakes provide the most grand, spectacular hunting grounds for legendary titans in franchise history across Johto and Kanto!</p>
 
-        <h2>1. Oceanic Guardian Lugia (Whirl Islands - Level 70)</h2>
-        <p>With the **Silver Wing** acquired from Pewter City, Surf into the depths of the Whirl Islands to confront **Lugia (Level 70)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" style="max-width:32px; vertical-align:middle;" />.</p>
+        <!-- SECTION 1: COVER MASCOT -->
+        <h2 style="color: #fbbf24; border-left: 4px solid #fbbf24; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Solar Deity Phoenix (HeartGold Cover Mascot)</h2>
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.3); margin-bottom: 24px;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Supreme Guardian - Cover Mascot</span>
+            <h3 style="color: #fbbf24; margin: 8px 0; font-size: 22px;">Resurrected Fire God: Ho-Oh (#250)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Fire / Flying | <strong>Level:</strong> 45 (Story Event)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location & Capture Tactic:</strong> HeartGold's ultimate story exclusive! After conquering the 5 Kimono Girls and receiving the **Rainbow Wing**, climb the magnificent, autumn-leaved **Bell Tower** in Ecruteak City. An epic battle ensues with an incredible remastered theme. Inflict status effects (sleep/paralysis) and throw Dusk or Ultra Balls to secure it!</p>
+          </div>
+        </div>
 
-        <h2>2. Tracking the Luminous Suicune (Cerulean Cape - Level 40)</h2>
-        <p>Suicune does not roam randomly! Spot it at Violet City, Route 36, Cianwood, Route 42, Vermilion City, and finally capture it at Cerulean Cape in Kanto (**Suicune, Level 40**) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:32px; vertical-align:middle;" />.</p>
+        <!-- SECTION 2: THE OCEANIC GUARDIAN & ROAMERS -->
+        <h2 style="color: #38bdf8; border-left: 4px solid #38bdf8; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Oceanic Guardian & Legendary Beasts</h2>
+        <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+          <!-- LUGIA CARD -->
+          <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div style="flex: 1; text-align: center; min-width: 140px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="flex: 3; min-width: 250px;">
+              <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Guardian of the Sea - Post-Game</span>
+              <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Ocean Emperor: Lugia (#249)</h3>
+              <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic / Flying | <strong>Level:</strong> 70</p>
+              <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Capture Method:</strong> Lugia rests deep inside the **Whirl Islands** at Level 70 during the post-game. Visit **Pewter City** in Kanto and speak to the old man standing on the eastern hill to receive the **Silver Wing**. Venture through the ocean whirlpools and deep caves to trigger this oceanic clash!</p>
+            </div>
+          </div>
 
-        <h2>3. Ancient Shadow Mewtwo (Cerulean Cave - Level 70)</h2>
-        <p>Surf past Saffron/Cerulean channels to enter Cerulean Cave. Battle the legendary **Mewtwo (Level 70)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="max-width:32px; vertical-align:middle;" /> at the bottom floor.</p>
+          <!-- SUICUNE CARD -->
+          <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div style="flex: 1; text-align: center; min-width: 140px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png" alt="Suicune" style="max-width: 115px; filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="flex: 3; min-width: 250px;">
+              <span style="background-color: rgba(14, 165, 233, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">The Aurora Borealis</span>
+              <h3 style="color: #38bdf8; margin: 8px 0; font-size: 20px;">Luminous Wind: Suicune (#245)</h3>
+              <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Water | <strong>Level:</strong> 40</p>
+              <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Tracking Hunt:</strong> Suicune does not roam randomly! Spot its majestic presence at Violet City, Route 36, Cianwood, Route 42, Vermilion City, and finally challenge it face-to-face at **Route 25 (Cerulean Cape)**.</p>
+            </div>
+          </div>
 
-        <h2>4. Primordial Gods: Kyogre & Rayquaza (Embedded Tower)</h2>
-        <p>In the post-game, receive the **Blue Orb** from Mr. Pokémon. Climb the Embedded Tower on Route 47 to capture **Kyogre (Level 50)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/382.png" style="max-width:32px; vertical-align:middle;" />. Trade a SoulSilver Groudon and show both to Oak to unlock **Rayquaza (Level 50)** <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/384.png" style="max-width:32px; vertical-align:middle;" />!</p>
+          <!-- RAIKOU & ENTEI CO-CARD -->
+          <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div style="flex: 1; text-align: center; min-width: 140px; display: flex; justify-content: center; gap: 10px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png" alt="Raikou" style="max-width: 70px; filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.4));" />
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png" alt="Entei" style="max-width: 70px; filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));" />
+            </div>
+            <div style="flex: 3; min-width: 250px;">
+              <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Wild Overworld Roamers</span>
+              <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Thunder Beast Raikou & Volcano Beast Entei</h3>
+              <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Electric / Fire | <strong>Level:</strong> 40 (Johto Wilderness)</p>
+              <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>How to Hunt:</strong> After escaping the **Burned Tower**, they will roam the wilderness of Johto. Track their real-time locations using your Pokégear Map, trap them with **Mean Look** or Block, and put them to sleep to prevent their immediate escape!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: KANTO GENETIC KING -->
+        <h2 style="color: #a855f7; border-left: 4px solid #a855f7; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. The Genetic King of Kanto</h2>
+        <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+          <!-- MEWTWO CARD -->
+          <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div style="flex: 1; text-align: center; min-width: 140px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" style="max-width: 115px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="flex: 3; min-width: 250px;">
+              <span style="background-color: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Genetic Psychic Warrior</span>
+              <h3 style="color: #c084fc; margin: 8px 0; font-size: 20px;">Ultimate Psychic Power: Mewtwo (#150)</h3>
+              <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic | <strong>Level:</strong> 70</p>
+              <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> After crushing Red and claiming all 16 badges, Surf past the Cerulean gym channels into the dark, labyrinthine **Cerulean Cave**. Deepest at the bottom floor, the genetic masterpiece Mewtwo awaits your challenge!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: THE PRIMORDIAL GODS -->
+        <h2 style="color: #f43f5e; border-left: 4px solid #f43f5e; padding-left: 12px; margin-top: 32px; font-size: 22px;">4. Primordial Creators (Embedded Tower Exclusives)</h2>
+        <p style="color: #94a3b8; line-height: 1.6;">HeartGold unlocks unprecedented access to Hoenn's weather creators:</p>
+
+        <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+          <!-- KYOGRE CARD -->
+          <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);">
+            <div style="flex: 1; text-align: center; min-width: 140px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" style="max-width: 125px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="flex: 3; min-width: 250px;">
+              <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Creator of the Sea - HG Exclusive</span>
+              <h3 style="color: #60a5fa; margin: 8px 0; font-size: 20px;">Ocean Leviathan: Kyogre (#382)</h3>
+              <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Water | <strong>Level:</strong> 50</p>
+              <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>How to Summon:</strong> In the post-game, receive the **Blue Orb** from Mr. Pokémon on Route 30. Surf to Route 47, scaling the cliffs to enter the **Embedded Tower** and awaken the colossal water god!</p>
+            </div>
+          </div>
+
+          <!-- RAYQUAZA CARD -->
+          <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);">
+            <div style="flex: 1; text-align: center; min-width: 140px;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="Rayquaza" style="max-width: 130px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="flex: 3; min-width: 250px;">
+              <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">The Sky High Pokémon</span>
+              <h3 style="color: #34d399; margin: 8px 0; font-size: 20px;">Ozone Emperor: Rayquaza (#384)</h3>
+              <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Dragon / Flying | <strong>Level:</strong> 50</p>
+              <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>How to Summon:</strong> Capture Kyogre in HG, then **trade Groudon from SoulSilver** into your file. Show both legendary titans to Professor Oak in Pallet Town to obtain the **Jade Orb**. Head back to **Embedded Tower** to summon the supreme dragon lord!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: MYTHICAL CELEBI EVENT -->
+        <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">5. Temporal Time Guardian (Mythical Celebi Event)</h2>
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Mythical Event Pokémon</span>
+            <h3 style="color: #34d399; margin: 8px 0; font-size: 22px;">Time Travel Spirit: Celebi (#251)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Grass / Psychic | <strong>Level:</strong> 30</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Time Travel Sequence:</strong> By taking an event-distributed Celebi to the quiet **Ilex Forest Shrine**, you trigger a temporal distortion. Travel back in time to reveal the secret clash between Silver and his father **Giovanni** at Tohjo Falls!</p>
+          </div>
+        </div>
       `;
       break;
 

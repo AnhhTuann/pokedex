@@ -392,26 +392,61 @@ export const RUBY_CHAPTERS = EMERALD_CHAPTERS.map(chapter => {
             </tr>
             <tr>
               <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/348.png" alt="Armaldo" />
-              </td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #f43f5e;">Armaldo</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 56</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đá / Côn trùng</td>
-              <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #10b981;">Sát thương vật lý cực mạnh. Sử dụng đòn hệ Nước, Đá hoặc Thép đặc biệt để dứt điểm nhanh.</td>
-            </tr>
-            <tr>
-              <td style="padding: 12px 16px; text-align: center;">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/376.png" alt="Metagross" />
-              </td>
-              <td style="padding: 12px 16px; font-weight: bold; color: #a855f7;">Metagross (Át chủ bài)</td>
-              <td style="padding: 12px 16px;">Lvl 58</td>
-              <td style="padding: 12px 16px;">Thép / Siêu linh</td>
-              <td style="padding: 12px 16px; color: #10b981;">Kẻ hủy diệt tối thượng với đòn Meteor Mash cực thảm khốc! Khắc chế bằng đòn hệ Đất (Earthquake) hoặc hệ Lửa cực mạnh (như Overheat/Flamethrower). Tránh đối đầu vật lý tay đôi!</td>
-            </tr>
-          </tbody>
-        </table>
+                <img s  // Chapter 11: Legendary (Latios roaming, Groudon caught in story, Kyogre uncatchable, Rayquaza Sky Pillar post-game, Regis Wailord 1st and Relicanth last)
+  if (chapter.order === 11) {
+    content = content
+      // Replace Section 2 Latias & Latios roaming with Latios only
+      .replace(
+        /<!-- SECTION 2: SONG LONG KHỞI NGUYÊN LATIAS & LATIOS -->[\s\S]+?<!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->/,
+        `<!-- SECTION 2: SONG LONG KHỞI NGUYÊN LATIAS & LATIOS -->
+      <h2 style="color: #3b82f6; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Thiên Long Di Trú: Latios</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png" alt="Latios" style="max-width: 120px; filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Di Trú hoang dã (Roaming)</span>
+          <h3 style="color: #60a5fa; margin: 8px 0; font-size: 22px;">Thiên Long Di Trú: Latios (#381)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng / Siêu Linh | <strong>Cấp độ:</strong> 40</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cách săn bắt:</strong> Trong phiên bản Ruby, sau khi đánh bại Elite Four, bạn sẽ thức dậy ở nhà mình tại Littleroot Town. Hãy xuống nhà xem TV, bạn sẽ nghe bản tin về một Pokémon màu xanh rực rỡ xuất hiện ở Hoenn. Chú rồng huyền thoại <strong>Latios</strong> sẽ lập tức xuất hiện hoang dã bay lượn ngẫu nhiên trên toàn bộ vùng biển Hoenn (không có Latias roaming).</p>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Mẹo bắt Latios:</strong> Do nó liên tục đổi Route ngẫu nhiên mỗi khi bạn di chuyển, hãy mang theo Pokémon có chiêu <em>Mean Look</em> (như Crobat, Golbat) hoặc Pokémon có đặc tính <em>Shadow Tag</em> (như Wobbuffet) để ngăn nó bỏ chạy. Ném Master Ball ngay lập tức hoặc làm suy yếu và quăng Ultra Ball!
+      </blockquote>
 
-        <p>Sau khi hạ gục siêu phẩm Metagross của Steven, chúc mừng bạn! Bạn đã xuất sắc lật đổ Steven Stone, chính thức bước lên ngôi vị Tân vô địch Pokémon Hoenn League tối cao, ghi danh vào bảng vàng lịch sử Hall of Fame của <strong>Pokémon Ruby</strong>!</p>`
+      <!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->`
+      )
+      // Replace Section 3 weather trio with Groudon only
+      .replace(
+        /<!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->[\s\S]+?<!-- SECTION 4: BỘ BA TƯỢNG ĐÁ CỔ ĐẠI REGIS -->/,
+        `<!-- SECTION 3: SONG THẦN KHỞI NGUỒN ĐỊA CẦU GROUDON & KYOGRE -->
+      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Thần Thú Địa Cầu: Groudon</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png" alt="Groudon" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Đần Cổ Đại - Thần Lục Địa</span>
+          <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Kiến Tạo Lục Địa: Groudon (#383)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Đất | <strong>Cấp độ:</strong> 45</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Thu phục trong cốt truyện chính:</strong> Trong phiên bản Ruby, Groudon là linh vật đại diện được đánh thức bởi Team Magma và bạn đã thu phục hoặc hạ gục nó tại Cave of Origin (Sootopolis City) trong cốt truyện chính ở Level 45. Vì thế, ở phần hậu game, các hang động thời tiết thời gian thực (Terra Cave/Marine Cave) không tồn tại. Kyogre là độc quyền của bản Sapphire và không thể bắt được trong bản Ruby.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 4: BỘ BA TƯỢNG ĐÁ CỔ ĐẠI REGIS -->`
+      )
+      // Adjust Rayquaza timing from pre-elite to post-elite
+      .replace(
+        "bắt giữ nó ngay <strong>trước khi đấu Elite Four</strong>!",
+        "bắt giữ nó ở phần hậu game (sau khi đánh bại Elite Four, khi tháp Sky Pillar chính thức mở cửa trở lại)!"
+      )
+      // Swap Relicanth and Wailord positions
+      .replace(
+        /Xếp <strong>Relicanth<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/369.png" style="max-width:20px; vertical-align:middle;" \/> ở vị trí <strong>ĐẦU TIÊN<\/strong> và <strong>Wailord<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/321.png" style="max-width:20px; vertical-align:middle;" \/> ở vị trí <strong>CUỐI CÙNG<\/strong> trong đội hình/,
+        `Xếp <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>ĐẦU TIÊN</strong> và <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> ở vị trí <strong>CUỐI CÙNG</strong> trong đội hình`
+      );
+  }i vị Tân vô địch Pokémon Hoenn League tối cao, ghi danh vào bảng vàng lịch sử Hall of Fame của <strong>Pokémon Ruby</strong>!</p>`
       );
   }
 
@@ -899,22 +934,56 @@ export const ENGLISH_RUBY_CHAPTERS = ENGLISH_EMERALD_CHAPTERS.map(chapter => {
   // Chapter 11: English legendary
   if (chapter.order === 11) {
     content = content
+      // Replace Section 2 Latias & Latios roaming with Latios only (English)
       .replace(
-        /<li><strong>Choose Red[\s\S]+?<\/ul>/,
-        `<li>In Ruby, the legendary dragon <strong>Latios</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/381.png" style="max-width:32px; vertical-align:middle;" /> will automatically roam wild across the oceans of Hoenn after the elite four victory (no color choice, and Latias does not roam by default).</li>`
+        /<!-- SECTION 2: LATIAS & LATIOS ROAMING -->[\s\S]+?<!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->/,
+        `<!-- SECTION 2: LATIAS & LATIOS ROAMING -->
+      <h2 style="color: #3b82f6; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. The Eon Guardian: Latios</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(59, 130, 246, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px; display: flex; justify-content: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png" alt="Latios" style="max-width: 120px; filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Roaming Wilderness Guardian</span>
+          <h3 style="color: #60a5fa; margin: 8px 0; font-size: 22px;">The Roaming Dragon: Latios (#381)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Dragon / Psychic | <strong>Level:</strong> 40</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Capturing Latios:</strong> In the Ruby version, after completing the Elite Four and entering the Hall of Fame, you will awaken in your home in Littleroot Town. Downstairs, a special TV broadcast will mention a brilliant blue Pokémon flying over Hoenn. The legendary <strong>Latios</strong> will immediately start roaming wild across the tall grass and ocean routes of Hoenn (Latias is not available to roam in Ruby).</p>
+        </div>
+      </div>
+      <blockquote>
+        <strong>Eon Capturing Strategy:</strong> Since Latios flees immediately on turn one, lead with a Pokémon using <em>Mean Look</em> (e.g., Crobat, Golbat) or a Pokémon with the <em>Shadow Tag</em> ability (e.g., Wobbuffet). Chip down its HP and throw Ultra Balls or use your Master Ball!
+      </blockquote>
+
+      <!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->`
       )
+      // Replace Section 3 weather trio with Groudon only (English)
       .replace(
-        /<h2>2\. Kyogre & Groudon<\/h2>[\s\S]+?<\/blockquote>/,
-        `<h2>2. Sky Overlord: Rayquaza</h2>
-        <p>In Ruby, Groudon is caught during the main storyline inside the Cave of Origin. Post-game, you can seek out the third legendary titan:</p>
-        <ul>
-          <li><strong>Rayquaza (Lvl 70):</strong> Bring your Mach Bike to Route 131, enter the tall chasm of the <strong>Sky Pillar</strong>. Master the cracked floors at top speed to scale the summit and capture Rayquaza at level 70!</li>
-          <li><em>Note:</em> Kyogre and post-game Groudon locations (Terra Cave/Marine Cave) do not exist in Ruby. Kyogre is exclusive to Sapphire.</li>
-        </ul>`
+        /<!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->[\s\S]+?<!-- SECTION 4: LEGENDARY TITANS REGIS -->/,
+        `<!-- SECTION 3: WEATHER TRIO KYOGRE & GROUDON -->
+      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. The Continent Creator: Groudon</h2>
+      <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2); margin-bottom: 24px;">
+        <div style="flex: 1; text-align: center; min-width: 150px;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png" alt="Groudon" style="max-width: 120px; filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="flex: 3; min-width: 250px;">
+          <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Story Legendary - Earth Titan</span>
+          <h3 style="color: #f87171; margin: 8px 0; font-size: 22px;">Landmass Colossus: Groudon (#383)</h3>
+          <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Ground | <strong>Level:</strong> 45</p>
+          <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Story Capture:</strong> In Pokémon Ruby, Groudon is the focus of Team Magma and is encountered and captured (or defeated) at Level 45 inside the **Cave of Origin** (Sootopolis City) during the main storyline. In the post-game, there are no dynamic weather caves (Terra Cave or Marine Cave) in Ruby. Kyogre is exclusive to Sapphire and is completely uncatchable in Ruby.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 4: LEGENDARY TITANS REGIS -->`
       )
+      // Adjust Rayquaza timing in English
       .replace(
-        /Place Relicanth in the <strong>FIRST<\/strong> slot and Wailord in the <strong>LAST<\/strong> slot/,
-        "place **Wailord** in the **FIRST** slot and **Relicanth** in the **LAST** slot of your party"
+        "challenge it <strong>before facing the Elite Four</strong>!",
+        "challenge it in the post-game (after defeating the Elite Four, when the Sky Pillar officially opens to the public)!"
+      )
+      // Swap Relicanth and Wailord positions in English
+      .replace(
+        /Prepare a party with <strong>Relicanth<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/369.png" style="max-width:20px; vertical-align:middle;" \/> in the <strong>FIRST<\/strong> slot and <strong>Wailord<\/strong> <img src="https:\/\/raw.githubusercontent.com\/PokeAPI\/sprites\/master\/sprites\/pokemon\/321.png" style="max-width:20px; vertical-align:middle;" \/> in the <strong>LAST<\/strong> slot/,
+        `Prepare a party with <strong>Wailord</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/321.png" style="max-width:20px; vertical-align:middle;" /> in the <strong>FIRST</strong> slot and <strong>Relicanth</strong> <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/369.png" style="max-width:20px; vertical-align:middle;" /> in the <strong>LAST</strong> slot`
       );
   }
 

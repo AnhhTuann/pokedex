@@ -444,7 +444,7 @@ export const OMEGA_RUBY_CHAPTERS = [
       <p>Maxie dùng khối ngọc đỏ rực kích hoạt thức tỉnh Groudon, nhưng năng lượng của nó quá tải khiến Groudon biến đổi thành **Primal Groudon (Tái Thiết Cổ Đại - Cấp 45)**, phóng lượng nhiệt thiêu cháy khô cạn cả tinh cầu! Hãy đi sâu vào vùng lõi nham thạch Cave of Origin tại Sootopolis City để chiến đấu cứu lấy nhân loại:</p>
 
       <div style="text-align: center; margin: 24px 0;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10077.png" alt="Primal Groudon" style="max-width: 180px;" />
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png" alt="Primal Groudon" style="max-width: 180px;" />
         <p style="font-style: italic; color: #ef4444; margin-top: 8px;">Cổ Đại Thần Thú Primal Groudon mang hỏa hỏa rực cháy khổng lồ!</p>
       </div>
 
@@ -675,20 +675,197 @@ export const OMEGA_RUBY_CHAPTERS = [
     chapterTitle: 'Chương 15: Bí mật các Thần thú Siêu Hiếm & Huyền Thoại bạo liệt',
     content: `
       <h1>Chương 15: Bí mật các Thần thú Siêu Hiếm & Huyền Thoại bạo liệt</h1>
-      <p>Pokémon Omega Ruby là thiên đường thần thoại đúng nghĩa, cho phép bạn thu phục số lượng Pokémon Huyền thoại khổng lồ qua hệ thống hố đen bay lượn trên bầu trời:</p>
+      <p>Vùng đất Hoenn và bầu trời bao la của nó ẩn giấu những bí mật cổ xưa của vũ trụ. Đây là cẩm nang toàn tập giúp bạn giải mã các hầm ngục, kích hoạt phong ấn rạn san hô, và chinh phục toàn bộ các thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo tối thượng trong Pokémon Omega Ruby & Alpha Sapphire!</p>
 
-      <h2>1. Bộ ba hộ vệ Regi cổ cổ đại</h2>
-      <ul>
-        <li><strong>Regirock, Regice, Registeel (Cấp độ 40):</strong> Để mở niêm phong hang động của chúng, hãy mang theo một con **Relicanth** (để đầu party) và một con **Wailord** (để cuối party) đi tới hang ngầm rạn san hô Route 134, sử dụng chiêu Dig để kích hoạt trận động đất chấn động lục địa!</li>
-        <li><strong>Regigigas (Cấp độ 50):</strong> Sau khi bắt đủ 3 con Regi, mang theo cả 3 con trong đội hình (cho Regice cầm một vật phẩm tuyết Castelia Cone) tiến vào hang động hoang dã của nó tại Island Cave (Route 105) vào ban ngày để kích hoạt cuộc đấu khổng lồ!</li>
-      </ul>
+      <!-- SECTION 1: SIÊU THẦN THÚ THỜI CỔ ĐẠI -->
+      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Siêu Thần Thú Thời Cổ Đại & Vũ Trụ</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Những thực thể mang sức mạnh thay đổi cả bản đồ địa lý và khí hậu của Hoenn:</p>
 
-      <h2>2. Hố đen không gian chứa thần thú thế hệ trước (Mirage Spots)</h2>
-      <p>Sử dụng Eon Flute bay lượn tự do tìm kiếm các điểm sáng lấp lánh:</p>
-      <ul>
-        <li><strong>Lugia / Ho-Oh (Lvl 50):</strong> Tìm thấy ngọc lục bảo bên trong rạn san hô chìm **Sea Mauville**, mang đến Slateport Harbor đổi lấy chuông triệu hồi để đánh thức phượng hoàng lửa **Ho-Oh** (Omega Ruby) hoặc rồng biển **Lugia** (Alpha Sapphire)!</li>
-        <li><strong>Dialga / Palkia / Giratina (Lvl 50):</strong> Mang theo 3 con thần thú hồ nước (Uxie, Mesprit, Azelf) trong đội hình bay trên bầu trời, bạn sẽ thấy hố sâu không gian khổng lồ chứa rồng thời gian **Dialga** (Omega Ruby) hoặc rồng không gian **Palkia**!</li>
-      </ul>
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- PRIMAL GROUDON / KYOGRE -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png" alt="Primal Groudon" style="max-width: 130px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="color: #ef4444; margin: 0 0 8px 0; font-size: 20px;">Cổ Đại Thần Thú: Primal Groudon (#383)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Đất / Lửa | <strong>Đặc tính:</strong> Desolate Land (Thời tiết nắng hạn cực đoan)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm:</strong> Thức tỉnh tại Cave of Origin (Sootopolis City) trong mạch truyện chính ở cấp độ 45.<br/><strong>Mẹo chiến đấu:</strong> Đặc tính Desolate Land bốc hơi toàn bộ chiêu hệ Nước. Hãy hạ gục hoặc bắt nó bằng đòn hệ Đất (Earthquake) hoặc hệ Đá.</p>
+          </div>
+        </div>
+
+        <!-- MEGA RAYQUAZA -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10079.png" alt="Mega Rayquaza" style="max-width: 130px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="color: #10b981; margin: 0 0 8px 0; font-size: 20px;">Long Thần Bầu Trời: Mega Rayquaza (#384)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Rồng / Bay | <strong>Đặc tính:</strong> Delta Stream (Gió bão triệt tiêu điểm yếu hệ Bay)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm:</strong> Chinh phục đỉnh Sky Pillar trong Delta Episode ở cấp độ 70.<br/><strong>Cơ chế độc nhất:</strong> Rayquaza không cần giữ Mega Stone vẫn có thể tiến hóa Mega nếu học chiêu thức chấn phái <strong>Dragon Ascent</strong>!</p>
+          </div>
+        </div>
+
+        <!-- DEOXYS -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png" alt="Deoxys" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="color: #a855f7; margin: 0 0 8px 0; font-size: 20px;">Quái Vật Ngoài Hành Tinh: Deoxys (#386)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Siêu Linh | <strong>Sở hữu 4 hình dạng chiến đấu cực lỗi!</strong></p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Địa điểm:</strong> Đại chiến ngoài không gian vũ trụ cuối Delta Episode ở cấp độ 80.<br/><strong>Cách đổi hình dạng:</strong> Hãy mang Deoxys trong đội hình tương tác với khối thiên thạch tại phòng thí nghiệm của Giáo sư Cozmo ở Fallarbor Town để luân chuyển giữa các dạng: Thường (Normal), Tấn công (Attack), Phòng thủ (Defense), và Tốc độ (Speed).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: BỘ TỨ CỔ VẬT PHÒNG VỆ - GOLEM ANCIENTS -->
+      <h2 style="color: #eab308; border-left: 4px solid #eab308; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Giải Mã Phong Ấn Bộ Tứ Hộ Vệ Cổ Đại (Regis)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Đây là câu đố hóc búa nhất vùng Hoenn đòi hỏi khả năng dịch ngôn ngữ ký tự cổ tự Braille:</p>
+
+      <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(234, 179, 8, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+        <h3 style="color: #fbbf24; margin-top: 0;">Khóa Chốt Đại Dương - Kích Hoạt Phong Ấn Toàn Cầu:</h3>
+        <p style="color: #cbd5e1; line-height: 1.6;">1. Bắt một con <strong>Relicanth</strong> (tại các rạn cỏ chìm sâu dưới biển quanh Route 124/126) và một con <strong>Wailord</strong> (tiến hóa từ Wailmer ở cấp 40).<br/>
+        2. Sắp xếp đội hình: Đặt <strong>Relicanth ở vị trí đầu tiên (Slot 1)</strong> và <strong>Wailord ở vị trí cuối cùng (Slot 6)</strong>.<br/>
+        3. Sử dụng chiêu <strong>Dive</strong> tiến vào khu vực nước chảy xiết của Route 134, lặn xuống hang ngầm Sealed Chamber. Đi đến bức tường ký tự cổ và sử dụng chiêu <strong>Dig</strong> để mở khóa các cánh cửa lăng mộ trên toàn bản đồ!</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
+        <!-- REGIROCK -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/377.png" alt="Regirock" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.3));" />
+          <h4 style="color: #f59e0b; margin: 12px 0 4px 0;">Regirock (Lvl 40)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Vị trí:</strong> Desert Ruins (Route 111).<br/><strong>Giải mã hang:</strong> Đi thẳng tới bức tường ký tự cổ, rẽ phải 2 bước, rẽ xuống 2 bước, và dùng chiêu <strong>Strength</strong>.</p>
+        </div>
+
+        <!-- REGICE -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/378.png" alt="Regice" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.3));" />
+          <h4 style="color: #38bdf8; margin: 12px 0 4px 0;">Regice (Lvl 40)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Vị trí:</strong> Island Cave (Route 105).<br/><strong>Giải mã hang:</strong> Đứng trước ký tự cổ, đợi đúng 2 phút (không di chuyển gì) lối đi bí ẩn sẽ tự mở.</p>
+        </div>
+
+        <!-- REGISTEEL -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/379.png" alt="Registeel" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(148, 163, 184, 0.3));" />
+          <h4 style="color: #94a3b8; margin: 12px 0 4px 0;">Registeel (Lvl 40)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Vị trí:</strong> Ancient Tomb (Route 120).<br/><strong>Giải mã hang:</strong> Đứng giữa hang và sử dụng chiêu <strong>Fly</strong> để triệu hồi vị hộ vệ thép kiên cố.</p>
+        </div>
+
+        <!-- REGIGIGAS -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/486.png" alt="Regigigas" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.3));" />
+          <h4 style="color: #10b981; margin: 12px 0 4px 0;">Regigigas (Lvl 50)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Vị trí:</strong> Island Cave (Route 105).<br/><strong>Điều kiện triệu hồi:</strong> Mang cả 3 con Regi trong đội hình, cho Regice cầm đá lạnh tuyết (Castelia Cone) và nói chuyện with tảng băng cổ đại vào ban ngày.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 3: THẦN THÚ HỐ ĐEN MIRAGE SPOTS -->
+      <h2 style="color: #3b82f6; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Thần Thú Hố Đen Hoành Tráng (Mirage Spots)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Khi cưỡi Latios/Latias bay trên bầu trời, các Vùng Đất Kỳ Ảo chứa thần thú đa vũ trụ sẽ xuất hiện:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- LUGIA / HO-OH -->
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; justify-content: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-height: 70px; filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.3));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-height: 70px; filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.3));" />
+          </div>
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: #f1f5f9; margin: 0 0 4px 0;">Ho-Oh (Omega Ruby) / Lugia (Alpha Sapphire) - Cấp độ 50</h4>
+            <p style="color: #cbd5e1; font-size: 13.5px; margin: 0; line-height: 1.5;">Hãy lặn xuống thám hiểm xác tàu đắm <strong>Sea Mauville</strong> để thu hồi thiết bị Scanner cổ cổ đại. Mang nó về bến cảng Slateport giao cho Thuyền trưởng Stern đổi lấy chuông triệu hồi thánh tích để đánh thức thần thú vĩ đại tại đầu boong tàu cao nhất!</p>
+          </div>
+        </div>
+
+        <!-- DIALGA / PALKIA / GIRATINA -->
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; justify-content: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png" alt="Dialga" style="max-height: 75px; filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png" alt="Palkia" style="max-height: 75px; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3));" />
+          </div>
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: #f1f5f9; margin: 0 0 4px 0;">Dialga (Omega Ruby) / Palkia (Alpha Sapphire) & Giratina - Cấp độ 50</h4>
+            <p style="color: #cbd5e1; font-size: 13.5px; margin: 0; line-height: 1.5;">Mang trọn bộ 3 thần hồ nước (Uxie, Mesprit, Azelf) trong đội hình bay lên bầu trời để kích hoạt khe nứt thời không cực lớn. Nếu mang đồng thời cả Dialga và Palkia bay lên, bạn sẽ đánh thức rồng bóng tối tối thượng <strong>Giratina</strong>!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: THẦN THÚ HUYỀN ẢO TỐI THƯỢNG -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 16px; padding: 24px; margin: 32px 0;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <span style="background: linear-gradient(90deg, #ec4899, #8b5cf6); color: #ffffff; padding: 6px 16px; border-radius: 9999px; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Hoenn Event Mythicals</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 26px;">Bí Ẩn Những Thần Thú Huyền Ảo Siêu Cấp</h2>
+          <p style="color: #94a3b8; line-height: 1.6; max-width: 600px; margin: 0 auto;">Những thần thú đại diện cho giấc mơ, thời gian và sức mạnh chiều không gian chỉ nhận được qua các sự kiện đặc biệt hoặc phân phối quà tặng:</p>
+        </div>
+
+        <!-- JIRACHI -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(234, 179, 8, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/385.png" alt="Jirachi" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #eab308; font-size: 20px;">1. Thần Thú Ước Nguyện: Jirachi (#385)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Hệ:</strong> Thép / Siêu Linh | <strong>Pokémon đại diện cho ngôi sao ước nguyện!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0;">Chỉ thức tỉnh sau mỗi 1000 năm để ban điều ước cho những tâm hồn thuần khiết. Sở hữu chiêu thức độc quyền hủy diệt <strong>Doom Desire</strong> giáng xuống những cột ánh sáng thép từ thiên giới!</p>
+          </div>
+        </div>
+
+        <!-- CELEBI -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" style="max-width: 100px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #10b981; font-size: 20px;">2. Tiên Rừng Thời Gian: Celebi (#251)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Hệ:</strong> Cỏ / Siêu Linh | <strong>Vị thần hộ mệnh bảo vệ rừng xanh!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0;">Celebi có khả năng du hành xuyên thời gian một cách tự do, chữa lành mọi tổn thương tự nhiên và mang đến sự thịnh vượng xanh tươi nơi nó đi qua.</p>
+          </div>
+        </div>
+
+        <!-- DIANCIE -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/719.png" alt="Diancie" style="max-width: 70px; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10076.png" alt="Mega Diancie" style="max-width: 100px; filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.5));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #ec4899; font-size: 20px;">3. Công Chúa Kim Cương: Diancie & Mega Diancie (#719)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Hệ:</strong> Đá / Tiên | <strong>Tuyệt phẩm lấp lánh vô tiền khoáng hậu!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Được tạo ra từ sự đột biến cấu trúc Carbink, Diancie là vị thần chế tác ra những viên kim cương tinh khiết nhất chỉ bằng đôi tay trần.</p>
+            <blockquote style="border-left: 3px solid #ec4899; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Mẹo tiến hóa Mega:</strong> Chuyển Diancie vào game ORAS và mang nó vào bất kỳ Pokémon Center nào để nhận khối đá cổ <strong>Diancite</strong> từ các quý tộc Devon, mở khóa hình thái <strong>Mega Diancie</strong> lộng lẫy uy phong!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- HOOPA -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/720.png" alt="Hoopa" style="max-width: 70px; filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10086.png" alt="Hoopa Unbound" style="max-width: 105px; filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #a855f7; font-size: 20px;">4. Ác Thần Chiều Không Gian: Hoopa (Confined & Unbound)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Hệ:</strong> Siêu Linh / Ma (Dạng phong ấn) | Siêu Linh / Bóng Tối (Dạng giải phóng)</p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Những chiếc vòng vàng ma thuật của Hoopa có thể bẻ cong không gian để dịch chuyển vạn vật qua các thế giới khác nhau.</p>
+            <blockquote style="border-left: 3px solid #a855f7; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Cách thức mở khóa phong ấn:</strong> Mang Hoopa vào bất kỳ cửa hàng tạp hóa PokéMart nào trong game để nhận chiếc bình thiêng <strong>Prison Bottle</strong> từ người bán hàng. Sử dụng nó để biến Hoopa thành hung thần sáu tay khổng lồ <strong>Hoopa Unbound</strong> với chỉ số tấn công tối thượng!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- VOLCANION -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/721.png" alt="Volcanion" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #ef4444; font-size: 20px;">5. Quái Thú Hơi Nước: Volcanion (#721)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Hệ:</strong> Lửa / Nước | <strong>Sự kết hợp khắc chế độc nhất lịch sử!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0;">Sử dụng hai ống phản lực khổng lồ trên lưng hấp thụ nước và đốt nóng thành các luồng hơi nước áp suất cực đại thổi bay các ngọn núi và tạo ra sương mù dày đặc che phủ toàn bộ lục địa.</p>
+          </div>
+        </div>
+      </div>
     `,
     order: 15,
     language: 'vi'
@@ -1167,7 +1344,7 @@ export const OMEGA_RUBY_CHAPTERS = [
       <h2>1. Defeating Primal Groudon (Level 45) in Cave of Origin</h2>
       <p>Proceed to Sootopolis City's volcanic Cave of Origin to battle the titanic force:</p>
       <div style="text-align: center; margin: 24px 0;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10077.png" alt="Primal Groudon" style="max-width: 180px;" />
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png" alt="Primal Groudon" style="max-width: 180px;" />
         <p style="font-style: italic; color: #ef4444; margin-top: 8px;">The cataclysmic Primal Groudon radiating heat!</p>
       </div>
       <blockquote style="border-left: 4px solid #ef4444; padding: 12px 16px; margin: 24px 0; background-color: rgba(239, 68, 68, 0.05); border-radius: 0 12px 12px 0;">
@@ -1347,11 +1524,197 @@ export const OMEGA_RUBY_CHAPTERS = [
     chapterTitle: 'Chapter 15: Secrets of Ultra Rare & Legendary Beasts',
     content: `
       <h1>Chapter 15: Secrets of Ultra Rare & Legendary Beasts</h1>
-      <p>Unravel ancient puzzles to summon high-tier elemental dragons and deities:</p>
-      <ul>
-        <li><strong>Ancient Golems (Regirock, Regice, Registeel):</strong> Bring Relicanth (first slot) and Wailord (last slot) in your party to Route 134's underwater trenches. Use Dig to unlock global tomb seals!</li>
-        <li><strong>Ho-Oh / Lugia (Level 50):</strong> Scan underwater wreckages at **Sea Mauville** for the Scanner item, exchange it at Slateport Harbor, and summon Ho-Oh (Omega Ruby) or Lugia (Alpha Sapphire) at the high decks!</li>
-      </ul>
+      <p>The vast skies and ancient depths of Hoenn shroud ancient cosmic mysteries. This comprehensive guide details how to unlock mysterious tombs, solve ancient puzzle rooms, and capture the ultimate Legendary and Mythical beasts in Pokémon Omega Ruby & Alpha Sapphire!</p>
+
+      <!-- SECTION 1: PRIMAL & COSMIC TITANS -->
+      <h2 style="color: #ef4444; border-left: 4px solid #ef4444; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Primal & Cosmic Guardians</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Forces of nature capable of shifting geography and reshaping the weather patterns of the world:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- PRIMAL GROUDON / KYOGRE -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png" alt="Primal Groudon" style="max-width: 130px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="color: #ef4444; margin: 0 0 8px 0; font-size: 20px;">Ancient Earth Titan: Primal Groudon (#383)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Ground / Fire | <strong>Ability:</strong> Desolate Land (Extreme Drought)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Confronted inside Cave of Origin (Sootopolis City) during main storyline at Level 45.<br/><strong>Combat Strategy:</strong> Water-type attacks instantly evaporate under Desolate Land. Capture or defeat it using physical Ground moves (Earthquake).</p>
+          </div>
+        </div>
+
+        <!-- MEGA RAYQUAZA -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10079.png" alt="Mega Rayquaza" style="max-width: 130px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="color: #10b981; margin: 0 0 8px 0; font-size: 20px;">Lord of the Sky: Mega Rayquaza (#384)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Dragon / Flying | <strong>Ability:</strong> Delta Stream (Cancels Flying weaknesses)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Caught at the summit of Sky Pillar during the Delta Episode at Level 70.<br/><strong>Unique Mechanic:</strong> Sceptre of heaven! Rayquaza does not require a Mega Stone; it can Mega Evolve simply by knowing its signature move: <strong>Dragon Ascent</strong>!</p>
+          </div>
+        </div>
+
+        <!-- DEOXYS -->
+        <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.35);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png" alt="Deoxys" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="color: #a855f7; margin: 0 0 8px 0; font-size: 20px;">Alien DNA Invader: Deoxys (#386)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic | <strong>Possesses 4 extremely versatile combat forms!</strong></p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location:</strong> Battled in outer space at the climax of the Delta Episode at Level 80.<br/><strong>Form Change:</strong> Bring Deoxys in your team and interact with the meteorite in Professor Cozmo's lab in Fallarbor Town to rotate between Normal, Attack, Defense, and Speed forms.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: THE ANCIENT REGIS -->
+      <h2 style="color: #eab308; border-left: 4px solid #eab308; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Solving the Ancient Golem Seals (Regis)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">One of Hoenn's most complex side quests, requiring ancient Braille translation:</p>
+
+      <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(234, 179, 8, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+        <h3 style="color: #fbbf24; margin-top: 0;">Global Sea Gate Trigger:</h3>
+        <p style="color: #cbd5e1; line-height: 1.6;">1. Catch a <strong>Relicanth</strong> (deep underwater grass in Route 124/126) and a <strong>Wailord</strong> (evolves from Wailmer at Level 40).<br/>
+        2. Set up your party: Put <strong>Relicanth in the 1st slot</strong> and <strong>Wailord in the 6th slot</strong>.<br/>
+        3. Use <strong>Dive</strong> at Route 134, descend into Sealed Chamber. Go to the main Braille stone wall and use <strong>Dig</strong> to open the tombs globally!</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
+        <!-- REGIROCK -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/377.png" alt="Regirock" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.3));" />
+          <h4 style="color: #f59e0b; margin: 12px 0 4px 0;">Regirock (Lvl 40)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Location:</strong> Desert Ruins (Route 111).<br/><strong>Tomb Code:</strong> From Braille wall, walk 2 steps right, 2 steps down, and use <strong>Strength</strong>.</p>
+        </div>
+
+        <!-- REGICE -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/378.png" alt="Regice" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.3));" />
+          <h4 style="color: #38bdf8; margin: 12px 0 4px 0;">Regice (Lvl 40)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Location:</strong> Island Cave (Route 105).<br/><strong>Tomb Code:</strong> Stand directly in front of the Braille text and wait exactly 2 minutes (without moving) for the door to open.</p>
+        </div>
+
+        <!-- REGISTEEL -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/379.png" alt="Registeel" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(148, 163, 184, 0.3));" />
+          <h4 style="color: #94a3b8; margin: 12px 0 4px 0;">Registeel (Lvl 40)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Location:</strong> Ancient Tomb (Route 120).<br/><strong>Tomb Code:</strong> Stand in the exact center of the chamber and use <strong>Fly</strong> to summon the steel colossus.</p>
+        </div>
+
+        <!-- REGIGIGAS -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 16px; text-align: center;">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/486.png" alt="Regigigas" style="max-height: 90px; filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.3));" />
+          <h4 style="color: #10b981; margin: 12px 0 4px 0;">Regigigas (Lvl 50)</h4>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5;"><strong>Location:</strong> Island Cave (Route 105).<br/><strong>Activation:</strong> Carry all three Regis in your party, have Regice hold a cold item (Castelia Cone), and talk to the center ice block during daytime.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 3: MIRAGE SPOTS LEGENDARIES -->
+      <h2 style="color: #3b82f6; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Multiverse Mirage Spot Legendaries</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Soar high into Hoenn's skies with Latios/Latias to access ancient tears in the dimensional fabric:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- LUGIA / HO-OH -->
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; justify-content: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-height: 70px; filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.3));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-height: 70px; filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.3));" />
+          </div>
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: #f1f5f9; margin: 0 0 4px 0;">Ho-Oh (Omega Ruby) / Lugia (Alpha Sapphire) - Level 50</h4>
+            <p style="color: #cbd5e1; font-size: 13.5px; margin: 0; line-height: 1.5;">Recover the lost Scanner from the sunken wreckage of <strong>Sea Mauville</strong>. Give it to Captain Stern at the Slateport Harbor docks in exchange for the sacred summon bell. Take it to the highest deck of Sea Mauville to awaken the ancient phoenix or storm dragon!</p>
+          </div>
+        </div>
+
+        <!-- DIALGA / PALKIA / GIRATINA -->
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; justify-content: center; min-width: 140px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png" alt="Dialga" style="max-height: 75px; filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png" alt="Palkia" style="max-height: 75px; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3));" />
+          </div>
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: #f1f5f9; margin: 0 0 4px 0;">Dialga (Omega Ruby) / Palkia (Alpha Sapphire) & Giratina - Level 50</h4>
+            <p style="color: #cbd5e1; font-size: 13.5px; margin: 0; line-height: 1.5;">Put the three lake guardians (Uxie, Mesprit, Azelf) in your party and fly above Hoenn to spot a giant space-time rift containing <strong>Dialga</strong> or <strong>Palkia</strong>. Carry both Dialga and Palkia together in your active squad to trigger the appearance of shadow lord <strong>Giratina</strong>!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: MYTHICAL BEASTS -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 16px; padding: 24px; margin: 32px 0;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <span style="background: linear-gradient(90deg, #ec4899, #8b5cf6); color: #ffffff; padding: 6px 16px; border-radius: 9999px; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Hoenn Event Mythicals</span>
+          <h2 style="margin: 12px 0 8px 0; color: #f1f5f9; font-size: 26px;">The Legendary Mythical Guardians</h2>
+          <p style="color: #94a3b8; line-height: 1.6; max-width: 600px; margin: 0 auto;">Extremely rare mythical beasts representing cosmic wishes, time travel, and dimensional breaches. Obtained through special event distributions:</p>
+        </div>
+
+        <!-- JIRACHI -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(234, 179, 8, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/385.png" alt="Jirachi" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #eab308; font-size: 20px;">1. The Wishmaker: Jirachi (#385)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Type:</strong> Steel / Psychic | <strong>Granting wishes from the heavenly stars!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0;">Awakens for only 7 days every 1000 years to grant deep wishes to those with pure hearts. Strikes opponents using its celestial steel-type signature move: <strong>Doom Desire</strong>!</p>
+          </div>
+        </div>
+
+        <!-- CELEBI -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" style="max-width: 100px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #10b981; font-size: 20px;">2. Voice of the Forest: Celebi (#251)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Type:</strong> Grass / Psychic | <strong>Guarding nature across dimensions!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0;">Celebi travels freely across time lines, healing damaged ecosystems and leaving dense forest life in its wake.</p>
+          </div>
+        </div>
+
+        <!-- DIANCIE -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/719.png" alt="Diancie" style="max-width: 70px; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10076.png" alt="Mega Diancie" style="max-width: 100px; filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.5));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #ec4899; font-size: 20px;">3. Royal Jewel: Diancie & Mega Diancie (#719)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Type:</strong> Rock / Fairy | <strong>The most radiant crystallite creation!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Born from a mutation of Carbink, Diancie is a royal princess capable of instantly materializing pristine diamonds with its bare hands.</p>
+            <blockquote style="border-left: 3px solid #ec4899; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Mega Evolution Trigger:</strong> Transfer Diancie into your ORAS copy and walk into any Pokémon Center to receive the legendary <strong>Diancite</strong> stone from Devon Corporation reps, unlocking Mega Diancie's dazzling form!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- HOOPA -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px; display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/720.png" alt="Hoopa" style="max-width: 70px; filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.4));" />
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10086.png" alt="Hoopa Unbound" style="max-width: 105px; filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #a855f7; font-size: 20px;">4. Archangel of Dimensions: Hoopa (Confined & Unbound)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Type:</strong> Psychic / Ghost (Confined) | Psychic / Dark (Unbound)</p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;">Hoopa's gold rings can bend reality, summoning entire items, islands, or Legendary beasts from different timelines.</p>
+            <blockquote style="border-left: 3px solid #a855f7; padding-left: 12px; margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong>Unbinding Guide:</strong> Take Hoopa into any PokéMart store to receive the mysterious <strong>Prison Bottle</strong> from the clerk. Activate it from your inventory to transform Hoopa into its colossal 6-armed form, <strong>Hoopa Unbound</strong>!
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- VOLCANION -->
+        <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/721.png" alt="Volcanion" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4));" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <h3 style="margin: 0 0 8px 0; color: #ef4444; font-size: 20px;">5. Steam Colossus: Volcanion (#721)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px 0;"><strong>Type:</strong> Fire / Water | <strong>The only Fire/Water dual typing in existence!</strong></p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0;">Employs massive steam cannons on its back to vaporize entire mountains and flood fields with scalding high-pressure steam shrouding whole landscapes in mist.</p>
+          </div>
+        </div>
+      </div>
     `,
     order: 15,
     language: 'en'

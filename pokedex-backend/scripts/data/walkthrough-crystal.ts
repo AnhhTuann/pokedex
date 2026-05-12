@@ -1328,61 +1328,121 @@ export const CRYSTAL_CHAPTERS = [
   },
   {
     gameVersion: "crystal",
-    chapterTitle: "Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại",
+    chapterTitle: "Phần 14: Bí mật các Thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo",
     order: 14,
     language: "vi",
     content: `
-      <h1>Phần 14: Bí mật Pokémon Siêu Hiếm & Huyền Thoại</h1>
-      <p>Thế hệ Generation 2 giới thiệu cơ chế Pokémon chạy hoang dã cực kỳ kịch tính và những vị thần bảo hộ đại dương, bầu trời và rừng rậm.</p>
+      <h1>Phần 14: Bí mật các Thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo</h1>
+      <p>Thế hệ Crystal đem đến bước ngoặt vĩ đại với sự thức tỉnh của Thủy Quân Suicune tĩnh tâm và những thần thú huyền thoại bảo hộ bờ cõi Johto!</p>
 
-      <h2>1. Bộ Ba Chó Huyền Thoại Chạy Hoang dã</h2>
-      <p>Sau khi kích hoạt sự kiện sụp đổ tháp tại <strong>Burned Tower (Tháp Cháy)</strong> ở Ecruteak City, ba thần thú vùng Johto sẽ hồi sinh và bay lượn ngẫu nhiên khắp các đồng cỏ hoang vùng Johto ở cấp độ 40:</p>
-      <ul>
-        <li><strong>Raikou (Hệ Điện - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" style="max-width:24px; vertical-align:middle;" />:</strong> Tốc độ sấm sét, chuyên sử dụng Roar dã ngoại để chạy trốn khỏi trận đấu.</li>
-        <li><strong>Entei (Hệ Lửa - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" style="max-width:24px; vertical-align:middle;" />:</strong> Chạy nhanh vượt trội, có đòn phun lửa uy lực dũng mãnh dã ngoại.</li>
-        <li><strong>Suicune (Hệ Nước - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:24px; vertical-align:middle;" />:</strong> Thần thú gió mùa bảo hộ dòng sông. (Trong bản <strong>Crystal</strong>, Suicune sẽ có cốt truyện tĩnh gặp ở Tin Tower mà không chạy trốn, gánh đội cực kỳ xuất sắc).</li>
-        <li><strong>Chiến thuật săn lùng:</strong> Sử dụng Pokémon có chiêu chặn chạy trốn như <strong>Mean Look</strong> (Umbreon / Crobat) hoặc ru ngủ lập tức, tốt nhất là quăng quả <strong>Master Ball</strong> thần thánh.</li>
-      </ul>
+      <!-- SECTION 1: BỘ BA THẦN THÚ CỔ ĐẠI -->
+      <h2 style="color: #38bdf8; border-left: 4px solid #38bdf8; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. Bộ Ba Thần Thú Cổ Đại vùng Johto (Legendary Beasts)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Khác biệt hoàn toàn với Gold và Silver, phiên bản **Crystal** tập trung mạnh mẽ vào Suicune với cơ chế cốt truyện tĩnh vô cùng kịch tính và dũng mãnh:</p>
 
-      <h2>2. Thần Bảo Hộ Đại Dương Lugia & Phượng Hoàng Lửa Ho-Oh</h2>
-      <p>Hai hộ vệ thần thánh tối thượng của thế giới Gen 2 có mốc xuất hiện phụ thuộc vào phiên bản bạn chơi:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(16, 185, 129, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 100px; color: #10b981;">Hình ảnh</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Thần Thú</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Cốt truyện chính (Cấp 40)</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Hậu game (Cấp 70)</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Nơi ẩn ngụ cụ thể</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" alt="Ho-Oh" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Ho-Oh (Phượng Hoàng Lửa)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Mặc định trong bản <strong>Gold</strong> bằng Rainbow Wing lấy ở Radio Tower.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Trong bản <strong>Silver</strong> bằng cách nhận cánh lông từ ông lão ở Pewter City.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đỉnh tháp <strong>Tin Tower</strong> (Ecruteak City).</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" alt="Lugia" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Lugia (Rồng Biển Cổ Đại)</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Mặc định trong bản <strong>Silver</strong> bằng Silver Wing lấy ở Radio Tower.</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Trong bản <strong>Gold</strong> bằng cánh lông bạc nhận từ ông lão ở Pewter City.</td>
-            <td style="padding: 12px 16px;">Hang động mê cung nước <strong>Whirl Islands</strong> (Route 41).</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- SUICUNE CARD (STATIC IN CRYSTAL) -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(14, 165, 233, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png" alt="Suicune" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(14, 165, 233, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(14, 165, 233, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Linh Vật Đại Diện - Crystal</span>
+            <h3 style="color: #38bdf8; margin: 8px 0; font-size: 22px;">Thủy Quân Thức Tỉnh: Suicune (#245)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước | <strong>Cấp độ:</strong> 40 (Trận đấu tĩnh)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Cốt truyện & Cách bắt:</strong> Độc quyền trong bản **Crystal**! Suicune sẽ không chạy trốn hoang dã dã ngoại. Sau khi lấy được chuông vàng **Clear Bell** từ đạo sĩ tại tháp Radio Tower và đánh bại ba hộ vệ pháp sư tại **Tin Tower** (Ecruteak City), Suicune sẽ chính thức xuất hiện tĩnh để khiêu chiến bạn. Đây là quái thú cực mạnh gánh đội xuất sắc với lượng thủ siêu kiên cố!</p>
+          </div>
+        </div>
 
-      <h2>3. Thần Rừng Celebi & Pokémon Đặc Biệt Union Cave</h2>
-      <ul>
-        <li><strong>Celebi - Thần Rừng Thời Không (Lvl 30) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/251.png" style="max-width:24px; vertical-align:middle;" />:</strong> Độc quyền sự kiện dã ngoại. Mang quả bóng cổ <strong>GS Ball</strong> đến cho thợ làm bóng Kurt ở Azalea Town để giải mã, sau đó đặt nó vào ngôi đền cổ kính ở <strong>Ilex Forest</strong> để gọi Celebi xuất hiện dã ngoại!</li>
-        <li><strong>Lapras Huyền Thoại Union Cave (Lvl 20) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" style="max-width:24px; vertical-align:middle;" />:</strong> Chú rồng nước Lapras có tỉ lệ xuất hiện tĩnh cực hiếm sâu dưới lòng hồ nước Union Cave B2F <strong>chỉ vào duy nhất ngày thứ Sáu hàng tuần</strong>. Đội hình gánh rồng tuyệt hảo cho hành trình Johto!</li>
-      </ul>
+        <!-- RAIKOU CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png" alt="Raikou" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Lôi Hoàng</span>
+            <h3 style="color: #fbbf24; margin: 8px 0; font-size: 20px;">Lôi Thần Điện Chớp: Raikou (#243)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Điện | <strong>Cấp độ:</strong> 40 (Chạy hoang dã)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Đặc tính săn lùng:</strong> Di chuyển ngẫu nhiên trên các bãi cỏ hoang dã dã ngoại của vùng Johto. Raikou có xu hướng bỏ chạy ngay lập tức ở lượt đầu tiên và sử dụng chiêu **Roar** cực khó chịu dã ngoại. Hãy dùng quả bóng **Master Ball** hoặc chiêu ngủ cực nhanh.</p>
+          </div>
+        </div>
+
+        <!-- ENTEI CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png" alt="Entei" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Viêm Đế</span>
+            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Hỏa Thần Cuồng Nộ: Entei (#244)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Lửa | <strong>Cấp độ:</strong> 40 (Chạy hoang dã)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Đặc tính săn lùng:</strong> Entei gầm rú hoang dã khắp núi đồi Johto dã ngoại. Giữ chân nó bằng **Mean Look** của Crobat/Umbreon hoặc ru ngủ lập tức để ném bóng bắt giữ.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: SONG THẦN HỘ VỆ KHÔNG TRUNG & ĐẠI DƯƠNG -->
+      <h2 style="color: #c084fc; border-left: 4px solid #c084fc; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. Song Thần Hộ Vệ Bầu Trời & Thâm Hải (Tower Duo Hậu Game)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Trong Crystal, cả hai đại hộ vệ tối cao đều xuất hiện ở phần hậu game ở Cấp độ 70:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- LUGIA CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Biển Cả</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 22px;">Rồng Đại Dương Bão Tố: Lugia (#249)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Siêu Linh / Bay | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Vị trí & Cách bắt:</strong> Đạt mốc hậu game dã ngoại. Đến gặp ông lão đứng ở sườn núi phía đông thành phố **Pewter City** tại Kanto để nhận cánh lông bạc **Silver Wing**. Vượt qua các xoáy nước khổng lồ tại **Whirl Islands** để tiến sâu vào lòng hang động thâm sâu đón nhận thử thách của rồng biển cổ đại!</p>
+          </div>
+        </div>
+
+        <!-- HO-OH CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #facc15; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Mặt Trời</span>
+            <h3 style="color: #facc15; margin: 8px 0; font-size: 22px;">Phượng Hoàng Lửa Tái Sinh: Ho-Oh (#250)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Lửa / Bay | <strong>Cấp độ:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Vị trí & Điều kiện đặc biệt:</strong> Độc quyền thử thách đỉnh phong nhất trong Crystal! Bạn chỉ nhận được chiếc lông vũ sắc màu **Rainbow Wing** từ đạo sĩ tại Tin Tower sau khi **đã thu phục thành công cả 3 thần thú (Suicune, Raikou, Entei)** trong tay! Mang lông vũ lên đỉnh tháp **Tin Tower** để triệu hồi thần điểu phục sinh!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: THẦN RỪNG HUYỀN ẢO & THẦN NƯỚC NGÀY THỨ SÁU -->
+      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. Thần Rừng Thời Không & Linh Vật Đầm Lầy (Celebi & Lapras)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Những sinh vật huyền bí sở hữu sức mạnh kết nối thời không hoặc gieo mình nơi đầm sâu:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- CELEBI CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thần Thú Huyền Ảo</span>
+            <h3 style="color: #34d399; margin: 8px 0; font-size: 20px;">Hộ Vệ Thời Không: Celebi (#251)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Cỏ / Tâm Linh | <strong>Cấp độ:</strong> 30</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Phương pháp triệu hồi:</strong> Mang quả bóng huyền thoại **GS Ball** (vật phẩm sự kiện dã ngoại) đến cho thợ làm bóng Kurt ở Azalea Town giải mã. Ngay sau đó, mang bóng đến đặt nhẹ vào ngôi miếu cổ nhỏ linh thiêng ẩn sâu trong **Ilex Forest**. Thần rừng Celebi bé nhỏ sẽ lập tức hạ cánh đáp lời khiêu chiến của bạn!</p>
+          </div>
+        </div>
+
+        <!-- LAPRAS CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png" alt="Lapras" style="max-width: 115px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Sinh Vật Hiếm</span>
+            <h3 style="color: #38bdf8; margin: 8px 0; font-size: 20px;">Linh Vật Băng Thủy: Lapras (#131)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Hệ:</strong> Nước / Băng | <strong>Cấp độ:</strong> 20</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Vị trí xuất hiện:</strong> Sâu nhất dưới lòng hồ ngầm của hang **Union Cave (Tầng B2F)**.<br/><strong>Điều kiện săn bắt đặc biệt:</strong> Lapras chỉ bơi nổi trên mặt nước dã ngoại **vào ngày thứ Sáu hàng tuần (Friday)**. Hãy đổi ngày giờ hệ thống nếu cần gấp. Đây là linh vật cực kỳ kiên cố để giúp bạn cày nát các trận đấu rồng sau này!</p>
+          </div>
+        </div>
+      </div>
     `
   },
   {
@@ -2573,61 +2633,121 @@ export const ENGLISH_CRYSTAL_CHAPTERS = [
 ,
   {
     gameVersion: "crystal",
-    chapterTitle: "Chapter 14: Johto Rare & Legendary Secrets",
+    chapterTitle: "Chapter 14: Secrets of Ultra Rare, Legendary & Mythical Beasts",
     order: 14,
     language: "en",
     content: `
-      <h1>Chapter 14: Johto Rare & Legendary Secrets</h1>
-      <p>Generation 2 introduced high-stakes roaming wild encounters and iconic guardians ruling over storms, oceans, and timelines.</p>
+      <h1>Chapter 14: Secrets of Ultra Rare, Legendary & Mythical Beasts</h1>
+      <p>The Crystal version introduces grand deities presiding over weather, oceans, time, and a special static story encounter for Suicune!</p>
 
-      <h2>1. The Roaming Legendary Beasts</h2>
-      <p>Awakened at the collapsed ruins of the <strong>Burned Tower</strong> in Ecruteak City, Johto's legendary elementals scatter and roam the grass across Johto at Level 40:</p>
-      <ul>
-        <li><strong>Raikou (Electric - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/243.png" style="max-width:24px; vertical-align:middle;" />:</strong> Blistering Speed. Uses Roar to instantly escape combat.</li>
-        <li><strong>Entei (Fire - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/244.png" style="max-width:24px; vertical-align:middle;" />:</strong> High physical power, deals devastating flame attacks.</li>
-        <li><strong>Suicune (Water - Lvl 40) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/245.png" style="max-width:24px; vertical-align:middle;" />:</strong> The North Wind. (In <strong>Crystal</strong>, Suicune has a static story encounter at Tin Tower, offering an elite Water-type carry).</li>
-        <li><strong>Catch Tactics:</strong> Use speed trap passives like <strong>Shadow Tag</strong> (Wobbuffet) or move-trapping like <strong>Mean Look</strong> (Umbreon/Crobat). Throwing the <strong>Master Ball</strong> immediately bypasses the chase.</li>
-      </ul>
+      <!-- SECTION 1: THE ROAMING LEGENDARY BEASTS -->
+      <h2 style="color: #38bdf8; border-left: 4px solid #38bdf8; padding-left: 12px; margin-top: 32px; font-size: 22px;">1. The Legendary Beasts of Johto</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Unlike Gold and Silver, **Crystal** focuses heavily on Suicune, turning its encounter into an epic static storyline instead of a wild chase:</p>
 
-      <h2>2. Lugia, Guardian of the Oceans & Ho-Oh, Phoenix of the Heavens</h2>
-      <p>These two legendary mythological titans rest at opposite ends of Johto, with level milestones shifting by version:</p>
-      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
-        <thead>
-          <tr style="background-color: rgba(16, 185, 129, 0.15);">
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: center; width: 100px; color: #10b981;">Sprite</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Legendary Titan</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Story Mode (Lvl 40)</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Post-Game (Lvl 70)</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(16, 185, 129, 0.3); text-align: left; color: #10b981;">Nesting Chamber</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png" alt="Ho-Oh" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #fbbf24;">Ho-Oh (Fire / Flying)</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Default target in **Gold** via Rainbow Wing.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Post-Game goal in **Silver** via Pewter City's old man.</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Peak of **Tin Tower** (Ecruteak City).</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png" alt="Lugia" style="max-width: 45px;" />
-            </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #60a5fa;">Lugia (Psychic / Water)</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Default target in **Silver** via Silver Wing.</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Post-Game goal in **Gold** via Pewter City's old man.</td>
-            <td style="padding: 12px 16px;">Subterranean waterfalls of **Whirl Islands** (Route 41).</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- SUICUNE CARD (STATIC IN CRYSTAL) -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(14, 165, 233, 0.5); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/245.png" alt="Suicune" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(14, 165, 233, 0.6)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(14, 165, 233, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Mascot Encounter - Crystal Edition</span>
+            <h3 style="color: #38bdf8; margin: 8px 0; font-size: 22px;">Awakening of Suicune: Suicune (#245)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Water | <strong>Level:</strong> 40 (Static Overworld Encounter)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Storyline & Capture:</strong> Exclusive to Crystal! Suicune does not roam the grass. After receiving the **Clear Bell** at the Goldenrod Radio Tower and defeating the three Sages at the **Tin Tower** in Ecruteak City, Suicune will wait patiently for a direct battle. Leverage its top-tier Defense and Special Defense stats to sweep your opponents!</p>
+          </div>
+        </div>
 
-      <h2>3. Celebi (Time Guardian) & Lapras</h2>
-      <ul>
-        <li><strong>Celebi (Time Guardian - Lvl 30) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/251.png" style="max-width:24px; vertical-align:middle;" />:</strong> Event exclusive. Deliver the mysterious <strong>GS Ball</strong> to Kurt in Azalea Town to decode, then place it inside the shrine in the heart of <strong>Ilex Forest</strong> to summon Celebi!</li>
-        <li><strong>Lapras (Union Cave Friday Event - Lvl 20) <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" style="max-width:24px; vertical-align:middle;" />:</strong> Generates as a static overworld encounter in Union Cave B2F <strong>only on Fridays</strong>. Excellent bulky Water/Ice carry for your Johto journey.</li>
-      </ul>
+        <!-- RAIKOU CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png" alt="Raikou" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Thunder Emperor</span>
+            <h3 style="color: #fbbf24; margin: 8px 0; font-size: 20px;">Ruler of Lightning: Raikou (#243)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Electric | <strong>Level:</strong> 40 (Roaming Wild)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Roaming Behavior:</strong> Raikou possesses supersonic Speed and will instantly flee on turn 1 of any encounter. It also uses <strong>Roar</strong> to force an end to the battle! Inflict sleep immediately or deploy a Master Ball to capture it.</p>
+          </div>
+        </div>
+
+        <!-- ENTEI CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png" alt="Entei" style="max-width: 120px; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Flame Emperor</span>
+            <h3 style="color: #f87171; margin: 8px 0; font-size: 20px;">Wrath of the Volcano: Entei (#244)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Fire | <strong>Level:</strong> 40 (Roaming Wild)</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Roaming Behavior:</strong> It is said that a new volcano is born every time Entei barks. Like Raikou, it runs away at the very first opportunity. Freeze it, put it to sleep, or utilize a Fast Ball / Heavy Ball / Master Ball to secure the catch.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: TOWER DUO -->
+      <h2 style="color: #c084fc; border-left: 4px solid #c084fc; padding-left: 12px; margin-top: 32px; font-size: 22px;">2. The Legendary Guardians of Heavens & Depths (Tower Duo - Post-Game)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">In Crystal, both titans appear as post-game goals at Level 70:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- LUGIA CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Guardian of the Seas</span>
+            <h3 style="color: #60a5fa; margin: 8px 0; font-size: 22px;">The Tempest Dragon of the Deep: Lugia (#249)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Psychic / Flying | <strong>Level:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location & Capture:</strong> In Crystal, Lugia is encountered in the post-game at Level 70. Talk to the old man on the eastern hill of **Pewter City** in Kanto to get the **Silver Wing**. Teach your team HM05 **Whirlpool** to navigate the water barriers of the **Whirl Islands** (Route 41) to locate its deep underwater chamber.</p>
+          </div>
+        </div>
+
+        <!-- HO-OH CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 16px; padding: 24px; display: flex; flex-direction: row; gap: 24px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" style="max-width: 130px; filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(234, 179, 8, 0.2); color: #facc15; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Guardian of the Skies</span>
+            <h3 style="color: #facc15; margin: 8px 0; font-size: 22px;">The Radiant Solar Phoenix: Ho-Oh (#250)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Fire / Flying | <strong>Level:</strong> 70</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location & Special Conditions:</strong> Exclusive Crystal ritual! You will only get the **Rainbow Wing** from the Tin Tower Sage in Ecruteak City **after you have successfully caught all 3 Legendary Beasts (Suicune, Raikou, and Entei)**. Take the wing to the rooftop of the **Tin Tower** to trigger the encounter with the solar phoenix!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: MYTHICAL TIME TRAVELER & FRIDAY LAPRAS -->
+      <h2 style="color: #10b981; border-left: 4px solid #10b981; padding-left: 12px; margin-top: 32px; font-size: 22px;">3. The Mythical Time Traveler & Subterranean Water Beast (Celebi & Lapras)</h2>
+      <p style="color: #94a3b8; line-height: 1.6;">Mystical entities connected with timelines and deep cavern pools:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin: 24px 0;">
+        <!-- CELEBI CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" style="max-width: 110px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Mythical Pokémon</span>
+            <h3 style="color: #34d399; margin: 8px 0; font-size: 20px;">Guardian of the Forests: Celebi (#251)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Grass / Psychic | <strong>Level:</strong> 30</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Summoning Ritual:</strong> Deliver the legendary **GS Ball** (event item) to the master craftsman Kurt in Azalea Town for decoding. Place it inside the sacred wooden shrine in the heart of **Ilex Forest** to trigger an encounter with this mythical time-traveling sprite!</p>
+          </div>
+        </div>
+
+        <!-- LAPRAS CARD -->
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 20px; display: flex; flex-direction: row; gap: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+          <div style="flex: 1; text-align: center; min-width: 150px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png" alt="Lapras" style="max-width: 115px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="flex: 3; min-width: 250px;">
+            <span style="background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;">Rare Wild Species</span>
+            <h3 style="color: #38bdf8; margin: 8px 0; font-size: 20px;">The Friday Cavern Wanderer: Lapras (#131)</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 8px 0;"><strong>Type:</strong> Water / Ice | <strong>Level:</strong> 20</p>
+            <p style="color: #94a3b8; line-height: 1.6; margin: 0;"><strong>Location & Event Details:</strong> Swims peacefully in the lowest pond of **Union Cave (Floor B2F)**. Lapras appears only on **Fridays**—change your system clock if needed to trigger its spawn. Lapras provides top-tier defensive and Water/Ice offensive carry through late-game challenges!</p>
+          </div>
+        </div>
+      </div>
     `
   },
   {
