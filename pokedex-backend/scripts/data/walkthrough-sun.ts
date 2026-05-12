@@ -60,7 +60,7 @@ export const SUN_CHAPTERS = [
       <p>Nhận thử thách Island Challenge (Thử thách Đảo) từ Giáo sư Kukui, bạn sẽ đi tới hang động Verdant Cavern để thực hiện thử thách đầu tiên của Thử thách trưởng Ilima.</p>
 
       <h2>1. Đánh bại quái vật thống lĩnh Totem Gumshoos</h2>
-      <p>Mục tiêu của bạn là tìm kiếm và đánh bại 3 Pokémon ẩn sâu trong hang động, trước khi đối mặt với thủ lĩnh khổng lồ **Totem Gumshoos**. Totem Pokémon sở hữu luồng hào quang đặc biệt tăng chỉ số Phòng thủ ngay khi bắt đầu trận đấu và có thể gọi đồng bọn trợ chiến:</p>
+      <p>Mục tiêu của bạn là tìm kiếm và đánh bại 3 Pokémon ẩn sâu trong hang động, trước khi đối mặt với thủ lĩnh khổng lồ **Totem Gumshoos**. Totem Pokémon sở hữu luồng hào quang đặc biệt tăng chỉ số Phòng thủ ngay khi bắt đầu trận đấu và có thể gọi đồng bọn trợ chiến Yungoos:</p>
 
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(220, 38, 38, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
@@ -98,46 +98,50 @@ export const SUN_CHAPTERS = [
       <h1>Chương 3: Đại chiến Đảo chủ Melemele - Hala & Chinh phục Z-Ring</h1>
       <p>Vượt qua thử thách của Ilima, bạn đã đủ điều kiện thách đấu Đại thử thách (Grand Trial) đầu tiên của hòn đảo Melemele.</p>
 
-      <h2>1. Quyết đấu với Kahuna Hala (Hệ Giác Đấu)</h2>
-      <p>Hala đứng đợi bạn tại Thị trấn Iki cổ kính. Ông ấy chuyên sử dụng những Pokémon hệ Giác đấu (Fighting) tràn đầy uy lực vật lý:</p>
+      <h2>1. Chi tiết đội hình Đại thử thách Kahuna Hala (Hệ Giác Đấu)</h2>
+      <p>Hala đứng đợi bạn tại Thị trấn Iki cổ kính. Dưới đây là chi tiết tuyệt đối về đội hình của ông ấy:</p>
 
       <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
         <thead>
           <tr style="background-color: rgba(239, 68, 68, 0.15);">
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px;">Sprite</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Pokémon</th>
-            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Cấp độ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Cấp độ & Đồ cầm</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Bộ chiêu thức (Moveset)</th>
             <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Mẹo Khắc chế</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/296.png" alt="Makuhita" style="max-width: 40px;" />
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/296.png" alt="Machop" style="max-width: 40px;" />
             </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Makuhita</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 15</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Machop</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 15<br/><i>Không có</i></td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác đấu</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Dùng đòn hệ Bay (Air Slash của Rowlet) hoặc đòn Siêu linh của Abra/Drowzee để dễ dàng khuất phục.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Karate Chop, Low Sweep, Focus Energy, Foresight</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Dùng đòn hệ Bay (Air Slash của Rowlet) để dứt điểm nhanh trước khi nó nâng bạo kích.</td>
           </tr>
           <tr>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/739.png" alt="Crabrawler" style="max-width: 40px;" />
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/296.png" alt="Makuhita" style="max-width: 40px;" />
             </td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Crabrawler</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 15</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Makuhita</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 15<br/><i>Không có</i></td>
             <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Giác đấu</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Con cua này có cú đấm cực nặng. Hãy dùng Pokémon có tốc độ cao để dứt điểm trước khi nó phản công.</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fake Out, Arm Thrust, Sand Attack, Tackle</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Makuhita sẽ dùng Fake Out làm choáng bạn ở lượt đầu. Hãy hồi máu hoặc đổi Pokémon hệ Ma (Ghost) để miễn nhiễm đòn này.</td>
           </tr>
           <tr>
             <td style="padding: 12px 16px; text-align: center;">
-              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/740.png" alt="Crabominable" style="max-width: 40px;" />
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/739.png" alt="Crabrawler" style="max-width: 40px;" />
             </td>
-            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Crabominable (Át chủ bài)</td>
-            <td style="padding: 12px 16px;">Lvl 16</td>
-            <td style="padding: 12px 16px;">Giác đấu / Băng</td>
-            <td style="padding: 12px 16px; color: #cbd5e1;">Hala sẽ dùng chiêu thức cực mạnh **Z-Move: All-Out Pummeling** để đấm nát đội hình của bạn! Hãy cho Pokémon có khả năng phòng ngự tốt đỡ đòn đó, sau đó phản công bằng đòn lửa của Litten hoặc đòn hệ Bay để kết liễu nó!</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Crabrawler (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 16<br/><strong style="color: #ef4444;">Fightinium Z</strong></td>
+            <td style="padding: 12px 16px;">Giác đấu</td>
+            <td style="padding: 12px 16px;">Power-Up Punch, Pursuit, Leer</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Hala sẽ dùng chiêu thức Z cực mạnh **All-Out Pummeling** để hủy diệt đội hình bạn! Tránh để Pokémon yếu máu đỡ đòn. Hãy dùng đòn hệ Bay hoặc Siêu Linh kết liễu nó sớm.</td>
           </tr>
         </tbody>
       </table>
@@ -231,8 +235,53 @@ export const SUN_CHAPTERS = [
       <h1>Chương 6: Đại chiến Đảo chủ Akala - Olivia & Thiên đường nhân tạo Aether Paradise</h1>
       <p>Hoàn thành cả 3 thử thách hệ Nước, Lửa, Cỏ trên đảo Akala, bạn sẽ bước vào trận quyết đấu đại thử thách giành chiếc huy hiệu lớn thứ hai.</p>
 
-      <h2>1. Quyết đấu với Kahuna Olivia (Hệ Đá)</h2>
-      <p>Olivia xinh đẹp sở hữu phong cách thời trang lộng lẫy và đội hình đá cứng cực kỳ kiên cố gồm Nosepass (Lvl 26), Boldore (Lvl 26) và át chủ bài chó đá sói hoàng hôn **Lycanroc (Lvl 27)**. Hãy lội nước dùng đòn hệ Nước của Primarina hoặc đòn lá rụng hệ Cỏ của Decidueye để dễ dàng đập nát lớp phòng thủ của sói đá Lycanroc để mang về mảnh ngọc **Rockium Z**!</p>
+      <h2>1. Chi tiết đội hình Đại thử thách Kahuna Olivia (Hệ Đá)</h2>
+      <p>Olivia xinh đẹp sở hữu phong cách thời trang lộng lẫy và đội hình đá cứng cực kỳ kiên cố chuyên dùng hệ Đá (Rock):</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(251, 146, 60, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(251, 146, 60, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Cấp độ & Đồ cầm</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Bộ chiêu thức (Moveset)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Chiến thuật Khắc chế</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/299.png" alt="Nosepass" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Nosepass</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 26<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đá</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock Slide, Spark, Thunder Wave, Tackle</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Có đặc tính Sturdy tránh bị One-hit KO. Cẩn thận đòn tê liệt Thunder Wave, hãy mang theo Cheri Berry.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/525.png" alt="Boldore" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Boldore</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 26<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đá</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock Blast, Mud-Slap, Iron Defense, Headbutt</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tương tự Nosepass, nó cũng có Sturdy và khả năng tăng phòng ngự Iron Defense cực kỳ khó chịu. Hãy dội đòn Nước đặc biệt (Special Water) để bỏ qua giáp vật lý.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/745.png" alt="Lycanroc" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Lycanroc (Midday Form)</td>
+            <td style="padding: 12px 16px;">Lvl 27<br/><strong style="color: #ef4444;">Rockium Z</strong></td>
+            <td style="padding: 12px 16px;">Đá</td>
+            <td style="padding: 12px 16px;">Rock Tomb, Bite, Accelerock, Fire Fang</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Con sói đá này chạy rất nhanh và sở hữu đòn ưu tiên Accelerock. Sát thương chiêu thức Z **Continental Crush** của nó cực thốn. Spam đòn Nước của Primarina hoặc đòn hệ Cỏ/Giác Đấu để tiễn nó bay màu sớm.</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>2. Tham quan Thiên đường Aether Paradise</h2>
       <p>Sau chiến thắng, bạn được chủ tịch Lusamine mời lên tham quan hòn đảo nhân tạo tối tân **Aether Paradise**. Tại sảnh đón khách sang trọng, một vết rạn nứt không gian bất ngờ xuất hiện, giải phóng một sinh vật kỳ dị ngoài hành tinh: **Ultra Beast Nihilego (Lvl 27)** mang hệ Đá/Độc. Hãy hạ gục Nihilego để dẹp tan mối nguy hiểm đầu tiên cứu lấy Lillie!</p>
@@ -336,8 +385,53 @@ export const SUN_CHAPTERS = [
       <h1>Chương 10: Đại chiến Đảo chủ Nanu & Đột kích giải cứu Lillie tại Aether Paradise</h1>
       <p>Sau khi phá vỡ pháo đài Po Town, bạn nhận ra Đảo chủ hờ hững Nanu chính là cựu cảnh sát ẩn dật canh giữ vùng tối Alola.</p>
 
-      <h2>1. Quyết đấu Kahuna Nanu (Grand Trial Hệ Bóng Tối)</h2>
-      <p>Hạ gục đội hình bóng tối lanh lợi của Nanu gồm Alolan Persian, Sableye và Krokorok (Lvl 38-39) bằng các chiêu hệ **Tiên (Fairy)** sắc sảo của Primarina để giật lấy viên đá ngọc quý **Darkinium Z**!</p>
+      <h2>1. Chi tiết đội hình Đại thử thách Kahuna Nanu (Hệ Bóng Tối)</h2>
+      <p>Nanu khét tiếng với đòn đánh quái dị lanh lợi hệ Bóng Tối (Dark):</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(139, 92, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Cấp độ & Đồ cầm</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Bộ chiêu thức (Moveset)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Khắc chế Tuyệt đối</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/302.png" alt="Sableye" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sableye</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 38<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Bóng tối / Ma</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Feint Attack, Shadow Sneak, Power Gem, Detect</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Song hệ Bóng tối/Ma chỉ yếu duy nhất trước **hệ Tiên (Fairy)**. Hãy cho Primarina gột sạch nó.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/552.png" alt="Krokorok" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Krokorok</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 38<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đất / Bóng tối</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Crunch, Earthquake, Swagger, Scary Face</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sợ các đòn tấn công hệ **Cỏ**, **Nước**, **Băng** hoặc **Giác đấu**. Dùng đòn Nước dội trôi chú cá sấu này dễ dàng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10103.png" alt="Alolan Persian" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Alolan Persian (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 39<br/><strong style="color: #ef4444;">Darkinium Z</strong></td>
+            <td style="padding: 12px 16px;">Bóng tối (Dark)</td>
+            <td style="padding: 12px 16px;">Fake Out, Dark Pulse, Power Gem, Swift</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Con mèo mặt béo này có tốc độ cực nhanh và mang đặc tính **Fur Coat (giảm một nửa sát thương vật lý nhận vào!)**. Đừng dùng đòn vật lý. Hãy dùng đòn phép hệ Tiên (Moonblast của Primarina) để một phát hạ gục nhanh tránh chiêu thức Z nguy hiểm **Black Hole Eclipse**!</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>2. Đại náo tháp nghiên cứu Aether Paradise</h2>
       <p>Cùng Gladion đột nhập tầng ngầm tối tân của Aether Paradise giải cứu Lillie. Bạn sẽ quét sạch lực lượng bảo vệ trung thành của tổng quản Faba, tiến vào khu thí nghiệm sâu thẳm đối diện chủ tịch cuồng loạn Lusamine đang mở cổng không gian xuyên vũ trụ bắt lấy Lillie!</p>
@@ -355,8 +449,63 @@ export const SUN_CHAPTERS = [
       <h2>1. Đi tìm chiếc sáo huyền thoại Sun Flute</h2>
       <p>Lên thuyền ra khơi đảo dừa Exeggutor Island cổ kính để tìm chiếc sáo thiêng liêng cổ xưa **Sun Flute (Sáo Mặt Trời)**. Bạn sẽ chạm trán và chiến đấu với đàn dừa cao ngất ngưởng Alolan Exeggutor siêu bựa để bảo vệ bờ biển hoang sơ.</p>
 
-      <h2>2. Thách thức Đại thử thách Đảo chủ Hapu (Grand Trial Hệ Đất)</h2>
-      <p>Hapu là nữ đảo chủ trẻ tuổi dũng cảm chuyên dùng hệ Đất (Ground) kiên cường dũng mãnh gồm Mudsdale, Flygon, Gastrodon (Lvl 47-48). Hãy dùng đòn hệ **Nước** cực mạnh dội nước trôi Mudsdale kiêu hùng của cô ấy để nhận ngọc **Groundium Z**!</p>
+      <h2>2. Chi tiết đội hình Đại thử thách Đảo chủ Hapu (Grand Trial Hệ Đất)</h2>
+      <p>Hapu là nữ đảo chủ dũng mãnh, sở hữu đội hình hệ Đất (Ground) vô cùng vững chắc:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(245, 158, 11, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Cấp độ & Đồ cầm</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Bộ chiêu thức (Moveset)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Mẹo Khắc chế</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10086.png" alt="Alolan Dugtrio" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Alolan Dugtrio</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đất / Thép</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Iron Head, Earthquake, Sucker Punch, Sandstorm</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Sở hữu đặc tính Tangling Hair làm giảm tốc độ của bạn khi tiếp xúc vật lý. Cực yếu trước các đòn hệ **Lửa**, **Nước** hoặc **Đất**.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/423.png" alt="Gastrodon" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Gastrodon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Nước / Đất</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Muddy Water, Recover, Sludge Bomb, Body Slam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Gastrodon miễn nhiễm hoàn toàn đòn hệ Điện và chống đòn Nước cực tốt. Nhưng nó bị **nhược điểm chí mạng x4 hệ Cỏ (Grass)**! Hãy tung đòn lá rụng của Decidueye để một chiêu tiễn nó lên bảng.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/330.png" alt="Flygon" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Flygon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47<br/><i>Không có</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đất / Rồng</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dragon Claw, Earth Power, Sandstorm, Hyper Beam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Levitate giúp nó miễn nhiễm đòn Đất. Có nhược điểm **x4 với đòn hệ Băng (Ice)** và yếu trước hệ Tiên. Một đòn băng hoặc tiên của bạn sẽ dập tắt đôi cánh rồng cát Flygon.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/750.png" alt="Mudsdale" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Mudsdale (Át chủ bài)</td>
+            <td style="padding: 12px 16px;">Lvl 48<br/><strong style="color: #ef4444;">Groundium Z</strong></td>
+            <td style="padding: 12px 16px;">Đất (Ground)</td>
+            <td style="padding: 12px 16px;">High Horsepower, Heavy Slam, Double Kick, Counter</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Con ngựa bùn này vô cùng kiên cố nhờ đặc tính **Stamina (tăng 1 bậc phòng thủ vật lý mỗi khi bị trúng đòn!)**. Đừng dùng đòn vật lý cận chiến. Hãy dùng đòn phép hệ Nước dội liên tục để hạ gục nhanh tránh chiêu thức Z hủy diệt **Tectonic Rage**!</td>
+          </tr>
+        </tbody>
+      </table>
     `,
     order: 11,
     language: 'vi'
@@ -412,7 +561,7 @@ export const SUN_CHAPTERS = [
         <p style="font-style: italic; color: #fb923c; margin-top: 8px;">Thái Dương Sư Solgaleo gầm vang tinh cầu rực rỡ!</p>
       </div>
 
-      <p>Hạ gục Solgaleo để lấy sự tôn kính và thu phục vị thần rồng thép thái dương vào đội hình chiến thuật của bạn!</p>
+      <p>Chiến đấu và thu phục vị thần rồng thép thái dương vào đội hình chiến thuật của bạn! Solgaleo ở cấp độ 55 có hệ Siêu Linh/Thép cùng chiêu thức độc quyền *Sunsteel Strike* cực mạnh bỏ qua mọi đặc tính của đối phương.</p>
 
       <h2>2. Xuyên cổng không gian đối đầu Lusamine tại Ultra Space</h2>
       <p>Solgaleo dùng bờm rực lửa xé toạc không gian đưa bạn và Lillie thâm nhập sâu vào tế giới quái dị **Ultra Space**. Tại đây, Lusamine phát điên kết hợp thể xác với sứa độc vũ trụ Nihilego. Hãy hạ gục toàn bộ đội hình quái vật của Lusamine để dứt điểm giải thoát cô ấy!</p>
@@ -427,33 +576,327 @@ export const SUN_CHAPTERS = [
       <h1>Chương 14: Thiết lập Liên Minh Alola League tại Đỉnh Lanakila & Đăng ngôi vô địch</h1>
       <p>Sau thảm họa vũ trụ, Giáo sư Kukui tuyên bố thành lập Liên Minh Pokémon Alola đầu tiên trên ngọn núi tuyết phủ quanh năm Mount Lanakila.</p>
 
-      <h2>1. Thách thức Tứ Đại Thiên Vương Alola (Elite Four)</h2>
-      <p>Vượt qua vách đá tuyết, bạn sẽ bước vào sảnh đấu tối tân thách thức 4 hộ vệ mạnh nhất gồm Hala (Giác đấu - Lvl 54-55), Olivia (Đá - Lvl 54-55), Acerola (Ma - Lvl 54-55) và nữ vệ binh rồng chiến Kahili (Bay - Lvl 54-55).</p>
+      <h2>1. Chi tiết đội hình Tứ Đại Thiên Vương Alola (Elite Four)</h2>
+      <p>Hãy chuẩn bị sẵn sàng cho những trận đấu kinh điển nhất với đội ngũ 4 hộ vệ mạnh nhất vùng Alola:</p>
+
+      <h3 style="color: #f87171; border-left: 4px solid #ef4444; padding-left: 8px; margin-top: 24px;">Thiên vương Hala (Hệ Giác Đấu)</h3>
+      <p>Đội hình Giác đấu cứng rắn được nâng cấp cấp độ cao:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; overflow: hidden; background-color: rgba(15, 15, 25, 0.4);">
+        <tr style="background-color: rgba(239, 68, 68, 0.1);">
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Pokémon</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Cấp độ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Hệ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Bộ chiêu thức (Moveset)</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Đấu pháp</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Hariyama</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Giác đấu</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Fake Out, Close Combat, Knock Off, Heavy Slam</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Dùng Fake Out lượt đầu. Hãy dùng đòn Siêu Linh hoặc Tiên dứt điểm.</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Primeape</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Giác đấu</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Cross Chop, Poison Jab, Outrage, Punish</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Bewear</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Thường / Giác đấu</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Hammer Arm, Take Down, Shadow Claw, Brutal Swing</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Poliwrath</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Nước / Giác đấu</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Submission, Waterfall, Body Slam, Rain Dance</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; font-weight:bold; color: #fbbf24;">Crabominable</td>
+          <td style="padding: 10px;">Lvl 55</td>
+          <td style="padding: 10px;">Giác đấu / Băng</td>
+          <td style="padding: 10px;">Ice Hammer, Close Combat, Power-Up Punch</td>
+          <td style="padding: 10px;">Mang hỏa lực hệ Lửa thiêu cháy bộ lông của quái vật tuyết này để né đòn Z-Move cực đau.</td>
+        </tr>
+      </table>
+
+      <h3 style="color: #60a5fa; border-left: 4px solid #3b82f6; padding-left: 8px; margin-top: 24px;">Thiên vương Olivia (Hệ Đá)</h3>
+      <p>Cứng như đá tảng, kháng vật lý cực cao:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; overflow: hidden; background-color: rgba(15, 15, 25, 0.4);">
+        <tr style="background-color: rgba(59, 130, 246, 0.1);">
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Pokémon</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Cấp độ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Hệ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Bộ chiêu thức (Moveset)</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Đấu pháp</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Relicanth</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Đá / Nước</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Hydro Pump, Rock Slide, Double-Edge, Yawn</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); color: #cbd5e1;">X4 nhược điểm hệ Cỏ! Dùng đòn lá của Decidueye để hạ nó trong 1 nốt nhạc.</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Carbink</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Đá / Tiên</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Moonblast, Power Gem, Psychic, Reflect</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Alolan Golem</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Đá / Điện</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Stone Edge, Thunder Punch, Steamroller, Heavy Slam</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Probopass</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Đá / Thép</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Flash Cannon, Earth Power, Power Gem, Discharge</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; font-weight:bold; color: #fbbf24;">Lycanroc</td>
+          <td style="padding: 10px;">Lvl 55</td>
+          <td style="padding: 10px;">Đá (Rock)</td>
+          <td style="padding: 10px;">Stone Edge, Accelerock, Crunch, Fire Fang</td>
+          <td style="padding: 10px;">Sử dụng đòn phép hệ Nước của Primarina để hạ gục sói đá Lycanroc trước khi nó kích hoạt Rockium Z.</td>
+        </tr>
+      </table>
+
+      <h3 style="color: #c084fc; border-left: 4px solid #a855f7; padding-left: 8px; margin-top: 24px;">Thiên vương Acerola (Hệ Ma)</h3>
+      <p>Lắt léo ma mị, miễn nhiễm đòn Thường và Giác đấu:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 8px; overflow: hidden; background-color: rgba(15, 15, 25, 0.4);">
+        <tr style="background-color: rgba(168, 85, 247, 0.1);">
+          <th style="padding: 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.3);">Pokémon</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.3);">Cấp độ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.3);">Hệ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.3);">Bộ chiêu thức (Moveset)</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.3);">Đấu pháp</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Sableye</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Bóng tối / Ma</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Foul Play, Shadow Claw, Power Gem, Zen Headbutt</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); color: #cbd5e1;">Vẫn rất sợ đòn hệ Tiên (Moonblast từ Primarina).</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Drifblim</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Ma / Bay</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Ominous Wind, Baton Pass, Focus Energy, Amnesia</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Dhelmise</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Ma / Cỏ</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Anchor Shot, Shadow Ball, Energy Ball, Whirlpool</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Froslass</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Băng / Ma</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Blizzard, Shadow Ball, Confuse Ray, Ice Shard</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; font-weight:bold; color: #fbbf24;">Palossand</td>
+          <td style="padding: 10px;">Lvl 55</td>
+          <td style="padding: 10px;">Ma / Đất</td>
+          <td style="padding: 10px;">Shadow Ball, Earth Power, Giga Drain, Iron Defense</td>
+          <td style="padding: 10px;">Lâu đài cát ma quái cực kỳ trâu bò, hãy dội đòn Nước (Water) cực mạnh dứt điểm sớm tránh để nó hồi máu bằng Giga Drain.</td>
+        </tr>
+      </table>
+
+      <h3 style="color: #fb923c; border-left: 4px solid #f97316; padding-left: 8px; margin-top: 24px;">Thiên vương Kahili (Hệ Bay)</h3>
+      <p>Oanh tạc bầu trời, sát thương tầm cao:</p>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px; overflow: hidden; background-color: rgba(15, 15, 25, 0.4);">
+        <tr style="background-color: rgba(249, 115, 22, 0.1);">
+          <th style="padding: 10px; border-bottom: 1px solid rgba(249, 115, 22, 0.3);">Pokémon</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(249, 115, 22, 0.3);">Cấp độ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(249, 115, 22, 0.3);">Hệ</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(249, 115, 22, 0.3);">Bộ chiêu thức (Moveset)</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(249, 115, 22, 0.3);">Đấu pháp</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Skarmory</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Thép / Bay</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Steel Wing, Air Slash, Spikes, Swift</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); color: #cbd5e1;">Chim bọc thép rất sợ đòn **Lửa (Fire)** hoặc **Điện**.</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Crobat</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Độc / Bay</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Poison Fang, Air Cutter, Confuse Ray, Acrobatics</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Oricorio</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lửa / Bay</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Revelation Dance, Air Slash, Feather Dance, Teeter Dance</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Mandibuzz</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Bóng tối / Bay</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Brave Bird, Bone Rush, Flatter, Punishment</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; font-weight:bold; color: #fbbf24;">Toucannon</td>
+          <td style="padding: 10px;">Lvl 55</td>
+          <td style="padding: 10px;">Thường / Bay</td>
+          <td style="padding: 10px;">Beak Blast, Bullet Seed, Drill Peck, Screech</td>
+          <td style="padding: 10px;">Chim mỏ rộng Toucannon cầm ngọc Z bay giật đòn Beak Blast làm bỏng Pokémon của bạn. Quét sạch nó bằng các đòn **Điện** hoặc **Băng** bão táp.</td>
+        </tr>
+      </table>
 
       <h2>2. Trận chiến vương quyền vĩ đại tranh chức Vô địch đầu tiên</h2>
-      <p>Vượt qua 4 thiên vương, bạn bước lên ngai vàng trống trải. Giáo sư Kukui xuất hiện chào đón và đưa ra thử thách tranh ngôi vị nhà vô địch Alola đầu tiên trong lịch sử! Giáo sư sử dụng đội hình siêu bão táp: Lycanroc, Alolan Ninetales, Braviary, Snorlax và át chủ bài Starter khắc chế bạn ở Cấp độ 57-58. Hãy dùng Solgaleo thái dương kiêu dũng để nghiền nát chiến thần Snorlax dũng mãnh, chính thức ghi danh bảng hall of fame rực rỡ nhất!</p>
+      <p>Vượt qua 4 thiên vương, bạn bước lên ngai vàng trống trải. Giáo sư Kukui xuất hiện chào đón và đưa ra thử thách tranh ngôi vị nhà vô địch Alola đầu tiên trong lịch sử! Giáo sư sử dụng đội hình siêu bão táp:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(251, 146, 60, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(251, 146, 60, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Cấp độ & Hệ</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Bộ chiêu thức (Moveset)</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Mẹo đối đầu thắng lợi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/745.png" alt="Lycanroc" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Lycanroc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Đá</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Stone Edge, Accelerock, Stealth Rock, Crunch</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Kukui luôn tung con này đầu tiên để rải Stealth Rock gây sát thương khi đổi quân. Hãy hạ gục nó bằng đòn Nước/Cỏ nhanh.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" alt="Snorlax" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Snorlax</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Thường</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Body Slam, Crunch, Heavy Slam, High Horsepower</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Snorlax siêu máu giấy phòng thủ đặc biệt nhưng máu cực trâu. Sử dụng đòn vật lý hệ **Giác đấu (Fighting)** siêu mạnh đấm gục nó.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/628.png" alt="Braviary" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Braviary</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Thường / Bay</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Tailwind, Brave Bird, Superpower, Crush Claw</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Đại bàng dũng mãnh phóng Tailwind tăng gấp đôi tốc độ toàn đội. Quét sạch bằng hệ Điện hoặc Đá.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/462.png" alt="Magnezone" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Magnezone</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Điện / Thép</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thunderbolt, Flash Cannon, Tri Attack, Thunder Wave</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Có Sturdy. Rất sợ **đòn hệ Đất x4 sát thương!** Một đòn Earthquake từ Mudsdale sẽ tiễn nó lên bảng dĩa.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png" alt="Alolan Ninetales" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Alolan Ninetales</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Băng / Tiên</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Blizzard, Dazzling Gleam, Ice Beam, Safe Guard</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Sợ hỏa lực hệ Thép x4! Đập bẹp bằng đòn hệ Thép của Solgaleo vô cùng sướng tay.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/727.png" alt="Incineroar" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Starter khắc chế (Lvl 58)</td>
+            <td style="padding: 12px 16px;">Lvl 58<br/><i>Tùy hệ</i></td>
+            <td style="padding: 12px 16px;">Bộ chiêu thức tối tân hệ rực rỡ</td>
+            <td style="padding: 12px 16px;">Kukui sẽ tung ra dạng tiến hóa cuối cùng của Starter khắc chế bạn (ví dụ Incineroar nếu bạn chọn Rowlet). Hãy dùng Pokémon tương khắc cứng để giành chiến thắng chung cuộc!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Hạ gục Giáo sư Kukui thành công, bạn chính thức đăng quang nhà Vô địch đầu tiên của vùng Alola trong tiếng hoan hô của người dân cả hòn đảo!</p>
     `,
     order: 14,
     language: 'vi'
   },
   {
     gameVersion: 'sun',
-    chapterTitle: 'Chương 15: Khám phá Hậu Game - Săn tìm Ultra Beasts cùng Đặc vụ Looker',
+    chapterTitle: 'Chương 15: Bí mật các thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo bạo liệt',
     content: `
-      <h1>Chương 15: Khám phá Hậu Game - Săn tìm Ultra Beasts cùng Đặc vụ Looker</h1>
-      <p>Thế giới bình yên trở lại nhưng những vết rạn không gian rách nát giải phóng hàng loạt quái thú vũ trụ bí ẩn gieo rắc kinh hoàng khắp Alola.</p>
+      <h1>Chương 15: Bí mật các thần thú Siêu Hiếm, Huyền Thoại & Huyền Ảo bạo liệt</h1>
+      <p>Alola không chỉ nổi tiếng bởi phong cảnh nhiệt đới mà còn chứa đựng bí mật về những vị thần bảo hộ (Tapu Guardians) và những quái thú huyền thoại ngoài vũ trụ (Ultra Beasts/Necrozma). Dưới đây là hướng dẫn tối thượng để thu phục toàn bộ bọn họ!</p>
 
-      <h2>1. Nhận mật lệnh từ đặc vụ Looker & Đặc cảnh Anabel</h2>
-      <p>Gặp gỡ đặc vụ quốc tế Looker tại nhà nghỉ Route 8, bạn sẽ nhận mật lệnh săn bắt các quái vật Ultra Beasts (UBs) bằng bóng đặc chủng Beast Ball:</p>
+      <h2>1. Thần hộ mệnh Melemele - Tapu Koko (Cấp độ 60)</h2>
+      <p>Sau khi chiến thắng Kukui và đăng ngôi vô địch, trong đêm hội ăn mừng, Lillie sẽ dẫn bạn quay lại đền Ruins of Conflict trên đảo Melemele. Chạm vào tế đàn để thách thức thần hộ mệnh **Tapu Koko (Cấp độ 60)**:</p>
       <ul>
-        <li><strong>UB-01 Symbiont (Nihilego - Lvl 55):</strong> Tìm bắt chú sứa độc tại hang Diglett's Tunnel hoặc Wela Volcano.</li>
-        <li><strong>UB-02 Absorption (Buzzwole - Lvl 65):</strong> Muỗi cơ bắp khổng lồ (Chỉ có trong bản Pokémon Sun!) xuất hiện quấy nhiễu tại bãi cỏ hoang Melemele Meadow.</li>
-        <li><strong>UB-03 Lighting (Xurkitree - Lvl 65):</strong> Bọ cắm điện quái dị tung hoành tại Lush Jungle hoang sơ.</li>
-        <li><strong>UB-04 Blade (Kartana - Lvl 60):</strong> Bọ lá kiếm sắc bén (Chỉ có trong bản Pokémon Sun!) xuất hiện chém đứt gốc cây dừa tại Malie Garden.</li>
+        <li><strong>Hệ:</strong> Điện / Tiên (Electric/Fairy)</li>
+        <li><strong>Chiêu thức:</strong> Nature's Madness, Discharge, Electro Ball, Agility</li>
+        <li><strong>Cách bắt:</strong> Tapu Koko tự động kích hoạt môi trường Điện (Electric Terrain) tăng sức mạnh đòn Điện cực cao. Hãy mang theo Pokémon hệ Đất miễn nhiễm đòn Điện như Mudsdale để chặn sát thương, quăng Dusk Ball hoặc Ultra Ball sau khi làm suy yếu máu nó.</li>
       </ul>
 
-      <h2>2. Thu phục bộ tứ thần bảo hộ Tapu Guardians</h2>
-      <p>Đến đền thờ tàn tích Ruins trên cả 4 đảo Alola để thách thức và thu phục bộ tứ thần bảo hộ oai vệ Tapu Koko, Tapu Lele, Tapu Bulu và Tapu Fini tại cấp độ 60!</p>
+      <h2>2. Thần hộ mệnh Akala - Tapu Lele (Cấp độ 60)</h2>
+      <p>Quay lại Ruins of Hope trên đảo Akala sau cốt truyện chính, đẩy các khối đá bằng lực lượng Machamp Shove để tiến vào sảnh tế đàn đối mặt **Tapu Lele (Cấp độ 60)**:</p>
+      <ul>
+        <li><strong>Hệ:</strong> Siêu Linh / Tiên (Psychic/Fairy)</li>
+        <li><strong>Đặc tính:</strong> Psychic Surge (kích hoạt môi trường Siêu linh chặn các đòn tấn công ưu tiên như Quick Attack, Fake Out).</li>
+        <li><strong>Cách bắt:</strong> Hệ Tiên/Siêu Linh sợ nhất đòn hệ **Thép (Steel)** hoặc **Ma (Ghost)**. Hãy dùng chiêu thức sắt thép làm suy yếu nó, sử dụng đòn gây trạng thái ngủ để bắt dễ dàng.</li>
+      </ul>
+
+      <h2>3. Thần hộ mệnh Ula\'ula - Tapu Bulu (Cấp độ 60)</h2>
+      <p>Vị thần khó tìm nhất ẩn náu sâu trong mê cung cát Haina Desert cực kỳ lắt léo. Đi theo hướng mũi tên chỉ dẫn của các cột đá: **Lên, Phải, Lên, Phải, Trái, Lên** để tìm đền thờ Ruins of Abundance chạm trán **Tapu Bulu (Cấp độ 60)**:</p>
+      <ul>
+        <li><strong>Hệ:</strong> Cỏ / Tiên (Grass/Fairy)</li>
+        <li><strong>Đặc tính:</strong> Grassy Surge (tự động hồi máu mỗi lượt cho Pokémon đứng trên mặt đất).</li>
+        <li><strong>Cách bắt:</strong> Thần bò Bulu cực kỳ sợ **đòn hệ Độc x4 sát thương!** Tránh dùng đòn độc quá mạnh kẻo làm nó đột tử. Dùng đòn nhẹ hệ Lửa hoặc Bay làm yếu máu và thu phục.</li>
+      </ul>
+
+      <h2>4. Thần hộ mệnh Poni - Tapu Fini (Cấp độ 60)</h2>
+      <p>Ghé thăm đền Ruins of Hope nằm sâu bên rặng san hô đảo Poni để thách thức nàng tiên cá bảo hộ đại dương **Tapu Fini (Cấp độ 60)**:</p>
+      <ul>
+        <li><strong>Hệ:</strong> Nước / Tiên (Water/Fairy)</li>
+        <li><strong>Cách bắt:</strong> Fini có đòn hồi máu Aqua Ring vô cùng lầy lội cực kỳ khó bắt. Hãy sử dụng chiêu thức ngăn chặn hồi phục hoặc tung đòn tê liệt sớm để dứt điểm giam giữ nó vào bóng Pokéball!</li>
+      </ul>
+
+      <h2>5. Thần thú tà ác Necrozma - Quái vật lăng kính (Cấp độ 75)</h2>
+      <p>Sau khi hoàn thành toàn bộ nhiệm vụ săn bắt Ultra Beasts cùng đặc vụ Looker ở chương 15, hãy đi tới hang động **Ten Carat Hill**, đi sâu vào bãi cỏ rậm rạp nhất tại khu vực Farthest Hollow. Chúa tể lăng kính bóng tối **Necrozma (Cấp độ 75)** sẽ xuất hiện ngẫu nhiên hoang dã cực kỳ đáng sợ!</p>
+      <ul>
+        <li><strong>Hệ:</strong> Siêu Linh (Psychic)</li>
+        <li><strong>Chiêu thức:</strong> Prismatic Laser, Iron Defense, Wring Out, Stealth Rock</li>
+        <li><strong>Mẹo bắt:</strong> Đây là Pokémon hoang dã có cấp độ cao nhất game (Cấp 75) cùng chiêu Prismatic Laser bắn nát mọi tấm khiên! Hãy chuẩn bị sẵn hơn 50 quả Ultra Ball, hạ máu nó xuống mức báo động đỏ và quăng bóng liên tục.</li>
+      </ul>
+
+      <h2>6. Tinh linh Nebby thứ hai - Thu phục thêm một Cosmog (Cấp độ 5)</h2>
+      <p>Bạn có biết mình có thể sở hữu thêm một chú Nebby đáng yêu để tiến hóa thành Solgaleo thứ hai không? Hãy làm theo các bước bí mật sau:</p>
+      <ol>
+        <li>Đưa Solgaleo vào đội hình chiến thuật của bạn.</li>
+        <li>Bay tới đỉnh đền thờ Altar of the Sunne vào ban đêm (game thời gian thực).</li>
+        <li>Bạn sẽ thấy một vết rạn nứt không gian kỳ dị. Đi vào đó để xuyên không sang thế giới song song.</li>
+        <li>Bay tới hồ nước thiêng **Lake of the Sunne** (vị trí tương ứng trên hòn đảo mới).</li>
+        <li>Tiến lên tế đàn cổ, một phân cảnh tuyệt đẹp xuất hiện và chú **Cosmog cấp độ 5** sẽ tự nguyện xin gia nhập đội hình của bạn!</li>
+      </ol>
+
+      <h2>7. Zygarde - Lắp ráp hộ vệ sinh thái 100% Complete Forme</h2>
+      <p>Xuyên suốt chuyến du hành Alola, thiết bị Zygarde Cube do Sina và Dexio trao tặng sẽ giúp bạn thu thập các hạt lấp lánh (Zygarde Cells) và hạt lõi (Zygarde Cores) nằm rải rác trên bản đồ đường đi. Hãy tích lũy đủ:</p>
+      <ul>
+        <li><strong>10 Cells:</strong> Mang tới phòng nghiên cứu Route 16 Aether Lab để lắp ghép thành chú chó Zygarde 10% Forme tốc độ cực nhanh.</li>
+        <li><strong>50 Cells:</strong> Ghép thành rồng đất Zygarde 50% Forme trứ danh hung bạo.</li>
+        <li><strong>100 Cells & Cores:</strong> Chúc mừng bạn đã sở hữu đặc tính **Power Construct** cho phép Zygarde biến hình thành dạng robot khổng lồ **Zygarde Complete Forme** vô địch vũ trụ khi lượng máu giảm xuống dưới 50%!</li>
+      </ul>
+
+      <h2>8. Pokémon Huyền Ảo Magearna (Cấp độ 50) - Sự kiện QR Code độc quyền</h2>
+      <p>Sau khi đăng quang Hall of Fame, bạn có thể nhận chú Pokémon người máy Magearna hệ Thép/Tiên cực hiếm thông qua tính năng quét QR Code đặc biệt của máy 3DS. Hãy dùng camera quét mã QR Magearna chính thức từ Nintendo, sau đó đi tới cửa hàng đồ cổ Antique Shop tại khu thương mại Hau'oli City để nhận món quà lộng lẫy này!</p>
     `,
     order: 15,
     language: 'vi'
@@ -610,10 +1053,51 @@ export const SUN_CHAPTERS = [
     content: `
       <h1>Chapter 3: Grand Trial Hala & Conquering Melemele Island</h1>
       <p>Challenge Kahuna Hala at the rustic stage of Iki Town. Hala uses Fighting-types (Makuhita Lvl 15, Crabrawler Lvl 15, Crabominable Lvl 16) with extreme physical power:</p>
-      <blockquote>
-        <strong>Hala Battle Strategy:</strong>
-        Watch out for Crabominable's devastating **Z-Move: All-Out Pummeling**! Absorb the blow utilizing high-defense options, then counter utilizing Rowlet's Flying moves or Psychic allies to secure the **Fightinium Z** and unlock the Ride Page Tauros Charge!
-      </blockquote>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(239, 68, 68, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Level & Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Moveset</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(239, 68, 68, 0.3); text-align: left;">Victory Tactics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/296.png" alt="Machop" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Machop</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 15<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Karate Chop, Low Sweep, Focus Energy, Foresight</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Strike using Flying moves (Air Slash) or Psychic moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/296.png" alt="Makuhita" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Makuhita</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 15<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fighting</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Fake Out, Arm Thrust, Sand Attack, Tackle</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Uses Fake Out on turn 1. Switch to a Ghost-type to avoid damage.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/739.png" alt="Crabrawler" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Crabrawler (Ace)</td>
+            <td style="padding: 12px 16px;">Lvl 16<br/><strong style="color: #ef4444;">Fightinium Z</strong></td>
+            <td style="padding: 12px 16px;">Fighting</td>
+            <td style="padding: 12px 16px;">Power-Up Punch, Pursuit, Leer</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Hala launches the Z-Move **All-Out Pummeling**! Absorb it utilizing a healthy tank, then counter-attack utilizing Flying or Psychic moves.</td>
+          </tr>
+        </tbody>
+      </table>
     `,
     order: 3,
     language: 'en'
@@ -669,7 +1153,52 @@ export const SUN_CHAPTERS = [
     chapterTitle: 'Chapter 6: Grand Trial Olivia & Aether Paradise First Encounter',
     content: `
       <h1>Chapter 6: Grand Trial Olivia & Aether Paradise First Encounter</h1>
-      <p>Battle Kahuna Olivia (Rock-type specialist using Lycanroc Lvl 27) utilizing Primarina's Water or Decidueye's Grass moves to claim the **Rockium Z**. Next, join Lusamine's tour inside Aether Paradise, defeating alien invader **UB-01 Nihilego** during a surprise cosmic rift!</p>
+      <p>Battle Kahuna Olivia (Rock-type specialist using Lycanroc Lvl 27) utilizing Primarina's Water or Decidueye's Grass moves to claim the **Rockium Z**:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(251, 146, 60, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(251, 146, 60, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Level & Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Moveset</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Victory Strategy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/299.png" alt="Nosepass" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Nosepass</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 26<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock Slide, Spark, Thunder Wave, Tackle</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Features Sturdy. Bring Cheri Berries to heal paralysis from Thunder Wave.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/525.png" alt="Boldore" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Boldore</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 26<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Rock Blast, Mud-Slap, Iron Defense, Headbutt</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Has Sturdy. Mud-Slap lowers accuracy. Blast it with Special Water/Grass moves to ignore Iron Defense.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/745.png" alt="Lycanroc" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Lycanroc (Midday Form)</td>
+            <td style="padding: 12px 16px;">Lvl 27<br/><strong style="color: #ef4444;">Rockium Z</strong></td>
+            <td style="padding: 12px 16px;">Rock</td>
+            <td style="padding: 12px 16px;">Rock Tomb, Bite, Accelerock, Fire Fang</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Extremely fast with priority Accelerock. Demolish utilizing Primarina's Water moves before it unleashes **Continental Crush**!</td>
+          </tr>
+        </tbody>
+      </table>
     `,
     order: 6,
     language: 'en'
@@ -735,7 +1264,52 @@ export const SUN_CHAPTERS = [
     chapterTitle: 'Chapter 10: Grand Trial Nanu & Aether Paradise Lab Raid',
     content: `
       <h1>Chapter 10: Grand Trial Nanu & Aether Paradise Lab Raid</h1>
-      <p>Defeat Kahuna Nanu (Dark-type Persian Lvl 39) using Fairy moves to acquire **Darkinium Z**. Next, join Gladion inside Aether Paradise to storm the laboratory and save Lillie from President Lusamine's cosmic rift plots!</p>
+      <p>Defeat Kahuna Nanu (Dark-type specialist) using Fairy moves to acquire **Darkinium Z**:</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(139, 92, 246, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Level & Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Moveset</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(139, 92, 246, 0.3); text-align: left;">Counter Tactics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/302.png" alt="Sableye" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Sableye</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 38<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dark / Ghost</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Feint Attack, Shadow Sneak, Power Gem, Detect</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Only weak to **Fairy-type** moves. Erase it utilizing Primarina.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/552.png" alt="Krokorok" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Krokorok</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 38<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ground / Dark</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Crunch, Earthquake, Swagger, Scary Face</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Highly vulnerable to Water, Grass, Fighting, Ice moves. Wash it out utilizing Water moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10103.png" alt="Alolan Persian" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Alolan Persian (Ace)</td>
+            <td style="padding: 12px 16px;">Lvl 39<br/><strong style="color: #ef4444;">Darkinium Z</strong></td>
+            <td style="padding: 12px 16px;">Dark</td>
+            <td style="padding: 12px 16px;">Fake Out, Dark Pulse, Power Gem, Swift</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Holds Fur Coat (halves incoming physical damage). Do not use physical hits! Use Special Fairy moves (Moonblast) to instantly defeat it before it triggers **Black Hole Eclipse**.</td>
+          </tr>
+        </tbody>
+      </table>
     `,
     order: 10,
     language: 'en'
@@ -745,7 +1319,62 @@ export const SUN_CHAPTERS = [
     chapterTitle: 'Chapter 11: Poni Island - Seeking the Sun Flute & Grand Trial Hapu',
     content: `
       <h1>Chapter 11: Poni Island - Seeking the Sun Flute & Grand Trial Hapu</h1>
-      <p>Sail to Exeggutor Island to recover the ancient **Sun Flute** while battling Alolan Exeggutors. Return to Poni Island to challenge Kahuna Hapu (Ground-type Mudsdale Lvl 48). Wash out Mudsdale utilizing Nước moves to claim **Groundium Z**!</p>
+      <p>Sail to Exeggutor Island to recover the ancient **Sun Flute** while battling Alolan Exeggutors. Return to Poni Island to challenge Kahuna Hapu (Ground-type specialist):</p>
+
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(245, 158, 11, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Level & Item</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Moveset</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(245, 158, 11, 0.3); text-align: left;">Counter Tactics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10086.png" alt="Alolan Dugtrio" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Alolan Dugtrio</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ground / Steel</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Iron Head, Earthquake, Sucker Punch, Sandstorm</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Tangling Hair lowers speed on contact. Destroy using Fire or Water moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/423.png" alt="Gastrodon" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Gastrodon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Water / Ground</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Muddy Water, Recover, Sludge Bomb, Body Slam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Immune to Electric and strongly resists Water. Hit with its **4x Grass weakness** to KO instantly!</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/330.png" alt="Flygon" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Flygon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 47<br/><i>None</i></td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Ground / Dragon</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Dragon Claw, Earth Power, Sandstorm, Hyper Beam</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #cbd5e1;">Levitate blocks Ground. Extreme **4x weakness to Ice!** Blow it out using an Ice attack.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/750.png" alt="Mudsdale" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; font-weight: bold; color: #fbbf24;">Mudsdale (Ace)</td>
+            <td style="padding: 12px 16px;">Lvl 48<br/><strong style="color: #ef4444;">Groundium Z</strong></td>
+            <td style="padding: 12px 16px;">Ground</td>
+            <td style="padding: 12px 16px;">High Horsepower, Heavy Slam, Double Kick, Counter</td>
+            <td style="padding: 12px 16px; color: #cbd5e1;">Stamina ability increases Defense on every hit. Avoid physical attacks! Melt utilizing Special Grass/Water spells before it executes **Tectonic Rage**.</td>
+          </tr>
+        </tbody>
+      </table>
     `,
     order: 11,
     language: 'en'
@@ -802,24 +1431,203 @@ export const SUN_CHAPTERS = [
     chapterTitle: 'Chapter 14: Inaugurating Alola Pokémon League & Champion Coronation',
     content: `
       <h1>Chapter 14: Inaugurating Alola Pokémon League & Champion Coronation</h1>
-      <p>Climb Mount Lanakila to engage in Alola's inaugural Pokémon League. Defeat Elite Four (Hala, Olivia, Acerola, Kahili) and outmatch Professor Kukui's level 58 starter team to claim the ultimate crown as Alola's first-ever League Champion!</p>
+      <p>Climb Mount Lanakila to engage in Alola's inaugural Pokémon League. Defeat Elite Four and outmatch Professor Kukui's level 58 starter team to claim the ultimate crown!</p>
+
+      <h2>1. Elite Four Matching Layout</h2>
+
+      <h3 style="color: #f87171; border-left: 4px solid #ef4444; padding-left: 8px; margin-top: 24px;">Elite Hala (Fighting-Type)</h3>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; overflow: hidden; background-color: rgba(15, 15, 25, 0.4);">
+        <tr style="background-color: rgba(239, 68, 68, 0.1);">
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Pokémon</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Level</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Type</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Moveset</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(239, 68, 68, 0.3);">Strategy</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Hariyama</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Fighting</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Fake Out, Close Combat, Knock Off, Heavy Slam</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Avoid Fake Out. Break with Special Fairy/Psychic hits.</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Primeape</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Fighting</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Cross Chop, Poison Jab, Outrage, Punish</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Bewear</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Normal / Fighting</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Hammer Arm, Take Down, Shadow Claw, Brutal Swing</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Poliwrath</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Water / Fighting</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Submission, Waterfall, Body Slam, Rain Dance</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; font-weight:bold; color: #fbbf24;">Crabominable</td>
+          <td style="padding: 10px;">Lvl 55</td>
+          <td style="padding: 10px;">Fighting / Ice</td>
+          <td style="padding: 10px;">Ice Hammer, Close Combat, Power-Up Punch</td>
+          <td style="padding: 10px;">Crush utilizing Fire or Flying elements before it triggers its Z-Move.</td>
+        </tr>
+      </table>
+
+      <h3 style="color: #60a5fa; border-left: 4px solid #3b82f6; padding-left: 8px; margin-top: 24px;">Elite Olivia (Rock-Type)</h3>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; overflow: hidden; background-color: rgba(15, 15, 25, 0.4);">
+        <tr style="background-color: rgba(59, 130, 246, 0.1);">
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Pokémon</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Level</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Type</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Moveset</th>
+          <th style="padding: 10px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">Strategy</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Relicanth</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Rock / Water</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Hydro Pump, Rock Slide, Double-Edge, Yawn</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">X4 Grass weakness! Delete utilizing Grass moves.</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Carbink</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Rock / Fairy</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Moonblast, Power Gem, Psychic, Reflect</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Golem</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Rock / Electric</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Stone Edge, Thunder Punch, Steamroller, Heavy Slam</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); font-weight:bold;">Probopass</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Lvl 54</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Rock / Steel</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">Flash Cannon, Earth Power, Power Gem, Discharge</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; font-weight:bold; color: #fbbf24;">Lycanroc</td>
+          <td style="padding: 10px;">Lvl 55</td>
+          <td style="padding: 10px;">Rock</td>
+          <td style="padding: 10px;">Stone Edge, Crunch, Accelerock, Fire Fang</td>
+          <td style="padding: 10px;">Strike using Water or Fighting moves before it shoots Continental Crush.</td>
+        </tr>
+      </table>
+
+      <h2>2. Champion Matchup against Professor Kukui</h2>
+      <table style="width:100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border: 1px solid rgba(251, 146, 60, 0.2); border-radius: 12px; overflow: hidden; background-color: rgba(15, 15, 25, 0.5);">
+        <thead>
+          <tr style="background-color: rgba(251, 146, 60, 0.15);">
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: center; width: 100px;">Sprite</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Pokémon</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Level & Type</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Moveset</th>
+            <th style="padding: 12px 16px; border-bottom: 2px solid rgba(251, 146, 60, 0.3); text-align: left;">Victory Strategy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/745.png" alt="Lycanroc" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Lycanroc</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Rock</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Stone Edge, Accelerock, Stealth Rock, Crunch</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Crush instantly with Water/Grass to block early Stealth Rocks.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" alt="Snorlax" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Snorlax</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Normal</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Body Slam, Crunch, Heavy Slam, High Horsepower</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Extremely high HP and Special Defense. Punch it hard with Physical Fighting-type moves.</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); text-align: center;">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/462.png" alt="Magnezone" style="max-width: 40px;" />
+            </td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-weight: bold; color: #cbd5e1;">Magnezone</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Lvl 57<br/>Electric / Steel</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Thunderbolt, Flash Cannon, Tri Attack, Thunder Wave</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);">Has Sturdy. Blow it up with Ground-type attacks for **x4 fatal damage**!</td>
+          </tr>
+        </tbody>
+      </table>
     `,
     order: 14,
     language: 'en'
   },
   {
     gameVersion: 'sun',
-    chapterTitle: 'Chapter 15: Post-Game: Hunting Ultra Beasts with Looker & Tapu Gods',
+    chapterTitle: 'Chapter 15: Secrets of Ultra Rare, Legendary & Mythical Beasts',
     content: `
-      <h1>Chapter 15: Post-Game: Hunting Ultra Beasts with Looker & Tapu Gods</h1>
-      <p>Report to international inspector Looker at Route 8 hotel to receive Beast Balls and secure high-level alien invaders:</p>
+      <h1>Chapter 15: Secrets of Ultra Rare, Legendary & Mythical Beasts</h1>
+      <p>Alola holds sacred secrets regarding legendary protector gods and alien visitors. Here is your ultimate guide to capturing all of them!</p>
+
+      <h2>1. Melemele Guardian - Tapu Koko (Level 60)</h2>
+      <p>Return to the Ruins of Conflict after entering the Hall of Fame. Interact with the altar to engage **Tapu Koko**:</p>
       <ul>
-        <li><strong>UB-01 Nihilego (Level 55):</strong> Found in Wela Volcano or Diglett's Tunnel.</li>
-        <li><strong>UB-02 Buzzwole (Level 65):</strong> Muscular mosquito (Sun exclusive!) lurking in Melemele Meadow.</li>
-        <li><strong>UB-03 Xurkitree (Level 65):</strong> Plugs into electricity at Lush Jungle.</li>
-        <li><strong>UB-04 Kartana (Level 60):</strong> Sword leaf insect (Sun exclusive!) slicing trees in Malie Garden.</li>
+        <li><strong>Type:</strong> Electric / Fairy</li>
+        <li><strong>Tactics:</strong> Activates Electric Terrain immediately. Bring a Ground-type like Mudsdale to absorb electric charges, and secure it with Dusk or Ultra Balls.</li>
       </ul>
-      <p>Post-quest, locate and capture the Tapu Guardians (Koko, Lele, Bulu, Fini) at their respective island ruins at Level 60.</p>
+
+      <h2>2. Akala Guardian - Tapu Lele (Level 60)</h2>
+      <p>Solve the Machamp strength puzzle inside Ruins of Hope to challenge **Tapu Lele**:</p>
+      <ul>
+        <li><strong>Type:</strong> Psychic / Fairy</li>
+        <li><strong>Tactics:</strong> Psychic Surge prevents priority strikes. Chip down utilizing Steel or Ghost moves.</li>
+      </ul>
+
+      <h2>3. Ula\'ula Guardian - Tapu Bulu (Level 60)</h2>
+      <p>Navigate the Haina Desert columns (directions: **Up, Right, Up, Right, Left, Up**) to locate Ruins of Abundance and challenge **Tapu Bulu**:</p>
+      <ul>
+        <li><strong>Type:</strong> Grass / Fairy</li>
+        <li><strong>Tactics:</strong> Holds Grassy Surge (passive healing). Avoid 4x Poison attacks to prevent accidentally KO'ing it.</li>
+      </ul>
+
+      <h2>4. Poni Guardian - Tapu Fini (Level 60)</h2>
+      <p>Reach the Ruins of Hope altar to catch **Tapu Fini**:</p>
+      <ul>
+        <li><strong>Type:</strong> Water / Fairy</li>
+        <li><strong>Tactics:</strong> Spam paralyzing moves early to block its annoying Aqua Ring heal cycles.</li>
+      </ul>
+
+      <h2>5. The Prism Beast - Necrozma (Level 75)</h2>
+      <p>After catching all Ultra Beasts, search the tall grasses inside **Ten Carat Hill's Farthest Hollow**. The terrifying **Necrozma** appears randomly at Level 75:</p>
+      <ul>
+        <li><strong>Type:</strong> Psychic</li>
+        <li><strong>Moveset:</strong> Prismatic Laser, Iron Defense, Wring Out, Stealth Rock</li>
+        <li><strong>Strategy:</strong> Highest level wild spawn. Bring over 50 Ultra/Dusk Balls, lower its HP to red, apply Sleep/Paralysis and throw continuously.</li>
+      </ul>
+
+      <h2>6. Secondary Nebby - Capturing Cosmog (Level 5)</h2>
+      <p>Retrieve a second Cosmog to evolve into your second cover legendary:</p>
+      <ol>
+        <li>Add Solgaleo to your team.</li>
+        <li>Travel to Altar of the Sunne at night.</li>
+        <li>Enter the cosmic rift to travel into the parallel dimension.</li>
+        <li>Fly to Lake of the Sunne, reach the altar, and collect your **Level 5 Cosmog**!</li>
+      </ol>
+
+      <h2>7. Ecology Protector - Zygarde Complete Forme</h2>
+      <p>Collect Zygarde Cells and Cores across Alola inside your Zygarde Cube. Go to Route 16 Aether Lab:</p>
+      <ul>
+        <li><strong>10 Cells:</strong> Assemble Zygarde 10% Forme (dog shape).</li>
+        <li><strong>50 Cells:</strong> Assemble Zygarde 50% Forme (snake shape).</li>
+        <li><strong>100 Cells:</strong> Unlock the ultimate **Power Construct** ability. Zygarde transforms into the mechanical titan **Complete Forme** when health drops below 50%!</li>
+      </ul>
+
+      <h2>8. Mythical Steel Maiden - Magearna (Level 50)</h2>
+      <p>Post-game, scan the official Nintendo Magearna QR Code utilizing the 3DS QR scanner. Visit the Antique Shop in Hau'oli City Mall to pick up your gorgeous Level 50 Mythical Magearna!</p>
     `,
     order: 15,
     language: 'en'
