@@ -466,7 +466,8 @@ export default function AdminWalkthrough() {
                           border: '1px solid transparent',
                           bgcolor: editingId === chapter.id ? 'action.selected' : 'action.hover',
                           borderColor: editingId === chapter.id ? 'primary.main' : 'transparent',
-                          '&:hover': { bgcolor: 'action.hover' }
+                          '&:hover': { bgcolor: 'action.hover' },
+                          pr: '96px' // Prevent text from overlapping edit & delete buttons
                         }}
                       >
                         <ListItemText
