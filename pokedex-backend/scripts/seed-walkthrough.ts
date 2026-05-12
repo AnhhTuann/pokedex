@@ -18,7 +18,10 @@ import { SOULSILVER_CHAPTERS, ENGLISH_SOULSILVER_CHAPTERS } from './data/walkthr
 import { BLACK_CHAPTERS, ENGLISH_BLACK_CHAPTERS } from './data/walkthrough-black.js';
 import { WHITE_CHAPTERS, ENGLISH_WHITE_CHAPTERS } from './data/walkthrough-white.js';
 import { BLACK2_CHAPTERS, ENGLISH_BLACK2_CHAPTERS } from './data/walkthrough-black2.js';
+import { WHITE2_CHAPTERS, ENGLISH_WHITE2_CHAPTERS } from './data/walkthrough-white2.js';
 import { NEW_GAMES_VI_CHAPTERS, NEW_GAMES_EN_CHAPTERS } from './data/walkthrough-new-games.js';
+import { X_CHAPTERS, ENGLISH_X_CHAPTERS } from './data/walkthrough-x.js';
+import { Y_CHAPTERS, ENGLISH_Y_CHAPTERS } from './data/walkthrough-y.js';
 
 
 const prisma = new PrismaClient();
@@ -28,10 +31,10 @@ async function main() {
 
   // Xóa dữ liệu cũ nếu có
   await prisma.walkthrough.deleteMany({
-    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2', 'black-2', 'lets-go-pikachu', 'lets-go-eevee', 'brilliant-diamond', 'shining-pearl', 'legends-arceus', 'legends-za'] } }
+    where: { gameVersion: { in: ['emerald', 'firered', 'leafgreen', 'red', 'blue', 'yellow', 'gold', 'silver', 'crystal', 'ruby', 'sapphire', 'diamond', 'pearl', 'platinum', 'heartgold', 'soulsilver', 'black', 'white', 'black2', 'black-2', 'white-2', 'lets-go-pikachu', 'lets-go-eevee', 'brilliant-diamond', 'shining-pearl', 'legends-arceus', 'legends-za', 'x', 'y'] } }
   });
 
-  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White, Black 2, Let\'s Go Pikachu/Eevee, BDSP, Legends: Arceus và Legends: Z-A.');
+  console.log('🧹 Đã dọn dẹp các bản ghi cũ của Emerald, FireRed, LeafGreen, Red, Blue, Yellow, Gold, Silver, Crystal, Ruby, Sapphire, Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White, Black 2, White 2, Let\'s Go Pikachu/Eevee, BDSP, Legends: Arceus, Legends: Z-A và Pokémon X & Y.');
 
   // Nạp Emerald Tiếng Việt
   for (const chapter of EMERALD_CHAPTERS) {
@@ -337,6 +340,22 @@ async function main() {
     console.log(`✅ [Black 2 EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
+  // Nạp White 2 Tiếng Việt
+  for (const chapter of WHITE2_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [White 2 VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp White 2 Tiếng Anh
+  for (const chapter of ENGLISH_WHITE2_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [White 2 EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
   // Nạp các game mới Tiếng Việt
   for (const chapter of NEW_GAMES_VI_CHAPTERS) {
     await prisma.walkthrough.create({
@@ -351,6 +370,38 @@ async function main() {
       data: chapter
     });
     console.log(`✅ [New Games EN] Đã nạp ${chapter.gameVersion}: ${chapter.chapterTitle}`);
+  }
+
+  // Nạp Pokémon X Tiếng Việt
+  for (const chapter of X_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Pokémon X VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pokémon X Tiếng Anh
+  for (const chapter of ENGLISH_X_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Pokémon X EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pokémon Y Tiếng Việt
+  for (const chapter of Y_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Pokémon Y VI] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
+  }
+
+  // Nạp Pokémon Y Tiếng Anh
+  for (const chapter of ENGLISH_Y_CHAPTERS) {
+    await prisma.walkthrough.create({
+      data: chapter
+    });
+    console.log(`✅ [Pokémon Y EN] Đã nạp: ${chapter.chapterTitle} (Thứ tự: ${chapter.order})`);
   }
 
   console.log('🎉 Hoàn thành nạp dữ liệu Walkthrough tách biệt thành công rực rỡ!');
