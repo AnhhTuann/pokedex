@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Đổi số này thành 1025 nếu muốn cào TOÀN BỘ các Gen
-const POKEMON_COUNT = 151;
+const POKEMON_COUNT = 1025;
 
 // Tự động phân loại Thế hệ dựa vào Pokédex ID
 const getGeneration = (id: number): number => {
@@ -23,7 +23,16 @@ const convertGenNameToNum = (genName: string): number => {
   if (!match) return 1;
   const roman = match[1];
   const map: Record<string, number> = {
-    i: 1, ii: 2, iii: 3, iv: 4, v: 5, vi: 6, vii: 7, viii: 8, ix: 9, x: 10
+    i: 1,
+    ii: 2,
+    iii: 3,
+    iv: 4,
+    v: 5,
+    vi: 6,
+    vii: 7,
+    viii: 8,
+    ix: 9,
+    x: 10,
   };
   return map[roman] || 1;
 };
@@ -40,7 +49,7 @@ async function getMoveDetails(name: string, url: string) {
     let description = "";
     if (data.flavor_text_entries) {
       const englishEntry = data.flavor_text_entries.find(
-        (entry: any) => entry.language?.name === "en"
+        (entry: any) => entry.language?.name === "en",
       );
       if (englishEntry) {
         description = englishEntry.flavor_text
@@ -53,7 +62,7 @@ async function getMoveDetails(name: string, url: string) {
     let effect = "";
     if (data.effect_entries) {
       const englishEffect = data.effect_entries.find(
-        (entry: any) => entry.language?.name === "en"
+        (entry: any) => entry.language?.name === "en",
       );
       if (englishEffect) {
         effect = (englishEffect.short_effect || englishEffect.effect)
@@ -68,7 +77,9 @@ async function getMoveDetails(name: string, url: string) {
       power: data.power,
       accuracy: data.accuracy,
       pp: data.pp,
-      generation: data.generation?.name ? convertGenNameToNum(data.generation.name) : null,
+      generation: data.generation?.name
+        ? convertGenNameToNum(data.generation.name)
+        : null,
       description: description || null,
       effect: effect || null,
       type: data.type.name,
@@ -168,15 +179,189 @@ async function main() {
   await prisma.move.deleteMany({});
 
   // Tạo mảng tự động từ 1 đến POKEMON_COUNT và thêm các Pokemon vùng Z-A thuộc thế hệ khác
-  const idsToSeed = [
+  const rawIds = [
     ...Array.from({ length: POKEMON_COUNT }, (_, index) => index + 1),
-    152, 153, 154, 158, 159, 160, 167, 168, 172, 173, 179, 180, 181, 196, 197, 199, 208, 212, 214, 225, 228, 229, 246, 247, 248,
-    280, 281, 282, 302, 303, 304, 305, 306, 307, 308, 309, 310, 315, 318, 319, 322, 323, 333, 334, 353, 354, 359, 361, 362, 371, 372, 373, 374, 375, 376,
-    406, 407, 427, 428, 443, 444, 445, 447, 448, 449, 450, 459, 460, 470, 471, 475, 478,
-    498, 499, 500, 504, 505, 511, 512, 513, 514, 515, 516, 529, 530, 531, 543, 544, 545, 551, 552, 553, 559, 560, 568, 569, 582, 583, 584, 587, 602, 603, 604, 607, 608, 609, 618,
-    650, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 663, 664, 665, 666, 667, 668, 669, 670, 671, 672, 673, 674, 675, 676, 677, 678, 679, 680, 681, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719,
-    780, 870
+    152,
+    153,
+    154,
+    158,
+    159,
+    160,
+    167,
+    168,
+    172,
+    173,
+    179,
+    180,
+    181,
+    196,
+    197,
+    199,
+    208,
+    212,
+    214,
+    225,
+    228,
+    229,
+    246,
+    247,
+    248,
+    280,
+    281,
+    282,
+    302,
+    303,
+    304,
+    305,
+    306,
+    307,
+    308,
+    309,
+    310,
+    315,
+    318,
+    319,
+    322,
+    323,
+    333,
+    334,
+    353,
+    354,
+    359,
+    361,
+    362,
+    371,
+    372,
+    373,
+    374,
+    375,
+    376,
+    406,
+    407,
+    427,
+    428,
+    443,
+    444,
+    445,
+    447,
+    448,
+    449,
+    450,
+    459,
+    460,
+    470,
+    471,
+    475,
+    478,
+    498,
+    499,
+    500,
+    504,
+    505,
+    511,
+    512,
+    513,
+    514,
+    515,
+    516,
+    529,
+    530,
+    531,
+    543,
+    544,
+    545,
+    551,
+    552,
+    553,
+    559,
+    560,
+    568,
+    569,
+    582,
+    583,
+    584,
+    587,
+    602,
+    603,
+    604,
+    607,
+    608,
+    609,
+    618,
+    650,
+    651,
+    652,
+    653,
+    654,
+    655,
+    656,
+    657,
+    658,
+    659,
+    660,
+    661,
+    662,
+    663,
+    664,
+    665,
+    666,
+    667,
+    668,
+    669,
+    670,
+    671,
+    672,
+    673,
+    674,
+    675,
+    676,
+    677,
+    678,
+    679,
+    680,
+    681,
+    682,
+    683,
+    684,
+    685,
+    686,
+    687,
+    688,
+    689,
+    690,
+    691,
+    692,
+    693,
+    694,
+    695,
+    696,
+    697,
+    698,
+    699,
+    700,
+    701,
+    702,
+    703,
+    704,
+    705,
+    706,
+    707,
+    708,
+    709,
+    710,
+    711,
+    712,
+    713,
+    714,
+    715,
+    716,
+    717,
+    718,
+    719,
+    780,
+    870,
   ];
+  const idsToSeed = Array.from(new Set(rawIds)).sort((a, b) => a - b);
   for (const i of idsToSeed) {
     try {
       console.log(`Fetching Pokemon #${i}...`);
@@ -692,34 +877,64 @@ async function main() {
       pokemonId: 154,
       name: "Meganium-Mega",
       types: ["grass", "fairy"],
-      sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png",
-      shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/154.png",
+      sprite:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png",
+      shinySprite:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/154.png",
       category: "Mega Form",
-      description: "Upon Mega Evolution, Meganium's flower petals release a powerful scent that calms fighting spirits and fills spectators with immense joy.",
-      stats: { hp: 80, attack: 92, defense: 110, specialAttack: 118, specialDefense: 135, speed: 90 }
+      description:
+        "Upon Mega Evolution, Meganium's flower petals release a powerful scent that calms fighting spirits and fills spectators with immense joy.",
+      stats: {
+        hp: 80,
+        attack: 92,
+        defense: 110,
+        specialAttack: 118,
+        specialDefense: 135,
+        speed: 90,
+      },
     },
     {
       id: 10500,
       pokemonId: 500,
       name: "Emboar-Mega",
       types: ["fire", "fighting"],
-      sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png",
-      shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png",
+      sprite:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png",
+      shinySprite:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/500.png",
       category: "Mega Form",
-      description: "Enwrapped in explosive columns of pure flame, Mega Emboar utilizes unmatched physical strength to deliver devastating blazes to any challenger.",
-      stats: { hp: 110, attack: 158, defense: 75, specialAttack: 135, specialDefense: 75, speed: 75 }
+      description:
+        "Enwrapped in explosive columns of pure flame, Mega Emboar utilizes unmatched physical strength to deliver devastating blazes to any challenger.",
+      stats: {
+        hp: 110,
+        attack: 158,
+        defense: 75,
+        specialAttack: 135,
+        specialDefense: 75,
+        speed: 75,
+      },
     },
     {
       id: 10160,
       pokemonId: 160,
       name: "Feraligatr-Mega",
       types: ["water", "dark"],
-      sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png",
-      shinySprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/160.png",
+      sprite:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png",
+      shinySprite:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/160.png",
       category: "Mega Form",
-      description: "Harnessing the dark currents of underwater trenches, Mega Feraligatr tears through opponents with jaw power capable of crushing steel.",
-      stats: { hp: 85, attack: 140, defense: 110, specialAttack: 89, specialDefense: 93, speed: 113 }
-    }
+      description:
+        "Harnessing the dark currents of underwater trenches, Mega Feraligatr tears through opponents with jaw power capable of crushing steel.",
+      stats: {
+        hp: 85,
+        attack: 140,
+        defense: 110,
+        specialAttack: 89,
+        specialDefense: 93,
+        speed: 113,
+      },
+    },
   ];
 
   for (const m of customMegas) {
@@ -747,9 +962,9 @@ async function main() {
           set: [],
           connectOrCreate: m.types.map((t: string) => ({
             where: { name: t },
-            create: { name: t }
-          }))
-        }
+            create: { name: t },
+          })),
+        },
       },
       create: {
         pokedexNumber: m.id,
@@ -771,10 +986,10 @@ async function main() {
         types: {
           connectOrCreate: m.types.map((t: string) => ({
             where: { name: t },
-            create: { name: t }
-          }))
-        }
-      }
+            create: { name: t },
+          })),
+        },
+      },
     });
 
     // 2. Seed into PokemonVariety relation table
@@ -797,54 +1012,60 @@ async function main() {
         isMega: true,
         isAlternative: false,
         types: m.types,
-      }
+      },
     });
   }
 
   // Step 5: Seed custom DexEntry mappings for Legends: Z-A (kalos-central)
   console.log("Seeding custom Kalos Central Dex entries for Legends: Z-A...");
   const zaRegionalIndexes: Record<number, number> = {
-    152: 1,  // Chikorita
-    153: 2,  // Bayleef
-    154: 3,  // Meganium
-    498: 4,  // Tepig
-    499: 5,  // Pignite
-    500: 6,  // Emboar
-    158: 7,  // Totodile
-    159: 8,  // Croconaw
-    160: 9,  // Feraligatr
-    1: 10,   // Bulbasaur
-    2: 11,   // Ivysaur
-    3: 12,   // Venusaur
-    4: 13,   // Charmander
-    5: 14,   // Charmeleon
-    6: 15,   // Charizard
-    7: 16,   // Squirtle
-    8: 17,   // Wartortle
-    9: 18,   // Blastoise
-    25: 19,  // Pikachu
-    26: 20,  // Raichu
+    152: 1, // Chikorita
+    153: 2, // Bayleef
+    154: 3, // Meganium
+    498: 4, // Tepig
+    499: 5, // Pignite
+    500: 6, // Emboar
+    158: 7, // Totodile
+    159: 8, // Croconaw
+    160: 9, // Feraligatr
+    1: 10, // Bulbasaur
+    2: 11, // Ivysaur
+    3: 12, // Venusaur
+    4: 13, // Charmander
+    5: 14, // Charmeleon
+    6: 15, // Charizard
+    7: 16, // Squirtle
+    8: 17, // Wartortle
+    9: 18, // Blastoise
+    25: 19, // Pikachu
+    26: 20, // Raichu
     658: 21, // Greninja
-    718: 22  // Zygarde
+    718: 22, // Zygarde
   };
 
-  for (const [pokedexNumStr, entryNumber] of Object.entries(zaRegionalIndexes)) {
+  for (const [pokedexNumStr, entryNumber] of Object.entries(
+    zaRegionalIndexes,
+  )) {
     const pokedexNumber = parseInt(pokedexNumStr, 10);
     const dbPoke = await prisma.pokemon.findUnique({
-      where: { pokedexNumber }
+      where: { pokedexNumber },
     });
 
     if (dbPoke) {
       // Add 'legends-za' to gameVersions and 'kalos-central' to regionalDexes if not already present
-      const updatedGameVersions = Array.from(new Set([...dbPoke.gameVersions, "legends-za"]));
-      const updatedRegionalDexes = Array.from(new Set([...dbPoke.regionalDexes, "kalos-central"]));
+      const updatedGameVersions = Array.from(
+        new Set([...dbPoke.gameVersions, "legends-za"]),
+      );
+      const updatedRegionalDexes = Array.from(
+        new Set([...dbPoke.regionalDexes, "kalos-central"]),
+      );
 
       await prisma.pokemon.update({
         where: { id: dbPoke.id },
         data: {
           gameVersions: updatedGameVersions,
-          regionalDexes: updatedRegionalDexes
-        }
+          regionalDexes: updatedRegionalDexes,
+        },
       });
 
       // Upsert DexEntry
@@ -852,19 +1073,21 @@ async function main() {
         where: {
           pokemonId_regionName: {
             pokemonId: dbPoke.id,
-            regionName: "kalos-central"
-          }
+            regionName: "kalos-central",
+          },
         },
         update: {
-          entryNumber: entryNumber
+          entryNumber: entryNumber,
         },
         create: {
           pokemonId: dbPoke.id,
           regionName: "kalos-central",
-          entryNumber: entryNumber
-        }
+          entryNumber: entryNumber,
+        },
       });
-      console.log(`Mapped Z-A Dex Entry: #${entryNumber} for Pokemon #${pokedexNumber}`);
+      console.log(
+        `Mapped Z-A Dex Entry: #${entryNumber} for Pokemon #${pokedexNumber}`,
+      );
     }
   }
 

@@ -1,4 +1,4 @@
-import { StrictMode, useState, useMemo, createContext, useContext } from 'react';
+import { StrictMode, useState, useMemo, createContext, useContext, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { MyPokedexProvider } from './lib/MyPokedexContext';
@@ -9,7 +9,7 @@ import './index.css';
 
 // ─── Apollo Client ────────────────────────────────────────
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
@@ -82,6 +82,12 @@ function buildTheme(mode: 'light' | 'dark') {
 // ─── Root ──────────────────────────────────────────────────
 function Root() {
   const [mode, setMode] = useState<'light' | 'dark'>('dark');
+
+  // Sync mode with HTML class for Tailwind dark mode
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', mode === 'dark');
+  }, [mode]);
+
   const colorMode = useMemo(() => ({
     toggleColorMode: () => setMode(prev => prev === 'dark' ? 'light' : 'dark'),
   }), []);

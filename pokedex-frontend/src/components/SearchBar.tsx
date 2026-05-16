@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Box, TextField, InputAdornment, MenuItem, Select,
-  FormControl, InputLabel, SelectChangeEvent, Stack, useTheme
-} from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search } from 'lucide-react';
+import { InputField } from './common/InputField';
 
 interface SearchBarProps {
   value: string;
@@ -33,74 +30,52 @@ const GENERATIONS = [
 ];
 
 export default function SearchBar({ value, onChange, typeValue, onTypeChange, genValue, onGenChange }: SearchBarProps) {
-  const theme = useTheme();
-
-  const selectSx = {
-    borderRadius: 3,
-    '& .MuiOutlinedInput-root': { borderRadius: 3 },
-  };
-
-  const handleGenChange = (e: SelectChangeEvent<number | string>) => {
+  const handleGenChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     onGenChange?.(val === 'all' ? null : Number(val));
   };
 
-  return (
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      spacing={1.5}
-      sx={{
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
-      {/* Search text */}
-      <TextField
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder="Search by name or #..."
-        size="small"
-        fullWidth
-        slotProps={{
-          input: {
-            startAdornment: <InputAdornment position="start"><Search sx={{ color: 'text.disabled', fontSize: 20 }} /></InputAdornment>,
-            sx: { borderRadius: 3 },
-          }
-        }}
-        sx={{ flex: { xs: 'none', sm: 2 }, minWidth: { xs: '100%', sm: 160 } }}
-      />
+  const selectClasses = "flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100";
 
-      {/* Filters Container */}
-      <Stack direction="row" spacing={1.5} sx={{ flex: { xs: 'none', sm: 3 }, width: '100%' }}>
-        {/* Type filter */}
-        <FormControl size="small" sx={{ ...selectSx, flex: 1, minWidth: 0 }}>
-          <InputLabel id="type-select-label">Type</InputLabel>
-          <Select
-            labelId="type-select-label"
+  return (
+    <div className="flex flex-col sm:flex-row gap-3 w-full items-center">
+      <div className="w-full sm:flex-2 sm:min-w-[160px]">
+        <InputField
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          placeholder="Search by name or #..."
+          icon={<Search className="w-5 h-5" />}
+        />
+      </div>
+
+      <div className="flex flex-row gap-3 w-full sm:flex-3">
+        <div className="w-full flex-1 min-w-0">
+          <select
             value={typeValue}
             onChange={e => onTypeChange(e.target.value)}
-            label="Type"
-            sx={{ borderRadius: 3 }}
+            className={selectClasses}
+            aria-label="Filter by Type"
           >
-            <MenuItem value=""><em>All Types</em></MenuItem>
-            {POKEMON_TYPES.map(t => <MenuItem key={t} value={t.toLowerCase()}>{t}</MenuItem>)}
-          </Select>
-        </FormControl>
+            <option value="">All Types</option>
+            {POKEMON_TYPES.map(t => (
+              <option key={t} value={t.toLowerCase()}>{t}</option>
+            ))}
+          </select>
+        </div>
 
-        {/* Generation filter */}
-        <FormControl size="small" sx={{ ...selectSx, flex: 1, minWidth: 0 }}>
-          <InputLabel id="gen-select-label">Generation</InputLabel>
-          <Select
-            labelId="gen-select-label"
+        <div className="w-full flex-1 min-w-0">
+          <select
             value={genValue ?? 'all'}
             onChange={handleGenChange}
-            label="Generation"
-            sx={{ borderRadius: 3 }}
+            className={selectClasses}
+            aria-label="Filter by Generation"
           >
-            {GENERATIONS.map(g => <MenuItem key={g.value} value={g.value}>{g.label}</MenuItem>)}
-          </Select>
-        </FormControl>
-      </Stack>
-    </Stack>
+            {GENERATIONS.map(g => (
+              <option key={g.value} value={g.value}>{g.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </div>
   );
 }
