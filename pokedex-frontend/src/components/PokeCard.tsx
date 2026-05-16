@@ -63,10 +63,12 @@ export default function PokeCard({
           "relative h-full overflow-visible cursor-pointer group flex flex-col items-center p-4 pt-6 transition-all",
           isSelectedForCompare ? "ring-4 ring-blue-500 shadow-lg" : "",
           isMega ? "border-pink-500/50 shadow-pink-500/20" : "",
-          isCompareMode && !isSelectedForCompare ? "opacity-55 hover:opacity-100" : ""
+          isCompareMode && !isSelectedForCompare ? "opacity-55 hover:opacity-100" : "",
+          // Light/dark adaptive card base
+          "bg-white/80 dark:bg-[#111827]/80"
         )}
         style={{
-          background: `linear-gradient(145deg, ${primaryColor}15 0%, rgba(17, 24, 39, 0.8) 80%)`,
+          background: `linear-gradient(145deg, ${primaryColor}20 0%, ${primaryColor}05 60%, transparent 100%)`,
           borderColor: isSelectedForCompare ? undefined : `${primaryColor}40`
         }}
       >
@@ -80,7 +82,7 @@ export default function PokeCard({
             "absolute top-3 right-3 z-10 p-1.5 rounded-full backdrop-blur-md transition-colors",
             isFav 
               ? "text-red-500 bg-red-500/10 hover:bg-red-500/20" 
-              : "text-gray-400 bg-gray-800/50 hover:text-red-400 hover:bg-gray-800"
+              : "text-gray-400 bg-black/10 dark:bg-gray-800/50 hover:text-red-400 hover:bg-black/20 dark:hover:bg-gray-800"
           )}
           title={isFav ? "Remove from My Pokédex" : "Add to My Pokédex"}
         >

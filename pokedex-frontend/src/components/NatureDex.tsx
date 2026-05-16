@@ -1,239 +1,268 @@
 import React, { useState } from 'react';
-import {
-  Container, Box, Typography, Card, CardContent, TextField,
-  InputAdornment, Grid, alpha, useTheme, Chip, ToggleButton, ToggleButtonGroup
-} from '@mui/material';
-import {
-  Search, KeyboardDoubleArrowUp, KeyboardDoubleArrowDown,
-  Thermostat, HelpOutlined, EmojiNature
-} from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '../lib/utils';
 
 interface NatureItem {
   name: string;
-  increasedStat: string | null;
-  decreasedStat: string | null;
-  likesFlavor: string | null;
-  dislikesFlavor: string | null;
-  bestFor: Array<{ id: number; name: string }>;  // Gợi ý Pokémon phổ biến dùng Nature này
-  description: string;
+  up: string | null;
+  down: string | null;
+  likes: string | null;
+  hates: string | null;
+  desc: string;
+  bestFor: Array<{ id: number; name: string }>;
 }
 
-const NATURES_DATA: NatureItem[] = [
-  { name: 'Hardy',   increasedStat: null,          decreasedStat: null,          likesFlavor: null,    dislikesFlavor: null,    bestFor: [], description: 'Neutral nature. No stat changes.' },
-  { name: 'Lonely',  increasedStat: 'Attack',       decreasedStat: 'Defense',     likesFlavor: 'Spicy', dislikesFlavor: 'Sour',   bestFor: [{ id: 448, name: 'Lucario' }, { id: 445, name: 'Garchomp' }], description: 'Boosts physical power at the cost of bulk.' },
-  { name: 'Brave',   increasedStat: 'Attack',       decreasedStat: 'Speed',       likesFlavor: 'Spicy', dislikesFlavor: 'Sweet',  bestFor: [{ id: 445, name: 'Garchomp' }, { id: 376, name: 'Metagross' }], description: 'Best for Trick Room sweepers. Max power, ignores Speed.' },
-  { name: 'Adamant', increasedStat: 'Attack',       decreasedStat: 'Sp. Attack',  likesFlavor: 'Spicy', dislikesFlavor: 'Dry',    bestFor: [{ id: 445, name: 'Garchomp' }, { id: 392, name: 'Infernape' }, { id: 448, name: 'Lucario' }], description: 'The best physical attacker nature. No wasted stats.' },
-  { name: 'Naughty', increasedStat: 'Attack',       decreasedStat: 'Sp. Defense', likesFlavor: 'Spicy', dislikesFlavor: 'Bitter', bestFor: [{ id: 260, name: 'Swampert' }], description: 'Physical attacker with lower special bulk.' },
-  { name: 'Bold',    increasedStat: 'Defense',      decreasedStat: 'Attack',      likesFlavor: 'Sour',  dislikesFlavor: 'Spicy',  bestFor: [{ id: 113, name: 'Chansey' }, { id: 242, name: 'Blissey' }, { id: 121, name: 'Starmie' }], description: 'Great for physical walls. Trades attack for bulk.' },
-  { name: 'Docile',  increasedStat: null,          decreasedStat: null,           likesFlavor: null,    dislikesFlavor: null,    bestFor: [], description: 'Neutral nature. No stat changes.' },
-  { name: 'Relaxed', increasedStat: 'Defense',      decreasedStat: 'Speed',       likesFlavor: 'Sour',  dislikesFlavor: 'Sweet',  bestFor: [{ id: 376, name: 'Metagross' }, { id: 91, name: 'Cloyster' }], description: 'Tank in Trick Room. Max defense, slow but sturdy.' },
-  { name: 'Impish',  increasedStat: 'Defense',      decreasedStat: 'Sp. Attack',  likesFlavor: 'Sour',  dislikesFlavor: 'Dry',    bestFor: [{ id: 232, name: 'Donphan' }, { id: 212, name: 'Scizor' }], description: 'Physical wall that gives up special attacking power.' },
-  { name: 'Lax',     increasedStat: 'Defense',      decreasedStat: 'Sp. Defense', likesFlavor: 'Sour',  dislikesFlavor: 'Bitter', bestFor: [], description: 'Situational. Higher physical bulk, lower special bulk.' },
-  { name: 'Timid',   increasedStat: 'Speed',        decreasedStat: 'Attack',      likesFlavor: 'Sweet', dislikesFlavor: 'Spicy',  bestFor: [{ id: 6, name: 'Charizard' }, { id: 282, name: 'Gardevoir' }, { id: 25, name: 'Pikachu' }], description: 'Best for special attackers who need speed. Classic competitive choice.' },
-  { name: 'Hasty',   increasedStat: 'Speed',        decreasedStat: 'Defense',     likesFlavor: 'Sweet', dislikesFlavor: 'Sour',   bestFor: [{ id: 392, name: 'Infernape' }, { id: 448, name: 'Lucario' }], description: 'Fast mixed attacker. Trades defense for speed.' },
-  { name: 'Serious', increasedStat: null,           decreasedStat: null,          likesFlavor: null,    dislikesFlavor: null,    bestFor: [], description: 'Neutral nature. No stat changes.' },
-  { name: 'Jolly',   increasedStat: 'Speed',        decreasedStat: 'Sp. Attack',  likesFlavor: 'Sweet', dislikesFlavor: 'Dry',    bestFor: [{ id: 445, name: 'Garchomp' }, { id: 149, name: 'Dragonite' }, { id: 143, name: 'Snorlax' }], description: 'Top-tier for physical sweepers who need speed. No special attack loss.' },
-  { name: 'Naive',   increasedStat: 'Speed',        decreasedStat: 'Sp. Defense', likesFlavor: 'Sweet', dislikesFlavor: 'Bitter', bestFor: [{ id: 6, name: 'Charizard' }], description: 'Fast mixed sweeper, weaker to special hits.' },
-  { name: 'Modest',  increasedStat: 'Sp. Attack',   decreasedStat: 'Attack',      likesFlavor: 'Dry',   dislikesFlavor: 'Spicy',  bestFor: [{ id: 6, name: 'Charizard' }, { id: 135, name: 'Jolteon' }, { id: 121, name: 'Starmie' }], description: 'Best special attacker nature. Maximizes SpAtk, no drawback on moves used.' },
-  { name: 'Mild',    increasedStat: 'Sp. Attack',   decreasedStat: 'Defense',     likesFlavor: 'Dry',   dislikesFlavor: 'Sour',   bestFor: [{ id: 149, name: 'Dragonite' }], description: 'Mixed special attacker that sacrifices physical bulk.' },
-  { name: 'Quiet',   increasedStat: 'Sp. Attack',   decreasedStat: 'Speed',       likesFlavor: 'Dry',   dislikesFlavor: 'Sweet',  bestFor: [{ id: 379, name: 'Registeel' }, { id: 483, name: 'Dialga' }], description: 'Special attacker for Trick Room teams. Slow but hits extremely hard.' },
-  { name: 'Bashful', increasedStat: null,           decreasedStat: null,          likesFlavor: null,    dislikesFlavor: null,    bestFor: [], description: 'Neutral nature. No stat changes.' },
-  { name: 'Rash',    increasedStat: 'Sp. Attack',   decreasedStat: 'Sp. Defense', likesFlavor: 'Dry',   dislikesFlavor: 'Bitter', bestFor: [{ id: 196, name: 'Espeon' }], description: 'High special attack, weaker to special moves.' },
-  { name: 'Calm',    increasedStat: 'Sp. Defense',  decreasedStat: 'Attack',      likesFlavor: 'Bitter',dislikesFlavor: 'Spicy',  bestFor: [{ id: 113, name: 'Chansey' }, { id: 242, name: 'Blissey' }, { id: 245, name: 'Suicune' }], description: 'Classic special wall nature. Pairs perfectly with Blissey.' },
-  { name: 'Gentle',  increasedStat: 'Sp. Defense',  decreasedStat: 'Defense',     likesFlavor: 'Bitter',dislikesFlavor: 'Sour',   bestFor: [{ id: 202, name: 'Wobbuffet' }], description: 'Higher special bulk, weaker to physical hits.' },
-  { name: 'Sassy',   increasedStat: 'Sp. Defense',  decreasedStat: 'Speed',       likesFlavor: 'Bitter',dislikesFlavor: 'Sweet',  bestFor: [{ id: 292, name: 'Shedinja' }], description: 'Bulky special wall for Trick Room. Slow and tanky.' },
-  { name: 'Careful', increasedStat: 'Sp. Defense',  decreasedStat: 'Sp. Attack',  likesFlavor: 'Bitter',dislikesFlavor: 'Dry',    bestFor: [{ id: 143, name: 'Snorlax' }, { id: 462, name: 'Magnezone' }], description: 'Top special wall that gives up special attacking power.' },
-  { name: 'Quirky',  increasedStat: null,           decreasedStat: null,          likesFlavor: null,    dislikesFlavor: null,    bestFor: [], description: 'Neutral nature. No stat changes.' },
-];
-
-const STAT_FILTER_OPTIONS = ['All', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed', 'Neutral'];
-
-const STAT_COLORS: Record<string, string> = {
-  'Attack': '#ef4444',
-  'Defense': '#3b82f6',
-  'Sp. Attack': '#a855f7',
-  'Sp. Defense': '#22c55e',
-  'Speed': '#f59e0b',
+const STAT_STYLE: Record<string, { color: string; bg: string; label: string }> = {
+  'Attack':      { color: '#ef4444', bg: 'rgba(239,68,68,0.12)',    label: 'ATK' },
+  'Defense':     { color: '#3b82f6', bg: 'rgba(59,130,246,0.12)',   label: 'DEF' },
+  'Sp. Attack':  { color: '#a855f7', bg: 'rgba(168,85,247,0.12)',   label: 'SPA' },
+  'Sp. Defense': { color: '#22c55e', bg: 'rgba(34,197,94,0.12)',    label: 'SPD' },
+  'Speed':       { color: '#f59e0b', bg: 'rgba(245,158,11,0.12)',   label: 'SPE' },
 };
 
-export default function NatureDex() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statFilter, setStatFilter] = useState('All');
+const FLAVOR_EMOJI: Record<string, string> = {
+  Spicy: '🌶️', Sour: '🍋', Sweet: '🍬', Dry: '☕', Bitter: '🍵',
+};
 
-  const filteredNatures = NATURES_DATA.filter((nature) => {
-    const matchesSearch = nature.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (nature.increasedStat?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false);
-    
-    if (!matchesSearch) return false;
-    if (statFilter === 'All') return true;
-    if (statFilter === 'Neutral') return nature.increasedStat === null;
-    return nature.increasedStat === statFilter;
+const NATURES: NatureItem[] = [
+  { name: 'Hardy',   up: null,          down: null,          likes: null,    hates: null,    desc: 'No stat change.',                             bestFor: [] },
+  { name: 'Lonely',  up: 'Attack',      down: 'Defense',     likes: 'Spicy', hates: 'Sour',  desc: 'Physical power, less bulk.',                  bestFor: [{ id: 448, name: 'Lucario' }] },
+  { name: 'Brave',   up: 'Attack',      down: 'Speed',       likes: 'Spicy', hates: 'Sweet', desc: 'Trick Room physical powerhouse.',              bestFor: [{ id: 376, name: 'Metagross' }] },
+  { name: 'Adamant', up: 'Attack',      down: 'Sp. Attack',  likes: 'Spicy', hates: 'Dry',   desc: 'Best pure physical attacker.',                bestFor: [{ id: 445, name: 'Garchomp' }, { id: 392, name: 'Infernape' }] },
+  { name: 'Naughty', up: 'Attack',      down: 'Sp. Defense', likes: 'Spicy', hates: 'Bitter',desc: 'Physical glass cannon.',                       bestFor: [{ id: 260, name: 'Swampert' }] },
+  { name: 'Bold',    up: 'Defense',     down: 'Attack',      likes: 'Sour',  hates: 'Spicy', desc: 'Classic physical wall.',                      bestFor: [{ id: 242, name: 'Blissey' }, { id: 121, name: 'Starmie' }] },
+  { name: 'Docile',  up: null,          down: null,          likes: null,    hates: null,    desc: 'No stat change.',                             bestFor: [] },
+  { name: 'Relaxed', up: 'Defense',     down: 'Speed',       likes: 'Sour',  hates: 'Sweet', desc: 'Trick Room tank.',                            bestFor: [{ id: 376, name: 'Metagross' }, { id: 91, name: 'Cloyster' }] },
+  { name: 'Impish',  up: 'Defense',     down: 'Sp. Attack',  likes: 'Sour',  hates: 'Dry',   desc: 'Physical wall, no special loss.',             bestFor: [{ id: 212, name: 'Scizor' }] },
+  { name: 'Lax',     up: 'Defense',     down: 'Sp. Defense', likes: 'Sour',  hates: 'Bitter',desc: 'Physical bulk, weaker sp. def.',              bestFor: [] },
+  { name: 'Timid',   up: 'Speed',       down: 'Attack',      likes: 'Sweet', hates: 'Spicy', desc: 'Best for special speedsters.',                bestFor: [{ id: 6, name: 'Charizard' }, { id: 282, name: 'Gardevoir' }] },
+  { name: 'Hasty',   up: 'Speed',       down: 'Defense',     likes: 'Sweet', hates: 'Sour',  desc: 'Fast mixed attacker.',                        bestFor: [{ id: 392, name: 'Infernape' }] },
+  { name: 'Serious', up: null,          down: null,          likes: null,    hates: null,    desc: 'No stat change.',                             bestFor: [] },
+  { name: 'Jolly',   up: 'Speed',       down: 'Sp. Attack',  likes: 'Sweet', hates: 'Dry',   desc: 'Best physical speedster.',                    bestFor: [{ id: 445, name: 'Garchomp' }, { id: 149, name: 'Dragonite' }] },
+  { name: 'Naive',   up: 'Speed',       down: 'Sp. Defense', likes: 'Sweet', hates: 'Bitter',desc: 'Fast mixed, lower sp. def.',                  bestFor: [{ id: 6, name: 'Charizard' }] },
+  { name: 'Modest',  up: 'Sp. Attack',  down: 'Attack',      likes: 'Dry',   hates: 'Spicy', desc: 'Best pure special attacker.',                 bestFor: [{ id: 135, name: 'Jolteon' }, { id: 121, name: 'Starmie' }] },
+  { name: 'Mild',    up: 'Sp. Attack',  down: 'Defense',     likes: 'Dry',   hates: 'Sour',  desc: 'Mixed special, less physical bulk.',          bestFor: [{ id: 149, name: 'Dragonite' }] },
+  { name: 'Quiet',   up: 'Sp. Attack',  down: 'Speed',       likes: 'Dry',   hates: 'Sweet', desc: 'Trick Room special nuke.',                    bestFor: [{ id: 483, name: 'Dialga' }] },
+  { name: 'Bashful', up: null,          down: null,          likes: null,    hates: null,    desc: 'No stat change.',                             bestFor: [] },
+  { name: 'Rash',    up: 'Sp. Attack',  down: 'Sp. Defense', likes: 'Dry',   hates: 'Bitter',desc: 'Special glass cannon.',                       bestFor: [{ id: 196, name: 'Espeon' }] },
+  { name: 'Calm',    up: 'Sp. Defense', down: 'Attack',      likes: 'Bitter',hates: 'Spicy', desc: 'Best special wall.',                          bestFor: [{ id: 242, name: 'Blissey' }, { id: 245, name: 'Suicune' }] },
+  { name: 'Gentle',  up: 'Sp. Defense', down: 'Defense',     likes: 'Bitter',hates: 'Sour',  desc: 'Sp. bulk, weaker physical.',                  bestFor: [{ id: 202, name: 'Wobbuffet' }] },
+  { name: 'Sassy',   up: 'Sp. Defense', down: 'Speed',       likes: 'Bitter',hates: 'Sweet', desc: 'Trick Room sp. wall.',                        bestFor: [] },
+  { name: 'Careful', up: 'Sp. Defense', down: 'Sp. Attack',  likes: 'Bitter',hates: 'Dry',   desc: 'Top special wall, less sp. atk.',             bestFor: [{ id: 143, name: 'Snorlax' }] },
+  { name: 'Quirky',  up: null,          down: null,          likes: null,    hates: null,    desc: 'No stat change.',                             bestFor: [] },
+];
+
+const STAT_FILTERS = ['All', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed', 'Neutral'] as const;
+type StatFilter = typeof STAT_FILTERS[number];
+
+export default function NatureDex() {
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<StatFilter>('All');
+
+  const filtered = NATURES.filter(n => {
+    const matchSearch = n.name.toLowerCase().includes(search.toLowerCase()) ||
+      (n.up?.toLowerCase().includes(search.toLowerCase()) ?? false);
+    if (!matchSearch) return false;
+    if (filter === 'All') return true;
+    if (filter === 'Neutral') return n.up === null;
+    return n.up === filter;
   });
 
   return (
-    <Container maxWidth="xl" sx={{ pt: 4, pb: 10, px: { xs: 2, sm: 3 } }}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+      {/* ── Header ── */}
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white uppercase mb-2">
+          🌸 Nature Dex
+        </h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-md mx-auto">
+          All 25 natures — stat multipliers, flavor preferences, and top Pokémon picks.
+        </p>
+      </div>
 
-      {/* Header */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
-        <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: '-1px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, mb: 1 }}>
-          <EmojiNature sx={{ color: '#ec4899', fontSize: 38 }} />
-          Nature Dex
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, maxWidth: 520, mx: 'auto', mb: 3 }}>
-          All 25 Natures with stat multipliers, flavor preferences, and top Pokémon that benefit from each.
-        </Typography>
-
+      {/* ── Controls ── */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center">
         {/* Search */}
-        <Box sx={{ maxWidth: 480, mx: 'auto', mb: 3 }}>
-          <TextField
-            fullWidth value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search nature or stat (e.g. Jolly, Speed)..."
-            variant="outlined"
-            slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search sx={{ color: 'text.disabled' }} /></InputAdornment> } }}
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '20px', bgcolor: isDark ? 'rgba(15,23,42,0.6)' : 'rgba(241,245,249,0.8)', backdropFilter: 'blur(10px)', '& fieldset': { borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)' }, '&.Mui-focused fieldset': { borderColor: '#ec4899' } }, '& .MuiOutlinedInput-input': { py: 1.5, fontWeight: 600, fontSize: '14px' } }}
+        <div className="relative flex-1 w-full">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search nature or stat..."
+            className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition backdrop-blur-sm"
           />
-        </Box>
+        </div>
 
-        {/* Stat Filter */}
-        <ToggleButtonGroup
-          value={statFilter} exclusive
-          onChange={(_, v) => { if (v !== null) setStatFilter(v); }}
-          size="small"
-          sx={{ flexWrap: 'wrap', justifyContent: 'center', gap: 0.5, mb: 1, '& .MuiToggleButton-root': { border: '1px solid', borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)', borderRadius: '20px !important', px: 2, py: 0.5, fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', '&.Mui-selected': { color: '#fff', borderColor: 'transparent' } } }}
-        >
-          {STAT_FILTER_OPTIONS.map((opt) => (
-            <ToggleButton
-              key={opt} value={opt}
-              sx={{ '&.Mui-selected': { bgcolor: opt === 'Neutral' ? '#64748b' : (STAT_COLORS[opt] || '#ec4899') + ' !important' } }}
-            >
-              {opt}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
+        {/* Stat filter pills */}
+        <div className="flex flex-wrap gap-2 justify-center">
+          {STAT_FILTERS.map(f => {
+            const style = f !== 'All' && f !== 'Neutral' ? STAT_STYLE[f] : null;
+            const isActive = filter === f;
+            return (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={cn(
+                  "px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all border",
+                  isActive
+                    ? "text-white border-transparent shadow-lg"
+                    : "text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 bg-transparent"
+                )}
+                style={isActive ? {
+                  backgroundColor: style?.color ?? (f === 'Neutral' ? '#64748b' : '#6366f1'),
+                  boxShadow: `0 4px 14px ${style?.color ?? '#6366f1'}44`,
+                } : {}}
+              >
+                {f === 'Neutral' ? '— Neutral' : (style ? `${style.label} ↑` : f)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-        <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700 }}>
-          {filteredNatures.length} / {NATURES_DATA.length} natures
-        </Typography>
-      </Box>
+      {/* ── Count ── */}
+      <p className="text-center text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6">
+        {filtered.length} / {NATURES.length} natures
+      </p>
 
-      {/* Grid */}
-      <Grid container spacing={2.5}>
+      {/* ── Grid ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <AnimatePresence mode="popLayout">
-          {filteredNatures.map((item, index) => {
-            const isNeutral = item.increasedStat === null;
-            const upColor = STAT_COLORS[item.increasedStat || ''] || '#64748b';
-            const downColor = STAT_COLORS[item.decreasedStat || ''] || '#64748b';
+          {filtered.map((nature, i) => {
+            const isNeutral = nature.up === null;
+            const upStyle = nature.up ? STAT_STYLE[nature.up] : null;
+            const downStyle = nature.down ? STAT_STYLE[nature.down] : null;
 
             return (
-              <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.name}>
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.25, delay: Math.min(index * 0.02, 0.3) }}
-                  whileHover={{ y: -4, scale: 1.01 }}
+              <motion.div
+                key={nature.name}
+                layout
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.3) }}
+                whileHover={{ y: -4 }}
+              >
+                <div className={cn(
+                  "h-full flex flex-col gap-3 p-4 rounded-3xl border transition-all duration-300",
+                  "bg-white dark:bg-slate-900/50 backdrop-blur-sm",
+                  isNeutral
+                    ? "border-slate-200 dark:border-white/5"
+                    : "border-slate-200 dark:border-white/8 hover:border-opacity-50",
+                  !isNeutral && upStyle && `hover:shadow-lg`
+                )}
+                style={!isNeutral && upStyle ? {
+                  borderColor: `${upStyle.color}30`,
+                  boxShadow: undefined,
+                } : {}}
+                onMouseEnter={e => {
+                  if (!isNeutral && upStyle) {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 24px ${upStyle.color}20`;
+                  }
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = '';
+                }}
                 >
-                  <Card elevation={0} sx={{
-                    height: '100%', borderRadius: '20px',
-                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                    background: isDark
-                      ? 'linear-gradient(135deg, rgba(30,41,59,0.4) 0%, rgba(15,23,42,0.6) 100%)'
-                      : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                    transition: 'border-color 0.2s, box-shadow 0.2s',
-                    '&:hover': {
-                      borderColor: isNeutral ? alpha('#94a3b8', 0.4) : alpha(upColor, 0.5),
-                      boxShadow: isNeutral ? 'none' : `0 8px 24px ${alpha(upColor, 0.12)}`
-                    }
-                  }}>
-                    <CardContent sx={{ p: 2.5, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                  {/* Name */}
+                  <div className="text-center">
+                    <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight">
+                      {nature.name}
+                    </h3>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5 leading-tight">
+                      {nature.desc}
+                    </p>
+                  </div>
 
-                      {/* Name */}
-                      <Typography variant="h6" align="center" sx={{ fontWeight: 900, letterSpacing: '-0.5px', color: 'text.primary' }}>
-                        {item.name}
-                      </Typography>
+                  {/* Stat bars */}
+                  {isNeutral ? (
+                    <div className="py-2 rounded-2xl bg-slate-100 dark:bg-white/5 text-center">
+                      <span className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                        — Neutral —
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex gap-1.5">
+                      {/* UP */}
+                      <div
+                        className="flex-1 flex flex-col items-center justify-center py-2 rounded-2xl gap-0.5"
+                        style={{ backgroundColor: upStyle?.bg }}
+                      >
+                        <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: upStyle?.color }}>
+                          ▲ {upStyle?.label}
+                        </span>
+                        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 truncate max-w-full px-1 text-center leading-tight">
+                          {nature.up}
+                        </span>
+                      </div>
+                      {/* DOWN */}
+                      <div
+                        className="flex-1 flex flex-col items-center justify-center py-2 rounded-2xl gap-0.5 opacity-70"
+                        style={{ backgroundColor: downStyle?.bg }}
+                      >
+                        <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: downStyle?.color }}>
+                          ▼ {downStyle?.label}
+                        </span>
+                        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 truncate max-w-full px-1 text-center leading-tight">
+                          {nature.down}
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
-                      {/* Description */}
-                      <Typography variant="caption" align="center" color="text.secondary" sx={{ fontWeight: 600, display: 'block', lineHeight: 1.4, minHeight: '2.8em' }}>
-                        {item.description}
-                      </Typography>
+                  {/* Flavor */}
+                  {!isNeutral && nature.likes && (
+                    <div className="flex gap-1.5">
+                      <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
+                        <span className="text-xs">{FLAVOR_EMOJI[nature.likes]}</span>
+                        <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-400">{nature.likes}</span>
+                      </div>
+                      <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20">
+                        <span className="text-xs">{FLAVOR_EMOJI[nature.hates!]}</span>
+                        <span className="text-[10px] font-black text-red-700 dark:text-red-400">{nature.hates}</span>
+                      </div>
+                    </div>
+                  )}
 
-                      {/* Stat bars */}
-                      <Box sx={{ display: 'flex', borderRadius: '10px', overflow: 'hidden', gap: '2px' }}>
-                        <Box sx={{
-                          flex: 1, height: 36, borderRadius: '8px',
-                          bgcolor: isNeutral ? (isDark ? '#334155' : '#e2e8f0') : alpha(upColor, 0.15),
-                          border: `1.5px solid ${isNeutral ? 'transparent' : alpha(upColor, 0.4)}`,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5
-                        }}>
-                          {!isNeutral && <KeyboardDoubleArrowUp sx={{ fontSize: 14, color: upColor }} />}
-                          <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.3px', color: isNeutral ? 'text.disabled' : upColor }}>
-                            {isNeutral ? '—' : item.increasedStat}
-                          </Typography>
-                        </Box>
-                        <Box sx={{
-                          flex: 1, height: 36, borderRadius: '8px',
-                          bgcolor: isNeutral ? (isDark ? '#334155' : '#e2e8f0') : alpha(downColor, 0.08),
-                          border: `1.5px solid ${isNeutral ? 'transparent' : alpha(downColor, 0.25)}`,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5
-                        }}>
-                          <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.3px', color: isNeutral ? 'text.disabled' : downColor }}>
-                            {isNeutral ? '—' : item.decreasedStat}
-                          </Typography>
-                          {!isNeutral && <KeyboardDoubleArrowDown sx={{ fontSize: 14, color: downColor }} />}
-                        </Box>
-                      </Box>
-
-                      {/* Flavors */}
-                      {!isNeutral && (
-                        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                          <Chip label={`♥ ${item.likesFlavor}`} size="small" sx={{ fontSize: '10px', fontWeight: 800, bgcolor: alpha('#22c55e', 0.1), color: '#22c55e', border: '1px solid', borderColor: alpha('#22c55e', 0.3) }} />
-                          <Chip label={`✕ ${item.dislikesFlavor}`} size="small" sx={{ fontSize: '10px', fontWeight: 800, bgcolor: alpha('#ef4444', 0.1), color: '#ef4444', border: '1px solid', borderColor: alpha('#ef4444', 0.3) }} />
-                        </Box>
-                      )}
-
-                      {/* Best Pokémon */}
-                      {item.bestFor.length > 0 && (
-                        <Box>
-                          <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.disabled', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', mb: 0.75, fontSize: '9px' }}>
-                            Popular on
-                          </Typography>
-                          <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
-                            {item.bestFor.map((pk) => (
-                              <Box key={pk.id} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, px: 1, py: 0.25, borderRadius: '8px', bgcolor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)', border: '1px solid', borderColor: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)' }}>
-                                <Box component="img"
-                                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pk.id}.png`}
-                                  alt={pk.name} sx={{ width: 24, height: 24, imageRendering: 'pixelated' }}
-                                />
-                                <Typography variant="caption" sx={{ fontSize: '10px', fontWeight: 800, textTransform: 'capitalize', color: 'text.secondary' }}>
-                                  {pk.name}
-                                </Typography>
-                              </Box>
-                            ))}
-                          </Box>
-                        </Box>
-                      )}
-
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </Grid>
+                  {/* Best for Pokémon */}
+                  {nature.bestFor.length > 0 && (
+                    <div>
+                      <p className="text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest mb-1.5 text-center">
+                        Popular on
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 justify-center">
+                        {nature.bestFor.map(pk => (
+                          <div key={pk.id} className="flex items-center gap-1 px-2 py-0.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/8">
+                            <img
+                              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pk.id}.png`}
+                              alt={pk.name}
+                              className="w-6 h-6 object-contain"
+                              style={{ imageRendering: 'pixelated' }}
+                            />
+                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 capitalize">
+                              {pk.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
             );
           })}
         </AnimatePresence>
+      </div>
 
-        {filteredNatures.length === 0 && (
-          <Grid size={{ xs: 12 }}>
-            <Box sx={{ textAlign: 'center', py: 10, color: 'text.disabled' }}>
-              <HelpOutlined sx={{ fontSize: 60, mb: 1.5, opacity: 0.5 }} />
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>No natures found.</Typography>
-              <Typography variant="body2">Try a different search or filter.</Typography>
-            </Box>
-          </Grid>
-        )}
-      </Grid>
-    </Container>
+      {/* Empty state */}
+      {filtered.length === 0 && (
+        <div className="text-center py-20 text-slate-400 dark:text-slate-600">
+          <div className="text-5xl mb-4">🔍</div>
+          <p className="font-black text-lg uppercase tracking-widest">No natures found</p>
+          <p className="text-sm font-medium mt-1">Try a different search or filter.</p>
+        </div>
+      )}
+    </div>
   );
 }
