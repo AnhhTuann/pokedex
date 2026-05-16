@@ -28,10 +28,10 @@ export function usePokemonList(params: PokemonListParams) {
   };
 }
 
-export function usePokemonDetail(id: number, skip: boolean = false) {
+export function usePokemonDetail(id: number | null, version?: string, skip: boolean = false) {
   const { data, loading, error, refetch } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { id },
-    skip, // Bỏ qua query nếu id không hợp lệ hoặc đang chờ
+    variables: { id, version },
+    skip: skip || !id, // Bỏ qua query nếu id không hợp lệ hoặc đang chờ
   });
 
   return {

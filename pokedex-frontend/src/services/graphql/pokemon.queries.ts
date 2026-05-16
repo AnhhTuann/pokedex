@@ -19,7 +19,7 @@ export const GET_POKEMON_LIST = gql`
 `;
 
 export const GET_POKEMON_DETAIL = gql`
-  query GetPokemonDetail($id: Int!) {
+  query GetPokemonDetail($id: Int!, $version: String) {
     pokemon(id: $id) {
       id
       name
@@ -49,6 +49,7 @@ export const GET_POKEMON_DETAIL = gql`
         multiplier
       }
       cry
+      gameVersions
       moves {
         name
         type
@@ -81,6 +82,7 @@ export const GET_POKEMON_DETAIL = gql`
         isAlternative
         speciesId
       }
+      locations(version: $version)
       speciesId
     }
   }

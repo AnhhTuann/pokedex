@@ -3,7 +3,7 @@ import { AnimatePresence } from 'motion/react';
 import { Sparkles, Heart, Search, Scale } from 'lucide-react';
 import PokeCard from './PokeCard';
 import SearchBar from './SearchBar';
-import PokeDetail from './PokeDetail';
+import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDialog';
 import CompareModal from './CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
@@ -195,7 +195,7 @@ export default function PokemonDex() {
       )}
 
       {/* Modals */}
-      <PokeDetail id={selectedId} onClose={() => setSelectedId(null)} onSelect={setSelectedId} />
+      <PokemonDetailDialog id={selectedId} onClose={() => setSelectedId(null)} onSelect={setSelectedId} />
       <CompareModal ids={compareIds} onClose={() => { setCompareIds([]); setViewMode('all'); }} />
     </div>
   );
