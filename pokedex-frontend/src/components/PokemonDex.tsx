@@ -61,6 +61,8 @@ export default function PokemonDex() {
 
   const hasMore = pokemonList.length > 0 && pokemonList.length < totalCount;
 
+  const isInitialLoad = loading && pokemonList.length === 0;
+
   const loadMore = () => {
     fetchMore({ variables: { offset: pokemonList.length } });
   };
@@ -137,7 +139,7 @@ export default function PokemonDex() {
       )}
 
       {/* Count */}
-      {!loading && !error && (
+      {!isInitialLoad && !error && (
         <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">
           {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
         </p>
@@ -153,7 +155,7 @@ export default function PokemonDex() {
       )}
 
       {/* Pokemon Grid */}
-      {loading ? (
+      {isInitialLoad ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
           {[...Array(12)].map((_, i) => (
             <div key={i} className="h-72 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse" />
@@ -180,16 +182,16 @@ export default function PokemonDex() {
         </div>
       )}
 
-      {!loading && !error && pokemonList.length === 0 && (
+      {!isInitialLoad && !error && pokemonList.length === 0 && (
         <div className="text-center py-20 text-gray-400 font-bold text-lg">
           No Pokémon found.
         </div>
       )}
 
-      {!loading && hasMore && (
+      {hasMore && (
         <div className="flex justify-center mt-12 mb-20">
-          <Button variant="outline" size="lg" onClick={loadMore} className="rounded-full px-8">
-            Load More
+          <Button variant="outline" size="lg" onClick={loadMore} isLoading={loading} className="rounded-full px-8">
+            {loading ? 'Loading...' : 'Load More'}
           </Button>
         </div>
       )}
