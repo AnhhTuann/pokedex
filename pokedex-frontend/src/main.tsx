@@ -1,21 +1,28 @@
-import { StrictMode, useState, useMemo, createContext, useContext, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { MyPokedexProvider } from './lib/MyPokedexContext';
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
-import App from './App.tsx';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css';
+import {
+  StrictMode,
+  useState,
+  useMemo,
+  createContext,
+  useContext,
+  useEffect,
+} from "react";
+import { createRoot } from "react-dom/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { MyPokedexProvider } from "./lib/MyPokedexContext";
+import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
+import "./index.css";
 
 // ─── Apollo Client ────────────────────────────────────────
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  uri: "http://localhost:3000/graphql",
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
         fields: {
           pokemonList: {
-            keyArgs: ['search', 'type', 'gen', 'ids', 'region', 'game'],
+            keyArgs: ["search", "type", "gen", "ids", "region", "game"],
             merge(existing, incoming, { args }) {
               const offset = args?.offset || 0;
               const merged = existing ? existing.results.slice(0) : [];
@@ -33,18 +40,24 @@ const client = new ApolloClient({
 
 // ─── Color Mode Context ────────────────────────────────────
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
-export function useColorMode() { return useContext(ColorModeContext); }
+export function useColorMode() {
+  return useContext(ColorModeContext);
+}
 
 // ─── MUI Theme Factory ─────────────────────────────────────
-function buildTheme(mode: 'light' | 'dark') {
+function buildTheme(mode: "light" | "dark") {
   return createTheme({
     palette: {
       mode,
-      primary: { main: '#6366f1' },
-      secondary: { main: '#ec4899' },
+      primary: { main: "#6366f1" },
+      secondary: { main: "#ec4899" },
       background: {
-        default: mode === 'dark' ? '#0f0f1a' : '#f8fafc',
-        paper:   mode === 'dark' ? '#1a1a2e' : '#ffffff',
+        default: mode === "dark" ? "#0f0f1a" : "#f8fafc",
+        paper: mode === "dark" ? "#1a1a2e" : "#ffffff",
+      },
+      text: {
+        primary: mode === "dark" ? "#f1f5f9" : "#0f172a",
+        secondary: mode === "dark" ? "#cbd5e1" : "#475569",
       },
     },
     typography: {
@@ -57,12 +70,20 @@ function buildTheme(mode: 'light' | 'dark') {
     components: {
       MuiButton: {
         styleOverrides: {
-          root: { borderRadius: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 },
+          root: {
+            borderRadius: 12,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: 1,
+          },
         },
       },
       MuiCard: {
         styleOverrides: {
-          root: { borderRadius: 24, transition: 'transform 0.2s, box-shadow 0.2s' },
+          root: {
+            borderRadius: 24,
+            transition: "transform 0.2s, box-shadow 0.2s",
+          },
         },
       },
       MuiChip: {
@@ -81,16 +102,20 @@ function buildTheme(mode: 'light' | 'dark') {
 
 // ─── Root ──────────────────────────────────────────────────
 function Root() {
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  const [mode, setMode] = useState<"light" | "dark">("dark");
 
   // Sync mode with HTML class for Tailwind dark mode
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', mode === 'dark');
+    document.documentElement.classList.toggle("dark", mode === "dark");
   }, [mode]);
 
-  const colorMode = useMemo(() => ({
-    toggleColorMode: () => setMode(prev => prev === 'dark' ? 'light' : 'dark'),
-  }), []);
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () =>
+        setMode((prev) => (prev === "dark" ? "light" : "dark")),
+    }),
+    [],
+  );
   const theme = useMemo(() => buildTheme(mode), [mode]);
 
   return (
@@ -109,7 +134,7 @@ function Root() {
   );
 }
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Root />
   </StrictMode>,
