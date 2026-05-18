@@ -11,13 +11,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
     "@fontsource/inter": "^5.2.8",
     "@hello-pangea/dnd": "^18.0.1",
-    "@mui/icons-material": "^9.0.0",
-    "@mui/material": "^9.0.0",
-    "@tailwindcss/vite": "^4.1.14",
     "@tiptap/extension-image": "^3.23.1",
     "@tiptap/extension-table": "^3.23.1",
     "@tiptap/extension-table-cell": "^3.23.1",
@@ -36,8 +31,11 @@
     "react-dom": "^19.0.1",
     "react-router-dom": "^7.15.0",
     "recharts": "^3.8.1",
-    "tailwind-merge": "^3.5.0",
-    "zustand": "^5.0.13"
+    "zustand": "^5.0.13",
+    "@mui/material": "^5.16.7",
+    "@mui/icons-material": "^5.16.7",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
@@ -45,8 +43,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.0.4",
-    "autoprefixer": "^10.4.21",
-    "tailwindcss": "^4.1.14",
+    "sass": "^1.99.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.3"
   }

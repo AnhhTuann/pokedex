@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { STAT_COLORS } from '../../lib/utils';
+import styles from './PokemonDetailDialog.module.scss';
 
 interface Stat {
   name: string;
@@ -24,37 +25,37 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
   const total = stats.reduce((acc, s) => acc + s.value, 0);
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+    <div className={styles.statsContainer}>
+      <div className={styles.statsHeader}>
+        <h4 className={styles.sectionTitle} style={{ marginBottom: 0 }}>
           Base Stats
         </h4>
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-bold text-slate-400">BST</span>
-          <span className="text-sm font-black text-indigo-500">{total}</span>
+        <div className={styles.bstBadge}>
+          <span className={styles.bstLabel}>BST</span>
+          <span className={styles.bstValue}>{total}</span>
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className={styles.statsList}>
         {stats.map((stat, i) => {
           const percentage = Math.min(100, (stat.value / 255) * 100);
           const color = STAT_COLORS[i % STAT_COLORS.length];
           const label = STAT_LABELS[stat.name] || stat.name;
 
           return (
-            <div key={stat.name} className="group flex items-center gap-3">
-              <div className="w-8 text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 group-hover:text-slate-200 transition-colors">
+            <div key={stat.name} className={styles.statRow}>
+              <div className={styles.statLabel}>
                 {label}
               </div>
-              <div className="w-8 text-right text-xs font-bold dark:text-slate-200">
+              <div className={styles.statValue}>
                 {stat.value}
               </div>
-              <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
+              <div className={styles.statBarBg}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percentage}%` }}
                   transition={{ duration: 0.8, delay: i * 0.1, ease: 'easeOut' }}
-                  className="h-full rounded-full"
+                  className={styles.statBarFill}
                   style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}44` }}
                 />
               </div>

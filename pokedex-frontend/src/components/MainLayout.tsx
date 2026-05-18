@@ -1,42 +1,79 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { cn } from '../lib/utils';
 import {
-  AppBar, Toolbar, Typography, Box, Drawer, List, ListItem, ListItemButton,
-  ListItemIcon, ListItemText, IconButton, Tooltip, Stack, Switch, FormControlLabel,
-  useTheme, Divider, alpha, Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid
-} from '@mui/material';
-import {
-  Menu, CatchingPokemon, FlashOn, Psychology, Backpack, Map, Category,
-  SelfImprovement, VideogameAsset, WbSunny, DarkMode, SportsEsports, PlaylistAddCheck, SportsKabaddi, AutoStories
-} from '@mui/icons-material';
+  Menu as MenuIcon,
+  Search,
+  ListChecks,
+  Flame,
+  Brain,
+  ShoppingBag,
+  Map as MapIcon,
+  Grid as GridIcon,
+  Heart,
+  Gamepad2,
+  Swords,
+  BookOpen,
+  Sun,
+  Moon,
+  X,
+  Sparkles
+} from 'lucide-react';
 import { useColorMode } from '../main';
 import { useTeamStore } from '../lib/teamStore';
 import GameModal from './GameModal';
 import { VERSION_COLORS, GENERATION_VERSIONS } from '../App';
+import styles from './MainLayout.module.scss';
 
-const DRAWER_WIDTH = 260;
+// ─── Custom Pokeball SVG Icon ─────────────────────────────
+const PokeballIcon = ({ className, size = 24 }: { className?: string; size?: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M2 12h20" />
+    <circle cx="12" cy="12" r="3.5" fill="currentColor" />
+  </svg>
+);
 
 const MENU_ITEMS = [
-  { text: 'Pokédex', path: '/', icon: <CatchingPokemon /> },
-  { text: 'Catch Tracker', path: '/tracker', icon: <PlaylistAddCheck /> },
-  { text: 'Move Dex', path: '/moves', icon: <FlashOn /> },
-  { text: 'Ability Dex', path: '/abilities', icon: <Psychology /> },
-  { text: 'Item Dex', path: '/items', icon: <Backpack /> },
-  { text: 'Location Dex', path: '/locations', icon: <Map /> },
-  { text: 'Type Dex', path: '/types', icon: <Category /> },
-  { text: 'Nature Dex', path: '/natures', icon: <SelfImprovement /> },
-  { text: 'Team Builder', path: '/teambuilder', icon: <SportsEsports /> },
-  { text: 'Damage Calc', path: '/calculator', icon: <SportsKabaddi /> },
-  { text: 'Walkthroughs', path: '/walkthrough', icon: <AutoStories /> },
+  { text: 'Pokédex', path: '/', icon: <PokeballIcon size={20} /> },
+  { text: 'Catch Tracker', path: '/tracker', icon: <ListChecks size={20} /> },
+  { text: 'Move Dex', path: '/moves', icon: <Flame size={20} /> },
+  { text: 'Ability Dex', path: '/abilities', icon: <Brain size={20} /> },
+  { text: 'Item Dex', path: '/items', icon: <ShoppingBag size={20} /> },
+  { text: 'Location Dex', path: '/locations', icon: <MapIcon size={20} /> },
+  { text: 'Type Dex', path: '/types', icon: <GridIcon size={20} /> },
+  { text: 'Nature Dex', path: '/natures', icon: <Heart size={20} /> },
+  { text: 'Team Builder', path: '/teambuilder', icon: <Gamepad2 size={20} /> },
+  { text: 'Damage Calc', path: '/calculator', icon: <Swords size={20} /> },
+  { text: 'Walkthroughs', path: '/walkthrough', icon: <BookOpen size={20} /> },
 ];
 
+// Helper to convert hex to rgb string for modern neon shadow variables
+function hexToRgb(hex: string): string {
+  let c = hex.substring(1);
+  if (c.length === 3) {
+    c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+  }
+  const num = parseInt(c, 16);
+  return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+}
+
 export default function MainLayout() {
-  const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const isMainDex = location.pathname === '/' || location.pathname.startsWith('/pokemon');
-  const { toggleColorMode } = useColorMode();
-  const isDark = theme.palette.mode === 'dark';
+  const { mode, toggleColorMode } = useColorMode();
+  const isDark = mode === 'dark';
 
   const { isShinyMode, toggleShinyMode, selectedVersion, setSelectedVersion } = useTeamStore();
 
@@ -45,547 +82,305 @@ export default function MainLayout() {
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
 
-  const drawerWidth = isSidebarOpen ? DRAWER_WIDTH : 0;
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const menuList = (
-    <Box sx={{ width: DRAWER_WIDTH, height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper', overflow: 'hidden' }}>
+  const getContrastColor = (color: string) => {
+    const c = color.toLowerCase();
+    if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff') {
+      return '#0f172a';
+    }
+    return '#ffffff';
+  };
+
+  // Build the sidebar inner content
+  const sidebarContent = (
+    <>
       {/* Brand Header */}
-      <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 1.5, minHeight: 64 }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 950,
-            letterSpacing: '-1.5px',
-            color: 'primary.main',
-            textTransform: 'uppercase',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            fontSize: '1.4rem'
-          }}
-        >
-          <CatchingPokemon sx={{ color: 'primary.main', fontSize: 28 }} />
-          Pókédex Wiki
-        </Typography>
-      </Box>
-      <Divider sx={{ opacity: 0.1 }} />
+      <div className={styles.brandHeader}>
+        <div className={styles.brandLogo}>
+          <PokeballIcon size={28} />
+        </div>
+        <span className={styles.brandText}>Pokédex Wiki</span>
+      </div>
+      
+      <div className={styles.divider} />
 
       {/* Nav Menu */}
-      <List
-        sx={{
-          px: 2,
-          py: 3,
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          
-          /* Custom Scrollbar cho Webkit (Chrome, Safari, Edge) */
-          '&::-webkit-scrollbar': { 
-            width: '4px', // Làm thanh cuộn thật mỏng để không chiếm diện tích
-          },
-          '&::-webkit-scrollbar-track': { 
-            background: 'transparent', // Ẩn hoàn toàn rãnh cuộn (track)
-          },
-          '&::-webkit-scrollbar-thumb': { 
-            background: 'rgba(255, 255, 255, 0.08)', // Thumb màu xám siêu nhạt, chìm vào nền
-            borderRadius: '10px', 
-          },
-          '&::-webkit-scrollbar-thumb:hover': { 
-            background: 'rgba(255, 255, 255, 0.2)', // Sáng lên một chút khi hover
-          },
-          
-          /* Custom cho Firefox (Chỉ hỗ trợ chỉnh độ dày và màu sắc) */
-          scrollbarWidth: 'thin', 
-          scrollbarColor: 'rgba(255, 255, 255, 0.1) transparent',
-        }}
-      >
+      <nav className={styles.navMenu}>
         {MENU_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;
           return (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                onClick={() => {
-                  navigate(item.path);
-                  setMobileOpen(false);
-                }}
-                sx={{
-                  borderRadius: '12px',
-                  py: 1.5,
-                  px: 2,
-                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  bgcolor: isActive
-                    ? alpha(theme.palette.primary.main, 0.12)
-                    : 'transparent',
-                  color: isActive ? 'primary.main' : 'text.secondary',
-                  '&:hover': {
-                    bgcolor: isActive
-                      ? alpha(theme.palette.primary.main, 0.16)
-                      : alpha(theme.palette.action.hover, 0.04),
-                    color: isActive ? 'primary.main' : 'text.primary',
-                    transform: 'translateX(4px)',
-                  },
-                  // Border accent
-                  ...(isActive && {
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: 0,
-                      top: '20%',
-                      height: '60%',
-                      width: '4px',
-                      borderRadius: '4px',
-                      backgroundColor: theme.palette.primary.main,
-                    }
-                  })
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 40,
-                    color: isActive ? 'primary.main' : 'text.disabled',
-                    transition: 'color 0.2s',
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={
-                    <Typography sx={{ fontWeight: isActive ? 800 : 600, fontSize: '0.9rem', letterSpacing: '0.2px' }}>
-                      {item.text}
-                    </Typography>
-                  }
-                />
-              </ListItemButton>
-            </ListItem>
+            <button
+              key={item.text}
+              onClick={() => {
+                navigate(item.path);
+                setMobileOpen(false);
+              }}
+              className={cn(
+                styles.navButton,
+                isActive && styles.navButtonActive
+              )}
+            >
+              <span className={styles.navIcon}>{item.icon}</span>
+              <span className={styles.navText}>{item.text}</span>
+            </button>
           );
         })}
-      </List>
+      </nav>
+
+      <div className={styles.divider} />
 
       {/* Footer Signature */}
-      <Box sx={{ p: 3, textAlign: 'center', opacity: 0.5 }}>
-        <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>
-          Console v2.0
-        </Typography>
-      </Box>
-    </Box>
+      <div className={styles.footerSignature}>
+        Console v2.0
+      </div>
+    </>
   );
 
+  const currentVersionColor = VERSION_COLORS[selectedVersion] || '#6366f1';
+  const currentVersionText = getContrastColor(currentVersionColor);
+  const currentVersionShadow = `rgba(${hexToRgb(currentVersionColor)}, 0.35)`;
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+    <div className={styles.appContainer}>
       
-      {/* ── AppBar Header ── */}
-      <AppBar
-        position="fixed"
-        elevation={0}
-        sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
-          bgcolor: isDark ? 'rgba(15,15,26,0.85)' : 'rgba(255,255,255,0.85)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          zIndex: theme.zIndex.appBar,
-          transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-        }}
+      {/* ── Mobile Sidebar Overlay ── */}
+      <div 
+        className={cn(styles.sidebarOverlay, mobileOpen && styles.mobileOpen)} 
+        onClick={() => setMobileOpen(false)} 
+      />
+
+      {/* ── Fixed Sidebar ── */}
+      <aside 
+        className={cn(
+          styles.sidebar,
+          isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed,
+          mobileOpen && styles.mobileOpen
+        )}
       >
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', px: { xs: 2, sm: 3 } }}>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            {/* Hamburger Button for mobile */}
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 1, display: { md: 'none' }, color: 'text.primary' }}
-            >
-              <Menu />
-            </IconButton>
+        {sidebarContent}
+      </aside>
 
-            {/* Toggle Button for desktop */}
-            <IconButton
-              color="inherit"
-              aria-label="toggle sidebar"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              sx={{ mr: 1, display: { xs: 'none', md: 'inline-flex' }, color: 'text.primary' }}
-            >
-              <Menu />
-            </IconButton>
+      {/* ── Header Top Navigation Bar ── */}
+      <header 
+        className={styles.header}
+        style={{
+          left: isSidebarOpen ? '260px' : '0',
+          width: isSidebarOpen ? 'calc(100% - 260px)' : '100vw'
+        } as React.CSSProperties}
+      >
+        <div className={styles.leftGroup}>
+          {/* Hamburger Mobile */}
+          <button 
+            className={cn(styles.menuToggle, styles.mobileToggle)}
+            onClick={handleDrawerToggle}
+            title="Menu"
+          >
+            <MenuIcon size={20} />
+          </button>
 
-            {/* Current Section Title */}
-            <Typography variant="h6" sx={{ fontWeight: 900, color: 'text.primary', textTransform: 'uppercase', letterSpacing: -0.5 }}>
-              {MENU_ITEMS.find((m) => m.path === location.pathname)?.text || 'Wiki'}
-            </Typography>
-          </Stack>
+          {/* Sidebar Toggle Desktop */}
+          <button 
+            className={cn(styles.menuToggle, styles.desktopToggle)}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            title="Toggle Sidebar"
+          >
+            <MenuIcon size={20} />
+          </button>
 
-          {/* Quick Global Switchers */}
-          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            {isMainDex && (
-              <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-                {/* Game Version Dialog Trigger */}
-                <Button
-                  id="game-version-selector-btn"
-                  variant="contained"
-                  startIcon={<VideogameAsset />}
-                  onClick={() => setVersionDialogOpen(true)}
-                  sx={{
-                    bgcolor: selectedVersion === 'ALL' ? 'grey.800' : VERSION_COLORS[selectedVersion] || 'primary.main',
-                    color: (selectedVersion === 'white' || selectedVersion === 'white-2') ? '#000' : '#fff',
-                    fontWeight: 800,
-                    px: 2,
-                    height: 38,
-                    borderRadius: '19px',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    textTransform: 'uppercase',
-                    fontSize: '0.75rem',
-                    letterSpacing: '0.05em',
-                    boxShadow: selectedVersion !== 'ALL' ? `0 0 12px ${VERSION_COLORS[selectedVersion]}` : 'none',
-                    '&:hover': {
-                      bgcolor: selectedVersion === 'ALL' ? 'grey.900' : VERSION_COLORS[selectedVersion] || 'primary.dark',
-                      filter: 'brightness(1.15)',
-                      boxShadow: selectedVersion !== 'ALL' ? `0 0 20px ${VERSION_COLORS[selectedVersion]}` : 'none',
-                    }
-                  }}
-                >
-                  {selectedVersion === 'ALL' ? 'ALL VERSIONS' : `Version: ${selectedVersion}`}
-                </Button>
+          {/* Current Page Title */}
+          <h1 className={styles.title}>
+            {MENU_ITEMS.find((m) => m.path === location.pathname)?.text || 'Wiki'}
+          </h1>
+        </div>
 
-                {/* Shiny Mode switch */}
-                <FormControlLabel
-                  id="global-shiny-toggle"
-                  control={
-                    <Switch
-                      checked={isShinyMode}
-                      onChange={toggleShinyMode}
-                      color="secondary"
-                      size="small"
-                      sx={{
-                        "& .MuiSwitch-thumb": {
-                          bgcolor: isShinyMode ? "#f59e0b" : undefined,
-                          boxShadow: isShinyMode ? "0 0 10px #f59e0b" : undefined,
-                        }
-                      }}
-                    />
-                  }
-                  label={
-                    <Typography variant="caption" sx={{ fontWeight: 800, color: isShinyMode ? 'secondary.main' : 'text.disabled', letterSpacing: 0.5 }}>
-                      ✨ SHINY
-                    </Typography>
-                  }
-                  sx={{ mr: 1, display: { xs: 'none', sm: 'flex' } }}
-                />
-              </Stack>
-            )}
-
-            {/* Game & Theme switches */}
-            <Tooltip title="Who's That Pokémon? 🎮">
-              <IconButton
-                id="open-game-btn"
-                onClick={() => setGameOpen(true)}
-                sx={{
-                  bgcolor: isDark ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.08)',
-                  color: 'primary.main',
-                  '&:hover': { bgcolor: 'primary.main', color: '#fff' },
-                }}
-                size="small"
+        {/* Quick Global Switchers */}
+        <div className={styles.rightGroup}>
+          {isMainDex && (
+            <>
+              {/* Game Version Button */}
+              <button
+                id="game-version-selector-btn"
+                className={styles.versionBtn}
+                onClick={() => setVersionDialogOpen(true)}
+                style={{
+                  '--v-bg': selectedVersion === 'ALL' ? '#4b5563' : currentVersionColor,
+                  '--v-text': selectedVersion === 'ALL' ? '#fff' : currentVersionText,
+                  '--v-shadow': selectedVersion === 'ALL' ? 'rgba(75, 85, 99, 0.3)' : currentVersionShadow
+                } as React.CSSProperties}
               >
-                <SportsEsports fontSize="small" />
-              </IconButton>
-            </Tooltip>
+                <Gamepad2 size={16} />
+                <span>{selectedVersion === 'ALL' ? 'ALL VERSIONS' : `Version: ${selectedVersion}`}</span>
+              </button>
 
-            <Tooltip title={isDark ? 'Light mode' : 'Dark mode'}>
-              <IconButton onClick={toggleColorMode} sx={{ color: 'text.secondary' }} size="small">
-                {isDark ? <WbSunny fontSize="small" /> : <DarkMode fontSize="small" />}
-              </IconButton>
-            </Tooltip>
-          </Stack>
-        </Toolbar>
-      </AppBar>
+              {/* Shiny Mode switch */}
+              <label id="global-shiny-toggle" className={styles.switchLabel}>
+                <span className={cn(styles.switchText, isShinyMode && styles.active)}>
+                  ✨ SHINY
+                </span>
+                <span className={styles.switch}>
+                  <input
+                    type="checkbox"
+                    checked={isShinyMode}
+                    onChange={toggleShinyMode}
+                  />
+                  <span className={styles.slider} />
+                </span>
+              </label>
+            </>
+          )}
 
-      {/* ── Sidebar Drawers ── */}
-      <Box
-        component="nav"
-        sx={{
-          width: { md: `${drawerWidth}px` },
-          flexShrink: { md: 0 },
-          transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-        }}
-      >
-        {/* Mobile Temporary Drawer */}
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }} // Better open performance on mobile.
-          sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: DRAWER_WIDTH,
-              borderRight: `1px solid ${theme.palette.divider}`,
-              backgroundImage: 'none',
-              boxShadow: '4px 0 24px rgba(0,0,0,0.15)'
-            }
-          }}
-        >
-          {menuList}
-        </Drawer>
+          {/* Minigame Button */}
+          <button
+            id="open-game-btn"
+            className={styles.actionIconBtn}
+            onClick={() => setGameOpen(true)}
+            title="Who's That Pokémon? 🎮"
+          >
+            <Gamepad2 size={16} />
+          </button>
 
-        {/* Desktop Permanent Drawer */}
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: `${drawerWidth}px`,
-              borderRight: `1px solid ${theme.palette.divider}`,
-              backgroundImage: 'none',
-              overflowX: 'hidden',
-              transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-              }),
-            }
-          }}
-          open
-        >
-          {menuList}
-        </Drawer>
-      </Box>
+          {/* Theme Toggle Button */}
+          <button 
+            className={styles.themeBtn}
+            onClick={toggleColorMode}
+            title={isDark ? 'Light mode' : 'Dark mode'}
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </div>
+      </header>
 
-      {/* ── Main Routing View Body ── */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          minHeight: '100vh',
-          pt: 11, // Padding top to avoid header overlay
-          transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-        }}
+      {/* ── Main Routing Content Panel ── */}
+      <main 
+        className={styles.mainContent}
+        style={{
+          marginLeft: isSidebarOpen ? '260px' : '0',
+          width: isSidebarOpen ? 'calc(100% - 260px)' : '100vw'
+        } as React.CSSProperties}
       >
         <Outlet />
-      </Box>
+      </main>
 
-      {/* Game Modals & Version selector overlay (Rendered universally over any page) */}
+      {/* ── Minigame Overlay ── */}
       {gameOpen && <GameModal onClose={() => setGameOpen(false)} />}
 
-      <Dialog
-        open={versionDialogOpen}
-        onClose={() => setVersionDialogOpen(false)}
-        maxWidth="md"
-        fullWidth
-        slotProps={{
-          paper: {
-            sx: {
-              borderRadius: "16px",
-              bgcolor: isDark ? "background.paper" : "#f8fafc",
-              boxShadow: "0 24px 48px rgba(0,0,0,0.25)",
-              border: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.05)",
-            }
-          }
-        }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, fontSize: "1.25rem", pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <VideogameAsset color="primary" /> SELECT GAME VERSION
-        </DialogTitle>
-        <Divider />
-        <DialogContent
-          sx={{
-            p: 3,
-            maxHeight: '65vh',
-            overflowY: 'auto',
-            '&::-webkit-scrollbar': {
-              width: '8px',
-            },
-            '&::-webkit-scrollbar-track': {
-              background: isDark ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.02)',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
-              borderRadius: '10px',
-              '&:hover': {
-                background: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)',
-              }
-            }
-          }}
-        >
-          <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setSelectedVersion('ALL');
-                setVersionDialogOpen(false);
-              }}
-              sx={{
-                width: '280px',
-                height: '48px',
-                fontWeight: 900,
-                fontSize: '0.95rem',
-                borderRadius: '12px',
-                letterSpacing: '0.1em',
-                borderColor: selectedVersion === 'ALL' ? 'primary.main' : (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'),
-                color: selectedVersion === 'ALL' ? '#fff' : 'text.primary',
-                background: selectedVersion === 'ALL' 
-                  ? `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`
-                  : 'transparent',
-                boxShadow: selectedVersion === 'ALL' ? `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}` : 'none',
-                border: selectedVersion === 'ALL' ? 'none' : `1.5px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'}`,
-                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                '&:hover': {
-                  background: selectedVersion === 'ALL' 
-                    ? `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`
-                    : alpha(theme.palette.primary.main, 0.08),
-                  borderColor: 'primary.main',
-                  transform: 'scale(1.02) translateY(-1px)',
-                  boxShadow: selectedVersion === 'ALL' ? `0 12px 28px ${alpha(theme.palette.primary.main, 0.45)}` : `0 4px 12px ${alpha(theme.palette.primary.main, 0.15)}`,
-                }
-              }}
-            >
-              ALL VERSIONS
-            </Button>
-          </Box>
+      {/* ── Game Version Dialog Overlay (Custom Modal) ── */}
+      {versionDialogOpen && (
+        <div className={styles.modalOverlay} onClick={() => setVersionDialogOpen(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header */}
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>
+                <Gamepad2 size={22} />
+                <span>SELECT GAME VERSION</span>
+              </h2>
+              <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+            
+            <div className={styles.divider} />
 
-          <Stack spacing={4}>
-            {GENERATION_VERSIONS.map((g) => (
-              <Box key={g.gen}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 800,
-                      color: 'text.secondary',
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      fontSize: '0.75rem',
-                      whiteSpace: 'nowrap',
-                      opacity: 0.8
-                    }}
-                  >
-                    {g.gen}
-                  </Typography>
-                  <Divider sx={{ flex: 1, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }} />
-                </Box>
-                <Stack spacing={1.5}>
-                  {g.rows.map((row, rowIdx) => (
-                    <Grid container spacing={1.5} key={rowIdx}>
-                      {row.games.map((game) => {
-                        const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
-                        let vColor = VERSION_COLORS[game.name] || '#6366f1';
-                        
-                        if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
-                          vColor = '#555555';
-                        }
+            {/* Modal Body */}
+            <div className={styles.modalBody}>
+              {/* All Versions button */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+                <button
+                  onClick={() => {
+                    setSelectedVersion('ALL');
+                    setVersionDialogOpen(false);
+                  }}
+                  className={cn(
+                    styles.gameButton,
+                    selectedVersion === 'ALL' && styles.gameButtonActive
+                  )}
+                  style={{
+                    maxWidth: '280px',
+                    justifyContent: 'center',
+                    '--game-color': '#6366f1',
+                    '--game-text-color': '#ffffff',
+                    '--game-shadow': 'rgba(99, 102, 241, 0.4)'
+                  } as React.CSSProperties}
+                >
+                  ALL VERSIONS
+                </button>
+              </div>
 
-                        const isArceus = game.name === 'legends-arceus';
-                        const isZA = game.name === 'legends-za';
-                        const isSpecial = isArceus || isZA;
-                        const specialColor = isArceus ? '#fbbf24' : '#22c55e'; // Gold/Yellow vs Green Neon
+              {/* Generations list */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                {GENERATION_VERSIONS.map((g) => (
+                  <div key={g.gen} className={styles.genSection}>
+                    <div className={styles.genHeader}>
+                      <span className={styles.genTitle}>{g.gen}</span>
+                      <div className={styles.genDivider} />
+                    </div>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {g.rows.map((row, rowIdx) => (
+                        <div key={rowIdx} className={styles.gameGrid}>
+                          {row.games.map((game) => {
+                            const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
+                            let vColor = VERSION_COLORS[game.name] || '#6366f1';
+                            
+                            if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
+                              vColor = '#555555';
+                            }
+                            
+                            const contrastColor = getContrastColor(vColor);
+                            
+                            return (
+                              <button
+                                key={game.name}
+                                onClick={() => {
+                                  setSelectedVersion(game.name);
+                                  setVersionDialogOpen(false);
+                                }}
+                                className={cn(
+                                  styles.gameButton,
+                                  isActive && styles.gameButtonActive
+                                )}
+                                style={{
+                                  '--game-color': vColor,
+                                  '--game-text-color': contrastColor,
+                                  '--game-shadow': `rgba(${hexToRgb(vColor)}, 0.4)`
+                                } as React.CSSProperties}
+                              >
+                                <span 
+                                  className={styles.gameDot}
+                                  style={{
+                                    '--dot-color': isActive ? contrastColor : vColor
+                                  } as React.CSSProperties}
+                                />
+                                <span>{game.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-                        const getContrastColor = (color: string) => {
-                          const c = color.toLowerCase();
-                          if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff') {
-                            return '#0f172a';
-                          }
-                          return '#ffffff';
-                        };
+            <div className={styles.divider} />
 
-                        const contrastColor = getContrastColor(vColor);
-
-                        // Apply sizes: pairs get half width on all screens, singles get full width
-                        const sizeProps = row.type === 'pair' ? { xs: 6 } : { xs: 12 };
-
-                        return (
-                          <Grid size={sizeProps} key={game.name}>
-                            <Button
-                              fullWidth
-                              onClick={() => {
-                                setSelectedVersion(game.name);
-                                setVersionDialogOpen(false);
-                              }}
-                              sx={{
-                                fontWeight: 800,
-                                letterSpacing: '0.5px',
-                                borderRadius: '28px', // Premium pill-shaped!
-                                border: isActive 
-                                  ? `1.5px solid ${vColor}` 
-                                  : `1.5px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}`,
-                                color: isActive ? contrastColor : (isDark ? '#94a3b8' : '#475569'),
-                                bgcolor: isActive 
-                                  ? vColor 
-                                  : (isDark ? 'rgba(30, 41, 59, 0.45)' : '#ffffff'),
-                                boxShadow: isActive 
-                                  ? `0 8px 24px ${alpha(vColor, 0.4)}` 
-                                  : 'none',
-                                textTransform: 'uppercase',
-                                fontSize: '0.78rem',
-                                height: '46px',
-                                px: 2,
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                                '&:hover': {
-                                  bgcolor: isActive 
-                                    ? vColor
-                                    : (isDark ? 'rgba(30, 41, 59, 0.7)' : '#f1f5f9'),
-                                  borderColor: isActive ? vColor : (isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'),
-                                  transform: 'translateY(-2px)',
-                                  boxShadow: isActive 
-                                    ? `0 12px 28px ${alpha(vColor, 0.45)}`
-                                    : `0 4px 12px ${isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.05)'}`,
-                                }
-                              }}
-                            >
-                              <Box 
-                                sx={{ 
-                                  width: 10, 
-                                  height: 10, 
-                                  borderRadius: '50%', 
-                                  bgcolor: isActive ? contrastColor : vColor, 
-                                  boxShadow: isActive ? 'none' : `0 0 8px ${vColor}`,
-                                  mr: 1.5, 
-                                  flexShrink: 0 
-                                }} 
-                              />
-                              <Box sx={{ flex: 1, textAlign: 'left', fontWeight: isActive ? 900 : 700 }}>
-                                {game.label}
-                              </Box>
-                            </Button>
-                          </Grid>
-                        );
-                      })}
-                    </Grid>
-                  ))}
-                </Stack>
-              </Box>
-            ))}
-          </Stack>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2.5 }}>
-          <Button onClick={() => setVersionDialogOpen(false)} color="inherit" sx={{ fontWeight: 700 }}>
-            CANCEL
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+            {/* Modal Footer */}
+            <div className={styles.modalFooter}>
+              <button 
+                onClick={() => setVersionDialogOpen(false)} 
+                className={styles.gameButton}
+                style={{ width: 'auto', height: '36px', padding: '0 16px', borderRadius: '8px' }}
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

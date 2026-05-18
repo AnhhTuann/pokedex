@@ -1,27 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
-  Divider,
-  Paper,
-  alpha,
-  useTheme
-} from '@mui/material';
-import { Category, Shield, FlashOn, HelpOutlined } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
+import { Layers, Shield, Zap } from 'lucide-react';
 import {
   TYPE_LIST,
   calculateDamageTaken,
   calculateDamageDealt
 } from '../utils/typeMatchups';
+import styles from './TypeDex.module.scss';
 
 // Type Color Palette definition
 export const TYPE_COLORS: Record<string, string> = {
@@ -56,74 +41,40 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
     return `x${val}`;
   };
 
-  const getMultiplierColor = (val: number) => {
-    if (val >= 2) return '#fca5a5'; // Light red for weakness
-    if (val < 1 && val > 0) return '#86efac'; // Light green for resistance
-    if (val === 0) return '#c084fc'; // Light purple for immunity
-    return '#f1f5f9';
+  const getMultiplierBg = (val: number) => {
+    if (val >= 2) return '#ef4444'; // Bright red for weakness
+    if (val < 1 && val > 0) return '#10b981'; // Emerald green for resistance
+    if (val === 0) return '#8b5cf6'; // Purple for immunity
+    return 'rgba(255, 255, 255, 0.15)'; // Gray for neutral
   };
 
   return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        borderRadius: '8px',
-        overflow: 'hidden',
-        height: '30px',
-        border: `1px solid ${alpha(typeColor, 0.4)}`,
-        bgcolor: typeColor,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-        m: 0.5
+    <div
+      className={styles.chip}
+      style={{
+        borderColor: `${typeColor}40`,
       }}
     >
       {/* Type Name (Left) */}
-      <Box sx={{ px: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography
-          variant="caption"
-          sx={{
-            color: '#ffffff',
-            fontWeight: 900,
-            textTransform: 'uppercase',
-            letterSpacing: '0.8px',
-            fontSize: '10px'
-          }}
-        >
-          {type}
-        </Typography>
-      </Box>
+      <div 
+        className={styles.typeName}
+        style={{ color: typeColor }}
+      >
+        {type}
+      </div>
 
       {/* Multiplier Value (Right) */}
-      <Box
-        sx={{
-          height: '100%',
-          px: 1.2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          bgcolor: 'rgba(0, 0, 0, 0.22)'
-        }}
+      <div
+        className={styles.multiplier}
+        style={{ backgroundColor: getMultiplierBg(multiplier) }}
       >
-        <Typography
-          variant="caption"
-          sx={{
-            color: getMultiplierColor(multiplier),
-            fontWeight: 900,
-            fontSize: '11px',
-            fontFamily: 'monospace'
-          }}
-        >
-          {formatMultiplier(multiplier)}
-        </Typography>
-      </Box>
-    </Box>
+        {formatMultiplier(multiplier)}
+      </div>
+    </div>
   );
 }
 
 export default function TypeDex() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-
   // Selection states
   const [primaryType, setPrimaryType] = useState<string>('fire');
   const [secondaryType, setSecondaryType] = useState<string>('none');
@@ -154,404 +105,281 @@ export default function TypeDex() {
   const secondaryOffense = secondaryDealt ? getOffensiveGroups(secondaryDealt) : null;
 
   return (
-    <Container maxWidth="lg" sx={{ pt: 4, pb: 10, px: { xs: 2, sm: 3 } }}>
+    <div className={styles.container}>
       
       {/* Header Info */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 900,
-            letterSpacing: '-1px',
-            textTransform: 'uppercase',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 1.5,
-            mb: 1
-          }}
-        >
-          <Category sx={{ color: '#8b5cf6', fontSize: 38 }} />
+      <div className={styles.header}>
+        <h1 className={styles.title}>
+          <Layers className={styles.headerIcon} />
           Type Matchups Dex
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, maxWidth: 500, mx: 'auto', mb: 4 }}>
+        </h1>
+        <p className={styles.subtitle}>
           Analyze standard dual-type defensive weaknesses or offensive single-type capabilities.
-        </Typography>
+        </p>
 
         {/* Selector Dropdowns */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 2,
-            maxWidth: 550,
-            mx: 'auto',
-            p: 2,
-            borderRadius: '24px',
-            bgcolor: isDark ? 'rgba(15, 23, 42, 0.4)' : 'rgba(241, 245, 249, 0.5)',
-            border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-            backdropFilter: 'blur(10px)'
-          }}
-        >
+        <div className={styles.selectorCard}>
           {/* Primary Type Selection */}
-          <FormControl fullWidth size="small">
-            <InputLabel id="primary-type-label" sx={{ fontWeight: 700 }}>Primary Type</InputLabel>
-            <Select
-              labelId="primary-type-label"
-              value={primaryType}
-              label="Primary Type"
-              onChange={(e) => {
-                const val = e.target.value;
-                setPrimaryType(val);
-                if (val === secondaryType) setSecondaryType('none'); // avoid dual-identical type
-              }}
-              sx={{
-                borderRadius: '14px',
-                fontWeight: 700,
-                textTransform: 'capitalize',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)'
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#8b5cf6'
-                }
-              }}
-            >
-              {TYPE_LIST.map((type) => (
-                <MenuItem
-                  key={type}
-                  value={type}
-                  sx={{
-                    textTransform: 'capitalize',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1.5
-                  }}
-                >
-                  <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: TYPE_COLORS[type] }} />
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          {/* Secondary Type Selection */}
-          <FormControl fullWidth size="small">
-            <InputLabel id="secondary-type-label" sx={{ fontWeight: 700 }}>Secondary Type</InputLabel>
-            <Select
-              labelId="secondary-type-label"
-              value={secondaryType}
-              label="Secondary Type"
-              onChange={(e) => setSecondaryType(e.target.value)}
-              sx={{
-                borderRadius: '14px',
-                fontWeight: 700,
-                textTransform: 'capitalize',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)'
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#8b5cf6'
-                }
-              }}
-            >
-              <MenuItem value="none" sx={{ fontWeight: 700, fontStyle: 'italic', color: 'text.secondary' }}>
-                None
-              </MenuItem>
-              {TYPE_LIST.filter(t => t !== primaryType).map((type) => (
-                <MenuItem
-                  key={type}
-                  value={type}
-                  sx={{
-                    textTransform: 'capitalize',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1.5
-                  }}
-                >
-                  <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: TYPE_COLORS[type] }} />
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Box>
-
-      {/* Main Grid Content */}
-      <Grid container spacing={3}>
-        
-        {/* Section Defensive (Damage Taken) */}
-        <Grid size={{ xs: 12, md: 6 }}>
-          <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, color: 'text.secondary' }}>
-              <Shield sx={{ color: '#06b6d4' }} />
-              <Typography variant="h6" sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '15px' }}>
-                Damage Taken (Defensive)
-              </Typography>
-            </Box>
-
-            <Card
-              elevation={0}
-              sx={{
-                borderRadius: '24px',
-                border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                background: isDark ? '#0f172a' : '#ffffff',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.03)',
-                overflow: 'hidden'
-              }}
-            >
-              <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 3.5 }}>
-                
-                {/* Weak Against */}
-                <Box>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 900,
-                      color: '#ef4444',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      display: 'block',
-                      mb: 1.5
-                    }}
-                  >
-                    Weak against... (Takes double/quadruple damage)
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {defensiveGroups.weak.length > 0 ? (
-                      defensiveGroups.weak.map(item => (
-                        <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                      ))
-                    ) : (
-                      <Typography variant="body2" color="text.disabled" sx={{ fontStyle: 'italic', fontWeight: 600 }}>
-                        No weaknesses! Amazing coverage.
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-
-                <Divider sx={{ borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }} />
-
-                {/* Resistant Against */}
-                <Box>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 900,
-                      color: '#22c55e',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      display: 'block',
-                      mb: 1.5
-                    }}
-                  >
-                    Resistant against... (Takes halved/no damage)
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {defensiveGroups.resistant.length > 0 ? (
-                      defensiveGroups.resistant.map(item => (
-                        <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                      ))
-                    ) : (
-                      <Typography variant="body2" color="text.disabled" sx={{ fontStyle: 'italic', fontWeight: 600 }}>
-                        No resistances. Glass-cannon setup.
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-
-                <Divider sx={{ borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }} />
-
-                {/* Normal Damage */}
-                <Box>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 900,
-                      color: 'text.secondary',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      display: 'block',
-                      mb: 1.5
-                    }}
-                  >
-                    Normal damage from... (Takes regular damage)
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {defensiveGroups.normal.map(item => (
-                      <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                    ))}
-                  </Box>
-                </Box>
-
-              </CardContent>
-            </Card>
-          </motion.div>
-        </Grid>
-
-        {/* Section Offensive (Damage Dealt) */}
-        <Grid size={{ xs: 12, md: 6 }}>
-          <motion.div initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, color: 'text.secondary' }}>
-              <FlashOn sx={{ color: '#eab308' }} />
-              <Typography variant="h6" sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '15px' }}>
-                Damage Dealt (Offensive - Single Type)
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              
-              {/* Primary Type Offensive Block */}
-              <Card
-                elevation={0}
-                sx={{
-                  borderRadius: '24px',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                  background: isDark ? '#0f172a' : '#ffffff',
-                  boxShadow: '0 8px 30px rgba(0,0,0,0.03)',
-                  overflow: 'hidden'
+          <div className={styles.selectGroup}>
+            <span className={styles.label}>Primary Type</span>
+            <div className={styles.selectWrapper}>
+              <select
+                value={primaryType}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setPrimaryType(val);
+                  if (val === secondaryType) setSecondaryType('none'); // avoid dual-identical type
+                }}
+                style={{
+                  borderColor: TYPE_COLORS[primaryType],
+                  boxShadow: `0 0 12px ${TYPE_COLORS[primaryType]}25`
                 }}
               >
-                <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 900, textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: TYPE_COLORS[primaryType] }} />
-                    Damage Dealt: {primaryType}
-                  </Typography>
+                {TYPE_LIST.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-                  <Divider sx={{ borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }} />
+          {/* Secondary Type Selection */}
+          <div className={styles.selectGroup}>
+            <span className={styles.label}>Secondary Type</span>
+            <div className={styles.selectWrapper}>
+              <select
+                value={secondaryType}
+                onChange={(e) => setSecondaryType(e.target.value)}
+                style={secondaryType !== 'none' ? {
+                  borderColor: TYPE_COLORS[secondaryType],
+                  boxShadow: `0 0 12px ${TYPE_COLORS[secondaryType]}25`
+                } : {}}
+              >
+                <option value="none">None</option>
+                {TYPE_LIST.filter(t => t !== primaryType).map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                  {/* Strong Against */}
-                  <Box>
-                    <Typography variant="caption" sx={{ fontWeight: 900, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', mb: 1 }}>
-                      Strong against... (Deals double damage)
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {primaryOffense.strong.length > 0 ? (
-                        primaryOffense.strong.map((item: any) => (
-                          <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                        ))
-                      ) : (
-                        <Typography variant="body2" color="text.disabled" sx={{ fontStyle: 'italic', fontWeight: 600 }}>
-                          None. Not very strong...
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
+      {/* Main Grid Content */}
+      <div className={styles.mainGrid}>
+        
+        {/* Section Defensive (Damage Taken) */}
+        <div className={styles.column}>
+          <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}>
+            <div className={styles.columnTitle}>
+              <Shield className={styles.cyan} size={20} />
+              <span>Damage Taken (Defensive)</span>
+            </div>
 
-                  {/* Ineffective Against */}
-                  <Box>
-                    <Typography variant="caption" sx={{ fontWeight: 900, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', mb: 1 }}>
-                      Ineffective against... (Deals halved/no damage)
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {primaryOffense.ineffective.length > 0 ? (
-                        primaryOffense.ineffective.map((item: any) => (
-                          <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                        ))
-                      ) : (
-                        <Typography variant="body2" color="text.disabled" sx={{ fontStyle: 'italic', fontWeight: 600 }}>
-                          None! Excellent broad coverage.
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
+            <div className={styles.card}>
+              
+              {/* Weak Against */}
+              <div className={styles.sectionBlock}>
+                <span className={`${styles.sectionTitle} ${styles.red}`}>
+                  Weak against... (Takes double/quadruple damage)
+                </span>
+                <div className={styles.chipsGrid}>
+                  {defensiveGroups.weak.length > 0 ? (
+                    defensiveGroups.weak.map(item => (
+                      <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                    ))
+                  ) : (
+                    <span className={styles.noCoverage}>
+                      No weaknesses! Amazing coverage.
+                    </span>
+                  )}
+                </div>
+              </div>
 
-                  {/* Normal Damage */}
-                  <Box>
-                    <Typography variant="caption" sx={{ fontWeight: 900, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', mb: 1 }}>
-                      Normal damage to... (Deals regular damage)
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {primaryOffense.normal.map((item: any) => (
+              <hr className={styles.divider} />
+
+              {/* Resistant Against */}
+              <div className={styles.sectionBlock}>
+                <span className={`${styles.sectionTitle} ${styles.green}`}>
+                  Resistant against... (Takes halved/no damage)
+                </span>
+                <div className={styles.chipsGrid}>
+                  {defensiveGroups.resistant.length > 0 ? (
+                    defensiveGroups.resistant.map(item => (
+                      <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                    ))
+                  ) : (
+                    <span className={styles.noCoverage}>
+                      No resistances. Glass-cannon setup.
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <hr className={styles.divider} />
+
+              {/* Normal Damage */}
+              <div className={styles.sectionBlock}>
+                <span className={`${styles.sectionTitle} ${styles.muted}`}>
+                  Normal damage from... (Takes regular damage)
+                </span>
+                <div className={styles.chipsGrid}>
+                  {defensiveGroups.normal.map(item => (
+                    <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Section Offensive (Damage Dealt) */}
+        <div className={styles.column}>
+          <motion.div initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}>
+            <div className={styles.columnTitle}>
+              <Zap className={styles.yellow} size={20} />
+              <span>Damage Dealt (Offensive - Single Type)</span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              
+              {/* Primary Type Offensive Block */}
+              <div className={styles.card}>
+                <div className={styles.offensiveHeader}>
+                  <div className={styles.dot} style={{ backgroundColor: TYPE_COLORS[primaryType] }} />
+                  <span>Damage Dealt: {primaryType}</span>
+                </div>
+
+                <hr className={styles.divider} />
+
+                {/* Strong Against */}
+                <div className={styles.sectionBlock}>
+                  <span className={`${styles.sectionTitle} ${styles.green}`}>
+                    Strong against... (Deals double damage)
+                  </span>
+                  <div className={styles.chipsGrid}>
+                    {primaryOffense.strong.length > 0 ? (
+                      primaryOffense.strong.map((item: any) => (
                         <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                      ))}
-                    </Box>
-                  </Box>
-                </CardContent>
-              </Card>
+                      ))
+                    ) : (
+                      <span className={styles.noCoverage}>
+                        None. Not very strong...
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Ineffective Against */}
+                <div className={styles.sectionBlock}>
+                  <span className={`${styles.sectionTitle} ${styles.red}`}>
+                    Ineffective against... (Deals halved/no damage)
+                  </span>
+                  <div className={styles.chipsGrid}>
+                    {primaryOffense.ineffective.length > 0 ? (
+                      primaryOffense.ineffective.map((item: any) => (
+                        <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                      ))
+                    ) : (
+                      <span className={styles.noCoverage}>
+                        None! Excellent broad coverage.
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Normal Damage */}
+                <div className={styles.sectionBlock}>
+                  <span className={`${styles.sectionTitle} ${styles.muted}`}>
+                    Normal damage to... (Deals regular damage)
+                  </span>
+                  <div className={styles.chipsGrid}>
+                    {primaryOffense.normal.map((item: any) => (
+                      <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               {/* Secondary Type Offensive Block (if selected) */}
-              {secondaryType !== 'none' && secondaryOffense && (
-                <Card
-                  elevation={0}
-                  sx={{
-                    borderRadius: '24px',
-                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                    background: isDark ? '#0f172a' : '#ffffff',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.03)',
-                    overflow: 'hidden'
-                  }}
-                >
-                  <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 900, textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: TYPE_COLORS[secondaryType] }} />
-                      Damage Dealt: {secondaryType}
-                    </Typography>
+              <AnimatePresence>
+                {secondaryType !== 'none' && secondaryOffense && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className={styles.card}>
+                      <div className={styles.offensiveHeader}>
+                        <div className={styles.dot} style={{ backgroundColor: TYPE_COLORS[secondaryType] }} />
+                        <span>Damage Dealt: {secondaryType}</span>
+                      </div>
 
-                    <Divider sx={{ borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }} />
+                      <hr className={styles.divider} />
 
-                    {/* Strong Against */}
-                    <Box>
-                      <Typography variant="caption" sx={{ fontWeight: 900, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', mb: 1 }}>
-                        Strong against... (Deals double damage)
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {secondaryOffense.strong.length > 0 ? (
-                          secondaryOffense.strong.map((item: any) => (
+                      {/* Strong Against */}
+                      <div className={styles.sectionBlock}>
+                        <span className={`${styles.sectionTitle} ${styles.green}`}>
+                          Strong against... (Deals double damage)
+                        </span>
+                        <div className={styles.chipsGrid}>
+                          {secondaryOffense.strong.length > 0 ? (
+                            secondaryOffense.strong.map((item: any) => (
+                              <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                            ))
+                          ) : (
+                            <span className={styles.noCoverage}>
+                              None. Not very strong...
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Ineffective Against */}
+                      <div className={styles.sectionBlock}>
+                        <span className={`${styles.sectionTitle} ${styles.red}`}>
+                          Ineffective against... (Deals halved/no damage)
+                        </span>
+                        <div className={styles.chipsGrid}>
+                          {secondaryOffense.ineffective.length > 0 ? (
+                            secondaryOffense.ineffective.map((item: any) => (
+                              <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
+                            ))
+                          ) : (
+                            <span className={styles.noCoverage}>
+                              None! Excellent broad coverage.
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Normal Damage */}
+                      <div className={styles.sectionBlock}>
+                        <span className={`${styles.sectionTitle} ${styles.muted}`}>
+                          Normal damage to... (Deals regular damage)
+                        </span>
+                        <div className={styles.chipsGrid}>
+                          {secondaryOffense.normal.map((item: any) => (
                             <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                          ))
-                        ) : (
-                          <Typography variant="body2" color="text.disabled" sx={{ fontStyle: 'italic', fontWeight: 600 }}>
-                            None. Not very strong...
-                          </Typography>
-                        )}
-                      </Box>
-                    </Box>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                    {/* Ineffective Against */}
-                    <Box>
-                      <Typography variant="caption" sx={{ fontWeight: 900, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', mb: 1 }}>
-                        Ineffective against... (Deals halved/no damage)
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {secondaryOffense.ineffective.length > 0 ? (
-                          secondaryOffense.ineffective.map((item: any) => (
-                            <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                          ))
-                        ) : (
-                          <Typography variant="body2" color="text.disabled" sx={{ fontStyle: 'italic', fontWeight: 600 }}>
-                            None! Excellent broad coverage.
-                          </Typography>
-                        )}
-                      </Box>
-                    </Box>
-
-                    {/* Normal Damage */}
-                    <Box>
-                      <Typography variant="caption" sx={{ fontWeight: 900, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', mb: 1 }}>
-                        Normal damage to... (Deals regular damage)
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {secondaryOffense.normal.map((item: any) => (
-                          <TypeMultiplierChip key={item.type} type={item.type} multiplier={item.mult} />
-                        ))}
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              )}
-
-            </Box>
+            </div>
           </motion.div>
-        </Grid>
+        </div>
 
-      </Grid>
+      </div>
       
-    </Container>
+    </div>
   );
 }

@@ -1,15 +1,16 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
-  Container, Box, Grid, Card, CardActionArea, CardContent, Typography,
-  Button, Switch, FormControlLabel, LinearProgress, Dialog, DialogTitle,
-  DialogContent, DialogContentText, DialogActions, Chip, useTheme, alpha,
-  Tooltip, Stack, Skeleton, Alert, InputAdornment, TextField, MenuItem, Select, FormControl, InputLabel, IconButton
-} from '@mui/material';
-import {
-  CatchingPokemon, PlaylistAddCheck, RotateLeft, DoneAll, Search,
-  HelpOutlined, AutoAwesome, CheckCircle, Visibility
-} from '@mui/icons-material';
+  Sparkles,
+  CheckCircle2,
+  RotateCcw,
+  CheckSquare,
+  Search,
+  HelpCircle,
+  Eye,
+  Settings,
+  AlertTriangle
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PokemonListItem } from '../types';
 import { useTeamStore } from '../lib/teamStore';
@@ -17,6 +18,8 @@ import { useCatchStore } from '../lib/catchStore';
 import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../App';
 import PokeDetail from './PokeDetail';
 import { formatSpeciesId } from '../lib/utils';
+import { useColorMode } from '../main';
+import styles from './CatchTracker.module.scss';
 
 const GET_POKEMON_LIST = gql`
   query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $region: String, $game: String) {
@@ -68,218 +71,102 @@ const TrackerCard = React.memo<TrackerCardProps>(({
   onToggleShiny,
   onViewDetails
 }) => {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
   const primaryColor = TYPE_COLORS[pokemon.types[0]] || '#9ca3af';
-
   const isMarked = isCaught || isShiny;
 
   return (
-    <Card
-      elevation={isMarked ? 5 : 0}
-      sx={{
-        height: '100%',
-        borderRadius: '16px',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        position: 'relative',
-        overflow: 'visible',
-        cursor: 'pointer',
-        border: isShiny 
-          ? '2px solid #fbbf24'
+    <div
+      className={`${styles.trackerCard} ${isShiny ? styles.shiny : isCaught ? styles.caught : ''}`}
+      style={{
+        borderColor: isShiny 
+          ? '#fbbf24'
           : isCaught 
-            ? '2px solid #10b981' 
-            : `1.5px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-        background: isShiny
-          ? `linear-gradient(160deg, ${alpha('#fbbf24', isDark ? 0.15 : 0.06)} 0%, ${theme.palette.background.paper} 70%)`
-          : isCaught
-            ? `linear-gradient(160deg, ${alpha('#10b981', isDark ? 0.15 : 0.06)} 0%, ${theme.palette.background.paper} 70%)`
-            : (isDark ? 'rgba(30, 41, 59, 0.15)' : '#f8fafc'),
-        boxShadow: isShiny 
-          ? `0 8px 24px ${alpha('#fbbf24', isDark ? 0.35 : 0.18)}`
-          : isCaught 
-            ? `0 8px 24px ${alpha('#10b981', isDark ? 0.25 : 0.12)}` 
-            : 'none',
+            ? '#10b981' 
+            : undefined
       }}
+      onClick={() => onToggleCaught(pokemon.id)}
     >
       {/* Action buttons (top-right corner) */}
-      <Stack
-        direction="row"
-        spacing={0.75}
-        sx={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 3
-        }}
-      >
+      <div className={styles.cardActions}>
         {/* Shiny Toggler (Gold Star) */}
-        <Tooltip title={isShiny ? 'Remove Shiny status' : 'Mark as Shiny ✨'}>
-          <IconButton
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleShiny(pokemon.id);
-            }}
-            sx={{
-              color: isShiny ? '#fbbf24' : 'text.disabled',
-              bgcolor: isShiny ? alpha('#fbbf24', 0.15) : 'action.hover',
-              border: `1.5px solid ${isShiny ? '#fbbf24' : 'transparent'}`,
-              boxShadow: isShiny ? `0 0 10px ${alpha('#fbbf24', 0.5)}` : 'none',
-              '&:hover': {
-                bgcolor: isShiny ? alpha('#fbbf24', 0.25) : alpha('#fbbf24', 0.1),
-                color: isShiny ? '#d97706' : '#fbbf24',
-              }
-            }}
-          >
-            <AutoAwesome fontSize="small" />
-          </IconButton>
-        </Tooltip>
-
-        {/* Caught Toggler (Pokeball check) */}
-        <Tooltip title={isCaught ? 'Mark as Uncaught' : 'Mark as Caught'}>
-          <IconButton
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleCaught(pokemon.id);
-            }}
-            sx={{
-              color: isCaught ? '#10b981' : 'text.disabled',
-              bgcolor: isCaught ? alpha('#10b981', 0.15) : 'action.hover',
-              border: `1.5px solid ${isCaught ? '#10b981' : 'transparent'}`,
-              boxShadow: isCaught ? `0 0 10px ${alpha('#10b981', 0.5)}` : 'none',
-              '&:hover': {
-                bgcolor: isCaught ? alpha('#10b981', 0.25) : alpha(theme.palette.primary.main, 0.1),
-                color: isCaught ? '#059669' : 'primary.main',
-              }
-            }}
-          >
-            <CheckCircle fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </Stack>
-
-      <CardActionArea
-        onClick={() => onToggleCaught(pokemon.id)}
-        sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          p: 3,
-          pt: 4,
-          pb: 3,
-          borderRadius: '16px',
-        }}
-      >
-        {/* Pokémon Circle container */}
-        <Box
-          sx={{
-            width: 110,
-            height: 110,
-            borderRadius: '50%',
-            transition: 'all 0.3s ease',
-            background: isShiny
-              ? alpha('#fbbf24', isDark ? 0.15 : 0.1)
-              : isCaught
-                ? alpha(primaryColor, isDark ? 0.15 : 0.1)
-                : (isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'),
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mb: 2,
-            position: 'relative'
-          }}
-        >
-          <Box
-            component="img"
-            src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
-            alt={pokemon.name}
-            loading="lazy"
-            decoding="async"
-            sx={{
-              width: 84,
-              height: 84,
-              objectFit: 'contain',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              filter: isMarked
-                ? 'drop-shadow(0 4px 12px rgba(0,0,0,0.25))'
-                : 'grayscale(100%) opacity(0.5)',
-              transform: isMarked ? 'scale(1)' : 'scale(0.9)',
-            }}
-          />
-        </Box>
-
-        <CardContent sx={{ p: 0, width: '100%', textAlign: 'center' }}>
-          {/* Dex ID */}
-          <Typography variant="caption" sx={{ fontWeight: 800, color: isShiny ? '#fbbf24' : isCaught ? 'primary.main' : 'text.disabled', letterSpacing: 1.5 }}>
-            {pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
-              ? pokemon.regionalNumber.toString().padStart(3, '0')
-              : formatSpeciesId(pokemon.speciesId || pokemon.id)}
-          </Typography>
-
-          {/* Name */}
-          <Typography variant="h6" sx={{ fontWeight: 900, textTransform: 'capitalize', mt: 0.5, mb: 1, letterSpacing: -0.5, color: isMarked ? 'text.primary' : 'text.secondary' }}>
-            {pokemon.name} {isShiny && '✨'}
-          </Typography>
-
-          {/* Types Chips */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}>
-            {pokemon.types.map((type) => (
-              <Chip
-                key={type}
-                label={type}
-                size="small"
-                sx={{
-                  bgcolor: isMarked 
-                    ? alpha(TYPE_COLORS[type] || '#9ca3af', 0.85)
-                    : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'),
-                  color: isMarked ? '#fff' : 'text.disabled',
-                  fontSize: 8,
-                  fontWeight: 800,
-                  letterSpacing: 1,
-                  textTransform: 'uppercase',
-                  height: 18,
-                }}
-              />
-            ))}
-          </Box>
-        </CardContent>
-      </CardActionArea>
-
-      {/* Eye icon trigger (bottom-right corner) - Clean, absolute positioning, no overlap */}
-      <Tooltip title="View Stats & Details">
-        <IconButton
-          size="small"
+        <button
+          className={`${styles.actionIconBtn} ${styles.shinyBtn} ${isShiny ? styles.active : ''}`}
           onClick={(e) => {
             e.stopPropagation();
-            onViewDetails(pokemon.id);
+            onToggleShiny(pokemon.id);
           }}
-          sx={{
-            position: 'absolute',
-            bottom: 8,
-            right: 8,
-            zIndex: 3,
-            color: 'text.disabled',
-            opacity: 0.35,
-            transition: 'all 0.2s ease',
-            '&:hover': {
-              opacity: 1,
-              color: isShiny ? '#fbbf24' : 'primary.main',
-              bgcolor: isShiny ? alpha('#fbbf24', 0.1) : alpha(theme.palette.primary.main, 0.1)
-            },
-            '.MuiCard-root:hover &': {
-              opacity: 0.75
-            }
-          }}
+          title={isShiny ? 'Remove Shiny status' : 'Mark as Shiny ✨'}
         >
-          <Visibility sx={{ fontSize: '1.15rem' }} />
-        </IconButton>
-      </Tooltip>
-    </Card>
+          <Sparkles size={14} />
+        </button>
+
+        {/* Caught Toggler (Check icon) */}
+        <button
+          className={`${styles.actionIconBtn} ${styles.caughtBtn} ${isCaught ? styles.active : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleCaught(pokemon.id);
+          }}
+          title={isCaught ? 'Mark as Uncaught' : 'Mark as Caught'}
+        >
+          <CheckCircle2 size={14} />
+        </button>
+      </div>
+
+      {/* Pokémon Circle container */}
+      <div className={`${styles.spriteCircle} ${isShiny ? styles.shiny : isCaught ? styles.caught : ''}`}>
+        <img
+          src={(isShinyMode || isShiny) && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
+          alt={pokemon.name}
+          loading="lazy"
+          decoding="async"
+          className={`${styles.sprite} ${isMarked ? styles.active : ''}`}
+        />
+      </div>
+
+      {/* Dex ID */}
+      <span className={`${styles.pkId} ${isShiny ? styles.shiny : isCaught ? styles.caught : ''}`}>
+        {pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
+          ? pokemon.regionalNumber.toString().padStart(3, '0')
+          : formatSpeciesId(pokemon.speciesId || pokemon.id)}
+      </span>
+
+      {/* Name */}
+      <h3 className={`${styles.pkName} ${isMarked ? styles.active : ''}`}>
+        {pokemon.name} {isShiny && '✨'}
+      </h3>
+
+      {/* Types Chips */}
+      <div className={styles.typesRow}>
+        {pokemon.types.map((type) => (
+          <span
+            key={type}
+            className={styles.typeChip}
+            style={isMarked ? {
+              backgroundColor: TYPE_COLORS[type] || '#9ca3af',
+              color: '#ffffff',
+              borderColor: 'transparent'
+            } : {}}
+          >
+            {type}
+          </span>
+        ))}
+      </div>
+
+      {/* Eye icon trigger */}
+      <div
+        className={styles.eyeIcon}
+        onClick={(e) => {
+          e.stopPropagation();
+          onViewDetails(pokemon.id);
+        }}
+        title="View Stats & Details"
+      >
+        <Eye size={16} />
+      </div>
+    </div>
   );
 }, (prev, next) => {
-  // Only re-render if caught status, shiny status, or shinyMode changes
   return prev.isCaught === next.isCaught &&
          prev.isShiny === next.isShiny &&
          prev.isShinyMode === next.isShinyMode;
@@ -287,10 +174,10 @@ const TrackerCard = React.memo<TrackerCardProps>(({
 
 // ── MAIN CATCH TRACKER COMPONENT ──
 export default function CatchTracker() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
 
-  // Granular Zustand subscriptions - Prevents unnecessary re-renders when other values change
+  // Zustand Store variables
   const caughtPokemonIds = useCatchStore(state => state.caughtPokemonIds);
   const shinyPokemonIds = useCatchStore(state => state.shinyPokemonIds);
   const toggleCaught = useCatchStore(state => state.toggleCaught);
@@ -298,31 +185,32 @@ export default function CatchTracker() {
   const markAllCaught = useCatchStore(state => state.markAllCaught);
   const resetAll = useCatchStore(state => state.resetAll);
 
-  // TeamStore selector
   const selectedVersion = useTeamStore(state => state.selectedVersion);
   const setSelectedVersion = useTeamStore(state => state.setSelectedVersion);
   const isShinyMode = useTeamStore(state => state.isShinyMode);
 
-  // Local state
+  // Local filtering states
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [hideCaught, setHideCaught] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // Modal Confirmations
+  // Dynamic chunk rendering limit to guarantee instant page load (infinite scrolling)
+  const [visibleLimit, setVisibleLimit] = useState(40);
+
+  // Confirmations
   const [confirmMarkAllOpen, setConfirmMarkAllOpen] = useState(false);
   const [confirmResetOpen, setConfirmResetOpen] = useState(false);
 
-  // O(1) Search Set caches to eliminate heavy .includes() linear scans in grid loops
+  // Caching sets for performance
   const caughtSet = useMemo(() => new Set(caughtPokemonIds), [caughtPokemonIds]);
   const shinySet = useMemo(() => new Set(shinyPokemonIds), [shinyPokemonIds]);
 
-  // Version Variable mapping
   const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
   const queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
   const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
 
-  // GraphQL Query (loads up to 1025 standard pokemons for living dex virtualization)
+  // GraphQL query fetching listing data (cached in apollo for efficiency)
   const { data, loading, error } = useQuery<{
     pokemonList: { results: PokemonListItem[]; totalCount: number };
   }>(GET_POKEMON_LIST, {
@@ -339,7 +227,25 @@ export default function CatchTracker() {
   const pokemonList = data?.pokemonList?.results || [];
   const totalCount = data?.pokemonList?.totalCount || 0;
 
-  // Stable callback triggers using useCallback to maintain rigid ref stability for children
+  // Reset rendering limit when filter options change
+  useEffect(() => {
+    setVisibleLimit(40);
+  }, [search, typeFilter, hideCaught, selectedVersion]);
+
+  // Infinite Scroll Listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.scrollHeight - 300;
+      if (scrollPos >= threshold) {
+        setVisibleLimit((prev) => Math.min(prev + 40, pokemonList.length));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [pokemonList.length]);
+
   const handleToggleCaught = useCallback((id: number) => {
     toggleCaught(id);
   }, [toggleCaught]);
@@ -352,23 +258,26 @@ export default function CatchTracker() {
     setSelectedId(id);
   }, []);
 
-  // Filter application
+  // Filter local logic
   const filteredList = useMemo(() => {
     return pokemonList.filter((p) => {
-      if (hideCaught && caughtSet.has(p.id)) {
-        return false;
-      }
+      if (hideCaught && caughtSet.has(p.id)) return false;
       return true;
     });
   }, [pokemonList, hideCaught, caughtSet]);
+
+  // Compute visible subset
+  const visibleList = useMemo(() => {
+    return filteredList.slice(0, visibleLimit);
+  }, [filteredList, visibleLimit]);
 
   // Progress Calculations
   const totalPokemon = 1025;
   const nationalProgress = Math.min(100, Math.round((caughtPokemonIds.length / totalPokemon) * 100)) || 0;
   const nationalShinyProgress = Math.min(100, Math.round((shinyPokemonIds.length / totalPokemon) * 100)) || 0;
 
-  // Calculate local Regional progress
   const visiblePokemonIds = useMemo(() => pokemonList.map(p => p.id), [pokemonList]);
+  
   const caughtInActiveFilter = useMemo(() => {
     return visiblePokemonIds.filter(id => caughtSet.has(id)).length;
   }, [visiblePokemonIds, caughtSet]);
@@ -381,7 +290,6 @@ export default function CatchTracker() {
   const localProgress = Math.min(100, Math.round((caughtInActiveFilter / localTotal) * 100)) || 0;
   const localShinyProgress = Math.min(100, Math.round((shinyInActiveFilter / localTotal) * 100)) || 0;
 
-  // Mass action confirms
   const handleMarkAllConfirm = () => {
     markAllCaught(visiblePokemonIds);
     setConfirmMarkAllOpen(false);
@@ -393,429 +301,339 @@ export default function CatchTracker() {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ pb: 10 }}>
-      {/* ── Progress Header Section ── */}
-      <Card
-        elevation={0}
-        sx={{
-          mb: 4,
-          p: 3,
-          borderRadius: '16px',
-          border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-          background: `linear-gradient(135deg, ${isDark ? '#1e1b4b' : '#f0fdf4'} 0%, ${isDark ? '#0f172a' : '#f8fafc'} 100%)`,
-        }}
-      >
-        <Stack spacing={3}>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
-            <Box>
-              <Typography variant="h5" sx={{ fontWeight: 900, display: 'flex', alignItems: 'center', gap: 1, letterSpacing: -0.5 }}>
-                <CatchingPokemon sx={{ color: 'primary.main', fontSize: 32 }} />
-                LIVING DEX SHINY TRACKER
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontWeight: 600 }}>
-                Keep track of your normal and rare shiny catches. Click the card to mark Caught, click the ✨ to mark Shiny!
-              </Typography>
-            </Box>
+    <div className={styles.container}>
+      
+      {/* Progress Header Card */}
+      <div className={`${styles.progressCard} ${isDark ? styles.dark : styles.light}`}>
+        <div className={styles.trackerHeader}>
+          <div>
+            <h1 className={styles.title}>
+              <CheckSquare className={styles.pokeballIcon} />
+              Living Dex Shiny Tracker
+            </h1>
+            <p className={styles.desc}>
+              Keep track of your normal and rare shiny catches. Click the card to mark Caught, click the star to mark Shiny!
+            </p>
+          </div>
 
-            {/* Admin Action Buttons */}
-            <Stack direction="row" spacing={1.5}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<DoneAll />}
-                onClick={() => setConfirmMarkAllOpen(true)}
-                disabled={pokemonList.length === 0}
-                sx={{
-                  borderRadius: '10px',
-                  fontWeight: 800,
-                  fontSize: '0.8rem',
-                  letterSpacing: '0.5px',
-                  borderWidth: '2px',
-                  '&:hover': { borderWidth: '2px' }
-                }}
-              >
-                MARK CURRENT AS CAUGHT
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<RotateLeft />}
-                onClick={() => setConfirmResetOpen(true)}
-                sx={{
-                  borderRadius: '10px',
-                  fontWeight: 800,
-                  fontSize: '0.8rem',
-                  letterSpacing: '0.5px',
-                  borderWidth: '2px',
-                  '&:hover': { borderWidth: '2px' }
-                }}
-              >
-                RESET ALL PROGRESS
-              </Button>
-            </Stack>
-          </Box>
+          {/* Action buttons */}
+          <div className={styles.actions}>
+            <button
+              className={`${styles.actionBtn} ${styles.primary}`}
+              disabled={pokemonList.length === 0}
+              onClick={() => setConfirmMarkAllOpen(true)}
+            >
+              <CheckSquare size={14} />
+              Mark Current As Caught
+            </button>
+            
+            <button
+              className={`${styles.actionBtn} ${styles.danger}`}
+              onClick={() => setConfirmResetOpen(true)}
+            >
+              <RotateCcw size={14} />
+              Reset All Progress
+            </button>
+          </div>
+        </div>
 
-          {/* Dual Progress Bars */}
-          <Grid container spacing={4}>
-            {/* National Progress */}
-            <Grid size={{ xs: 12, md: selectedVersion !== 'ALL' ? 6 : 12 }}>
-              <Stack spacing={2}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 900, letterSpacing: 0.5, color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)', textTransform: 'uppercase' }}>
-                  🌐 NATIONAL LIVING DEX PROGRESS
-                </Typography>
+        {/* Dual Progress Bars */}
+        <div className={`${styles.progressRow} ${selectedVersion !== 'ALL' ? styles.dual : ''}`}>
+          
+          {/* National Progress */}
+          <div className={styles.progressGroup}>
+            <span className={styles.sectionTitle}>🌐 National Living Dex Progress</span>
 
-                {/* Regular */}
-                <Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, alignItems: 'center' }}>
-                    <Typography variant="caption" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <CheckCircle sx={{ fontSize: 14, color: '#10b981' }} /> Regular Dex Progress
-                    </Typography>
-                    <Typography variant="caption" sx={{ fontWeight: 900, color: 'primary.main' }}>
-                      Caught: {caughtPokemonIds.length} / {totalPokemon} ({nationalProgress}%)
-                    </Typography>
-                  </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={nationalProgress}
-                    sx={{
-                      height: 10,
-                      borderRadius: 5,
-                      bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                      '& .MuiLinearProgress-bar': {
-                        borderRadius: 5,
-                        background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
-                      }
-                    }}
-                  />
-                </Box>
+            {/* Regular */}
+            <div className={styles.progressItem}>
+              <div className={styles.labelRow}>
+                <span className={styles.label}>
+                  <CheckCircle2 size={13} style={{ color: '#10b981' }} />
+                  Regular Dex Progress
+                </span>
+                <span className={styles.value} style={{ color: 'var(--primary)' }}>
+                  Caught: {caughtPokemonIds.length} / {totalPokemon} ({nationalProgress}%)
+                </span>
+              </div>
+              <div className={styles.barBg}>
+                <div className={`${styles.barFill} ${styles.caught}`} style={{ width: `${nationalProgress}%` }} />
+              </div>
+            </div>
 
-                {/* Shiny */}
-                <Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, alignItems: 'center' }}>
-                    <Typography variant="caption" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <AutoAwesome sx={{ fontSize: 14, color: '#fbbf24' }} /> Shiny Dex Progress
-                    </Typography>
-                    <Typography variant="caption" sx={{ fontWeight: 900, color: '#d97706' }}>
-                      Shiny: {shinyPokemonIds.length} / {totalPokemon} ({nationalShinyProgress}%)
-                    </Typography>
-                  </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={nationalShinyProgress}
-                    sx={{
-                      height: 10,
-                      borderRadius: 5,
-                      bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                      '& .MuiLinearProgress-bar': {
-                        borderRadius: 5,
-                        background: 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)',
-                      }
-                    }}
-                  />
-                </Box>
-              </Stack>
-            </Grid>
+            {/* Shiny */}
+            <div className={styles.progressItem}>
+              <div className={styles.labelRow}>
+                <span className={styles.label}>
+                  <Sparkles size={13} style={{ color: '#fbbf24' }} />
+                  Shiny Dex Progress
+                </span>
+                <span className={styles.value} style={{ color: '#d97706' }}>
+                  Shiny: {shinyPokemonIds.length} / {totalPokemon} ({nationalShinyProgress}%)
+                </span>
+              </div>
+              <div className={styles.barBg}>
+                <div className={`${styles.barFill} ${styles.shiny}`} style={{ width: `${nationalShinyProgress}%` }} />
+              </div>
+            </div>
+          </div>
 
-            {/* Regional Progress */}
-            {selectedVersion !== 'ALL' && (
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Stack spacing={2}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 900, letterSpacing: 0.5, textTransform: 'uppercase', color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>
-                    ⚡ {selectedVersion} REGIONAL PROGRESS
-                  </Typography>
+          {/* Regional Progress */}
+          {selectedVersion !== 'ALL' && (
+            <div className={styles.progressGroup}>
+              <span className={styles.sectionTitle}>⚡ {selectedVersion} Regional Progress</span>
 
-                  {/* Regular Regional */}
-                  <Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, alignItems: 'center' }}>
-                      <Typography variant="caption" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <CheckCircle sx={{ fontSize: 14, color: '#10b981' }} /> Regional Regular Dex
-                      </Typography>
-                      <Typography variant="caption" sx={{ fontWeight: 900, color: 'secondary.main' }}>
-                        Caught: {caughtInActiveFilter} / {localTotal} ({localProgress}%)
-                      </Typography>
-                    </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={localProgress}
-                      sx={{
-                        height: 10,
-                        borderRadius: 5,
-                        bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                        '& .MuiLinearProgress-bar': {
-                          borderRadius: 5,
-                          background: 'linear-gradient(90deg, #10b981 0%, #06b6d4 100%)',
-                        }
-                      }}
-                    />
-                  </Box>
+              {/* Regional Regular */}
+              <div className={styles.progressItem}>
+                <div className={styles.labelRow}>
+                  <span className={styles.label}>
+                    <CheckCircle2 size={13} style={{ color: '#10b981' }} />
+                    Regional Regular Dex
+                  </span>
+                  <span className={styles.value} style={{ color: '#06b6d4' }}>
+                    Caught: {caughtInActiveFilter} / {localTotal} ({localProgress}%)
+                  </span>
+                </div>
+                <div className={styles.barBg}>
+                  <div className={`${styles.barFill} ${styles.caught}`} style={{ width: `${localProgress}%` }} />
+                </div>
+              </div>
 
-                  {/* Shiny Regional */}
-                  <Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, alignItems: 'center' }}>
-                      <Typography variant="caption" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <AutoAwesome sx={{ fontSize: 14, color: '#fbbf24' }} /> Regional Shiny Dex
-                      </Typography>
-                      <Typography variant="caption" sx={{ fontWeight: 900, color: '#d97706' }}>
-                        Shiny: {shinyInActiveFilter} / {localTotal} ({localShinyProgress}%)
-                      </Typography>
-                    </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={localShinyProgress}
-                      sx={{
-                        height: 10,
-                        borderRadius: 5,
-                        bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                        '& .MuiLinearProgress-bar': {
-                          borderRadius: 5,
-                          background: 'linear-gradient(90deg, #fbbf24 0%, #eab308 100%)',
-                        }
-                      }}
-                    />
-                  </Box>
-                </Stack>
-              </Grid>
-            )}
-          </Grid>
-        </Stack>
-      </Card>
+              {/* Regional Shiny */}
+              <div className={styles.progressItem}>
+                <div className={styles.labelRow}>
+                  <span className={styles.label}>
+                    <Sparkles size={13} style={{ color: '#fbbf24' }} />
+                    Regional Shiny Dex
+                  </span>
+                  <span className={styles.value} style={{ color: '#d97706' }}>
+                    Shiny: {shinyInActiveFilter} / {localTotal} ({localShinyProgress}%)
+                  </span>
+                </div>
+                <div className={styles.barBg}>
+                  <div className={`${styles.barFill} ${styles.shiny}`} style={{ width: `${localShinyProgress}%` }} />
+                </div>
+              </div>
+            </div>
+          )}
 
-      {/* ── Filter Toolbar Section ── */}
-      <Card
-        elevation={0}
-        sx={{
-          mb: 4,
-          p: 2,
-          borderRadius: '12px',
-          border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'}`,
-          bgcolor: isDark ? 'rgba(15, 23, 42, 0.4)' : 'rgba(255, 255, 255, 0.5)',
-          backdropFilter: 'blur(8px)'
-        }}
-      >
-        <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+        </div>
+      </div>
+
+      {/* Filter Card */}
+      <div className={styles.filterCard}>
+        <div className={styles.filterRow}>
+          
           {/* Game version dropdown */}
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="tracker-version-select-label" sx={{ fontWeight: 700 }}>GAME VERSION</InputLabel>
-              <Select
-                labelId="tracker-version-select-label"
-                id="tracker-version-select"
+          <div className={styles.formGroup}>
+            <span className={styles.inputLabel}>Game Version</span>
+            <div className={styles.selectWrapper}>
+              <select
                 value={selectedVersion}
-                label="GAME VERSION"
                 onChange={(e) => setSelectedVersion(e.target.value)}
-                sx={{
-                  borderRadius: '10px',
-                  fontWeight: 700,
-                }}
+                className={styles.selectField}
               >
-                <MenuItem value="ALL" sx={{ fontWeight: 800 }}>ALL VERSIONS</MenuItem>
+                <option value="ALL">ALL VERSIONS</option>
                 {GENERATION_VERSIONS.map((gen) => [
-                  <MenuItem key={gen.gen} disabled sx={{ fontWeight: 900, opacity: 0.8, color: 'primary.main', fontSize: '0.75rem', letterSpacing: 1, textTransform: 'uppercase' }}>
-                    {gen.gen}
-                  </MenuItem>,
-                  ...gen.rows.flatMap((row) => row.games).map((game) => (
-                    <MenuItem key={game.name} value={game.name} sx={{ pl: 4, fontWeight: 700 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: VERSION_COLORS[game.name] || '#ccc' }} />
+                  <optgroup key={gen.gen} label={gen.gen.toUpperCase()}>
+                    {gen.rows.flatMap((row) => row.games).map((game) => (
+                      <option key={game.name} value={game.name}>
                         {game.label}
-                      </Box>
-                    </MenuItem>
-                  ))
+                      </option>
+                    ))}
+                  </optgroup>
                 ])}
-              </Select>
-            </FormControl>
-          </Grid>
+              </select>
+            </div>
+          </div>
 
           {/* Type Filter */}
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="tracker-type-select-label" sx={{ fontWeight: 700 }}>TYPE</InputLabel>
-              <Select
-                labelId="tracker-type-select-label"
-                id="tracker-type-select"
+          <div className={styles.formGroup}>
+            <span className={styles.inputLabel}>Type</span>
+            <div className={styles.selectWrapper}>
+              <select
                 value={typeFilter}
-                label="TYPE"
                 onChange={(e) => setTypeFilter(e.target.value)}
-                sx={{ borderRadius: '10px', fontWeight: 700, textTransform: 'capitalize' }}
+                className={styles.selectField}
               >
-                <MenuItem value="" sx={{ fontWeight: 700 }}>All Types</MenuItem>
+                <option value="">All Types</option>
                 {Object.keys(TYPE_COLORS).map((type) => (
-                  <MenuItem key={type} value={type} sx={{ fontWeight: 700, textTransform: 'capitalize' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: TYPE_COLORS[type] }} />
-                      {type}
-                    </Box>
-                  </MenuItem>
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
                 ))}
-              </Select>
-            </FormControl>
-          </Grid>
+              </select>
+            </div>
+          </div>
 
           {/* Text Search */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <TextField
-              fullWidth
-              size="small"
+          <div className={styles.formGroup}>
+            <span className={styles.inputLabel}>Search</span>
+            <Search className={styles.searchIcon} size={14} />
+            <input
+              type="text"
               placeholder="Search by name or number..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search sx={{ color: 'text.disabled' }} />
-                    </InputAdornment>
-                  ),
-                  sx: { borderRadius: '10px', fontWeight: 700 }
-                }
+              className={styles.searchInput}
+            />
+          </div>
+
+          {/* Hide Caught Switch */}
+          <div className={styles.switchContainer}>
+            <label className={`${styles.switchLabel} ${hideCaught ? styles.active : ''}`}>
+              <div
+                className={`${styles.switchTrack} ${hideCaught ? styles.checked : ''}`}
+                onClick={() => setHideCaught(!hideCaught)}
+              />
+              HIDE CAUGHT
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Results Count Info Label */}
+      {!loading && !error && (
+        <span className={styles.infoLabel}>
+          Showing {filteredList.length} of {totalCount} Pokémon matching filters
+        </span>
+      )}
+
+      {/* Grid Container */}
+      {loading ? (
+        <div className={styles.grid}>
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                height: 260,
+                borderRadius: 16,
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid var(--border-main)',
+                animation: 'pulse 1.5s infinite ease-in-out'
               }}
             />
-          </Grid>
-
-          {/* Hide Caught Toggle */}
-          <Grid size={{ xs: 12, md: 2 }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={hideCaught}
-                  onChange={(e) => setHideCaught(e.target.checked)}
-                  color="success"
-                />
-              }
-              label={
-                <Typography variant="body2" sx={{ fontWeight: 800, color: hideCaught ? 'success.main' : 'text.secondary' }}>
-                  HIDE CAUGHT
-                </Typography>
-              }
-              sx={{ justifySelf: 'center' }}
-            />
-          </Grid>
-        </Grid>
-      </Card>
-
-      {/* ── Results Info Label ── */}
-      {!loading && !error && (
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 3, textAlign: 'center', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 700 }}>
-          Showing {filteredList.length} of {totalCount} Pokémon matching filters
-        </Typography>
-      )}
-
-      {/* ── Grid Container ── */}
-      {loading ? (
-        <Grid container spacing={3}>
-          {[...Array(12)].map((_, i) => (
-            <Grid key={i} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <Skeleton variant="rounded" height={260} sx={{ borderRadius: '16px' }} />
-            </Grid>
           ))}
-        </Grid>
+        </div>
       ) : error ? (
-        <Alert severity="error" sx={{ borderRadius: '12px' }}>
+        <div style={{
+          padding: 20,
+          borderRadius: 12,
+          backgroundColor: 'rgba(239, 68, 68, 0.08)',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          color: '#ef4444',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          fontWeight: 700
+        }}>
+          <AlertTriangle />
           Backend offline — please start the server on port 3000.
-        </Alert>
+        </div>
       ) : (
-        <Grid container spacing={3}>
-          <AnimatePresence mode="popLayout">
-            {filteredList.map((p) => {
-              return (
-                <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <motion.div
-                    layoutId={`pokemon-tracker-card-${p.id}`}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    style={{ height: '100%' }}
-                  >
-                    <TrackerCard
-                      pokemon={p}
-                      isCaught={caughtSet.has(p.id)}
-                      isShiny={shinySet.has(p.id)}
-                      isShinyMode={isShinyMode}
-                      onToggleCaught={handleToggleCaught}
-                      onToggleShiny={handleToggleShiny}
-                      onViewDetails={handleViewDetails}
-                    />
-                  </motion.div>
-                </Grid>
-              );
-            })}
-          </AnimatePresence>
+        <>
+          <div className={styles.grid}>
+            <AnimatePresence mode="popLayout">
+              {visibleList.map((p) => (
+                <motion.div
+                  key={p.id}
+                  layoutId={`pokemon-tracker-card-${p.id}`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  style={{ height: '100%' }}
+                >
+                  <TrackerCard
+                    pokemon={p}
+                    isCaught={caughtSet.has(p.id)}
+                    isShiny={shinySet.has(p.id)}
+                    isShinyMode={isShinyMode}
+                    onToggleCaught={handleToggleCaught}
+                    onToggleShiny={handleToggleShiny}
+                    onViewDetails={handleViewDetails}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
 
-          {filteredList.length === 0 && (
-            <Grid size={{ xs: 12 }}>
-              <Box sx={{ textAlign: 'center', py: 12, color: 'text.disabled' }}>
-                <HelpOutlined sx={{ fontSize: 60, opacity: 0.5, mb: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>No Pokémon match this catch filter.</Typography>
-                <Typography variant="body2" sx={{ fontWeight: 600, mt: 0.5 }}>
-                  Try toggling "Hide Caught" off or using a different search query.
-                </Typography>
-              </Box>
-            </Grid>
+            {filteredList.length === 0 && (
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '80px 0', color: 'var(--text-muted)' }}>
+                <HelpCircle size={48} style={{ opacity: 0.4, marginBottom: 12 }} />
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-secondary)' }}>No Pokémon match this catch filter.</h3>
+                <p style={{ fontSize: 13, fontWeight: 600, marginTop: 4 }}>Try toggling "Hide Caught" off or using a different search query.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Load More manual trigger (fallback if scroll doesn't fire) */}
+          {visibleLimit < filteredList.length && (
+            <div className={styles.loadMoreContainer}>
+              <button
+                className={styles.loadMoreBtn}
+                onClick={() => setVisibleLimit((prev) => Math.min(prev + 40, filteredList.length))}
+              >
+                Load More
+              </button>
+            </div>
           )}
-        </Grid>
+        </>
       )}
 
-      {/* ── Confirm Mark All Dialog ── */}
-      <Dialog
-        open={confirmMarkAllOpen}
-        onClose={() => setConfirmMarkAllOpen(false)}
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '16px', p: 1 }
-          }
-        }}
-      >
-        <DialogTitle sx={{ fontWeight: 800 }}>
-          <DoneAll color="primary" sx={{ verticalAlign: 'middle', mr: 1 }} />
-          Mark All as Caught?
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ fontWeight: 600 }}>
-            This will mark all <strong>{pokemonList.length} Pokémon</strong> currently matching your filters as <strong>caught</strong>. Do you want to proceed?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setConfirmMarkAllOpen(false)} color="inherit" sx={{ fontWeight: 700 }}>
-            CANCEL
-          </Button>
-          <Button onClick={handleMarkAllConfirm} variant="contained" sx={{ fontWeight: 800, borderRadius: '8px' }}>
-            YES, MARK ALL
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Confirm Mark All Dialog Backdrop Overlay */}
+      {confirmMarkAllOpen && (
+        <div className={styles.modalOverlay} onClick={() => setConfirmMarkAllOpen(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <h2 className={styles.modalTitle}>
+              <CheckSquare style={{ color: 'var(--primary)' }} />
+              Mark All as Caught?
+            </h2>
+            <p className={styles.modalDesc}>
+              This will mark all <strong>{pokemonList.length} Pokémon</strong> currently matching your filters as <strong>caught</strong>. Do you want to proceed?
+            </p>
+            <div className={styles.modalActions}>
+              <button className={`${styles.modalBtn} ${styles.cancel}`} onClick={() => setConfirmMarkAllOpen(false)}>
+                Cancel
+              </button>
+              <button className={`${styles.modalBtn} ${styles.confirm}`} onClick={handleMarkAllConfirm}>
+                Yes, Mark All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* ── Confirm Reset Dialog ── */}
-      <Dialog
-        open={confirmResetOpen}
-        onClose={() => setConfirmResetOpen(false)}
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '16px', p: 1 }
-          }
-        }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, color: 'error.main' }}>
-          <RotateLeft color="error" sx={{ verticalAlign: 'middle', mr: 1 }} />
-          Reset All catching progress?
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ fontWeight: 600 }}>
-            Are you absolutely sure you want to reset your catching progress? This will revert all <strong>{caughtPokemonIds.length} caught Pokémon</strong> and <strong>{shinyPokemonIds.length} shiny Pokémon</strong> back to uncaught. This action cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setConfirmResetOpen(false)} color="inherit" sx={{ fontWeight: 700 }}>
-            CANCEL
-          </Button>
-          <Button onClick={handleResetConfirm} variant="contained" color="error" sx={{ fontWeight: 800, borderRadius: '8px' }}>
-            YES, RESET ALL
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Confirm Reset Dialog Backdrop Overlay */}
+      {confirmResetOpen && (
+        <div className={styles.modalOverlay} onClick={() => setConfirmResetOpen(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <h2 className={styles.modalTitle}>
+              <RotateCcw style={{ color: '#ef4444' }} />
+              Reset All Catching Progress?
+            </h2>
+            <p className={styles.modalDesc}>
+              Are you absolutely sure you want to reset your catching progress? This will revert all <strong>{caughtPokemonIds.length} caught Pokémon</strong> and <strong>{shinyPokemonIds.length} shiny Pokémon</strong> back to uncaught. This action cannot be undone.
+            </p>
+            <div className={styles.modalActions}>
+              <button className={`${styles.modalBtn} ${styles.cancel}`} onClick={() => setConfirmResetOpen(false)}>
+                Cancel
+              </button>
+              <button className={`${styles.modalBtn} ${styles.confirm} ${styles.danger}`} onClick={handleResetConfirm}>
+                Yes, Reset All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* ── Stats Detail Modal drawer ── */}
-      <PokeDetail id={selectedId} onClose={() => setSelectedId(null)} onSelect={setSelectedId} />
-    </Container>
+      {/* Stats Detail Modal drawer */}
+      {selectedId !== null && (
+        <PokeDetail
+          pokemonId={selectedId}
+          onClose={() => setSelectedId(null)}
+          onSelectPokemonId={setSelectedId}
+        />
+      )}
+    </div>
   );
 }

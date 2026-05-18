@@ -9,10 +9,9 @@ import {
 import { createRoot } from "react-dom/client";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { MyPokedexProvider } from "./lib/MyPokedexContext";
-import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
-import "./index.css";
+import "./index.scss";
 
 // ─── Apollo Client ────────────────────────────────────────
 const client = new ApolloClient({
@@ -38,98 +37,39 @@ const client = new ApolloClient({
   }),
 });
 
-// ─── Color Mode Context ────────────────────────────────────
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = createContext({ mode: "dark", toggleColorMode: () => {} });
 export function useColorMode() {
   return useContext(ColorModeContext);
-}
-
-// ─── MUI Theme Factory ─────────────────────────────────────
-function buildTheme(mode: "light" | "dark") {
-  return createTheme({
-    palette: {
-      mode,
-      primary: { main: "#6366f1" },
-      secondary: { main: "#ec4899" },
-      background: {
-        default: mode === "dark" ? "#0f0f1a" : "#f8fafc",
-        paper: mode === "dark" ? "#1a1a2e" : "#ffffff",
-      },
-      text: {
-        primary: mode === "dark" ? "#f1f5f9" : "#0f172a",
-        secondary: mode === "dark" ? "#cbd5e1" : "#475569",
-      },
-    },
-    typography: {
-      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-      h1: { fontWeight: 900 },
-      h2: { fontWeight: 800 },
-      h3: { fontWeight: 700 },
-    },
-    shape: { borderRadius: 16 },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 12,
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: 1,
-          },
-        },
-      },
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            borderRadius: 24,
-            transition: "transform 0.2s, box-shadow 0.2s",
-          },
-        },
-      },
-      MuiChip: {
-        styleOverrides: {
-          root: { fontWeight: 700, fontSize: 10, letterSpacing: 1.5 },
-        },
-      },
-      MuiDialog: {
-        styleOverrides: {
-          paper: { borderRadius: 28 },
-        },
-      },
-    },
-  });
 }
 
 // ─── Root ──────────────────────────────────────────────────
 function Root() {
   const [mode, setMode] = useState<"light" | "dark">("dark");
 
-  // Sync mode with HTML class for Tailwind dark mode
+  // Sync mode with HTML class for local SCSS themes
   useEffect(() => {
     document.documentElement.classList.toggle("dark", mode === "dark");
+    document.documentElement.setAttribute("data-theme", mode);
   }, [mode]);
 
   const colorMode = useMemo(
     () => ({
+      mode,
       toggleColorMode: () =>
         setMode((prev) => (prev === "dark" ? "light" : "dark")),
     }),
-    [],
+    [mode],
   );
-  const theme = useMemo(() => buildTheme(mode), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ApolloProvider client={client}>
-          <MyPokedexProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </MyPokedexProvider>
-        </ApolloProvider>
-      </ThemeProvider>
+      <ApolloProvider client={client}>
+        <MyPokedexProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </MyPokedexProvider>
+      </ApolloProvider>
     </ColorModeContext.Provider>
   );
 }

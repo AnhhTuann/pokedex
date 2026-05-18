@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import styles from './NatureDex.module.scss';
 
 interface NatureItem {
   name: string;
@@ -69,33 +70,33 @@ export default function NatureDex() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+    <div className={styles.container}>
       {/* ── Header ── */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white uppercase mb-2">
+      <div className={styles.header}>
+        <h1 className={styles.title}>
           🌸 Nature Dex
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-md mx-auto">
+        <p className={styles.subtitle}>
           All 25 natures — stat multipliers, flavor preferences, and top Pokémon picks.
         </p>
       </div>
 
       {/* ── Controls ── */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center">
+      <div className={styles.controls}>
         {/* Search */}
-        <div className="relative flex-1 w-full">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+        <div className={styles.searchWrapper}>
+          <span className={styles.searchIcon}>🔍</span>
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search nature or stat..."
-            className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition backdrop-blur-sm"
+            className={styles.searchInput}
           />
         </div>
 
         {/* Stat filter pills */}
-        <div className="flex flex-wrap gap-2 justify-center">
+        <div className={styles.filterWrapper}>
           {STAT_FILTERS.map(f => {
             const style = f !== 'All' && f !== 'Neutral' ? STAT_STYLE[f] : null;
             const isActive = filter === f;
@@ -103,15 +104,12 @@ export default function NatureDex() {
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={cn(
-                  "px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all border",
-                  isActive
-                    ? "text-white border-transparent shadow-lg"
-                    : "text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 bg-transparent"
-                )}
+                className={styles.filterBtn}
                 style={isActive ? {
-                  backgroundColor: style?.color ?? (f === 'Neutral' ? '#64748b' : '#6366f1'),
-                  boxShadow: `0 4px 14px ${style?.color ?? '#6366f1'}44`,
+                  backgroundColor: style?.color ?? (f === 'Neutral' ? '#64748b' : 'var(--primary)'),
+                  borderColor: 'transparent',
+                  color: '#ffffff',
+                  boxShadow: `0 4px 14px ${style?.color ?? 'var(--primary)'}44`,
                 } : {}}
               >
                 {f === 'Neutral' ? '— Neutral' : (style ? `${style.label} ↑` : f)}
@@ -122,12 +120,12 @@ export default function NatureDex() {
       </div>
 
       {/* ── Count ── */}
-      <p className="text-center text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6">
+      <p className={styles.countText}>
         {filtered.length} / {NATURES.length} natures
       </p>
 
       {/* ── Grid ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className={styles.grid}>
         <AnimatePresence mode="popLayout">
           {filtered.map((nature, i) => {
             const isNeutral = nature.up === null;
@@ -144,67 +142,60 @@ export default function NatureDex() {
                 transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.3) }}
                 whileHover={{ y: -4 }}
               >
-                <div className={cn(
-                  "h-full flex flex-col gap-3 p-4 rounded-3xl border transition-all duration-300",
-                  "bg-white dark:bg-slate-900/50 backdrop-blur-sm",
-                  isNeutral
-                    ? "border-slate-200 dark:border-white/5"
-                    : "border-slate-200 dark:border-white/8 hover:border-opacity-50",
-                  !isNeutral && upStyle && `hover:shadow-lg`
-                )}
-                style={!isNeutral && upStyle ? {
-                  borderColor: `${upStyle.color}30`,
-                  boxShadow: undefined,
-                } : {}}
-                onMouseEnter={e => {
-                  if (!isNeutral && upStyle) {
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 24px ${upStyle.color}20`;
-                  }
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = '';
-                }}
+                <div 
+                  className={styles.card}
+                  style={!isNeutral && upStyle ? {
+                    borderColor: `${upStyle.color}30`,
+                  } : {}}
+                  onMouseEnter={e => {
+                    if (!isNeutral && upStyle) {
+                      e.currentTarget.style.boxShadow = `0 8px 24px ${upStyle.color}20`;
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.boxShadow = '';
+                  }}
                 >
                   {/* Name */}
-                  <div className="text-center">
-                    <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight">
+                  <div className={styles.cardHeader}>
+                    <h3 className={styles.natureName}>
                       {nature.name}
                     </h3>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5 leading-tight">
+                    <p className={styles.natureDesc}>
                       {nature.desc}
                     </p>
                   </div>
 
                   {/* Stat bars */}
                   {isNeutral ? (
-                    <div className="py-2 rounded-2xl bg-slate-100 dark:bg-white/5 text-center">
-                      <span className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                    <div className={styles.neutralBadge}>
+                      <span className={styles.neutralText}>
                         — Neutral —
                       </span>
                     </div>
                   ) : (
-                    <div className="flex gap-1.5">
+                    <div className={styles.statBars}>
                       {/* UP */}
                       <div
-                        className="flex-1 flex flex-col items-center justify-center py-2 rounded-2xl gap-0.5"
+                        className={styles.statBox}
                         style={{ backgroundColor: upStyle?.bg }}
                       >
-                        <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: upStyle?.color }}>
+                        <span className={styles.statLabel} style={{ color: upStyle?.color }}>
                           ▲ {upStyle?.label}
                         </span>
-                        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 truncate max-w-full px-1 text-center leading-tight">
+                        <span className={styles.statValue}>
                           {nature.up}
                         </span>
                       </div>
                       {/* DOWN */}
                       <div
-                        className="flex-1 flex flex-col items-center justify-center py-2 rounded-2xl gap-0.5 opacity-70"
-                        style={{ backgroundColor: downStyle?.bg }}
+                        className={styles.statBox}
+                        style={{ backgroundColor: downStyle?.bg, opacity: 0.7 }}
                       >
-                        <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: downStyle?.color }}>
+                        <span className={styles.statLabel} style={{ color: downStyle?.color }}>
                           ▼ {downStyle?.label}
                         </span>
-                        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 truncate max-w-full px-1 text-center leading-tight">
+                        <span className={styles.statValue}>
                           {nature.down}
                         </span>
                       </div>
@@ -213,34 +204,33 @@ export default function NatureDex() {
 
                   {/* Flavor */}
                   {!isNeutral && nature.likes && (
-                    <div className="flex gap-1.5">
-                      <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
+                    <div className={styles.flavorWrapper}>
+                      <div className={`${styles.flavorPill} ${styles.likes}`}>
                         <span className="text-xs">{FLAVOR_EMOJI[nature.likes]}</span>
-                        <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-400">{nature.likes}</span>
+                        <span className={styles.flavorText}>{nature.likes}</span>
                       </div>
-                      <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20">
+                      <div className={`${styles.flavorPill} ${styles.hates}`}>
                         <span className="text-xs">{FLAVOR_EMOJI[nature.hates!]}</span>
-                        <span className="text-[10px] font-black text-red-700 dark:text-red-400">{nature.hates}</span>
+                        <span className={styles.flavorText}>{nature.hates}</span>
                       </div>
                     </div>
                   )}
 
                   {/* Best for Pokémon */}
                   {nature.bestFor.length > 0 && (
-                    <div>
-                      <p className="text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest mb-1.5 text-center">
+                    <div className={styles.bestForSection}>
+                      <p className={styles.bestForTitle}>
                         Popular on
                       </p>
-                      <div className="flex flex-wrap gap-1.5 justify-center">
+                      <div className={styles.bestForGrid}>
                         {nature.bestFor.map(pk => (
-                          <div key={pk.id} className="flex items-center gap-1 px-2 py-0.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/8">
+                          <div key={pk.id} className={styles.pokemonPill}>
                             <img
                               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pk.id}.png`}
                               alt={pk.name}
-                              className="w-6 h-6 object-contain"
-                              style={{ imageRendering: 'pixelated' }}
+                              className={styles.sprite}
                             />
-                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 capitalize">
+                            <span className={styles.name}>
                               {pk.name}
                             </span>
                           </div>
@@ -257,10 +247,10 @@ export default function NatureDex() {
 
       {/* Empty state */}
       {filtered.length === 0 && (
-        <div className="text-center py-20 text-slate-400 dark:text-slate-600">
-          <div className="text-5xl mb-4">🔍</div>
-          <p className="font-black text-lg uppercase tracking-widest">No natures found</p>
-          <p className="text-sm font-medium mt-1">Try a different search or filter.</p>
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>🔍</div>
+          <p className={styles.emptyTitle}>No natures found</p>
+          <p className={styles.emptyDesc}>Try a different search or filter.</p>
         </div>
       )}
     </div>

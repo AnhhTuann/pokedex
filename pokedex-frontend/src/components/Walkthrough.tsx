@@ -1,103 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import DOMPurify from 'dompurify';
-import {
-  Box, Card, CardContent, Typography, MenuItem, TextField, Grid,
-  List, ListItemButton, ListItemText, Divider, Stack, Button, CircularProgress, alpha, useTheme,
-  ToggleButton, ToggleButtonGroup
-} from '@mui/material';
-import { ImportContacts, NavigateNext, NavigateBefore, Settings, AutoStories } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader } from 'lucide-react';
 import { VERSION_COLORS } from '../App';
+import styles from './Walkthrough.module.scss';
 
 const GET_WALKTHROUGHS = gql`
   query GetWalkthroughs($gameVersion: String!, $language: String!) {
     getWalkthroughs(gameVersion: $gameVersion, language: $language) {
-      id
-      gameVersion
-      chapterTitle
-      description
-      coverImage
-      content
-      order
-      language
+      id gameVersion chapterTitle description coverImage content order language
     }
   }
 `;
 
 const GAME_OPTIONS = [
-  { value: 'emerald', label: 'Emerald' },
-  { value: 'firered', label: 'FireRed' },
-  { value: 'leafgreen', label: 'LeafGreen' },
-  { value: 'red', label: 'Red' },
-  { value: 'blue', label: 'Blue' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'gold', label: 'Gold' },
-  { value: 'silver', label: 'Silver' },
-  { value: 'crystal', label: 'Crystal' },
-  { value: 'ruby', label: 'Ruby' },
-  { value: 'sapphire', label: 'Sapphire' },
-  { value: 'diamond', label: 'Diamond' },
-  { value: 'pearl', label: 'Pearl' },
-  { value: 'platinum', label: 'Platinum' },
-  { value: 'heartgold', label: 'HeartGold' },
-  { value: 'soulsilver', label: 'SoulSilver' },
-  { value: 'black', label: 'Black' },
-  { value: 'white', label: 'White' },
-  { value: 'black-2', label: 'Black 2' },
-  { value: 'white-2', label: 'White 2' },
-  { value: 'x', label: 'X' },
-  { value: 'y', label: 'Y' },
-  { value: 'omega-ruby', label: 'Omega Ruby' },
-  { value: 'alpha-sapphire', label: 'Alpha Sapphire' },
-  { value: 'sun', label: 'Sun' },
-  { value: 'moon', label: 'Moon' },
-  { value: 'ultra-sun', label: 'Ultra Sun' },
-  { value: 'ultra-moon', label: 'Ultra Moon' },
-  { value: 'lets-go-pikachu', label: "Let's Go Pikachu" },
-  { value: 'lets-go-eevee', label: "Let's Go Eevee" },
-  { value: 'sword', label: 'Sword' },
-  { value: 'shield', label: 'Shield' },
-  { value: 'brilliant-diamond', label: 'Brilliant Diamond' },
-  { value: 'shining-pearl', label: 'Shining Pearl' },
-  { value: 'legends-arceus', label: 'Legends: Arceus' },
-  { value: 'scarlet', label: 'Scarlet' },
-  { value: 'violet', label: 'Violet' },
-  { value: 'legends-za', label: 'Legends: Z-A' }
+  { value:'red',label:'Red' },{ value:'blue',label:'Blue' },{ value:'yellow',label:'Yellow' },
+  { value:'gold',label:'Gold' },{ value:'silver',label:'Silver' },{ value:'crystal',label:'Crystal' },
+  { value:'ruby',label:'Ruby' },{ value:'sapphire',label:'Sapphire' },{ value:'emerald',label:'Emerald' },
+  { value:'firered',label:'FireRed' },{ value:'leafgreen',label:'LeafGreen' },
+  { value:'diamond',label:'Diamond' },{ value:'pearl',label:'Pearl' },{ value:'platinum',label:'Platinum' },
+  { value:'heartgold',label:'HeartGold' },{ value:'soulsilver',label:'SoulSilver' },
+  { value:'black',label:'Black' },{ value:'white',label:'White' },
+  { value:'black-2',label:'Black 2' },{ value:'white-2',label:'White 2' },
+  { value:'x',label:'X' },{ value:'y',label:'Y' },
+  { value:'omega-ruby',label:'Omega Ruby' },{ value:'alpha-sapphire',label:'Alpha Sapphire' },
+  { value:'sun',label:'Sun' },{ value:'moon',label:'Moon' },
+  { value:'ultra-sun',label:'Ultra Sun' },{ value:'ultra-moon',label:'Ultra Moon' },
+  { value:'lets-go-pikachu',label:"Let's Go Pikachu" },{ value:'lets-go-eevee',label:"Let's Go Eevee" },
+  { value:'sword',label:'Sword' },{ value:'shield',label:'Shield' },
+  { value:'brilliant-diamond',label:'Brilliant Diamond' },{ value:'shining-pearl',label:'Shining Pearl' },
+  { value:'legends-arceus',label:'Legends: Arceus' },
+  { value:'scarlet',label:'Scarlet' },{ value:'violet',label:'Violet' },
+  { value:'legends-za',label:'Legends: Z-A' },
 ];
 
 export default function Walkthrough() {
-  const theme = useTheme();
   const navigate = useNavigate();
   const [gameVersion, setGameVersion] = useState('emerald');
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [selectedChapterId, setSelectedChapterId] = useState<number | null>(null);
 
-  const { data, loading } = useQuery(GET_WALKTHROUGHS, {
-    variables: { gameVersion, language }
-  });
-
+  const { data, loading } = useQuery(GET_WALKTHROUGHS, { variables: { gameVersion, language } });
   const chapters = data?.getWalkthroughs || [];
 
-  // Automatically select first chapter when list loads
   useEffect(() => {
-    if (chapters.length > 0) {
-      setSelectedChapterId(chapters[0].id);
-    } else {
-      setSelectedChapterId(null);
-    }
+    if (chapters.length > 0) setSelectedChapterId(chapters[0].id);
+    else setSelectedChapterId(null);
   }, [data]);
 
   const activeChapter = chapters.find((c: any) => c.id === selectedChapterId);
   const cleanHTML = activeChapter ? DOMPurify.sanitize(activeChapter.content) : '';
-  const gameColor = VERSION_COLORS[gameVersion] || theme.palette.primary.main;
+  const gameColor = VERSION_COLORS[gameVersion] || '#6366f1';
 
-  // Extract TOC and inject IDs
-  let toc: { id: string, text: string, level: number }[] = [];
+  let toc: { id: string; text: string; level: number }[] = [];
   let processedHTML = cleanHTML;
   if (activeChapter) {
     let index = 0;
-    processedHTML = cleanHTML.replace(/<(h[23])>(.*?)<\/\1>/gi, (match, tag, inner) => {
+    processedHTML = cleanHTML.replace(/<(h[23])>(.*?)<\/\1>/gi, (_, tag, inner) => {
       const id = `toc-heading-${index++}`;
       toc.push({ id, text: inner.replace(/<[^>]+>/g, ''), level: parseInt(tag[1]) });
       return `<${tag} id="${id}">${inner}</${tag}>`;
@@ -108,480 +68,190 @@ export default function Walkthrough() {
   const prevChapter = activeIndex > 0 ? chapters[activeIndex - 1] : null;
   const nextChapter = activeIndex >= 0 && activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
 
-  const handleScrollToHeading = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' });
 
   return (
-    <Box sx={{ maxWidth: '1400px', mx: 'auto', p: { xs: 1, md: 3 } }}>
-      {/* Page Header */}
-      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 950,
-              letterSpacing: '-1.5px',
-              color: 'primary.main',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              textTransform: 'uppercase'
-            }}
-          >
-            <AutoStories sx={{ fontSize: 36, color: 'primary.main' }} /> GAME WALKTHROUGHS
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, mt: 0.5 }}>
-            Khám phá cẩm nang và hướng dẫn vượt ải Pokémon toàn diện chuẩn esports.
-          </Typography>
-        </Box>
+    <div className={styles.container}>
+      {/* Header */}
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>
+            <BookOpen size={32}/> Game Walkthroughs
+          </h1>
+          <p className={styles.desc}>Khám phá cẩm nang và hướng dẫn vượt ải Pokémon toàn diện.</p>
+        </div>
+        <div className={styles.headerActions}>
+          {/* Language Toggle */}
+          <div className={styles.langToggle}>
+            {(['vi','en'] as const).map(l => (
+              <button key={l} onClick={() => setLanguage(l)}
+                className={`${styles.langBtn} ${language === l ? styles.active : ''}`}>
+                {l==='vi'?'🇻🇳 VI':'🇬🇧 EN'}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => navigate('/admin/walkthrough')} className={styles.cmsBtn}>
+            <Settings size={15}/> CMS Editor 🛠️
+          </button>
+        </div>
+      </div>
 
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
-          <ToggleButtonGroup
-            value={language}
-            exclusive
-            onChange={(_, newLang) => {
-              if (newLang !== null) setLanguage(newLang);
-            }}
-            size="small"
-            sx={{
-              bgcolor: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '10px',
-              p: '3px',
-              '& .MuiToggleButton-root': {
-                border: 'none',
-                borderRadius: '8px',
-                px: 2,
-                py: 0.6,
-                fontWeight: 800,
-                fontSize: '0.78rem',
-                letterSpacing: '0.5px',
-                color: 'text.secondary',
-                transition: 'all 0.2s ease',
-                '&.Mui-selected': {
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.12)',
-                  }
-                },
-                '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.05)',
-                  color: 'text.primary',
-                }
-              }
-            }}
-          >
-            <ToggleButton value="vi">
-              🇻🇳 VI
-            </ToggleButton>
-            <ToggleButton value="en">
-              🇬🇧 EN
-            </ToggleButton>
-          </ToggleButtonGroup>
+      <div className={styles.grid}>
+        {/* Left Panel */}
+        <div className={styles.leftPanel}>
+          <div style={{ padding:'20px 20px 16px' }}>
+            <span className={styles.panelTitle}>Select Version</span>
+            <div className={styles.selectWrapper}>
+              <span className={styles.selectColorBadge} style={{ background:gameColor, boxShadow:`0 0 10px ${gameColor}` }}/>
+              <select value={gameVersion} onChange={e => setGameVersion(e.target.value)} className={styles.selectField}>
+                {GAME_OPTIONS.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
+              </select>
+            </div>
+          </div>
 
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<Settings />}
-            onClick={() => navigate('/admin/walkthrough')}
-            sx={{ fontWeight: 800, borderRadius: '8px', border: '1.5px solid' }}
-          >
-            Go to CMS Editor 🛠️
-          </Button>
-        </Stack>
-      </Box>
+          <div style={{ height:1,background:'var(--border-main)',margin:'0 20px' }}/>
 
-      <Grid container spacing={4} sx={{ alignItems: 'stretch' }}>
-        {/* Left Panel: Game selector & Chapter index list */}
-        <Grid size={{ xs: 12, md: 3.5 }}>
-          <Card
-            sx={{
-              height: '100%',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
-              display: 'flex',
-              flexDirection: 'column'
-            }}
-          >
-            <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%', flexGrow: 1, overflow: 'hidden' }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 2, letterSpacing: -0.5, textTransform: 'uppercase' }}>
-                Select Version
-              </Typography>
-              
-              <TextField
-                select
-                value={gameVersion}
-                onChange={(e) => setGameVersion(e.target.value)}
-                fullWidth
-                slotProps={{
-                  select: {
-                    MenuProps: {
-                      PaperProps: {
-                        sx: {
-                          maxHeight: 350,
-                          overflowY: 'auto',
-                          '& .MuiMenu-list': {
-                            '&::-webkit-scrollbar': { width: '6px' },
-                            '&::-webkit-scrollbar-track': { background: 'transparent' },
-                            '&::-webkit-scrollbar-thumb': { 
-                              background: 'rgba(255, 255, 255, 0.15)', 
-                              borderRadius: '10px' 
-                            },
-                            '&::-webkit-scrollbar-thumb:hover': { 
-                              background: 'rgba(255, 255, 255, 0.25)' 
-                            },
-                            scrollbarWidth: 'thin',
-                            scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
-                          },
-                          '&::-webkit-scrollbar': { width: '6px' },
-                          '&::-webkit-scrollbar-track': { background: 'transparent' },
-                          '&::-webkit-scrollbar-thumb': { 
-                            background: 'rgba(255, 255, 255, 0.15)', 
-                            borderRadius: '10px' 
-                          },
-                          '&::-webkit-scrollbar-thumb:hover': { 
-                            background: 'rgba(255, 255, 255, 0.25)' 
-                          },
-                          scrollbarWidth: 'thin',
-                          scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
-                        },
-                      },
-                    } as any,
-                  },
-                  input: {
-                    startAdornment: (
-                      <Box
-                        sx={{
-                          width: '12px',
-                          height: '12px',
-                          borderRadius: '50%',
-                          bgcolor: gameColor,
-                          mr: 1.5,
-                          boxShadow: `0 0 10px ${alpha(gameColor, 0.8)}`
-                        }}
-                      />
-                    ),
-                    sx: { fontWeight: 800 }
-                  }
-                }}
-                sx={{ mb: 3 }}
-              >
-                {GAME_OPTIONS.map((game) => (
-                  <MenuItem key={game.value} value={game.value} sx={{ fontWeight: 800 }}>
-                    {game.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+          <div style={{ padding:'16px 20px 4px' }}>
+            <span className={styles.panelTitle}>Chapters List</span>
+          </div>
 
-              <Divider sx={{ mb: 3, opacity: 0.1 }} />
+          {loading ? (
+            <div style={{ padding:'40px 20px',display:'flex',justifyContent:'center' }}>
+              <Loader size={28} color={gameColor} style={{ animation:'spin 0.8s linear infinite' }}/>
+            </div>
+          ) : chapters.length === 0 ? (
+            <div style={{ padding:'40px 20px',textAlign:'center',opacity:0.5 }}>
+              <BookOpen size={36} style={{ marginBottom:8,opacity:0.5,color:'var(--text-secondary)' }}/>
+              <p style={{ fontSize:13,fontWeight:700,color:'var(--text-secondary)',margin:0 }}>No chapters found</p>
+              <p style={{ fontSize:11,color:'var(--text-muted)',marginTop:4 }}>Chưa có nội dung cho bản game này.</p>
+            </div>
+          ) : (
+            <div className={styles.chaptersList}>
+              {chapters.map((ch: any) => {
+                const isActive = selectedChapterId === ch.id;
+                return (
+                  <button key={ch.id} onClick={() => setSelectedChapterId(ch.id)}
+                    className={`${styles.chapterBtn} ${isActive ? styles.active : ''}`}
+                    style={{ border: isActive ? `1px solid ${gameColor}55` : 'transparent', background: isActive ? `${gameColor}1a` : 'transparent' }}>
+                    {isActive && <span className={styles.chapterIndicator} style={{ background:gameColor }}/>}
+                    <span className={styles.chapterText}>{ch.chapterTitle}</span>
+                    <ChevronRight size={14} className={styles.chapterIcon}/>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
-              <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1.5, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                Chapters List
-              </Typography>
+        {/* Right Panel */}
+        <div className={styles.rightPanel}>
+          <div style={{ padding:'32px 40px' }}>
+            {activeChapter ? (
+              <div>
+                {/* Cover Image */}
+                {activeChapter.coverImage && (
+                  <div className={styles.coverImageWrapper}>
+                    <img src={activeChapter.coverImage} className={styles.coverImage}/>
+                    <div className={styles.coverGradient}/>
+                  </div>
+                )}
 
-              {loading ? (
-                <Box sx={{ py: 6, display: 'flex', justifyContent: 'center' }}>
-                  <CircularProgress size={32} sx={{ color: gameColor }} />
-                </Box>
-              ) : chapters.length === 0 ? (
-                <Box sx={{ py: 6, textAlign: 'center', opacity: 0.5 }}>
-                  <ImportContacts sx={{ fontSize: 40, mb: 1, opacity: 0.6 }} />
-                  <Typography variant="body2" sx={{ fontWeight: 700 }}>No chapters found</Typography>
-                  <Typography variant="caption">Trang hướng dẫn cho bản game này chưa được cập nhật.</Typography>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    flexGrow: 1,
-                    overflowY: 'auto',
-                    overflowX: 'hidden', // Tắt hoàn toàn thanh cuộn ngang
-                    height: 0,
-                    pr: 0.5,
-                    scrollbarWidth: 'thin', // Chuẩn Firefox & modern Chrome
-                    scrollbarColor: '#475569 transparent', // Solid slate-600 cho Windows
-                    '&::-webkit-scrollbar': { width: '6px', height: '6px' },
-                    '&::-webkit-scrollbar-track': { background: 'transparent' },
-                    '&::-webkit-scrollbar-thumb': { 
-                      background: '#475569', 
-                      borderRadius: '10px' 
-                    },
-                    '&::-webkit-scrollbar-thumb:hover': { background: '#64748b' },
-                  }}
-                >
-                  <List sx={{ p: 0 }}>
-                    {chapters.map((chapter: any) => {
-                      const isActive = selectedChapterId === chapter.id;
-                      return (
-                        <ListItemButton
-                          key={chapter.id}
-                          onClick={() => setSelectedChapterId(chapter.id)}
-                          sx={{
-                            borderRadius: '12px',
-                            mb: 1,
-                            py: 1.2,
-                            px: 2,
-                            bgcolor: isActive ? alpha(gameColor, 0.12) : 'transparent',
-                            color: isActive ? '#ffffff' : 'text.secondary',
-                            border: '1px solid',
-                            borderColor: isActive ? alpha(gameColor, 0.3) : 'transparent',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            '&:hover': {
-                              bgcolor: isActive ? alpha(gameColor, 0.16) : 'action.hover',
-                              color: isActive ? '#ffffff' : 'text.primary',
-                              transform: 'translateX(4px)'
-                            },
-                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                            ...(isActive && {
-                              '&::before': {
-                                content: '""',
-                                position: 'absolute',
-                                left: 0,
-                                top: '20%',
-                                height: '60%',
-                                width: '4px',
-                                borderRadius: '4px',
-                                backgroundColor: gameColor,
-                              }
-                            })
-                          }}
-                        >
-                          <ListItemText
-                            primary={
-                              <Typography sx={{ fontWeight: isActive ? 850 : 600, fontSize: '0.88rem', wordBreak: 'break-word' }}>
-                                {chapter.chapterTitle}
-                              </Typography>
-                            }
-                          />
-                          <NavigateNext fontSize="small" sx={{ opacity: isActive ? 1 : 0.3, ml: 1, flexShrink: 0 }} />
-                        </ListItemButton>
-                      );
-                    })}
-                  </List>
-                </Box>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
+                {/* Chapter Header */}
+                <div className={styles.chapterMeta}>
+                  <span className={styles.orderBadge} style={{ background:`${gameColor}33`, border:`1px solid ${gameColor}66`, color:gameColor }}>
+                    Chapter {activeChapter.order}
+                  </span>
+                  <h2 className={styles.chapterTitle}>{activeChapter.chapterTitle}</h2>
+                </div>
 
-        {/* Right Panel: Content reading area */}
-        <Grid size={{ xs: 12, md: 8.5 }}>
-          <Card
-            sx={{
-              height: '100%',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
-              bgcolor: 'rgba(13, 13, 21, 0.4)',
-              minHeight: '520px'
-            }}
-          >
-            <CardContent sx={{ p: { xs: 2.5, md: 4 } }}>
-              {activeChapter ? (
-                <Box>
-                  {/* Hero Banner with Cover Image */}
-                  {activeChapter.coverImage && (
-                    <Box 
-                      sx={{ 
-                        width: '100%', 
-                        height: { xs: '200px', md: '300px' },
-                        mb: 4,
-                        borderRadius: '16px',
-                        overflow: 'hidden',
-                        position: 'relative',
-                        boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
-                      }}
-                    >
-                      <Box 
-                        component="img"
-                        src={activeChapter.coverImage}
-                        sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                      <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }} />
-                    </Box>
-                  )}
+                {activeChapter.description && (
+                  <p className={styles.chapterDesc} style={{ borderLeft:`4px solid ${gameColor}` }}>
+                    {activeChapter.description}
+                  </p>
+                )}
 
-                  {/* Chapter Header */}
-                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Box sx={{ px: 1.5, py: 0.5, borderRadius: '6px', bgcolor: alpha(gameColor, 0.2), border: `1px solid ${alpha(gameColor, 0.4)}` }}>
-                      <Typography variant="caption" sx={{ color: gameColor, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Chapter {activeChapter.order}
-                      </Typography>
-                    </Box>
-                    <Typography variant="h4" sx={{ fontWeight: 950, letterSpacing: -0.5, fontFamily: '"Be Vietnam Pro", "Inter", sans-serif' }}>
-                      {activeChapter.chapterTitle}
-                    </Typography>
-                  </Stack>
-                  
-                  {activeChapter.description && (
-                    <Typography variant="subtitle1" sx={{ color: 'text.secondary', fontWeight: 600, mb: 3, fontStyle: 'italic', borderLeft: `4px solid ${gameColor}`, pl: 2 }}>
-                      {activeChapter.description}
-                    </Typography>
-                  )}
-                  
-                  {/* Table of Contents */}
-                  {toc.length > 0 && (
-                    <Box sx={{ mb: 4, p: 3, borderRadius: '12px', bgcolor: alpha(gameColor, 0.05), border: `1px solid ${alpha(gameColor, 0.15)}` }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 2, textTransform: 'uppercase', letterSpacing: '1px', color: gameColor }}>
-                        Nội dung chính
-                      </Typography>
-                      <List sx={{ p: 0, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                        {toc.map((item) => (
-                          <Box 
-                            key={item.id} 
-                            onClick={() => handleScrollToHeading(item.id)}
-                            sx={{ 
-                              pl: item.level === 3 ? 3 : 0, 
-                              cursor: 'pointer',
-                              color: 'text.secondary',
-                              transition: 'all 0.2s',
-                              '&:hover': { color: gameColor, transform: 'translateX(4px)' }
-                            }}
-                          >
-                            <Typography sx={{ fontSize: item.level === 3 ? '0.85rem' : '0.95rem', fontWeight: item.level === 2 ? 700 : 500 }}>
-                              • {item.text}
-                            </Typography>
-                          </Box>
-                        ))}
-                      </List>
-                    </Box>
-                  )}
-                  
-                  <Divider sx={{ mb: 4, opacity: 0.1 }} />
+                {/* TOC */}
+                {toc.length > 0 && (
+                  <div className={styles.toc} style={{ background:`${gameColor}0d`, border:`1px solid ${gameColor}26` }}>
+                    <span className={styles.tocTitle} style={{ color:gameColor }}>Nội dung chính</span>
+                    <div className={styles.tocList}>
+                      {toc.map(item => (
+                        <div key={item.id} onClick={() => scrollTo(item.id)}
+                          className={`${styles.tocItem} ${item.level === 3 ? styles.level3 : ''}`}
+                          onMouseEnter={e => { (e.target as HTMLElement).style.color=gameColor; }}
+                          onMouseLeave={e => { (e.target as HTMLElement).style.color='var(--text-secondary)'; }}>
+                          • {item.text}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-                  {/* Sanitized HTML Output Canvas with Enhanced Typography & Scoped Styling */}
-                  <Box
-                    dangerouslySetInnerHTML={{ __html: processedHTML }}
-                    sx={{
-                      fontFamily: '"Be Vietnam Pro", "Inter", sans-serif',
-                      color: 'text.primary',
-                      '& h1': { display: 'none !important' }, // Ẩn hoàn toàn H1 trùng lặp bằng !important
-                      '& h2': { 
-                        color: gameColor, 
-                        fontSize: '1.5rem', 
-                        fontWeight: 800, 
-                        mt: 4, 
-                        mb: 2,
-                        borderBottom: '1px solid rgba(255,255,255,0.08)',
-                        pb: 1,
-                        fontFamily: '"Be Vietnam Pro", "Inter", sans-serif'
-                      },
-                      '& h3': { 
-                        fontSize: '1.2rem', 
-                        fontWeight: 700, 
-                        mt: 3, 
-                        mb: 1.5,
-                        fontFamily: '"Be Vietnam Pro", "Inter", sans-serif'
-                      },
-                      '& p': { 
-                        fontSize: '1rem', 
-                        lineHeight: 1.8, 
-                        color: 'text.secondary', 
-                        mb: 2.5 
-                      },
-                      '& strong': { color: 'text.primary', fontWeight: 700 },
-                      '& ul, & ol': { mb: 2.5, paddingLeft: '1.5rem', color: 'text.secondary', lineHeight: 1.8 },
-                      '& li': { mb: 0.5 },
-                      '& table': { 
-                        width: '100%', 
-                        borderCollapse: 'collapse', 
-                        my: 3,
-                        fontSize: '0.95rem',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        background: 'rgba(15, 15, 25, 0.3)'
-                      },
-                      '& th': { 
-                        background: alpha(gameColor, 0.08), 
-                        color: 'text.primary', 
-                        fontWeight: 800, 
-                        p: 2, 
-                        textAlign: 'left',
-                        textTransform: 'uppercase',
-                        fontSize: '0.85rem',
-                        letterSpacing: '0.5px',
-                        borderBottom: `2px solid ${alpha(gameColor, 0.3)}`
-                      },
-                      '& td': { 
-                        p: 2, 
-                        borderBottom: '1px solid rgba(255,255,255,0.05)',
-                        color: 'text.secondary',
-                        verticalAlign: 'middle'
-                      },
-                      '& tbody tr:hover': { background: 'rgba(255,255,255,0.02)' },
-                      '& img': {
-                        maxWidth: '64px',
-                        display: 'inline-block',
-                        verticalAlign: 'middle',
-                        margin: '0 4px',
-                        transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                        filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))'
-                      },
-                      '& img:hover': {
-                        transform: 'scale(1.2) translateY(-2px)',
-                        filter: `drop-shadow(0 8px 12px ${alpha(gameColor, 0.4)})`
-                      },
-                      '& blockquote': {
-                        borderLeft: `4px solid ${gameColor}`,
-                        padding: '12px 20px',
-                        margin: '20px 0',
-                        backgroundColor: alpha(gameColor, 0.05),
-                        borderRadius: '0 8px 8px 0',
-                        color: 'text.secondary',
-                        fontStyle: 'italic',
-                        '& strong': { color: gameColor }
-                      }
-                    }}
-                  />
+                <div className={styles.contentDivider}/>
 
-                  {/* Footer Navigation */}
-                  <Divider sx={{ mt: 6, mb: 4, opacity: 0.1 }} />
-                  <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                    {prevChapter ? (
-                      <Button
-                        startIcon={<NavigateBefore />}
-                        onClick={() => setSelectedChapterId(prevChapter.id)}
-                        sx={{ color: 'text.secondary', fontWeight: 700, p: 2, borderRadius: '12px', '&:hover': { bgcolor: alpha(gameColor, 0.1), color: gameColor } }}
-                      >
-                        <Box sx={{ textAlign: 'left' }}>
-                          <Typography variant="caption" sx={{ display: 'block', opacity: 0.6 }}>Chương trước</Typography>
-                          <Typography variant="body2">{prevChapter.chapterTitle}</Typography>
-                        </Box>
-                      </Button>
-                    ) : <Box />}
-                    
-                    {nextChapter ? (
-                      <Button
-                        endIcon={<NavigateNext />}
-                        onClick={() => setSelectedChapterId(nextChapter.id)}
-                        sx={{ color: 'text.secondary', fontWeight: 700, p: 2, borderRadius: '12px', '&:hover': { bgcolor: alpha(gameColor, 0.1), color: gameColor } }}
-                      >
-                        <Box sx={{ textAlign: 'right' }}>
-                          <Typography variant="caption" sx={{ display: 'block', opacity: 0.6 }}>Chương tiếp</Typography>
-                          <Typography variant="body2">{nextChapter.chapterTitle}</Typography>
-                        </Box>
-                      </Button>
-                    ) : <Box />}
-                  </Stack>
-                </Box>
-              ) : (
-                <Box sx={{ py: 12, textAlign: 'center', opacity: 0.5 }}>
-                  <AutoStories sx={{ fontSize: 64, mb: 2, color: 'text.secondary' }} />
-                  <Typography variant="h5" sx={{ fontWeight: 800 }}>Vui lòng chọn chương</Typography>
-                  <Typography variant="body2">Hãy chọn một chương hướng dẫn ở danh sách bên trái để đọc nội dung chi tiết.</Typography>
-                </Box>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+                {/* Content */}
+                <div className="walkthrough-content" dangerouslySetInnerHTML={{ __html: processedHTML }}
+                  style={{ fontFamily:'"Be Vietnam Pro","Inter",sans-serif',color:'var(--text-primary)',lineHeight:1.8 }}
+                />
+
+                {/* Footer Nav */}
+                <div className={styles.contentDivider} style={{ margin:'40px 0 24px' }}/>
+                <div className={styles.footerNav}>
+                  {prevChapter ? (
+                    <button onClick={() => setSelectedChapterId(prevChapter.id)}
+                      className={`${styles.navBtn} ${styles.left}`}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${gameColor}1a`; (e.currentTarget as HTMLElement).style.color=gameColor; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.color='var(--text-secondary)'; }}>
+                      <ChevronLeft size={18}/>
+                      <div>
+                        <span className={styles.navBtnSub}>Chương trước</span>
+                        <span className={styles.navBtnTitle}>{prevChapter.chapterTitle}</span>
+                      </div>
+                    </button>
+                  ) : <div/>}
+                  {nextChapter ? (
+                    <button onClick={() => setSelectedChapterId(nextChapter.id)}
+                      className={`${styles.navBtn} ${styles.right}`}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${gameColor}1a`; (e.currentTarget as HTMLElement).style.color=gameColor; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.color='var(--text-secondary)'; }}>
+                      <div>
+                        <span className={styles.navBtnSub}>Chương tiếp</span>
+                        <span className={styles.navBtnTitle}>{nextChapter.chapterTitle}</span>
+                      </div>
+                      <ChevronRight size={18}/>
+                    </button>
+                  ) : <div/>}
+                </div>
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <BookOpen size={64} style={{ marginBottom:16,color:'var(--text-secondary)' }}/>
+                <h3 className={styles.emptyStateTitle}>Vui lòng chọn chương</h3>
+                <p className={styles.emptyStateText}>Chọn một chương hướng dẫn ở danh sách bên trái.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Walkthrough content CSS styles */}
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .walkthrough-content h1 { display:none!important; }
+        .walkthrough-content h2 { color:${gameColor};font-size:1.5rem;font-weight:800;margin-top:2.5rem;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.5rem; }
+        .walkthrough-content h3 { font-size:1.15rem;font-weight:700;margin-top:2rem;margin-bottom:0.75rem;color:var(--text-primary); }
+        .walkthrough-content p { font-size:1rem;line-height:1.8;color:var(--text-secondary);margin-bottom:1.25rem; }
+        .walkthrough-content strong { color:var(--text-primary);font-weight:700; }
+        .walkthrough-content ul,.walkthrough-content ol { margin-bottom:1.25rem;padding-left:1.5rem;color:var(--text-secondary);line-height:1.8; }
+        .walkthrough-content li { margin-bottom:0.25rem; }
+        .walkthrough-content table { width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.95rem;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.15);border:1px solid rgba(255,255,255,0.08);background:rgba(15,15,25,0.3); }
+        .walkthrough-content th { background:${gameColor}14;color:var(--text-primary);font-weight:800;padding:12px 16px;text-align:left;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;border-bottom:2px solid ${gameColor}4d; }
+        .walkthrough-content td { padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-secondary);vertical-align:middle; }
+        .walkthrough-content tbody tr:hover { background:rgba(255,255,255,0.02); }
+        .walkthrough-content img { max-width:64px;display:inline-block;vertical-align:middle;margin:0 4px;transition:transform 0.2s,filter 0.2s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
+        .walkthrough-content img:hover { transform:scale(1.2) translateY(-2px);filter:drop-shadow(0 8px 12px ${gameColor}66); }
+        .walkthrough-content blockquote { border-left:4px solid ${gameColor};padding:12px 20px;margin:20px 0;background:${gameColor}0d;border-radius:0 8px 8px 0;color:var(--text-secondary);font-style:italic; }
+      `}</style>
+    </div>
   );
 }

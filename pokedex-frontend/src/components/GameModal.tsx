@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Dialog, DialogContent, Box, Typography, TextField, Button,
-  IconButton, Stack, alpha, useTheme, CircularProgress
-} from '@mui/material';
-import { Close, Refresh, EmojiEvents, SentimentDissatisfied } from '@mui/icons-material';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, RefreshCw, Trophy, Frown } from 'lucide-react';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON_DETAIL } from './PokeDetail';
-import { motion } from 'motion/react';
+import styles from './GameModal.module.scss';
 
 interface GameModalProps { onClose: () => void; }
 
 export default function GameModal({ onClose }: GameModalProps) {
-  const theme = useTheme();
   const [targetId, setTargetId] = useState<number | null>(null);
   const [guess, setGuess] = useState('');
   const [revealed, setRevealed] = useState(false);
   const [status, setStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+  const [wrongAnim, setWrongAnim] = useState(false);
 
   const { data, loading } = useQuery(GET_POKEMON_DETAIL, { variables: { id: targetId }, skip: !targetId });
   const pokemon = data?.pokemon;
@@ -34,148 +31,102 @@ export default function GameModal({ onClose }: GameModalProps) {
       setRevealed(true); setStatus('won');
     } else {
       setStatus('lost');
+      setWrongAnim(true);
+      setTimeout(() => setWrongAnim(false), 500);
     }
   };
 
   return (
-    <Dialog
-      open
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      slotProps={{
-        paper: {
-          sx: {
-            borderRadius: '16px',
-            overflow: 'hidden',
-            border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)',
-            boxShadow: '0 24px 48px rgba(0,0,0,0.25)',
-          }
-        }
-      }}
-    >
-      <Box sx={{ background: `linear-gradient(135deg, ${alpha('#6366f1', 0.15)} 0%, ${alpha('#ec4899', 0.08)} 100%)`, p: 3 }}>
-        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: -0.5 }}>
-            🎮 Who's That Pokémon?
-          </Typography>
-          <IconButton onClick={onClose} size="small"><Close /></IconButton>
-        </Stack>
-      </Box>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className={styles.overlay}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ type: 'spring', damping: 24, stiffness: 200 }}
+          onClick={e => e.stopPropagation()}
+          className={styles.modalCard}
+        >
+          {/* Header */}
+          <div className={styles.header}>
+            <span className={styles.title}>🎮 Who's That Pokémon?</span>
+            <button onClick={onClose} className={styles.closeBtn}>
+              <X size={16}/>
+            </button>
+          </div>
 
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pt: 4, pb: 4, gap: 3 }}>
-        {/* Silhouette */}
-        <Box sx={{ width: 200, height: 200, borderRadius: '50%', bgcolor: alpha(theme.palette.primary.main, 0.08), display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-          {loading || !pokemon ? (
-            <CircularProgress color="primary" />
-          ) : (
-            <Box
-              component="img"
-              src={pokemon.image}
-              alt="???"
-              sx={{
-                width: 150, height: 150, objectFit: 'contain',
-                filter: revealed ? 'drop-shadow(0 8px 24px rgba(99,102,241,0.4))' : 'brightness(0)',
-                transition: 'filter 1s ease',
-              }}
-            />
-          )}
-          {revealed && pokemon && (
-            <motion.div
-              initial={{ scale: 0, rotate: -15 }}
-              animate={{ scale: 1, rotate: 10 }}
-              style={{
-                position: 'absolute', top: 4, right: 4,
-                background: '#6366f1', color: '#fff',
-                fontWeight: 900, fontSize: 10, textTransform: 'uppercase' as const,
-                letterSpacing: 1, padding: '4px 10px', borderRadius: 20,
-              }}
-            >
-              {pokemon.name}!
-            </motion.div>
-          )}
-        </Box>
+          {/* Body */}
+          <div className={styles.body}>
+            {/* Silhouette Circle */}
+            <div className={styles.silhouetteCircle}>
+              {loading || !pokemon ? (
+                <div style={{ width: 40, height: 40, border: '3px solid #6366f1', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}/>
+              ) : (
+                <img src={pokemon.image} alt="???"
+                  className={styles.pokemonImage}
+                  style={{ filter: revealed ? 'drop-shadow(0 8px 24px rgba(99,102,241,0.4))' : 'brightness(0)' }}
+                />
+              )}
+              {revealed && pokemon && (
+                <motion.div initial={{ scale: 0, rotate: -15 }} animate={{ scale: 1, rotate: 10 }}
+                  className={styles.revealedTag}>
+                  {pokemon.name}!
+                </motion.div>
+              )}
+            </div>
 
-        {/* Input or Result */}
-        {!revealed ? (
-          <Box component="form" onSubmit={handleGuess} sx={{ width: '100%', maxWidth: 360 }}>
-            <Stack spacing={2}>
-              <TextField
-                value={guess}
-                onChange={e => setGuess(e.target.value)}
-                placeholder="Enter Pokémon name…"
-                fullWidth autoFocus
-                size="medium"
-                error={status === 'lost'}
-                helperText={status === 'lost' ? 'Wrong! Try again.' : ''}
-                slotProps={{ input: { sx: { borderRadius: '10px', fontWeight: 700 } } }}
-              />
-              <Stack direction="row" spacing={2}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  sx={{
-                    borderRadius: '10px',
-                    fontWeight: 800,
-                    fontSize: 14,
-                    height: '46px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    boxShadow: '0 4px 14px rgba(99, 102, 241, 0.3)'
-                  }}
-                >
-                  Guess!
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => { setRevealed(true); setStatus('lost'); }}
-                  sx={{
-                    borderRadius: '10px',
-                    fontWeight: 800,
-                    fontSize: 14,
-                    height: '46px',
-                    px: 3,
-                    whiteSpace: 'nowrap',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}
-                >
-                  Give Up
-                </Button>
-              </Stack>
-            </Stack>
-          </Box>
-        ) : (
-          <Stack sx={{ alignItems: 'center' }} spacing={2}>
-            {status === 'won' ? (
-              <Stack sx={{ alignItems: 'center' }} spacing={0.5}>
-                <EmojiEvents sx={{ fontSize: 48, color: '#eab308' }} />
-                <Typography variant="h5" sx={{ fontWeight: 900, color: '#eab308' }}>You got it!</Typography>
-              </Stack>
+            {/* Input / Result */}
+            {!revealed ? (
+              <form onSubmit={handleGuess} className={styles.form}>
+                <motion.input
+                  animate={wrongAnim ? { x: [-6, 6, -4, 4, 0] } : { x: 0 }}
+                  transition={{ duration: 0.4 }}
+                  value={guess}
+                  onChange={e => setGuess(e.target.value)}
+                  placeholder="Enter Pokémon name…"
+                  autoFocus
+                  className={styles.input}
+                  style={{ border: `1px solid ${status === 'lost' ? '#ef4444' : 'var(--border-main)'}` }}
+                />
+                {status === 'lost' && <span className={styles.errorText}>Wrong! Try again.</span>}
+                <div className={styles.btnRow}>
+                  <button type="submit" className={styles.submitBtn}>
+                    Guess!
+                  </button>
+                  <button type="button" onClick={() => { setRevealed(true); setStatus('lost'); }}
+                    className={styles.giveUpBtn}>
+                    Give Up
+                  </button>
+                </div>
+              </form>
             ) : (
-              <Stack sx={{ alignItems: 'center' }} spacing={0.5}>
-                <SentimentDissatisfied sx={{ fontSize: 48, color: 'text.disabled' }} />
-                <Typography variant="h6" sx={{ fontWeight: 700 }} color="text.secondary">Better luck next time!</Typography>
-                <Typography variant="body2" sx={{ textTransform: 'capitalize', fontWeight: 700 }} color="text.disabled">
-                  It was: {pokemon?.name}
-                </Typography>
-              </Stack>
+              <div className={styles.resultContainer}>
+                {status === 'won' ? (
+                  <>
+                    <Trophy size={48} color="#eab308"/>
+                    <span className={styles.winnerTitle}>You got it!</span>
+                  </>
+                ) : (
+                  <>
+                    <Frown size={48} color="var(--text-muted)"/>
+                    <span className={styles.loserTitle}>Better luck next time!</span>
+                    <span className={styles.correctAnswer}>It was: {pokemon?.name}</span>
+                  </>
+                )}
+                <button onClick={newRound} className={styles.playAgainBtn}>
+                  <RefreshCw size={16}/> Play Again
+                </button>
+              </div>
             )}
-            <Button
-              variant="contained"
-              startIcon={<Refresh />}
-              onClick={newRound}
-              size="large"
-              sx={{ borderRadius: 3, fontWeight: 800, mt: 1, px: 4 }}
-            >
-              Play Again
-            </Button>
-          </Stack>
-        )}
-      </DialogContent>
-    </Dialog>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

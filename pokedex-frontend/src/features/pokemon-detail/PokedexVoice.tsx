@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, Square, AudioLines, Volume2 } from 'lucide-react';
 import { Button } from '../../components/common/Button';
+import styles from './PokemonDetailDialog.module.scss';
 
 interface PokedexVoiceProps {
   description: string;
@@ -80,17 +81,17 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-slate-900/40 p-5 border border-white/5 backdrop-blur-md">
+    <div className={styles.voiceContainer}>
       {/* Soundwave animation */}
       <AnimatePresence>
         {isSpeaking && !isPaused && (
-          <div className="absolute top-4 right-4 flex items-end gap-1 h-6">
+          <div className={styles.soundwaves}>
             {[0, 1, 2, 3, 4].map((i) => (
               <motion.div
                 key={i}
                 animate={{ height: [4, 20, 8, 24, 6] }}
                 transition={{ duration: 1, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
-                className="w-1 rounded-full"
+                className={styles.soundwaveBar}
                 style={{ backgroundColor: accentColor }}
               />
             ))}
@@ -98,20 +99,20 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
         )}
       </AnimatePresence>
 
-      <div className="flex items-center gap-2 mb-3 text-slate-500 uppercase tracking-widest text-[10px] font-black">
+      <div className={styles.voiceLabel}>
         <AudioLines size={14} style={{ color: accentColor }} />
         Pokédex Voice Entry
       </div>
 
-      <p className="text-sm font-medium italic leading-relaxed text-slate-300 dark:text-slate-200 font-serif mb-5">
+      <p className={styles.voiceDescription}>
         "{description || "No data available."}"
       </p>
 
-      <div className="flex items-center gap-3">
+      <div className={styles.voiceActions}>
         <Button
           size="sm"
           onClick={handleSpeak}
-          className="rounded-full px-6 flex items-center gap-2"
+          className={styles.speakBtn}
           style={{ 
             backgroundColor: isSpeaking && !isPaused ? '#f59e0b' : accentColor,
             boxShadow: `0 8px 16px ${isSpeaking && !isPaused ? '#f59e0b44' : accentColor + '44'}`
@@ -122,14 +123,12 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
         </Button>
 
         {isSpeaking && (
-          <Button
-            size="sm"
-            variant="outline"
+          <button
             onClick={handleStop}
-            className="rounded-full border-red-500/50 text-red-400 hover:bg-red-500/10"
+            className={styles.stopBtn}
           >
             <Square size={14} className="fill-current" />
-          </Button>
+          </button>
         )}
 
         {cry && (
@@ -137,7 +136,7 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={playCry}
-            className="ml-auto p-2 rounded-full bg-white/5 text-slate-400 hover:text-white transition-colors"
+            className={styles.cryBtn}
           >
             <Volume2 size={20} />
           </motion.button>

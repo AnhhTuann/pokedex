@@ -1,0 +1,79 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.wrapper {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: $text-secondary;
+  margin-bottom: 6px;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.iconContainer {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $text-muted;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.input {
+  display: flex;
+  height: 44px;
+  width: 100%;
+  border-radius: $radius-md;
+  border: 1px solid $border-main;
+  background-color: $bg-paper;
+  color: $text-primary;
+  padding: 8px 12px;
+  font-family: $font-sans;
+  font-size: 14px;
+  transition: all $transition-normal;
+  outline: none;
+  
+  &::placeholder {
+    color: $text-muted;
+  }
+  
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.inputWithIcon {
+  padding-left: 40px;
+}
+
+.inputError {
+  border-color: #ef4444;
+  
+  &:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  }
+}
+
+.errorMessage {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ef4444;
+}

@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Dialog, DialogContent, Box, Typography, Chip, Button, Stack,
-  LinearProgress, IconButton, Divider, Tooltip, alpha, useTheme,
-  Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
-} from '@mui/material';
-import { Close, ChevronRight, AutoAwesome, VolumeUp, PlayArrow, Pause, Stop, RecordVoiceOver } from '@mui/icons-material';
 import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 import { formatSpeciesId } from '../lib/utils';
+import { X, ChevronRight, Sparkles, Volume2, Play, Pause, Square, Mic } from 'lucide-react';
+import styles from './PokeDetail.module.scss';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {
@@ -27,1063 +23,639 @@ export const GET_POKEMON_DETAIL = gql`
 `;
 
 const TYPE_COLORS: Record<string, string> = {
-  normal: '#9ca3af',   fire: '#f97316',    water: '#3b82f6',
-  electric: '#eab308', grass: '#22c55e',   ice: '#06b6d4',
-  fighting: '#ef4444', poison: '#a855f7',  ground: '#d97706',
-  flying: '#818cf8',   psychic: '#ec4899', bug: '#84cc16',
-  rock: '#78716c',     ghost: '#7c3aed',   dragon: '#1d4ed8',
-  dark: '#374151',     steel: '#6b7280',   fairy: '#f472b6',
+  normal:'#9ca3af', fire:'#f97316', water:'#3b82f6', electric:'#eab308',
+  grass:'#22c55e', ice:'#06b6d4', fighting:'#ef4444', poison:'#a855f7',
+  ground:'#d97706', flying:'#818cf8', psychic:'#ec4899', bug:'#84cc16',
+  rock:'#78716c', ghost:'#7c3aed', dragon:'#1d4ed8', dark:'#374151',
+  steel:'#6b7280', fairy:'#f472b6',
 };
 
-const STAT_COLORS = ['#6366f1','#ef4444','#3b82f6','#8b5cf6','#06b6d4','#f59e0b'];
+const STAT_COLORS = [
+  '#ef4444', // HP - Red
+  '#f97316', // ATK - Orange
+  '#eab308', // DEF - Yellow
+  '#3b82f6', // SP. ATK - Blue
+  '#22c55e', // SP. DEF - Green
+  '#ec4899', // SPD - Pink
+];
 
 interface PokeDetailProps {
-  id: number | null;
+  pokemonId: number;
   onClose: () => void;
-  onSelect?: (id: number) => void;
+  onSelectPokemonId?: (id: number) => void;
 }
 
-export default function PokeDetail({ id, onClose, onSelect }: PokeDetailProps) {
-  const theme = useTheme();
-  const { addMember, team, removeMember, isShinyMode, selectedVersion } = useTeamStore();
-  const [showShiny, setShowShiny] = useState(false);
-  const [moveTab, setMoveTab] = useState(0);
+export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: PokeDetailProps) {
+  const { team, addMember, removeMember } = useTeamStore();
+  const [selectedVersion, setSelectedVersion] = useState<string>('');
+  const [isShiny, setIsShiny] = useState<boolean>(false);
+  const [moveTab, setMoveTab] = useState<number>(0);
 
-  // Pokédex Voice states
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  // Audio / Speech State
+  const [audio] = useState<HTMLAudioElement | null>(() => new Audio());
+  const [isPlayingCry, setIsPlayingCry] = useState<boolean>(false);
+  const [speechSynth, setSpeechSynth] = useState<SpeechSynthesis | null>(null);
+  const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+  const [isSpeakingDescription, setIsSpeakingDescription] = useState<boolean>(false);
+  const [isSpeechPaused, setIsSpeechPaused] = useState<boolean>(false);
 
+  const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
+    variables: { id: pokemonId, version: selectedVersion || undefined },
+    fetchPolicy: 'cache-first',
+  });
+
+  const p = data?.pokemon;
+  const inTeam = team.some(member => member.id === pokemonId);
+
+  // Initialize Speech Synth & Game Version
   useEffect(() => {
-    const loadVoices = () => {
-      if (typeof window !== 'undefined' && window.speechSynthesis) {
-        setVoices(window.speechSynthesis.getVoices());
-      }
-    };
-    loadVoices();
     if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+      setSpeechSynth(window.speechSynthesis);
     }
     return () => {
-      if (typeof window !== 'undefined' && window.speechSynthesis) {
+      if (window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
     };
-  }, [id]);
+  }, []);
 
   useEffect(() => {
-    setShowShiny(isShinyMode);
-  }, [id, isShinyMode]);
-
-  const { data, loading, error } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { id, version: selectedVersion },
-    skip: !id,
-  });
-
-  if (!id) return null;
-
-  const p = data?.pokemon;
-  const loadingState = loading;
-  const errorState = error;
-
-  const inTeam = team.some(m => m.id === id);
-  const primaryColor = TYPE_COLORS[p?.types?.[0]] || '#6366f1';
-  const totalStats = p?.stats?.reduce((acc: number, s: any) => acc + s.value, 0) || 0;
-
-  const handleVoiceSpeak = () => {
-    if (!p || !p.description) return;
-
-    if (isSpeaking) {
-      if (isPaused) {
-        window.speechSynthesis.resume();
-        setIsPaused(false);
-      } else {
-        window.speechSynthesis.pause();
-        setIsPaused(true);
-      }
-      return;
+    if (p?.gameVersions && p.gameVersions.length > 0 && !selectedVersion) {
+      setSelectedVersion(p.gameVersions[0]);
     }
+  }, [p, selectedVersion]);
 
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(p.description);
-    
-    // Choose the best English female automated voice
-    const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith('en'));
-    const pokedexVoice = 
-      englishVoices.find(v => v.name.toLowerCase().includes('google uk english female')) ||
-      englishVoices.find(v => v.name.toLowerCase().includes('google us english')) ||
-      englishVoices.find(v => v.name.toLowerCase().includes('zira')) ||
-      englishVoices.find(v => v.name.toLowerCase().includes('female')) ||
-      englishVoices[0];
-
-    if (pokedexVoice) {
-      utterance.voice = pokedexVoice;
-    }
-
-    utterance.rate = 0.95; // Slower anime pace
-    utterance.pitch = 1.05; // Metallic tone
-
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-      setIsPaused(false);
-    };
-
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
-
-    utterance.onerror = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
-
-    window.speechSynthesis.speak(utterance);
-  };
-
-  const handleVoiceStop = () => {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
-    setIsSpeaking(false);
-    setIsPaused(false);
-  };
-
+  // Handle Cry audio playback
   const playCry = () => {
-    if (!p?.cry) return;
-    const audio = new Audio(p.cry);
-    audio.volume = 0.6;
-    audio.play().catch(() => {});
+    if (!p?.cry || !audio) return;
+    try {
+      audio.src = p.cry;
+      audio.volume = 0.4;
+      setIsPlayingCry(true);
+      audio.play();
+      audio.onended = () => setIsPlayingCry(false);
+      audio.onerror = () => setIsPlayingCry(false);
+    } catch (e) {
+      setIsPlayingCry(false);
+    }
   };
+
+  // TTS Voice Description controllers
+  const speakDescription = () => {
+    if (!speechSynth || !p?.description) return;
+    speechSynth.cancel();
+
+    const cleanText = p.description.replace(/[\n\f]/g, ' ');
+    const textToSpeak = `${p.name}. The ${p.category || 'unknown classification'} Pokémon. ${cleanText}`;
+    const newUtterance = new SpeechSynthesisUtterance(textToSpeak);
+
+    newUtterance.onend = () => {
+      setIsSpeakingDescription(false);
+      setIsSpeechPaused(false);
+    };
+    newUtterance.onerror = () => {
+      setIsSpeakingDescription(false);
+      setIsSpeechPaused(false);
+    };
+
+    setUtterance(newUtterance);
+    setIsSpeakingDescription(true);
+    setIsSpeechPaused(false);
+    speechSynth.speak(newUtterance);
+  };
+
+  const pauseSpeech = () => {
+    if (!speechSynth) return;
+    speechSynth.pause();
+    setIsSpeechPaused(true);
+  };
+
+  const resumeSpeech = () => {
+    if (!speechSynth) return;
+    speechSynth.resume();
+    setIsSpeechPaused(false);
+  };
+
+  const stopSpeech = () => {
+    if (!speechSynth) return;
+    speechSynth.cancel();
+    setIsSpeakingDescription(false);
+    setIsSpeechPaused(false);
+  };
+
+  // Toggle Shiny View Mode
+  const toggleShiny = () => {
+    setIsShiny(prev => !prev);
+  };
+
+  // Add/Remove from active builder team
+  const toggleTeam = () => {
+    if (!p) return;
+    if (inTeam) {
+      removeMember(p.id);
+    } else {
+      addMember({
+        id: p.id,
+        name: p.name,
+        types: p.types,
+        image: p.image,
+      });
+    }
+  };
+
+  if (!pokemonId) return null;
+
+  const primaryColor = p?.types && p.types.length > 0 ? (TYPE_COLORS[p.types[0]] || '#3f51b5') : '#3f51b5';
+  const displayImage = isShiny ? (p?.shinyImage || p?.image) : p?.image;
 
   return (
-    <Dialog
-      open={!!id}
-      onClose={onClose}
-      maxWidth="md"
-      fullWidth
-      sx={{
-        '& .MuiDialog-paper': {
-          borderRadius: 2,
-          overflow: 'hidden',
-          background: theme.palette.background.paper,
-          maxHeight: '90vh',
-        }
-      }}
-    >
-      {/* ── Header / Left panel gradient ── */}
-      {(() => {
-        const isMega = !!p?.isMega || 
-          p?.name?.toLowerCase().endsWith("-mega") ||
-          p?.name?.toLowerCase().includes("-mega-") ||
-          p?.name?.toLowerCase().startsWith("mega ") ||
-          p?.name?.toLowerCase().endsWith(" mega");
-        return (
-          <Box
-            sx={{
-              background: isMega
-                ? `linear-gradient(135deg, ${alpha(primaryColor, 0.45)} 0%, rgba(127, 0, 255, 0.1) 50%, ${alpha(primaryColor, 0.05)} 100%)`
-                : `linear-gradient(135deg, ${alpha(primaryColor, 0.25)} 0%, ${alpha(primaryColor, 0.05)} 100%)`,
-              p: 3,
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: 3,
-              borderBottom: `1px solid ${theme.palette.divider}`,
-            }}
-          >
-            {/* Pokemon image */}
-            <Box
-              sx={{
-                width: { xs: 120, sm: 160 }, height: { xs: 120, sm: 160 }, flexShrink: 0,
-                borderRadius: '50%',
-                background: alpha(primaryColor, 0.15),
-                boxShadow: isMega ? `0 0 30px ${alpha(primaryColor, 0.65)}` : undefined,
-                border: isMega ? `3px dashed ${alpha(primaryColor, 0.8)}` : showShiny ? `3px solid #eab308` : 'none',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: p?.shinyImage ? 'pointer' : 'default',
-                transition: 'all 0.3s',
-              }}
-              onClick={() => p?.shinyImage && setShowShiny(s => !s)}
-            >
-          {loadingState ? (
-            <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: 'action.hover' }} />
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()}>
+        {/* Header Block */}
+        <div className={styles.headerPanel}>
+          {/* Close button */}
+          <button className={styles.closeBtn} onClick={onClose}>
+            <X size={16} />
+          </button>
+
+          {loading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '40px 0' }}>
+              <div className={styles.progressTrack} style={{ maxWidth: '200px' }}>
+                <div className={styles.progressFill} style={{ width: '60%', background: 'var(--primary)' }}></div>
+              </div>
+            </div>
+          ) : error ? (
+            <div style={{ padding: 24, textAlign: 'center', color: '#ef4444', width: '100%' }}>
+              Failed to load details.
+            </div>
           ) : (
-            <Box
-              component="img"
-              src={showShiny ? p?.shinyImage : p?.image}
-              alt={p?.name}
-              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                const target = e.currentTarget;
-                target.onerror = null;
-                const rawBaseId = p?.speciesId || id;
-                let baseId = rawBaseId;
-                if (rawBaseId && rawBaseId >= 10000) {
-                  if (rawBaseId === 100710) baseId = 71;
-                  else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
-                  else if (rawBaseId === 20036) baseId = 36;
-                  else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
-                  else baseId = rawBaseId % 1000;
-                }
-                target.src = showShiny
-                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
-              }}
-              sx={{ width: '80%', height: '80%', objectFit: 'contain', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
-            />
-          )}
-        </Box>
-
-        {/* Name / Types / Actions */}
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Box>
-            <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
-              {formatSpeciesId(p?.speciesId || id)}
-            </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'capitalize', color: 'text.primary', letterSpacing: -1, lineHeight: 1.1, mt: 0.5 }}>
-              {p?.name || 'Loading…'}
-            </Typography>
-            {p?.category && (
-              <Typography variant="subtitle1" color="text.secondary" sx={{ fontStyle: 'italic', mt: 0.5, lineHeight: 1.2 }}>
-                {p.category}
-              </Typography>
-            )}
-          </Box>
-
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
-            {p?.types?.map((t: string) => (
-              <Chip
-                key={t}
-                label={t}
-                size="small"
-                sx={{ bgcolor: alpha(TYPE_COLORS[t] || '#9ca3af', 0.85), color: '#fff', fontWeight: 800, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase' }}
-              />
-            ))}
-            {p?.shinyImage && (
-              <Tooltip title="Toggle Shiny ✨">
-                <Chip
-                  icon={<AutoAwesome sx={{ fontSize: 12, color: showShiny ? '#eab308 !important' : undefined }} />}
-                  label="Shiny"
-                  size="small"
-                  variant={showShiny ? 'filled' : 'outlined'}
-                  onClick={() => setShowShiny(s => !s)}
-                  sx={{ cursor: 'pointer', fontWeight: 700, ...(showShiny ? { bgcolor: '#eab308', color: '#000' } : {}) }}
-                />
-              </Tooltip>
-            )}
-            {p?.cry && (
-              <Tooltip title="Play Cry 🔊">
-                <Chip
-                  icon={<VolumeUp sx={{ fontSize: 12 }} />}
-                  label="Cry"
-                  size="small"
-                  variant="outlined"
-                  onClick={playCry}
-                  sx={{ cursor: 'pointer', fontWeight: 700 }}
-                />
-              </Tooltip>
-            )}
-          </Box>
-
-          <Box sx={{ mt: 1 }}>
-            <Button
-              size="small"
-              variant={inTeam ? 'outlined' : 'contained'}
-              color={inTeam ? 'error' : 'primary'}
-              onClick={() => inTeam ? removeMember(id) : addMember(p)}
-              disabled={!p}
-              sx={{ borderRadius: 6, fontWeight: 800, fontSize: 11, px: 2, py: 0.75 }}
-            >
-              {inTeam ? 'Remove from Team' : 'Add to Team'}
-            </Button>
-          </Box>
-        </Box>
-
-        <IconButton onClick={onClose} id="close-modal" size="small" sx={{ color: 'text.secondary', alignSelf: 'flex-start' }}>
-          <Close />
-        </IconButton>
-          </Box>
-        );
-      })()}
-
-      {/* ── Content ── */}
-      <DialogContent
-        sx={{
-          p: 3,
-          overflowY: 'auto',
-          borderBottomLeftRadius: '16px',
-          borderBottomRightRadius: '16px',
-          '&::-webkit-scrollbar': {
-            width: '6px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'transparent',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
-            borderRadius: '10px',
-            '&:hover': {
-              background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
-            }
-          },
-          scrollbarWidth: 'thin',
-          scrollbarColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.15) transparent',
-        }}
-      >
-        {loadingState && <LinearProgress sx={{ borderRadius: 2, mb: 2 }} />}
-        {errorState && <Typography color="error">Failed to load: {typeof errorState === 'string' ? errorState : errorState.message}</Typography>}
-
-        {p && (
-          <Stack spacing={3}>
-            {/* Physical */}
-            <Stack direction="row" spacing={4}>
-              <Box>
-                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>Height</Typography>
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>{((p.height || 0) / 10).toFixed(1)} m</Typography>
-              </Box>
-              <Box>
-                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>Weight</Typography>
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>{((p.weight || 0) / 10).toFixed(1)} kg</Typography>
-              </Box>
-              {p.abilities?.length > 0 && (
-                <Box>
-                  <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' }}>Abilities</Typography>
-                  <Stack direction="row" spacing={0.75} sx={{ flexWrap: 'wrap', mt: 0.5 }}>
-                    {p.abilities.map((a: string) => (
-                      <Chip key={a} label={a.replace('-', ' ')} size="small" variant="outlined" sx={{ fontSize: 10, fontWeight: 700, textTransform: 'capitalize' }} />
-                    ))}
-                  </Stack>
-                </Box>
-              )}
-            </Stack>
-
-            <Divider />
-
-            {/* Pokédex Voice Entry Description */}
-            <Paper
-              elevation={0}
-              sx={{
-                p: 2.5,
-                borderRadius: '16px',
-                bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.015)',
-                borderLeft: `5px solid ${primaryColor}`,
-                position: 'relative',
-                overflow: 'hidden'
-              }}
-            >
-              {/* Decorative Subtle Glowing Background Soundwave Bars for UI visual excellence */}
-              {isSpeaking && !isPaused && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 12,
-                    right: 16,
-                    display: 'flex',
-                    gap: '3px',
-                    alignItems: 'flex-end',
-                    height: '24px'
-                  }}
-                >
-                  {[0.4, 0.8, 1.2, 0.6, 1.0, 0.5, 0.9].map((delay, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        width: '3px',
-                        height: '100%',
-                        bgcolor: primaryColor,
-                        borderRadius: '2px',
-                        animation: 'wave 1.2s ease-in-out infinite alternate',
-                        animationDelay: `${delay}s`,
-                        '@keyframes wave': {
-                          '0%': { height: '4px' },
-                          '100%': { height: '22px' }
-                        }
-                      }}
-                    />
-                  ))}
-                </Box>
-              )}
-
-              <Typography
-                variant="overline"
-                color="text.disabled"
-                sx={{ fontWeight: 800, letterSpacing: 2, display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}
-              >
-                <RecordVoiceOver sx={{ fontSize: 16, color: primaryColor }} />
-                Pokédex Voice Entry
-              </Typography>
-
-              <Typography
-                variant="body1"
-                sx={{
-                  fontStyle: 'italic',
-                  fontFamily: 'serif',
-                  fontSize: '1.05rem',
-                  lineHeight: 1.6,
-                  color: 'text.primary',
-                  mb: 2,
-                  pr: isSpeaking && !isPaused ? 4 : 0
+            <>
+              {/* Pokémon Sprite Container */}
+              <div
+                className={styles.pokemonImageWrapper}
+                onClick={toggleShiny}
+                style={{
+                  background: `radial-gradient(circle, ${primaryColor}1a 0%, ${primaryColor}03 70%)`,
+                  border: `2px solid ${primaryColor}2b`
                 }}
               >
-                "{p.description || "No official dex database description available."}"
-              </Typography>
-
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  onClick={handleVoiceSpeak}
-                  startIcon={isSpeaking && !isPaused ? <Pause /> : <PlayArrow />}
-                  sx={{
-                    borderRadius: 8,
-                    bgcolor: isSpeaking && !isPaused ? 'warning.main' : primaryColor,
-                    '&:hover': {
-                      bgcolor: isSpeaking && !isPaused ? 'warning.dark' : alpha(primaryColor, 0.85),
-                    },
-                    fontWeight: 800,
-                    fontSize: 11,
-                    px: 2.5,
-                    py: 0.75,
-                    boxShadow: isSpeaking && !isPaused ? `0 0 12px ${theme.palette.warning.main}` : `0 0 12px ${alpha(primaryColor, 0.4)}`,
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {isSpeaking ? (isPaused ? 'Resume' : 'Pause Voice') : 'Read Entry'}
-                </Button>
-
-                {isSpeaking && (
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="error"
-                    onClick={handleVoiceStop}
-                    startIcon={<Stop />}
-                    sx={{
-                      borderRadius: 8,
-                      fontWeight: 800,
-                      fontSize: 11,
-                      px: 2,
-                      py: 0.75,
-                    }}
-                  >
-                    Stop
-                  </Button>
+                {displayImage && (
+                  <img src={displayImage} alt={p.name} className={styles.pokemonImage} />
                 )}
-              </Stack>
-            </Paper>
+              </div>
 
-            <Divider />
+              {/* Identity & Basic Attributes */}
+              <div className={styles.infoCol}>
+                <span className={styles.speciesIdText}>
+                  {formatSpeciesId(p.speciesId || p.id)}
+                </span>
+                <h1 className={styles.nameText}>{p.name}</h1>
+                <span className={styles.categoryText}>
+                  {p.category || 'Unknown'} Pokémon
+                </span>
 
-            {/* Base Stats */}
-            <Box>
-              <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                Base Stats
-              </Typography>
-              <Stack spacing={1.5}>
-                {p.stats?.map((stat: any, i: number) => (
-                  <Box key={stat.name}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.5 }}>
-                        {stat.name.replace('-', ' ')}
-                      </Typography>
-                      <Typography variant="caption" color="text.primary" sx={{ fontWeight: 900 }}>{stat.value}</Typography>
-                    </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={Math.min(100, (stat.value / 255) * 100)}
-                      sx={{
-                        height: 6, borderRadius: 3,
-                        bgcolor: alpha(STAT_COLORS[i % STAT_COLORS.length], 0.15),
-                        '& .MuiLinearProgress-bar': { bgcolor: STAT_COLORS[i % STAT_COLORS.length], borderRadius: 3 },
+                <div className={styles.badgeRow}>
+                  {p.types.map((type: string) => (
+                    <span
+                      key={type}
+                      className={styles.customBadge}
+                      style={{ background: TYPE_COLORS[type] || '#9ca3af' }}
+                    >
+                      {type}
+                    </span>
+                  ))}
+                  <span
+                    onClick={toggleShiny}
+                    className={`${styles.customBadge} ${styles.shiny}`}
+                  >
+                    <Sparkles size={10} /> {isShiny ? 'Shiny Mode' : 'Normal Mode'}
+                  </span>
+                  {p.cry && (
+                    <span
+                      onClick={playCry}
+                      className={`${styles.customBadge} ${styles.cry}`}
+                    >
+                      <Volume2 size={10} /> {isPlayingCry ? 'Playing...' : 'Sound Cry'}
+                    </span>
+                  )}
+                </div>
+
+                {/* Team Builder Action Buttons */}
+                <div className={styles.actionRow}>
+                  <button
+                    onClick={toggleTeam}
+                    className={`${styles.teamBtn} ${inTeam ? styles.remove : styles.add}`}
+                  >
+                    {inTeam ? 'Remove From Team' : 'Add To Team'}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Scrollable Detail Body */}
+        {!loading && !error && p && (
+          <div className={styles.dialogContent}>
+            {/* Height, Weight, Abilities Grid */}
+            <div className={styles.physicalGrid}>
+              <div className={styles.statBlock}>
+                <span className={styles.statLabel}>Height</span>
+                <span className={styles.statValue}>{(p.height / 10).toFixed(1)} m</span>
+              </div>
+              <div className={styles.statBlock}>
+                <span className={styles.statLabel}>Weight</span>
+                <span className={styles.statValue}>{(p.weight / 10).toFixed(1)} kg</span>
+              </div>
+              <div className={styles.statBlock} style={{ gridColumn: 'span 2' }}>
+                <span className={styles.statLabel}>Abilities</span>
+                <div className={styles.abilitiesList}>
+                  {p.abilities.map((ab: string) => (
+                    <span key={ab} className={styles.abilityChip}>
+                      {ab.replace('-', ' ')}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <hr className={styles.divider} />
+
+            {/* Voice Soundwaves and Description */}
+            <div className={styles.voicePaper}>
+              {isSpeakingDescription && (
+                <div className={styles.soundWave}>
+                  <span style={{ width: 3, height: 16, background: 'var(--primary)', animation: 'soundBar 0.8s infinite alternate' }} />
+                  <span style={{ width: 3, height: 24, background: 'var(--primary)', animation: 'soundBar 0.6s infinite alternate 0.1s' }} />
+                  <span style={{ width: 3, height: 10, background: 'var(--primary)', animation: 'soundBar 0.7s infinite alternate 0.2s' }} />
+                  <span style={{ width: 3, height: 20, background: 'var(--primary)', animation: 'soundBar 0.5s infinite alternate 0.3s' }} />
+                </div>
+              )}
+
+              <div className={styles.voiceIconRow}>
+                <Mic size={14} /> Voice Entry Guide
+              </div>
+              <p className={styles.descriptionText}>
+                "{p.description || 'No database entry recorded yet.'}"
+              </p>
+
+              {speechSynth && (
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {!isSpeakingDescription ? (
+                    <button
+                      className={styles.readBtn}
+                      style={{ background: primaryColor }}
+                      onClick={speakDescription}
+                    >
+                      <Play size={12} /> Read Entry
+                    </button>
+                  ) : (
+                    <>
+                      {isSpeechPaused ? (
+                        <button
+                          className={styles.readBtn}
+                          style={{ background: primaryColor }}
+                          onClick={resumeSpeech}
+                        >
+                          <Play size={12} /> Resume
+                        </button>
+                      ) : (
+                        <button
+                          className={styles.stopBtn}
+                          onClick={pauseSpeech}
+                        >
+                          <Pause size={12} /> Pause
+                        </button>
+                      )}
+                      <button
+                        className={styles.stopBtn}
+                        onClick={stopSpeech}
+                      >
+                        <Square size={12} /> Stop
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <hr className={styles.divider} />
+
+            {/* Stats EV/IV Grid */}
+            <span className={styles.sectionTitle}>Base Stats</span>
+            <div className={styles.statsSection}>
+              {p.stats.map((stat: any, i: number) => (
+                <div key={stat.name} className={styles.statBarRow}>
+                  <div className={styles.statHeader}>
+                    <span>{stat.name.replace('-', ' ')}</span>
+                    <span>{stat.value}</span>
+                  </div>
+                  <div className={styles.progressTrack}>
+                    <div
+                      className={styles.progressFill}
+                      style={{
+                        width: `${Math.min(100, (stat.value / 255) * 100)}%`,
+                        background: STAT_COLORS[i % STAT_COLORS.length],
                       }}
                     />
-                  </Box>
-                ))}
-              </Stack>
+                  </div>
+                </div>
+              ))}
+              <div className={styles.totalRow}>
+                <span className={styles.totalLabel}>Total Base Stat</span>
+                <span className={styles.totalVal}>
+                  {p.stats.reduce((acc: number, cur: any) => acc + cur.value, 0)}
+                </span>
+              </div>
+            </div>
 
-              {/* Total Stats Row */}
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, pt: 1.5, borderTop: `1px dashed ${alpha(theme.palette.divider, 0.4)}` }}>
-                <Typography variant="caption" color="text.primary" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1.5 }}>
-                  Total
-                </Typography>
-                <Typography variant="subtitle2" color="primary.main" sx={{ fontWeight: 900 }}>
-                  {totalStats}
-                </Typography>
-              </Box>
-            </Box>
+            <hr className={styles.divider} />
 
-            {/* Type Matchups */}
-            {p.matchups?.length > 0 && (
-              <>
-                <Divider />
-                <Box>
-                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                    Type Matchups
-                  </Typography>
-                  <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
-                    {p.matchups.map((m: any) => (
-                      <Chip
-                        key={m.type}
-                        label={`${m.type} ${m.multiplier}×`}
-                        size="small"
-                        sx={{
-                          fontWeight: 800, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase',
-                          bgcolor: m.multiplier > 1 ? alpha('#ef4444', 0.15) : alpha('#22c55e', 0.15),
-                          color: m.multiplier > 1 ? '#ef4444' : '#22c55e',
-                          border: `1px solid ${m.multiplier > 1 ? alpha('#ef4444', 0.3) : alpha('#22c55e', 0.3)}`,
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                </Box>
-              </>
-            )}
-
-            {/* Locations & Habitat Section (Replaces Appears In) */}
-            <>
-              <Divider />
-              <Box>
-                <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                  Locations & Habitat
-                </Typography>
-                
-                {selectedVersion === 'ALL' ? (
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      p: 2.5,
-                      borderRadius: '12px',
-                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.01)',
-                      border: '1px dashed rgba(255, 255, 255, 0.15)',
-                      textAlign: 'center'
-                    }}
+            {/* Element Effectiveness/Matchups */}
+            <span className={styles.sectionTitle}>Defensive Matchups</span>
+            <div className={styles.matchupsGrid}>
+              {p.matchups.map((m: any) => {
+                let bgColor = '#4b5563';
+                let textColor = '#ffffff';
+                if (m.multiplier > 1) {
+                  bgColor = 'rgba(239, 68, 68, 0.15)';
+                  textColor = '#ef4444';
+                } else if (m.multiplier < 1) {
+                  bgColor = 'rgba(34, 197, 94, 0.15)';
+                  textColor = '#22c55e';
+                } else if (m.multiplier === 0) {
+                  bgColor = 'rgba(0, 0, 0, 0.3)';
+                  textColor = '#9ca3af';
+                }
+                return (
+                  <span
+                    key={m.type}
+                    className={styles.matchupChip}
+                    style={{ background: bgColor, color: textColor, border: `1px solid ${textColor}2a` }}
                   >
-                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
-                      Please select a specific game version in the top navigation bar to filter exact capture locations.
-                    </Typography>
-                    <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 0.5 }}>
-                      Currently showing {p.locations?.length || 0} unique capture areas across all game versions.
-                    </Typography>
-                    {p.locations && p.locations.length > 0 && (
-                      <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75, justifyContent: 'center', mt: 2 }}>
-                        {p.locations.slice(0, 8).map((loc: string) => (
-                          <Chip
-                            key={loc}
-                            label={loc.replace(/-/g, ' ')}
-                            size="small"
-                            variant="outlined"
-                            sx={{ fontSize: 9, fontWeight: 700, textTransform: 'capitalize' }}
-                          />
-                        ))}
-                        {p.locations.length > 8 && (
-                          <Chip
-                            label={`+${p.locations.length - 8} more areas`}
-                            size="small"
-                            sx={{ fontSize: 9, fontWeight: 700 }}
-                          />
-                        )}
-                      </Stack>
-                    )}
-                  </Paper>
-                ) : (
-                  <Box>
-                    {(!p.locations || p.locations.length === 0) ? (
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          p: 2,
-                          borderRadius: '12px',
-                          bgcolor: theme.palette.mode === 'dark' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(239, 68, 68, 0.02)',
-                          border: '1px solid rgba(239, 68, 68, 0.15)',
-                          textAlign: 'center'
-                        }}
-                      >
-                        <Typography variant="body2" color="error.main" sx={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: 1 }}>
-                          Not Obtainable in Version: {selectedVersion}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
-                          This Pokémon cannot be found wild in the {selectedVersion} game version. Must be traded or evolved.
-                        </Typography>
-                      </Paper>
-                    ) : (
-                      <Box>
-                        <Typography variant="caption" color="primary.main" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, mb: 1, display: 'block' }}>
-                          Found in Version: {selectedVersion} ({p.locations.length} Areas)
-                        </Typography>
-                        <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
-                          {p.locations.map((loc: string) => (
-                            <Chip
-                              key={loc}
-                              label={loc.replace(/-/g, ' ')}
-                              size="small"
-                              variant="filled"
-                              sx={{
-                                fontSize: 9,
-                                fontWeight: 800,
-                                textTransform: 'capitalize',
-                                bgcolor: alpha(primaryColor, 0.15),
-                                color: primaryColor,
-                                border: `1px solid ${alpha(primaryColor, 0.3)}`
-                              }}
-                            />
-                          ))}
-                        </Stack>
-                      </Box>
-                    )}
-                  </Box>
-                )}
-              </Box>
-            </>
+                    {m.type}: {m.multiplier}x
+                  </span>
+                );
+              })}
+            </div>
 
-            {/* Evolutions */}
-            {p.evolutions?.length > 0 && (
-              <>
-                <Divider />
-                <Box>
-                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                    Evolution Chain
-                  </Typography>
-                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
-                    {p.evolutions.map((evo: any, idx: number) => (
-                      <React.Fragment key={evo.id}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
-                          <Tooltip title={evo.name}>
-                            <Box
-                              onClick={() => { if (onSelect && evo.id !== p.id) onSelect(evo.id); }}
-                              sx={{
-                                width: 64, height: 64, borderRadius: '50%',
-                                background: alpha(TYPE_COLORS[evo.types?.[0]] || '#6366f1', 0.15),
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                cursor: evo.id !== p.id ? 'pointer' : 'default',
-                                border: `2px solid ${evo.id === p.id ? '#6366f1' : 'transparent'}`,
-                                transition: 'transform 0.2s, border 0.2s',
-                                '&:hover': evo.id !== p.id ? { transform: 'scale(1.15)', border: `2px solid ${alpha('#6366f1', 0.5)}` } : {},
-                              }}
-                            >
-                              <Box
-                                component="img"
-                                src={showShiny && evo.shinyImage ? evo.shinyImage : evo.image}
-                                alt={evo.name}
-                                onError={(e: any) => {
-                                  const target = e.currentTarget;
-                                  target.onerror = null;
-                                  const rawBaseId = evo.speciesId || evo.id;
-                                  let baseId = rawBaseId;
-                                  if (rawBaseId && rawBaseId >= 10000) {
-                                    if (rawBaseId === 100710) baseId = 71;
-                                    else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
-                                    else if (rawBaseId === 20036) baseId = 36;
-                                    else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
-                                    else baseId = rawBaseId % 1000;
-                                  }
-                                  target.src = showShiny
-                                    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                                    : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
-                                }}
-                                sx={{ width: 46, height: 46, objectFit: 'contain' }}
-                              />
-                            </Box>
-                          </Tooltip>
-                          <Typography
-                            variant="caption"
-                            sx={{
-                              fontSize: 10,
-                              fontWeight: 800,
-                              color: evo.id === p.id ? 'primary.main' : 'text.secondary',
-                              textTransform: 'capitalize',
-                              textAlign: 'center',
-                              maxWidth: 76,
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap'
-                            }}
-                          >
-                            {evo.name}
-                          </Typography>
-                        </Box>
-                        {idx < p.evolutions.length - 1 && (
-                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 48, mx: 0.5, mt: -2 }}>
-                            <ChevronRight sx={{ color: 'text.disabled', fontSize: 20 }} />
-                            {p.evolutions[idx + 1]?.minLevel ? (
-                              <Typography variant="caption" sx={{ fontSize: 9, fontWeight: 800, color: 'text.secondary', mt: -0.25, whiteSpace: 'nowrap' }}>
-                                Lv. {p.evolutions[idx + 1].minLevel}
-                              </Typography>
-                            ) : p.evolutions[idx + 1]?.trigger ? (
-                              <Typography variant="caption" sx={{ fontSize: 8, fontWeight: 800, color: 'text.disabled', textTransform: 'capitalize', mt: -0.25, whiteSpace: 'nowrap' }}>
-                                {p.evolutions[idx + 1].trigger.replace('-', ' ')}
-                              </Typography>
-                            ) : null}
-                          </Box>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </Stack>
-                </Box>
-              </>
+            <hr className={styles.divider} />
+
+            {/* Spawn Locations Section */}
+            <span className={styles.sectionTitle}>Wild Spawn Habitats</span>
+            {p.gameVersions && p.gameVersions.length > 0 && (
+              <div style={{ marginBottom: 16 }}>
+                <span style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>
+                  Select Game Version
+                </span>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {p.gameVersions.map((v: string) => (
+                    <button
+                      key={v}
+                      onClick={() => setSelectedVersion(v)}
+                      style={{
+                        padding: '4px 10px',
+                        fontSize: 9,
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                        border: `1px solid ${v === selectedVersion ? primaryColor : 'var(--border-main)'}`,
+                        background: v === selectedVersion ? `${primaryColor}20` : 'transparent',
+                        color: v === selectedVersion ? primaryColor : 'var(--text-secondary)',
+                      }}
+                    >
+                      {v.replace('-', ' ')}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
 
-            {/* Mega Evolution Cards */}
+            {selectedVersion && (
+              <div style={{ marginTop: 12 }}>
+                {(!p.locations || p.locations.length === 0) ? (
+                  <div className={styles.habitatCard} style={{ borderColor: 'rgba(239, 68, 68, 0.25)', background: 'rgba(239, 68, 68, 0.03)' }}>
+                    <span className={styles.habitatText} style={{ color: '#ef4444' }}>
+                      Not Obtainable in Version: {selectedVersion.replace('-', ' ')}
+                    </span>
+                    <span className={styles.habitatSubtext}>
+                      This Pokémon cannot be found wild in this game. Must be traded or evolved.
+                    </span>
+                  </div>
+                ) : (
+                  <div className={styles.habitatCard}>
+                    <span className={styles.habitatText} style={{ color: primaryColor }}>
+                      Obtainable Locations ({p.locations.length} Areas)
+                    </span>
+                    <div className={styles.habitatChips}>
+                      {p.locations.slice(0, 8).map((loc: string) => (
+                        <span
+                          key={loc}
+                          className={styles.matchupChip}
+                          style={{
+                            background: 'rgba(255,255,255,0.04)',
+                            color: 'var(--text-primary)',
+                            border: '1px solid var(--border-main)',
+                            textTransform: 'capitalize',
+                          }}
+                        >
+                          {loc.replace(/-/g, ' ')}
+                        </span>
+                      ))}
+                      {p.locations.length > 8 && (
+                        <span
+                          className={styles.matchupChip}
+                          style={{
+                            background: 'rgba(255,255,255,0.04)',
+                            color: 'var(--text-primary)',
+                            border: '1px solid var(--border-main)',
+                          }}
+                        >
+                          +{p.locations.length - 8} more areas
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <hr className={styles.divider} />
+
+            {/* Evolutions Panel */}
+            <span className={styles.sectionTitle}>Evolutionary Branching</span>
+            {(!p.evolutions || p.evolutions.length <= 1) ? (
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)' }}>
+                This Pokémon does not evolve.
+              </p>
+            ) : (
+              <div className={styles.evoChain}>
+                {p.evolutions.map((evo: any, index: number) => {
+                  const isEvoShiny = isShiny;
+                  const evoImg = isEvoShiny ? (evo.shinyImage || evo.image) : evo.image;
+
+                  return (
+                    <React.Fragment key={evo.id}>
+                      {index > 0 && (
+                        <div className={styles.evoConnector}>
+                          <ChevronRight size={16} />
+                          <span className={styles.evoMethod}>
+                            Lvl {evo.minLevel || '??'}
+                          </span>
+                        </div>
+                      )}
+                      <div className={styles.evoBlock}>
+                        <div
+                          className={styles.evoImageWrapper}
+                          onClick={() => onSelectPokemonId && onSelectPokemonId(evo.id)}
+                          style={{
+                            background: `radial-gradient(circle, ${primaryColor}14 0%, transparent 70%)`,
+                            border: `1px solid ${evo.id === pokemonId ? primaryColor : 'var(--border-main)'}`
+                          }}
+                        >
+                          {evoImg && (
+                            <img src={evoImg} alt={evo.name} className={styles.evoImage} />
+                          )}
+                        </div>
+                        <span className={styles.evoName} style={{ color: evo.id === pokemonId ? primaryColor : 'var(--text-primary)' }}>
+                          {evo.name}
+                        </span>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            )}
+
+            <hr className={styles.divider} />
+
+            {/* Mega / Alternative Forms */}
             {p.megaEvolutions && p.megaEvolutions.length > 0 && (
               <>
-                <Divider />
-                <Box>
-                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 2, display: 'block' }}>
-                    Mega Evolution
-                  </Typography>
-                  <Stack direction="row" spacing={2.5} sx={{ alignItems: 'stretch', flexWrap: 'wrap', gap: 2 }}>
-                    {p.megaEvolutions.map((form: any) => {
-                      let bgGradient = `linear-gradient(135deg, ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.08)} 0%, ${alpha(TYPE_COLORS[form.types[1] || form.types[0]] || '#6366f1', 0.15)} 100%)`;
-                      let borderColor = alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3);
-                      let glowShadow = `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15)}`;
-
-                      if (form.name.toLowerCase().includes('charizard-mega-x') || form.name.toLowerCase().includes('mega charizard x')) {
-                        bgGradient = 'linear-gradient(135deg, #101c2a 0%, #1a3c40 100%)';
-                        borderColor = '#00e5ff';
-                        glowShadow = '0 0 15px rgba(0, 229, 255, 0.4)';
-                      } else if (form.name.toLowerCase().includes('charizard-mega-y') || form.name.toLowerCase().includes('mega charizard y')) {
-                        bgGradient = 'linear-gradient(135deg, #2b1111 0%, #4a2111 100%)';
-                        borderColor = '#ff3d00';
-                        glowShadow = '0 0 15px rgba(255, 61, 0, 0.4)';
-                      }
-
-                      return (
-                        <Box
-                          key={form.id}
-                          onClick={() => { if (onSelect) onSelect(form.id); }}
-                          sx={{
-                            flex: '1 1 200px',
-                            minWidth: 200,
-                            maxWidth: { xs: '100%', sm: 260 },
-                            borderRadius: '16px',
-                            background: bgGradient,
-                            border: `2px solid ${borderColor}`,
-                            p: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            cursor: 'pointer',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            boxShadow: glowShadow,
-                            transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s, border-color 0.25s',
-                            '&:hover': {
-                              transform: 'translateY(-6px)',
-                              boxShadow: form.name.toLowerCase().includes('mega-x') ? '0 8px 25px rgba(0, 229, 255, 0.7)' : form.name.toLowerCase().includes('mega-y') ? '0 8px 25px rgba(255, 61, 0, 0.7)' : `0 8px 25px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.5)}`,
-                              borderColor: form.name.toLowerCase().includes('mega-x') ? '#00e5ff' : form.name.toLowerCase().includes('mega-y') ? '#ff3d00' : TYPE_COLORS[form.types[0]] || '#6366f1',
-                            }
-                          }}
-                        >
-                          <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
-                            <Chip
-                              label="MEGA"
-                              size="small"
-                              sx={{
-                                height: 16,
-                                fontSize: 8,
-                                fontWeight: 900,
-                                bgcolor: form.name.toLowerCase().includes('mega-x') ? '#00e5ff' : form.name.toLowerCase().includes('mega-y') ? '#ff3d00' : 'primary.main',
-                                color: '#fff'
-                              }}
-                            />
-                          </Box>
-
-                          <Box
-                            component="img"
-                            src={showShiny && form.shinyImage ? form.shinyImage : form.image}
-                            alt={form.name}
-                            onError={(e: any) => {
-                              const target = e.currentTarget;
-                              target.onerror = null;
-                              const rawBaseId = form.speciesId || form.id;
-                              let baseId = rawBaseId;
-                              if (rawBaseId && rawBaseId >= 10000) {
-                                if (rawBaseId === 100710) baseId = 71;
-                                else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
-                                else if (rawBaseId === 20036) baseId = 36;
-                                else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
-                                else baseId = rawBaseId % 1000;
-                              }
-                              target.src = showShiny
-                                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                                : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
-                            }}
-                            sx={{ width: 100, height: 100, objectFit: 'contain', my: 1, filter: 'drop-shadow(0px 6px 10px rgba(0,0,0,0.15))' }}
-                          />
-
-                          <Typography
-                            variant="subtitle2"
-                            sx={{
-                              fontWeight: 900,
-                              fontSize: 13,
-                              color: 'text.primary',
-                              textAlign: 'center',
-                              textTransform: 'capitalize',
-                              mb: 1
-                            }}
-                          >
-                            {form.name.replace(/-/g, ' ')}
-                          </Typography>
-
-                          <Stack direction="row" spacing={0.5}>
-                            {form.types.map((type: string) => (
-                              <Chip
-                                key={type}
-                                label={type}
-                                size="small"
-                                sx={{
-                                  height: 18,
-                                  fontSize: 8,
-                                  fontWeight: 900,
-                                  textTransform: 'uppercase',
-                                  bgcolor: TYPE_COLORS[type] || '#9ca3af',
-                                  color: '#fff'
-                                }}
-                              />
-                            ))}
-                          </Stack>
-                        </Box>
-                      );
-                    })}
-                  </Stack>
-                </Box>
+                <span className={styles.sectionTitle}>Special / Mega Evolutions</span>
+                <div className={styles.megaList}>
+                  {p.megaEvolutions.map((m: any) => {
+                    const mImg = isShiny ? (m.shinyImage || m.image) : m.image;
+                    return (
+                      <div
+                        key={m.id}
+                        className={styles.megaCard}
+                        onClick={() => onSelectPokemonId && onSelectPokemonId(m.id)}
+                        style={{ border: '1px solid var(--border-main)', background: 'rgba(255,255,255,0.01)' }}
+                      >
+                        <span className={`${styles.customBadge} ${styles.megaTag}`} style={{ background: primaryColor }}>
+                          MEGA
+                        </span>
+                        {mImg && <img src={mImg} alt={m.name} className={styles.megaImage} />}
+                        <span className={styles.megaName}>{m.name.replace('-', ' ')}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <hr className={styles.divider} />
               </>
             )}
 
-            {/* Alternative Forms Section */}
             {p.alternativeForms && p.alternativeForms.length > 0 && (
               <>
-                <Divider />
-                <Box>
-                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                    Alternative Forms
-                  </Typography>
-                  <Stack direction="row" spacing={2.5} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                    {p.alternativeForms.map((form: any) => (
-                      <Box key={form.id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
-                        <Tooltip title={`${form.name} • ${form.types.map((t: string) => t.toUpperCase()).join(' / ')}`}>
-                          <Box
-                            onClick={() => { if (onSelect) onSelect(form.id); }}
-                            sx={{
-                              width: 64, height: 64, borderRadius: '50%',
-                              background: alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.15),
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              border: `2px solid ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.4)}`,
-                              transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                transform: 'scale(1.15)',
-                                borderColor: TYPE_COLORS[form.types[0]] || '#6366f1',
-                                boxShadow: `0 4px 12px ${alpha(TYPE_COLORS[form.types[0]] || '#6366f1', 0.3)}`
-                              }
-                            }}
-                          >
-                            <Box
-                              component="img"
-                              src={showShiny && form.shinyImage ? form.shinyImage : form.image}
-                              alt={form.name}
-                              onError={(e: any) => {
-                                const target = e.currentTarget;
-                                target.onerror = null;
-                                const rawBaseId = form.speciesId || form.id;
-                                let baseId = rawBaseId;
-                                if (rawBaseId && rawBaseId >= 10000) {
-                                  if (rawBaseId === 100710) baseId = 71;
-                                  else if (rawBaseId === 30678 || rawBaseId === 10678) baseId = 678;
-                                  else if (rawBaseId === 20036) baseId = 36;
-                                  else if (rawBaseId === 10226 || rawBaseId === 10326) baseId = 26;
-                                  else baseId = rawBaseId % 1000;
-                                }
-                                target.src = showShiny
-                                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
-                              }}
-                              sx={{ width: 46, height: 46, objectFit: 'contain' }}
-                            />
-                          </Box>
-                        </Tooltip>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontSize: 10,
-                            fontWeight: 800,
-                            color: 'text.secondary',
-                            textTransform: 'capitalize',
-                            textAlign: 'center',
-                            maxWidth: 80,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                          }}
-                        >
-                          {form.name.replace(/-/g, ' ').replace(new RegExp(p.name, 'i'), '').trim() || form.name}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Stack>
-                </Box>
+                <span className={styles.sectionTitle}>Regional / Alternative Forms</span>
+                <div className={styles.megaList}>
+                  {p.alternativeForms.map((m: any) => {
+                    const mImg = isShiny ? (m.shinyImage || m.image) : m.image;
+                    return (
+                      <div
+                        key={m.id}
+                        className={styles.megaCard}
+                        onClick={() => onSelectPokemonId && onSelectPokemonId(m.id)}
+                        style={{ border: '1px solid var(--border-main)', background: 'rgba(255,255,255,0.01)' }}
+                      >
+                        <span className={`${styles.customBadge} ${styles.megaTag}`} style={{ background: '#6b7280' }}>
+                          FORM
+                        </span>
+                        {mImg && <img src={mImg} alt={m.name} className={styles.megaImage} />}
+                        <span className={styles.megaName}>{m.name.replace('-', ' ')}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <hr className={styles.divider} />
               </>
             )}
 
-            {/* Moveset Details */}
-            {p.moves?.length > 0 && (
-              <>
-                <Divider />
-                <Box>
-                  <Typography variant="overline" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 3, mb: 1.5, display: 'block' }}>
-                    Moveset
-                  </Typography>
-                  <Tabs
-                    value={moveTab}
-                    onChange={(_, val) => setMoveTab(val)}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    sx={{
-                      minHeight: 36, mb: 2,
-                      '& .MuiTab-root': { minHeight: 36, py: 0.5, fontWeight: 800, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1 },
-                    }}
+            {/* Learnable Moves Database */}
+            <div className={styles.movesSection}>
+              <span className={styles.sectionTitle}>Learnable Moves Database</span>
+              <div className={styles.tabsRow}>
+                {['Level Up', 'TM / HM', 'Egg', 'Tutor'].map((label, index) => (
+                  <button
+                    key={label}
+                    className={`${styles.tabBtn} ${moveTab === index ? styles.active : ''}`}
+                    onClick={() => setMoveTab(index)}
                   >
-                    <Tab label="Level Up" />
-                    <Tab label="TM / HM" />
-                    <Tab label="Egg" />
-                    <Tab label="Tutor" />
-                  </Tabs>
+                    {label}
+                  </button>
+                ))}
+              </div>
 
-                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }, gap: 2 }}>
-                    {p.moves
-                      .filter((m: any) => {
-                        if (moveTab === 0) return m.learnMethod === 'level-up';
-                        if (moveTab === 1) return m.learnMethod === 'machine';
-                        if (moveTab === 2) return m.learnMethod === 'egg';
-                        return m.learnMethod === 'tutor';
-                      })
-                      .sort((a: any, b: any) => {
-                        if (moveTab === 0) {
-                          return (a.levelLearnedAt || 0) - (b.levelLearnedAt || 0);
-                        }
-                        return a.name.localeCompare(b.name);
-                      })
-                      .map((m: any, i: number) => {
-                        const isPhysical = m.damageClass?.toLowerCase() === 'physical';
-                        const isSpecial = m.damageClass?.toLowerCase() === 'special';
+              {/* Moves grid list */}
+              <div className={styles.movesGrid}>
+                {p.moves
+                  .filter((m: any) => {
+                    if (moveTab === 0) return m.learnMethod === 'level-up';
+                    if (moveTab === 1) return m.learnMethod === 'machine';
+                    if (moveTab === 2) return m.learnMethod === 'egg';
+                    return m.learnMethod === 'tutor';
+                  })
+                  .map((m: any) => {
+                    const moveColor = TYPE_COLORS[m.type] || '#9ca3af';
+                    return (
+                      <div key={m.name} className={styles.moveCard}>
+                        <div className={styles.moveHeader}>
+                          <div className={styles.moveTitleBlock}>
+                            {m.learnMethod === 'level-up' && (
+                              <span className={styles.moveMethodLabel}>
+                                Lvl {m.levelLearnedAt}
+                              </span>
+                            )}
+                            <span className={styles.moveTitle}>
+                              {m.name.replace('-', ' ')}
+                            </span>
+                          </div>
+                          <div className={styles.moveMeta}>
+                            <div className={styles.moveMetaBlock}>
+                              <span className={styles.moveMetaLabel}>PWR</span>
+                              <span className={styles.moveMetaVal}>{m.power || '--'}</span>
+                            </div>
+                            <div className={styles.moveMetaBlock}>
+                              <span className={styles.moveMetaLabel}>ACC</span>
+                              <span className={styles.moveMetaVal}>{m.accuracy || '--'}</span>
+                            </div>
+                          </div>
+                        </div>
 
-                        // Premium, spec-compliant styling for damage class
-                        // physical -> Đỏ đậm sẫm, special -> Xanh lam sẫm, status -> Xám/Đen nhạt
-                        let damageClassBg = 'rgba(156, 163, 175, 0.15)';
-                        let damageClassColor = theme.palette.text.secondary;
-                        if (isPhysical) {
-                          damageClassBg = '#991b1b'; // Dark deep red
-                          damageClassColor = '#ffffff';
-                        } else if (isSpecial) {
-                          damageClassBg = '#1e3a8a'; // Dark deep blue
-                          damageClassColor = '#ffffff';
-                        } else if (m.damageClass?.toLowerCase() === 'status') {
-                          damageClassBg = theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
-                          damageClassColor = theme.palette.text.secondary;
-                        }
-
-                        return (
-                          <Paper
-                            key={`${m.name}-${i}`}
-                            elevation={0}
-                            sx={{
-                              p: 2,
-                              borderRadius: '12px',
-                              border: `1px solid ${theme.palette.divider}`,
-                              bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.005)',
-                              transition: 'transform 0.2s, border-color 0.2s, box-shadow 0.2s',
-                              '&:hover': {
-                                transform: 'translateY(-2px)',
-                                borderColor: alpha(primaryColor, 0.4),
-                                boxShadow: `0 4px 12px ${alpha(primaryColor, 0.08)}`,
-                              }
+                        <div className={styles.moveBadges}>
+                          <span className={styles.moveTypeBadge} style={{ background: moveColor }}>
+                            {m.type}
+                          </span>
+                          <span
+                            className={styles.moveClassBadge}
+                            style={{
+                              background: m.damageClass === 'physical' ? '#ef4444' : m.damageClass === 'special' ? '#3b82f6' : '#9ca3af',
+                              color: '#fff',
                             }}
                           >
-                            {/* Dòng 1 */}
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0 }}>
-                                {moveTab === 0 && (
-                                  <Typography
-                                    variant="caption"
-                                    sx={{
-                                      fontWeight: 800,
-                                      color: 'text.disabled',
-                                      fontSize: '0.75rem',
-                                      whiteSpace: 'nowrap'
-                                    }}
-                                  >
-                                    Lv.{m.levelLearnedAt > 0 ? m.levelLearnedAt : '—'}
-                                  </Typography>
-                                )}
-                                <Typography
-                                  variant="body1"
-                                  sx={{
-                                    fontWeight: 900,
-                                    textTransform: 'capitalize',
-                                    fontSize: '0.9rem',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    color: 'text.primary'
-                                  }}
-                                >
-                                  {m.name.replace(/-/g, ' ')}
-                                </Typography>
-                              </Box>
-
-                              <Stack direction="row" spacing={1.5} sx={{ pl: 1, flexShrink: 0, textAlign: 'right' }}>
-                                <Box>
-                                  <Typography variant="caption" color="text.disabled" sx={{ display: 'block', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase' }}>PWR</Typography>
-                                  <Typography variant="body2" sx={{ fontWeight: 800, color: m.power ? 'text.primary' : 'text.disabled' }}>{m.power || '—'}</Typography>
-                                </Box>
-                                <Box>
-                                  <Typography variant="caption" color="text.disabled" sx={{ display: 'block', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase' }}>ACC</Typography>
-                                  <Typography variant="body2" sx={{ fontWeight: 800, color: m.accuracy ? 'text.primary' : 'text.disabled' }}>{m.accuracy ? `${m.accuracy}%` : '—'}</Typography>
-                                </Box>
-                              </Stack>
-                            </Box>
-
-                            {/* Dòng 2 */}
-                            <Stack direction="row" spacing={1}>
-                              <Chip
-                                label={m.type}
-                                size="small"
-                                sx={{
-                                  height: 20,
-                                  fontSize: '0.7rem',
-                                  fontWeight: 900,
-                                  textTransform: 'uppercase',
-                                  bgcolor: TYPE_COLORS[m.type.toLowerCase()] || '#9ca3af',
-                                  color: '#fff',
-                                  borderRadius: '6px'
-                                }}
-                              />
-                              {m.damageClass && (
-                                <Chip
-                                  label={m.damageClass}
-                                  size="small"
-                                  sx={{
-                                    height: 20,
-                                    fontSize: '0.7rem',
-                                    fontWeight: 900,
-                                    textTransform: 'uppercase',
-                                    fontStyle: 'italic',
-                                    bgcolor: damageClassBg,
-                                    color: damageClassColor,
-                                    borderRadius: '6px',
-                                  }}
-                                />
-                              )}
-                            </Stack>
-                          </Paper>
-                        );
-                      })}
-                  </Box>
-                </Box>
-              </>
-            )}
-          </Stack>
+                            {m.damageClass}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
         )}
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

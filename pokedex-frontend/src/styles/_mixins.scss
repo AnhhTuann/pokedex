@@ -1,0 +1,101 @@
+@import "./variables";
+
+// ─── Layout Mixins ────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-row($justify: flex-start, $align: center, $gap: 0px) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin flex-col($justify: flex-start, $align: stretch, $gap: 0px) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin grid-responsive($min-width: 250px, $gap: 24px) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+// ─── Visual Effects Mixins ────────────────────────────────
+@mixin glass {
+  background: var(--bg-paper-glow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-main);
+  box-shadow: var(--shadow-md);
+}
+
+@mixin glow-hover($glow-var: var(--glow-primary), $translate-y: -4px) {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY($translate-y);
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg), $glow-var;
+  }
+}
+
+// ─── Responsive Media Queries ─────────────────────────────
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: $breakpoint-xs) { @content; }
+  }
+  @else if $breakpoint == sm {
+    @media (max-width: $breakpoint-sm) { @content; }
+  }
+  @else if $breakpoint == md {
+    @media (max-width: $breakpoint-md) { @content; }
+  }
+  @else if $breakpoint == lg {
+    @media (max-width: $breakpoint-lg) { @content; }
+  }
+  @else if $breakpoint == xl {
+    @media (max-width: $breakpoint-xl) { @content; }
+  }
+  @else if $breakpoint == sm-up {
+    @media (min-width: #{$breakpoint-sm + 1px}) { @content; }
+  }
+  @else if $breakpoint == md-up {
+    @media (min-width: #{$breakpoint-md + 1px}) { @content; }
+  }
+  @else if $breakpoint == lg-up {
+    @media (min-width: #{$breakpoint-lg + 1px}) { @content; }
+  }
+}
+
+// ─── Scrollbar Customizer ─────────────────────────────────
+@mixin custom-scrollbar($width: 6px, $thumb-color: rgba(255, 255, 255, 0.08), $thumb-hover: rgba(255, 255, 255, 0.2)) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: 10px;
+    
+    &:hover {
+      background: $thumb-hover;
+    }
+  }
+  
+  scrollbar-width: thin;
+  scrollbar-color: $thumb-color transparent;
+}

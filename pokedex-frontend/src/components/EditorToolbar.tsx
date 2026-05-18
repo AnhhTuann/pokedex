@@ -1,280 +1,127 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Editor } from '@tiptap/react';
-import {
-  Box, IconButton, Tooltip, Dialog, DialogTitle, DialogContent,
-  DialogActions, TextField, Button, Autocomplete, CircularProgress, Divider, Stack
-} from '@mui/material';
-import {
-  FormatBold, FormatItalic, LooksOne, LooksTwo, FormatListBulleted,
-  FormatListNumbered, TableChart, CatchingPokemon
-} from '@mui/icons-material';
 import { useQuery, gql } from '@apollo/client';
+import { Bold, Italic, Heading1, Heading2, List, ListOrdered, Table, Target, X, Loader } from 'lucide-react';
+import styles from './EditorToolbar.module.scss';
 
-// Simple GraphQL query to fetch Pokemon suggestions
 const GET_POKEMON_SUGGESTIONS = gql`
   query GetPokemonSuggestions($search: String) {
     pokemonList(limit: 10, search: $search) {
-      results {
-        id
-        name
-        image
-      }
+      results { id name image }
     }
   }
 `;
 
-interface EditorToolbarProps {
-  editor: Editor | null;
-}
+interface EditorToolbarProps { editor: Editor | null; }
 
 export default function EditorToolbar({ editor }: EditorToolbarProps) {
-  const [spriteDialogOpen, setSpriteDialogOpen] = useState(false);
+  const [spriteOpen, setSpriteOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState<{ id: number; name: string; image: string } | null>(null);
 
-  // Debounce search term to avoid hitting GraphQL server too fast
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchTerm);
-    }, 3000); // 300ms
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setDebouncedSearch(searchTerm), 300);
+    return () => clearTimeout(t);
   }, [searchTerm]);
 
   const { data, loading } = useQuery(GET_POKEMON_SUGGESTIONS, {
     variables: { search: debouncedSearch },
-    skip: !spriteDialogOpen
+    skip: !spriteOpen,
   });
 
   if (!editor) return null;
 
   const handleInsertSprite = () => {
     if (selectedPokemon) {
-      // Use the official artwork or standard sprite as inline image
-      // Standard sprite is usually better for small inline images, or official artwork
-      // Let's use standard PokeAPI sprite because it is small and fits inline perfectly:
       const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${selectedPokemon.id}.png`;
-      
-      editor
-        .chain()
-        .focus()
-        .setImage({ src: spriteUrl, alt: selectedPokemon.name })
-        .run();
-
-      // Close dialog and reset state
-      setSpriteDialogOpen(false);
+      editor.chain().focus().setImage({ src: spriteUrl, alt: selectedPokemon.name }).run();
+      setSpriteOpen(false);
       setSelectedPokemon(null);
       setSearchTerm('');
     }
   };
 
-  const handleInsertTable = () => {
-    editor
-      .chain()
-      .focus()
-      .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-      .run();
-  };
+  const btnStyle = (active: boolean) => ({
+    width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+    borderRadius: 8, border: 'none', cursor: 'pointer',
+    background: active ? 'rgba(99,102,241,0.15)' : 'transparent',
+    color: active ? '#6366f1' : 'var(--text-secondary)',
+    transition: 'all 0.15s',
+  });
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: 0.5,
-        p: 1,
-        borderBottom: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'background.paper',
-        borderTopLeftRadius: '12px',
-        borderTopRightRadius: '12px',
-      }}
-    >
-      <Tooltip title="Bold (Ctrl+B)">
-        <IconButton
-          size="small"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          color={editor.isActive('bold') ? 'primary' : 'default'}
-          sx={{
-            bgcolor: editor.isActive('bold') ? 'action.selected' : 'transparent',
-            borderRadius: '8px'
-          }}
-        >
-          <FormatBold fontSize="small" />
-        </IconButton>
-      </Tooltip>
+    <>
+      <div className={styles.toolbar}>
+        <button title="Bold (Ctrl+B)" style={btnStyle(editor.isActive('bold'))} onClick={() => editor.chain().focus().toggleBold().run()}>
+          <Bold size={14}/>
+        </button>
+        <button title="Italic (Ctrl+I)" style={btnStyle(editor.isActive('italic'))} onClick={() => editor.chain().focus().toggleItalic().run()}>
+          <Italic size={14}/>
+        </button>
+        <div className={styles.divider}/>
+        <button title="Heading 1" style={btnStyle(editor.isActive('heading',{level:1}))} onClick={() => editor.chain().focus().toggleHeading({level:1}).run()}>
+          <Heading1 size={14}/>
+        </button>
+        <button title="Heading 2" style={btnStyle(editor.isActive('heading',{level:2}))} onClick={() => editor.chain().focus().toggleHeading({level:2}).run()}>
+          <Heading2 size={14}/>
+        </button>
+        <div className={styles.divider}/>
+        <button title="Bullet List" style={btnStyle(editor.isActive('bulletList'))} onClick={() => editor.chain().focus().toggleBulletList().run()}>
+          <List size={14}/>
+        </button>
+        <button title="Ordered List" style={btnStyle(editor.isActive('orderedList'))} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+          <ListOrdered size={14}/>
+        </button>
+        <div className={styles.divider}/>
+        <button title="Insert Table" style={btnStyle(false)} onClick={() => editor.chain().focus().insertTable({rows:3,cols:3,withHeaderRow:true}).run()}>
+          <Table size={14}/>
+        </button>
+        <button title="Insert Pokémon Sprite" style={{...btnStyle(false),color:'#ec4899'}} onClick={() => setSpriteOpen(true)}>
+          <Target size={14}/>
+        </button>
+      </div>
 
-      <Tooltip title="Italic (Ctrl+I)">
-        <IconButton
-          size="small"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          color={editor.isActive('italic') ? 'primary' : 'default'}
-          sx={{
-            bgcolor: editor.isActive('italic') ? 'action.selected' : 'transparent',
-            borderRadius: '8px'
-          }}
-        >
-          <FormatItalic fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
-
-      <Tooltip title="Heading 1">
-        <IconButton
-          size="small"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          color={editor.isActive('heading', { level: 1 }) ? 'primary' : 'default'}
-          sx={{
-            bgcolor: editor.isActive('heading', { level: 1 }) ? 'action.selected' : 'transparent',
-            borderRadius: '8px'
-          }}
-        >
-          <LooksOne fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip title="Heading 2">
-        <IconButton
-          size="small"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          color={editor.isActive('heading', { level: 2 }) ? 'primary' : 'default'}
-          sx={{
-            bgcolor: editor.isActive('heading', { level: 2 }) ? 'action.selected' : 'transparent',
-            borderRadius: '8px'
-          }}
-        >
-          <LooksTwo fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
-
-      <Tooltip title="Bullet List">
-        <IconButton
-          size="small"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          color={editor.isActive('bulletList') ? 'primary' : 'default'}
-          sx={{
-            bgcolor: editor.isActive('bulletList') ? 'action.selected' : 'transparent',
-            borderRadius: '8px'
-          }}
-        >
-          <FormatListBulleted fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip title="Ordered List">
-        <IconButton
-          size="small"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          color={editor.isActive('orderedList') ? 'primary' : 'default'}
-          sx={{
-            bgcolor: editor.isActive('orderedList') ? 'action.selected' : 'transparent',
-            borderRadius: '8px'
-          }}
-        >
-          <FormatListNumbered fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
-
-      <Tooltip title="Insert Gym Leader Table (3x3)">
-        <IconButton
-          size="small"
-          onClick={handleInsertTable}
-          sx={{ borderRadius: '8px' }}
-        >
-          <TableChart fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip title="Insert Pokémon Sprite">
-        <IconButton
-          size="small"
-          onClick={() => setSpriteDialogOpen(true)}
-          sx={{
-            borderRadius: '8px',
-            color: 'secondary.main',
-            '&:hover': { bgcolor: 'secondary.light', color: '#fff' }
-          }}
-        >
-          <CatchingPokemon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      {/* Insert Sprite Dialog */}
-      <Dialog
-        open={spriteDialogOpen}
-        onClose={() => setSpriteDialogOpen(false)}
-        maxWidth="xs"
-        fullWidth
-        slotProps={{
-          paper: {
-            sx: {
-              borderRadius: '16px',
-              bgcolor: 'background.paper',
-              border: '1px solid rgba(255, 255, 255, 0.08)'
-            }
-          }
-        }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, fontSize: '1.1rem', pb: 1 }}>
-          INSERT POKÉMON SPRITE
-        </DialogTitle>
-        <Divider />
-        <DialogContent sx={{ pt: 2, pb: 3 }}>
-          <Autocomplete
-            options={data?.pokemonList?.results || []}
-            getOptionLabel={(option) => `#${option.id} - ${option.name.toUpperCase()}`}
-            loading={loading}
-            onInputChange={(event, value) => setSearchTerm(value)}
-            onChange={(event, value) => setSelectedPokemon(value)}
-            value={selectedPokemon}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search Pokémon name or ID..."
-                size="small"
-                fullWidth
+      {/* Sprite Picker Modal */}
+      {spriteOpen && (
+        <div className={styles.overlay} onClick={() => setSpriteOpen(false)}>
+          <div className={styles.modalCard} onClick={e => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <span className={styles.modalTitle}>Insert Pokémon Sprite</span>
+              <button onClick={() => setSpriteOpen(false)} className={styles.closeBtn}><X size={16}/></button>
+            </div>
+            <div className={styles.modalBody}>
+              <input
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search Pokémon name..."
+                autoFocus
+                className={styles.searchInput}
               />
-            )}
-            renderOption={(props, option) => {
-              const { key, ...restProps } = props;
-              return (
-                <li key={option.id} {...restProps}>
-                  <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-                    <img
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${option.id}.png`}
-                      alt={option.name}
-                      style={{ width: 36, height: 36 }}
-                    />
-                    <Box sx={{ fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase' }}>
-                      #{option.id} - {option.name}
-                    </Box>
-                  </Stack>
-                </li>
-              );
-            }}
-          />
-        </DialogContent>
-        <Divider />
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setSpriteDialogOpen(false)} color="inherit" sx={{ fontWeight: 700 }}>
-            CANCEL
-          </Button>
-          <Button
-            onClick={handleInsertSprite}
-            variant="contained"
-            disabled={!selectedPokemon}
-            sx={{ fontWeight: 800, borderRadius: '8px' }}
-          >
-            INSERT
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+              <div className={styles.pokemonList}>
+                {loading && <div style={{ display:'flex',justifyContent:'center',padding:16 }}><Loader size={20} style={{ animation:'spin 0.8s linear infinite' }}/></div>}
+                {(data?.pokemonList?.results || []).map((p: any) => (
+                  <div key={p.id}
+                    onClick={() => setSelectedPokemon(p)}
+                    className={`${styles.pokemonRow} ${selectedPokemon?.id===p.id ? styles.selected : ''}`}>
+                    <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png`} alt={p.name} className={styles.pokemonImage}/>
+                    <span className={styles.pokemonName}>#{p.id} - {p.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={styles.modalFooter}>
+              <button onClick={() => setSpriteOpen(false)} className={styles.cancelBtn}>
+                Cancel
+              </button>
+              <button onClick={handleInsertSprite} disabled={!selectedPokemon}
+                className={`${styles.insertBtn} ${selectedPokemon ? styles.active : ''}`}>
+                Insert
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

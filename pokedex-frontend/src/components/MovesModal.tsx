@@ -1,28 +1,14 @@
 import React, { useState } from 'react';
-import {
-  Dialog, DialogTitle, DialogContent, Box, Typography, IconButton,
-  Grid, Card, CardContent, Button, Stack, Chip, alpha, useTheme, LinearProgress
-} from '@mui/material';
-import {
-  Close, AutoAwesome, Save, FlashOn, Radar, Shield, CheckCircle
-} from '@mui/icons-material';
 import { useQuery, gql } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
+import { X, Sparkles, Save, Flame, Target, Shield, CheckCircle } from 'lucide-react';
+import styles from './MovesModal.module.scss';
 
 const GET_POKEMON_MOVES = gql`
   query GetPokemonMoves($id: Int!) {
     pokemon(id: $id) {
-      id
-      name
-      types
-      image
-      moves {
-        name
-        type
-        power
-        accuracy
-        damageClass
-      }
+      id name types image
+      moves { name type power accuracy damageClass }
     }
   }
 `;
@@ -41,7 +27,6 @@ interface MovesModalProps {
 }
 
 export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
-  const theme = useTheme();
   const { team, setMoves } = useTeamStore();
   const teamMember = team.find(p => p.id === pokemonId);
   
@@ -53,7 +38,6 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
   const pokemon = data?.pokemon;
   const availableMoves = pokemon?.moves || [];
 
-  // Local state for moves being drafted
   const [selectedMoves, setSelectedMoves] = useState<any[]>(teamMember?.moves || []);
 
   const handleToggleMove = (move: any) => {
@@ -62,7 +46,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
       if (exists) {
         return prev.filter(m => m.name !== move.name);
       } else {
-        if (prev.length >= 4) return prev; // max 4
+        if (prev.length >= 4) return prev;
         return [...prev, move];
       }
     });
@@ -109,251 +93,136 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
     setSelectedMoves(recommended);
   };
 
-  return (
-    <Dialog
-      open={!!pokemonId}
-      onClose={onClose}
-      maxWidth="md"
-      fullWidth
-      sx={{
-        '& .MuiDialog-paper': {
-          borderRadius: 4,
-          overflow: 'hidden',
-          background: theme.palette.background.paper,
-          maxHeight: '90vh',
-        }
-      }}
-    >
-      {/* Header */}
-      <DialogTitle sx={{ p: 3, borderBottom: `1px solid ${theme.palette.divider}` }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Box
-              sx={{
-                width: 56, height: 56,
-                background: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-                borderRadius: 3,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', p: 0.5
-              }}
-            >
-              {teamMember?.image && (
-                <Box component="img" src={teamMember.image} alt="Pokemon" sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: -0.5 }}>
-                {teamMember?.name} Moveset
-              </Typography>
-              <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase' }}>
-                Select up to 4 moves
-              </Typography>
-            </Box>
-          </Box>
-          <IconButton onClick={onClose} sx={{ border: `1px solid ${theme.palette.divider}` }}>
-            <Close />
-          </IconButton>
-        </Box>
-      </DialogTitle>
+  if (!pokemonId) return null;
 
-      {/* Selected Draft Row */}
-      <Box
-        sx={{
-          p: 3,
-          background: theme.palette.mode === 'dark' ? 'rgba(15,15,26,0.4)' : 'rgba(248,250,252,0.6)',
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        }}
-      >
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* 4 Draft Boxes */}
-          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className={styles.header}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className={styles.avatarBox}>
+              {teamMember?.image && (
+                <img src={teamMember.image} alt="Pokemon" className={styles.avatarImage} />
+              )}
+            </div>
+            <div className={styles.titleCol}>
+              <h2 className={styles.title}>
+                {teamMember?.name} Moveset
+              </h2>
+              <span className={styles.subtitle}>Select up to 4 moves</span>
+            </div>
+          </div>
+          <button onClick={onClose} className={styles.closeBtn}>
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Selected Draft Row */}
+        <div className={styles.draftRow}>
+          <div className={styles.draftBoxes}>
             {[0, 1, 2, 3].map(i => {
               const m = selectedMoves[i];
               const moveColor = m ? (TYPE_COLORS[m.type] || '#9ca3af') : 'transparent';
               return (
-                <Box
+                <div
                   key={i}
-                  sx={{
-                    width: 120, height: 56,
-                    borderRadius: 2.5,
-                    border: `2px ${m ? 'solid' : 'dashed'} ${m ? moveColor : theme.palette.divider}`,
-                    background: m ? alpha(moveColor, 0.05) : 'transparent',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    position: 'relative', overflow: 'hidden'
+                  className={styles.draftBox}
+                  style={{
+                    border: `2px ${m ? 'solid' : 'dashed'} ${m ? moveColor : 'var(--border-main)'}`,
+                    background: m ? `${moveColor}0a` : 'transparent',
                   }}
                 >
                   {m ? (
                     <>
-                      <Typography variant="caption" sx={{ fontWeight: 800, textTransform: 'uppercase', fontSize: 10, px: 1, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
-                        {m.name.replace('-', ' ')}
-                      </Typography>
-                      <Typography variant="caption" sx={{ fontSize: 8, fontWeight: 900, textTransform: 'uppercase', color: moveColor }}>
-                        {m.type}
-                      </Typography>
-                      <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, bgcolor: moveColor }} />
+                      <span className={styles.draftMoveName}>{m.name.replace('-', ' ')}</span>
+                      <span className={styles.draftMoveType} style={{ color: moveColor }}>{m.type}</span>
+                      <div className={styles.draftUnderline} style={{ background: moveColor }} />
                     </>
                   ) : (
-                    <Typography variant="caption" color="text.disabled" sx={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
-                      Empty Slot
-                    </Typography>
+                    <span className={styles.draftEmpty}>Empty Slot</span>
                   )}
-                </Box>
+                </div>
               );
             })}
-          </Stack>
+          </div>
 
           {/* Action Buttons */}
-          <Stack direction="row" spacing={1.5} sx={{ width: { xs: '100%', sm: 'auto' } }}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<AutoAwesome />}
+          <div className={styles.actionButtons}>
+            <button
+              className={styles.autoBtn}
               onClick={recommendMoves}
               disabled={loading || availableMoves.length === 0}
-              sx={{ borderRadius: 3, fontWeight: 800, px: 2, flex: { xs: 1, sm: 'none' } }}
             >
-              Auto-Build
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<Save />}
+              <Sparkles size={14} /> Auto-Build
+            </button>
+            <button
+              className={styles.saveBtn}
               onClick={handleSave}
-              sx={{ borderRadius: 3, fontWeight: 800, px: 3, flex: { xs: 1, sm: 'none' } }}
             >
-              Save Team
-            </Button>
-          </Stack>
-        </Stack>
-      </Box>
+              <Save size={14} /> Save Team
+            </button>
+          </div>
+        </div>
 
-      {/* Available Moves Grid */}
-      <DialogContent
-        sx={{
-          p: 3,
-          overflowY: 'auto',
-          borderBottomLeftRadius: '32px',
-          borderBottomRightRadius: '32px',
-          '&::-webkit-scrollbar': {
-            width: '6px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'transparent',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
-            borderRadius: '10px',
-            '&:hover': {
-              background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
-            }
-          },
-          scrollbarWidth: 'thin',
-          scrollbarColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.15) transparent' : 'rgba(0, 0, 0, 0.15) transparent',
-        }}
-      >
-        {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-            <LinearProgress sx={{ width: '50%', borderRadius: 2 }} />
-          </Box>
-        ) : (
-          <Grid container spacing={2}>
-            {availableMoves.map((m: any) => {
-              const isSelected = selectedMoves.some(s => s.name === m.name);
-              const isStab = pokemon?.types.includes(m.type);
-              const moveColor = TYPE_COLORS[m.type] || '#9ca3af';
+        {/* Available Moves Grid */}
+        <div className={styles.dialogContent}>
+          {loading ? (
+            <div className={styles.progressBar}>
+              <div className={styles.progressFill}></div>
+            </div>
+          ) : (
+            <div className={styles.movesGrid}>
+              {availableMoves.map((m: any) => {
+                const isSelected = selectedMoves.some(s => s.name === m.name);
+                const isStab = pokemon?.types.includes(m.type);
+                const moveColor = TYPE_COLORS[m.type] || '#9ca3af';
 
-              return (
-                <Grid key={m.name} size={{ xs: 12, sm: 6, md: 4 }}>
-                  <Card
+                return (
+                  <div
+                    key={m.name}
                     onClick={() => handleToggleMove(m)}
-                    sx={{
-                      cursor: 'pointer',
-                      borderRadius: 3,
-                      border: `2px solid ${isSelected ? theme.palette.primary.main : alpha(theme.palette.divider, 0.5)}`,
-                      background: isSelected ? alpha(theme.palette.primary.main, 0.04) : 'transparent',
-                      transition: 'transform 0.2s, border-color 0.2s',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      '&:hover': {
-                        transform: 'translateY(-2px)',
-                        borderColor: isSelected ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.5),
-                      }
+                    className={`${styles.moveCard} ${isSelected ? styles.selected : ''}`}
+                    style={{
+                      borderColor: isSelected ? 'var(--primary)' : 'var(--border-main)',
                     }}
                   >
-                    <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                      {/* Move Header */}
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
-                        <Box sx={{ minWidth: 0, flex: 1 }}>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 800, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {m.name.replace('-', ' ')}
-                            {isStab && (
-                              <Chip
-                                label="STAB"
-                                size="small"
-                                sx={{
-                                  height: 14,
-                                  fontSize: 7,
-                                  fontWeight: 900,
-                                  bgcolor: 'warning.main',
-                                  color: 'warning.contrastText',
-                                  borderRadius: 1,
-                                }}
-                              />
-                            )}
-                          </Typography>
-                          <Chip
-                            label={m.type}
-                            size="small"
-                            sx={{
-                              height: 16,
-                              fontSize: 8,
-                              fontWeight: 900,
-                              textTransform: 'uppercase',
-                              bgcolor: moveColor,
-                              color: '#fff',
-                              mt: 0.5
-                            }}
-                          />
-                        </Box>
-                        {isSelected && (
-                          <CheckCircle color="primary" sx={{ fontSize: 18 }} />
-                        )}
-                      </Box>
+                    {/* Move Header */}
+                    <div className={styles.moveHeader}>
+                      <div className={styles.moveTitleCol}>
+                        <span className={styles.moveName}>
+                          {m.name.replace('-', ' ')}
+                          {isStab && <span className={styles.stabChip}>STAB</span>}
+                        </span>
+                        <span className={styles.typeChip} style={{ background: moveColor }}>{m.type}</span>
+                      </div>
+                      {isSelected && <CheckCircle size={18} color="var(--primary)" />}
+                    </div>
 
-                      {/* Power and Accuracy */}
-                      <Stack direction="row" spacing={2} sx={{ mt: 1 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <FlashOn sx={{ fontSize: 14, color: 'text.secondary' }} />
-                          <Typography variant="caption" sx={{ fontWeight: 700 }}>
-                            {m.power || '--'}
-                          </Typography>
-                          <Typography variant="caption" color="text.disabled" sx={{ fontSize: 8, fontWeight: 800 }}>
-                            PWR
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Radar sx={{ fontSize: 14, color: 'text.secondary' }} />
-                          <Typography variant="caption" sx={{ fontWeight: 700 }}>
-                            {m.accuracy || '--'}
-                          </Typography>
-                          <Typography variant="caption" color="text.disabled" sx={{ fontSize: 8, fontWeight: 800 }}>
-                            ACC
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Shield sx={{ fontSize: 14, color: 'text.secondary' }} />
-                          <Typography variant="caption" color="text.secondary" sx={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase' }}>
-                            {m.damageClass}
-                          </Typography>
-                        </Box>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        )}
-      </DialogContent>
-    </Dialog>
+                    {/* Power and Accuracy */}
+                    <div className={styles.moveStats}>
+                      <div className={styles.statItem}>
+                        <Flame size={14} color="var(--text-muted)" />
+                        <span className={styles.statValue}>{m.power || '--'}</span>
+                        <span className={styles.statLabel}>PWR</span>
+                      </div>
+                      <div className={styles.statItem}>
+                        <Target size={14} color="var(--text-muted)" />
+                        <span className={styles.statValue}>{m.accuracy || '--'}</span>
+                        <span className={styles.statLabel}>ACC</span>
+                      </div>
+                      <div className={styles.statItem}>
+                        <Shield size={14} color="var(--text-muted)" />
+                        <span className={styles.statLabel}>{m.damageClass}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

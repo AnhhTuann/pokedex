@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -7,84 +7,39 @@ import { TableRow } from '@tiptap/extension-table-row';
 import { TableHeader } from '@tiptap/extension-table-header';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { useQuery, useMutation, gql } from '@apollo/client';
-import {
-  Box, Card, CardContent, Typography, TextField, MenuItem, Button, Grid,
-  Paper, List, ListItem, ListItemText, IconButton, Divider, Stack, Alert, Snackbar, CircularProgress
-} from '@mui/material';
-import { Edit, Delete, Save, AddCircle, FormatListNumbered } from '@mui/icons-material';
+import { Pencil, Trash2, Save, Plus, List, Loader, CheckCircle, AlertCircle } from 'lucide-react';
 import EditorToolbar from './EditorToolbar';
 import { VERSION_COLORS } from '../App';
+import styles from './AdminWalkthrough.module.scss';
 
 const GET_WALKTHROUGHS = gql`
   query GetWalkthroughs($gameVersion: String!, $language: String!) {
     getWalkthroughs(gameVersion: $gameVersion, language: $language) {
-      id
-      gameVersion
-      chapterTitle
-      description
-      coverImage
-      content
-      order
-      language
+      id gameVersion chapterTitle description coverImage content order language
     }
   }
 `;
-
 const UPSERT_WALKTHROUGH = gql`
   mutation UpsertWalkthrough($id: Int, $gameVersion: String!, $chapterTitle: String!, $description: String, $coverImage: String, $content: String!, $order: Int!, $language: String) {
     upsertWalkthrough(id: $id, gameVersion: $gameVersion, chapterTitle: $chapterTitle, description: $description, coverImage: $coverImage, content: $content, order: $order, language: $language) {
-      id
-      gameVersion
-      chapterTitle
-      description
-      coverImage
-      content
-      order
-      language
+      id gameVersion chapterTitle description coverImage content order language
     }
   }
 `;
+const DELETE_WALKTHROUGH = gql`mutation DeleteWalkthrough($id: Int!) { deleteWalkthrough(id: $id) }`;
 
-const DELETE_WALKTHROUGH = gql`
-  mutation DeleteWalkthrough($id: Int!) {
-    deleteWalkthrough(id: $id)
-  }
-`;
-
-// Game options matching our standard version list
 const GAME_OPTIONS = [
-  { value: 'emerald', label: 'Emerald' },
-  { value: 'firered', label: 'FireRed' },
-  { value: 'leafgreen', label: 'LeafGreen' },
-  { value: 'red', label: 'Red' },
-  { value: 'blue', label: 'Blue' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'gold', label: 'Gold' },
-  { value: 'silver', label: 'Silver' },
-  { value: 'crystal', label: 'Crystal' },
-  { value: 'ruby', label: 'Ruby' },
-  { value: 'sapphire', label: 'Sapphire' },
-  { value: 'diamond', label: 'Diamond' },
-  { value: 'pearl', label: 'Pearl' },
-  { value: 'platinum', label: 'Platinum' },
-  { value: 'heartgold', label: 'HeartGold' },
-  { value: 'soulsilver', label: 'SoulSilver' },
-  { value: 'black', label: 'Black' },
-  { value: 'white', label: 'White' },
-  { value: 'black-2', label: 'Black 2' },
-  { value: 'white-2', label: 'White 2' },
-  { value: 'x', label: 'X' },
-  { value: 'y', label: 'Y' },
-  { value: 'omega-ruby', label: 'Omega Ruby' },
-  { value: 'alpha-sapphire', label: 'Alpha Sapphire' },
-  { value: 'sun', label: 'Sun' },
-  { value: 'moon', label: 'Moon' },
-  { value: 'ultra-sun', label: 'Ultra Sun' },
-  { value: 'ultra-moon', label: 'Ultra Moon' },
-  { value: 'sword', label: 'Sword' },
-  { value: 'shield', label: 'Shield' },
-  { value: 'scarlet', label: 'Scarlet' },
-  { value: 'violet', label: 'Violet' }
+  {value:'red',label:'Red'},{value:'blue',label:'Blue'},{value:'yellow',label:'Yellow'},
+  {value:'gold',label:'Gold'},{value:'silver',label:'Silver'},{value:'crystal',label:'Crystal'},
+  {value:'ruby',label:'Ruby'},{value:'sapphire',label:'Sapphire'},{value:'emerald',label:'Emerald'},
+  {value:'firered',label:'FireRed'},{value:'leafgreen',label:'LeafGreen'},
+  {value:'diamond',label:'Diamond'},{value:'pearl',label:'Pearl'},{value:'platinum',label:'Platinum'},
+  {value:'heartgold',label:'HeartGold'},{value:'soulsilver',label:'SoulSilver'},
+  {value:'black',label:'Black'},{value:'white',label:'White'},{value:'black-2',label:'Black 2'},{value:'white-2',label:'White 2'},
+  {value:'x',label:'X'},{value:'y',label:'Y'},{value:'omega-ruby',label:'Omega Ruby'},{value:'alpha-sapphire',label:'Alpha Sapphire'},
+  {value:'sun',label:'Sun'},{value:'moon',label:'Moon'},{value:'ultra-sun',label:'Ultra Sun'},{value:'ultra-moon',label:'Ultra Moon'},
+  {value:'sword',label:'Sword'},{value:'shield',label:'Shield'},
+  {value:'scarlet',label:'Scarlet'},{value:'violet',label:'Violet'},
 ];
 
 export default function AdminWalkthrough() {
@@ -95,485 +50,214 @@ export default function AdminWalkthrough() {
   const [coverImage, setCoverImage] = useState('');
   const [order, setOrder] = useState<number>(1);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{msg:string;type:'success'|'error'}|null>(null);
 
-  // Snackbar notifications
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+  const showToast = (msg: string, type: 'success'|'error') => {
+    setToast({msg,type});
+    setTimeout(() => setToast(null), 4000);
+  };
 
-  // GraphQL Query for selected game's walkthroughs
-  const { data, loading, refetch } = useQuery(GET_WALKTHROUGHS, {
-    variables: { gameVersion, language }
-  });
-
-  // Mutations
+  const { data, loading, refetch } = useQuery(GET_WALKTHROUGHS, { variables:{ gameVersion, language } });
   const [upsertWalkthrough, { loading: saving }] = useMutation(UPSERT_WALKTHROUGH);
   const [deleteWalkthrough] = useMutation(DELETE_WALKTHROUGH);
 
-  // Initialize TipTap
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Image,
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
-    ],
+    extensions: [StarterKit, Image, Table.configure({resizable:true}), TableRow, TableHeader, TableCell],
     content: '',
     editorProps: {
       attributes: {
         class: 'tiptap-editor-inner-input focus:outline-none',
-        style: 'min-height: 380px; padding: 18px; color: #e2e8f0; font-family: sans-serif; font-size: 0.95rem; line-height: 1.6;'
+        style: 'min-height:380px;padding:18px;color:var(--text-primary);font-family:sans-serif;font-size:0.95rem;line-height:1.6;'
       }
     }
   });
 
   const handleResetForm = () => {
-    setEditingId(null);
-    setChapterTitle('');
-    setDescription('');
-    setCoverImage('');
-    // Automatically set next order based on existing chapter counts
+    setEditingId(null); setChapterTitle(''); setDescription(''); setCoverImage('');
     const existing = data?.getWalkthroughs || [];
-    const nextOrder = existing.length > 0 ? Math.max(...existing.map((c: any) => c.order)) + 1 : 1;
-    setOrder(nextOrder);
+    setOrder(existing.length > 0 ? Math.max(...existing.map((c: any) => c.order)) + 1 : 1);
     editor?.commands.setContent('');
   };
 
   const handleSave = async () => {
-    if (!chapterTitle.trim()) {
-      setSnackbar({ open: true, message: 'Please enter a chapter title!', severity: 'error' });
-      return;
-    }
-
+    if (!chapterTitle.trim()) { showToast('Please enter a chapter title!','error'); return; }
     const htmlContent = editor?.getHTML() || '';
-    if (!htmlContent.trim() || htmlContent === '<p></p>') {
-      setSnackbar({ open: true, message: 'Please enter some guide content!', severity: 'error' });
-      return;
-    }
-
+    if (!htmlContent.trim() || htmlContent === '<p></p>') { showToast('Please enter some guide content!','error'); return; }
     try {
-      await upsertWalkthrough({
-        variables: {
-          id: editingId,
-          gameVersion,
-          chapterTitle,
-          description,
-          coverImage,
-          content: htmlContent,
-          order: Number(order),
-          language
-        }
-      });
-
-      setSnackbar({ open: true, message: 'Chapter saved successfully! 🚀', severity: 'success' });
-      refetch();
-      handleResetForm();
-    } catch (err: any) {
-      console.error(err);
-      setSnackbar({ open: true, message: `Error saving: ${err.message}`, severity: 'error' });
-    }
+      await upsertWalkthrough({ variables:{ id:editingId, gameVersion, chapterTitle, description, coverImage, content:htmlContent, order:Number(order), language } });
+      showToast('Chapter saved successfully! 🚀','success');
+      refetch(); handleResetForm();
+    } catch (err: any) { showToast(`Error saving: ${err.message}`,'error'); }
   };
 
-  const handleEditChapter = (chapter: any) => {
-    setEditingId(chapter.id);
-    setChapterTitle(chapter.chapterTitle);
-    setDescription(chapter.description || '');
-    setCoverImage(chapter.coverImage || '');
-    setOrder(chapter.order);
-    setLanguage(chapter.language || 'vi');
-    editor?.commands.setContent(chapter.content);
+  const handleEdit = (ch: any) => {
+    setEditingId(ch.id); setChapterTitle(ch.chapterTitle); setDescription(ch.description||'');
+    setCoverImage(ch.coverImage||''); setOrder(ch.order); setLanguage(ch.language||'vi');
+    editor?.commands.setContent(ch.content);
   };
 
-  const handleDeleteChapter = async (id: number) => {
-    if (window.confirm('Are you absolutely sure you want to delete this chapter?')) {
+  const handleDelete = async (id: number) => {
+    if (window.confirm('Delete this chapter permanently?')) {
       try {
-        await deleteWalkthrough({ variables: { id } });
-        setSnackbar({ open: true, message: 'Chapter deleted successfully!', severity: 'success' });
+        await deleteWalkthrough({ variables:{ id } });
+        showToast('Chapter deleted!','success');
         refetch();
-        if (editingId === id) {
-          handleResetForm();
-        }
-      } catch (err: any) {
-        setSnackbar({ open: true, message: `Error deleting: ${err.message}`, severity: 'error' });
-      }
+        if (editingId === id) handleResetForm();
+      } catch (err: any) { showToast(`Error: ${err.message}`,'error'); }
     }
   };
 
   const walkthroughs = data?.getWalkthroughs || [];
+  const gameColor = VERSION_COLORS[gameVersion] || '#6366f1';
 
   return (
-    <Box sx={{ maxWidth: '1400px', mx: 'auto', p: { xs: 1, md: 3 } }}>
-      {/* Editor CSS styling injections */}
+    <div className={styles.container}>
       <style>{`
-        .tiptap-editor-inner-input table {
-          border-collapse: collapse;
-          width: 100%;
-          margin: 16px 0;
-        }
-        .tiptap-editor-inner-input table th,
-        .tiptap-editor-inner-input table td {
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          padding: 8px 12px;
-          text-align: left;
-          min-width: 100px;
-        }
-        .tiptap-editor-inner-input table th {
-          background-color: rgba(255, 255, 255, 0.05);
-          font-weight: bold;
-        }
-        .tiptap-editor-inner-input img {
-          max-width: 64px;
-          display: inline-block;
-          vertical-align: middle;
-          margin: 4px;
-          transition: transform 0.2s;
-        }
-        .tiptap-editor-inner-input img:hover {
-          transform: scale(1.15);
-        }
-        .tiptap-editor-inner-input blockquote {
-          border-left: 4px solid #6366f1;
-          padding-left: 16px;
-          margin-left: 0;
-          color: #a0aec0;
-          font-style: italic;
-        }
+        .tiptap-editor-inner-input table { border-collapse:collapse;width:100%;margin:16px 0; }
+        .tiptap-editor-inner-input table th,.tiptap-editor-inner-input table td { border:1px solid rgba(255, 255, 255, 0.12);padding:8px 12px;text-align:left;min-width:100px; }
+        .tiptap-editor-inner-input table th { background:rgba(255,255,255,0.05);font-weight:bold; }
+        .tiptap-editor-inner-input img { max-width:64px;display:inline-block;vertical-align:middle;margin:4px;transition:transform 0.2s; }
+        .tiptap-editor-inner-input img:hover { transform:scale(1.15); }
+        .tiptap-editor-inner-input blockquote { border-left:4px solid #6366f1;padding-left:16px;margin-left:0;color:#a0aec0;font-style:italic; }
+        .tiptap-editor-inner-input p { margin-bottom:10px; }
+        .tiptap-editor-inner-input ul,.tiptap-editor-inner-input ol { padding-left:24px;margin-bottom:10px; }
       `}</style>
 
-      {/* Header Banner */}
-      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
-        <Box>
-          <Typography variant="h4" sx={{ fontWeight: 950, letterSpacing: '-1px', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <FormatListNumbered sx={{ fontSize: 36 }} /> WALKTHROUGH CMS ADMIN
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, mt: 0.5 }}>
-            Quản trị và xây dựng các bài viết hướng dẫn game chuẩn chỉ, giàu tương tác.
-          </Typography>
-        </Box>
-        <Button
-          variant="contained"
-          onClick={() => window.open('/walkthrough', '_blank')}
-          sx={{ fontWeight: 800, borderRadius: '8px' }}
-        >
+      {/* Header */}
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>
+            <List size={28}/> Walkthrough CMS Admin
+          </h1>
+          <p className={styles.desc}>Quản trị và xây dựng các bài viết hướng dẫn game.</p>
+        </div>
+        <button onClick={() => window.open('/walkthrough','_blank')} className={styles.viewBtn}>
           View Walkthroughs 📖
-        </Button>
-      </Box>
+        </button>
+      </div>
 
-      <Grid container spacing={3} sx={{ alignItems: 'stretch' }}>
-        {/* Left Side: Parameters Form and Chapter Management */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Stack spacing={3} sx={{ height: '100%' }}>
-            {/* Form configuration Card */}
-            <Card sx={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px' }}>
-              <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-                <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: -0.5 }}>
-                  CHAPTER SETTINGS
-                </Typography>
-                <Divider />
+      <div className={styles.grid}>
+        {/* Left Panel */}
+        <div className={styles.leftCol}>
+          {/* Settings Card */}
+          <div className={styles.card}>
+            <span className={styles.cardTitle}>Chapter Settings</span>
+            <div className={styles.divider}/>
 
-                <TextField
-                  select
-                  label="Game Version"
-                  value={gameVersion}
-                  onChange={(e) => {
-                    setGameVersion(e.target.value);
-                    handleResetForm();
-                  }}
-                  fullWidth
-                  size="small"
-                  slotProps={{
-                    select: {
-                      MenuProps: {
-                        PaperProps: {
-                          sx: {
-                            maxHeight: 350,
-                            overflowY: 'auto',
-                            '& .MuiMenu-list': {
-                              '&::-webkit-scrollbar': { width: '6px' },
-                              '&::-webkit-scrollbar-track': { background: 'transparent' },
-                              '&::-webkit-scrollbar-thumb': { 
-                                background: 'rgba(255, 255, 255, 0.15)', 
-                                borderRadius: '10px' 
-                              },
-                              '&::-webkit-scrollbar-thumb:hover': { 
-                                background: 'rgba(255, 255, 255, 0.25)' 
-                              },
-                              scrollbarWidth: 'thin',
-                              scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
-                            },
-                            '&::-webkit-scrollbar': { width: '6px' },
-                            '&::-webkit-scrollbar-track': { background: 'transparent' },
-                            '&::-webkit-scrollbar-thumb': { 
-                              background: 'rgba(255, 255, 255, 0.15)', 
-                              borderRadius: '10px' 
-                            },
-                            '&::-webkit-scrollbar-thumb:hover': { 
-                              background: 'rgba(255, 255, 255, 0.25)' 
-                            },
-                            scrollbarWidth: 'thin',
-                            scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
-                          },
-                        },
-                      } as any,
-                    },
-                  }}
-                >
-                  {GAME_OPTIONS.map((g) => (
-                    <MenuItem key={g.value} value={g.value}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
-                        <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: VERSION_COLORS[g.value] || '#fff' }} />
-                        {g.label}
-                      </Box>
-                    </MenuItem>
-                  ))}
-                </TextField>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Game Version</label>
+              <select value={gameVersion} onChange={e => { setGameVersion(e.target.value); handleResetForm(); }} className={styles.selectField}>
+                {GAME_OPTIONS.map(g => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
+              </select>
+            </div>
 
-                <TextField
-                  select
-                  label="Language"
-                  value={language}
-                  onChange={(e) => {
-                    setLanguage(e.target.value);
-                    handleResetForm();
-                  }}
-                  fullWidth
-                  size="small"
-                  slotProps={{
-                    select: {
-                      MenuProps: {
-                        PaperProps: {
-                          sx: {
-                            maxHeight: 350,
-                            overflowY: 'auto',
-                            '& .MuiMenu-list': {
-                              '&::-webkit-scrollbar': { width: '6px' },
-                              '&::-webkit-scrollbar-track': { background: 'transparent' },
-                              '&::-webkit-scrollbar-thumb': { 
-                                background: 'rgba(255, 255, 255, 0.15)', 
-                                borderRadius: '10px' 
-                              },
-                              '&::-webkit-scrollbar-thumb:hover': { 
-                                background: 'rgba(255, 255, 255, 0.25)' 
-                              },
-                              scrollbarWidth: 'thin',
-                              scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
-                            },
-                            '&::-webkit-scrollbar': { width: '6px' },
-                            '&::-webkit-scrollbar-track': { background: 'transparent' },
-                            '&::-webkit-scrollbar-thumb': { 
-                              background: 'rgba(255, 255, 255, 0.15)', 
-                              borderRadius: '10px' 
-                            },
-                            '&::-webkit-scrollbar-thumb:hover': { 
-                              background: 'rgba(255, 255, 255, 0.25)' 
-                            },
-                            scrollbarWidth: 'thin',
-                            scrollbarColor: 'rgba(255, 255, 255, 0.15) transparent',
-                          },
-                        },
-                      } as any,
-                    },
-                  }}
-                >
-                  <MenuItem value="vi">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
-                      🇻🇳 Tiếng Việt
-                    </Box>
-                  </MenuItem>
-                  <MenuItem value="en">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 700 }}>
-                      🇬🇧 English
-                    </Box>
-                  </MenuItem>
-                </TextField>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Language</label>
+              <select value={language} onChange={e => { setLanguage(e.target.value); handleResetForm(); }} className={styles.selectField}>
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="en">🇬🇧 English</option>
+              </select>
+            </div>
 
-                <TextField
-                  label="Chapter Title"
-                  placeholder="e.g. 1. Rustboro City & First Gym"
-                  value={chapterTitle}
-                  onChange={(e) => setChapterTitle(e.target.value)}
-                  fullWidth
-                  size="small"
-                />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Chapter Title *</label>
+              <input value={chapterTitle} onChange={e => setChapterTitle(e.target.value)}
+                placeholder="e.g. 1. Rustboro City & First Gym" className={styles.inputField}/>
+            </div>
 
-                <TextField
-                  label="Description"
-                  placeholder="e.g. Bắt Pokemon đầu tiên và lấy huy hiệu đá."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  fullWidth
-                  size="small"
-                  multiline
-                  rows={2}
-                />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Description</label>
+              <textarea value={description} onChange={e => setDescription(e.target.value)}
+                placeholder="Short description of this chapter..." rows={2}
+                className={styles.textareaField}/>
+            </div>
 
-                <TextField
-                  label="Cover Image URL"
-                  placeholder="e.g. https://example.com/banner.jpg"
-                  value={coverImage}
-                  onChange={(e) => setCoverImage(e.target.value)}
-                  fullWidth
-                  size="small"
-                />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Cover Image URL</label>
+              <input value={coverImage} onChange={e => setCoverImage(e.target.value)}
+                placeholder="https://example.com/banner.jpg" className={styles.inputField}/>
+            </div>
 
-                <TextField
-                  label="Order / Sequence"
-                  type="number"
-                  placeholder="e.g. 1"
-                  value={order}
-                  onChange={(e) => setOrder(Number(e.target.value))}
-                  fullWidth
-                  size="small"
-                />
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Order</label>
+              <input type="number" value={order} onChange={e => setOrder(Number(e.target.value))} className={styles.inputField}/>
+            </div>
 
-                <Stack direction="row" spacing={2} sx={{ mt: 1 }}>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    startIcon={<AddCircle />}
-                    onClick={handleResetForm}
-                    sx={{ fontWeight: 800, borderRadius: '10px', height: 40 }}
-                  >
-                    RESET FORM
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    startIcon={<Save />}
-                    onClick={handleSave}
-                    disabled={saving}
-                    sx={{
-                      fontWeight: 800,
-                      borderRadius: '10px',
-                      height: 40,
-                      background: `linear-gradient(135deg, ${VERSION_COLORS[gameVersion] || '#6366f1'} 0%, #1e1b4b 100%)`,
-                      color: '#ffffff',
-                      boxShadow: `0 4px 14px rgba(0,0,0,0.25)`,
-                    }}
-                  >
-                    {editingId ? 'UPDATE' : 'SAVE'}
-                  </Button>
-                </Stack>
-              </CardContent>
-            </Card>
+            <div className={styles.btnRow}>
+              <button onClick={handleResetForm} className={styles.resetBtn}>
+                <Plus size={14}/> Reset
+              </button>
+              <button onClick={handleSave} disabled={saving} className={styles.saveBtn}
+                style={{ background:`linear-gradient(135deg,${gameColor},#1e1b4b)`,opacity:saving?0.7:1 }}>
+                {saving ? <Loader size={13} style={{ animation:'spin 0.8s linear infinite' }}/> : <Save size={13}/>}
+                {editingId ? 'Update' : 'Save'}
+              </button>
+            </div>
+          </div>
 
-            {/* List of existing chapters card */}
-            <Card sx={{ flexGrow: 1, border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, letterSpacing: -0.5 }}>
-                  CHAPTER LIST ({walkthroughs.length})
-                </Typography>
-                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, mb: 2, display: 'block' }}>
-                  Danh sách bài viết hiện tại của bản game này. Các chương sẽ hiển thị theo thứ tự Order.
-                </Typography>
-                <Divider />
+          {/* Chapter List */}
+          <div className={styles.card}>
+            <span className={styles.cardTitle}>Chapter List ({walkthroughs.length})</span>
+            <span className={styles.cardSub}>Danh sách chương hiện tại. Click để sửa.</span>
+            <div className={styles.divider}/>
 
-                {loading ? (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress size={24} /></Box>
-                ) : walkthroughs.length === 0 ? (
-                  <Box sx={{ py: 6, textAlign: 'center', opacity: 0.5 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 700 }}>No chapters found for this version</Typography>
-                    <Typography variant="caption">Let's create the first guide chapter!</Typography>
-                  </Box>
-                ) : (
-                  <List sx={{ overflowY: 'auto', maxHeight: '420px', flexGrow: 1, mt: 1 }}>
-                    {walkthroughs.map((chapter: any) => (
-                      <ListItem
-                        key={chapter.id}
-                        secondaryAction={
-                          <Stack direction="row" spacing={0.5}>
-                            <IconButton size="small" onClick={() => handleEditChapter(chapter)} color="primary">
-                              <Edit fontSize="small" />
-                            </IconButton>
-                            <IconButton size="small" onClick={() => handleDeleteChapter(chapter.id)} color="error">
-                              <Delete fontSize="small" />
-                            </IconButton>
-                          </Stack>
-                        }
-                        sx={{
-                          borderRadius: '8px',
-                          mb: 1,
-                          border: '1px solid transparent',
-                          bgcolor: editingId === chapter.id ? 'action.selected' : 'action.hover',
-                          borderColor: editingId === chapter.id ? 'primary.main' : 'transparent',
-                          '&:hover': { bgcolor: 'action.hover' },
-                          pr: '76px' // Ngăn chữ đè lên các nút sửa/xóa ở bên phải
-                        }}
-                      >
-                        <ListItemText
-                          primary={
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                              {chapter.coverImage && (
-                                <Box 
-                                  component="img" 
-                                  src={chapter.coverImage} 
-                                  sx={{ width: 40, height: 24, borderRadius: '4px', objectFit: 'cover' }} 
-                                />
-                              )}
-                              <Typography sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
-                                {chapter.order}: {chapter.chapterTitle}
-                              </Typography>
-                            </Box>
-                          }
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                )}
-              </CardContent>
-            </Card>
-          </Stack>
-        </Grid>
+            {loading ? (
+              <div style={{ display:'flex',justifyContent:'center',padding:24 }}><Loader size={20} style={{ animation:'spin 0.8s linear infinite' }}/></div>
+            ) : walkthroughs.length === 0 ? (
+              <div style={{ textAlign:'center',padding:'32px 0',opacity:0.5 }}>
+                <p style={{ fontSize:13,fontWeight:700,color:'var(--text-secondary)' }}>No chapters found</p>
+                <p style={{ fontSize:11,color:'var(--text-muted)',marginTop:4 }}>Start creating the first chapter!</p>
+              </div>
+            ) : (
+              <div className={styles.chaptersList}>
+                {walkthroughs.map((ch: any) => (
+                  <div key={ch.id} className={styles.chapterRow}
+                    style={{ border: editingId === ch.id ? `1px solid ${gameColor}55` : '1px solid var(--border-main)', background: editingId === ch.id ? `${gameColor}12` : 'transparent' }}
+                    onClick={() => handleEdit(ch)}>
+                    {ch.coverImage && <img src={ch.coverImage} className={styles.chapterCover}/>}
+                    <span className={styles.chapterTitleText}>{ch.order}: {ch.chapterTitle}</span>
+                    <div className={styles.actionRow}>
+                      <button onClick={e => { e.stopPropagation(); handleEdit(ch); }} className={`${styles.actionBtn} ${styles.edit}`}>
+                        <Pencil size={12}/>
+                      </button>
+                      <button onClick={e => { e.stopPropagation(); handleDelete(ch.id); }} className={`${styles.actionBtn} ${styles.delete}`}>
+                        <Trash2 size={12}/>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
-        {/* Right Side: TipTap WYSIWYG Editor Canvas */}
-        <Grid size={{ xs: 12, md: 8 }}>
-          <Card sx={{ height: '100%', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', display: 'flex', flexDirection: 'column' }}>
-            <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: '520px' }}>
-              <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: -0.5 }}>
-                CONTENT WYSIWYG EDITOR
-              </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, mb: 2, display: 'block' }}>
-                Soạn thảo nội dung trực quan. Chèn Gym Leader Tables và Pokémon Sprites trực quan.
-              </Typography>
+        {/* Right Panel: Editor */}
+        <div className={styles.rightCol}>
+          <div style={{ padding:'20px 20px 12px' }}>
+            <span className={styles.cardTitle} style={{ marginBottom:0 }}>Content WYSIWYG Editor</span>
+            <span className={styles.cardSub} style={{ marginBottom:0, marginTop:4 }}>Soạn thảo nội dung trực quan. Chèn tables và Pokémon sprites.</span>
+          </div>
+          <div className={styles.divider} style={{ margin:'0 20px', marginBottom:0 }}/>
 
-              <Paper
-                elevation={0}
-                sx={{
-                  flexGrow: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: '12px',
-                  bgcolor: 'rgba(10, 10, 15, 0.4)',
-                  overflow: 'hidden'
-                }}
-              >
-                {/* Custom Editor Toolbar */}
-                <EditorToolbar editor={editor} />
+          <div className={styles.editorWrapper}>
+            <EditorToolbar editor={editor}/>
+            <div style={{ flex:1,overflowY:'auto',minHeight:380 }}>
+              <EditorContent editor={editor}/>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                {/* Editor Content Box */}
-                <Box sx={{ flexGrow: 1, overflowY: 'auto', minHeight: '380px' }}>
-                  <EditorContent editor={editor} />
-                </Box>
-              </Paper>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={4000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert severity={snackbar.severity} sx={{ width: '100%', fontWeight: 700, borderRadius: '8px' }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+      {/* Toast */}
+      {toast && (
+        <div className={styles.toast} style={{ background:toast.type==='success'?'#22c55e':'#ef4444' }}>
+          {toast.type==='success' ? <CheckCircle size={16}/> : <AlertCircle size={16}/>}
+          {toast.msg}
+        </div>
+      )}
+      <style>{`@keyframes spin { to { transform:rotate(360deg); } }`}</style>
+    </div>
   );
 }

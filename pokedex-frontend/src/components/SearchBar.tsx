@@ -1,6 +1,7 @@
 import React from "react";
 import { Search } from "lucide-react";
 import { InputField } from "./common/InputField";
+import styles from "./SearchBar.module.scss";
 
 interface SearchBarProps {
   value: string;
@@ -58,26 +59,23 @@ export default function SearchBar({
     onGenChange?.(val === "all" ? null : Number(val));
   };
 
-  const selectClasses =
-    "flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-50 dark:placeholder:text-gray-400";
-
   return (
-    <div className="flex flex-col sm:flex-row gap-3 w-full items-center">
-      <div className="w-full sm:flex-2 sm:min-w-[160px]">
+    <div className={styles.container}>
+      <div className={styles.inputWrapper}>
         <InputField
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Search by name or #..."
-          icon={<Search className="w-5 h-5" />}
+          icon={<Search size={18} />}
         />
       </div>
 
-      <div className="flex flex-row gap-3 w-full sm:flex-3">
-        <div className="w-full flex-1 min-w-0">
+      <div className={styles.dropdownGroup}>
+        <div className={styles.dropdownWrapper}>
           <select
             value={typeValue}
             onChange={(e) => onTypeChange(e.target.value)}
-            className={selectClasses}
+            className={styles.select}
             aria-label="Filter by Type"
           >
             <option value="">All Types</option>
@@ -89,11 +87,11 @@ export default function SearchBar({
           </select>
         </div>
 
-        <div className="w-full flex-1 min-w-0">
+        <div className={styles.dropdownWrapper}>
           <select
             value={genValue ?? "all"}
             onChange={handleGenChange}
-            className={selectClasses}
+            className={styles.select}
             aria-label="Filter by Generation"
           >
             {GENERATIONS.map((g) => (

@@ -1,34 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
-  Container,
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  CardActionArea,
-  Chip,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SwipeableDrawer,
-  IconButton,
-  Button,
-  Grid,
-  Skeleton,
-  Alert,
-  Divider,
-  useTheme,
-  useMediaQuery,
-  alpha,
-  Paper,
-  TextField,
-  InputAdornment
-} from '@mui/material';
-import { Close, FlashOn, HelpOutlined, Search } from '@mui/icons-material';
+  Zap,
+  Search,
+  HelpCircle,
+  X,
+  ShieldAlert
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Move } from '../types';
+import styles from './MoveDex.module.scss';
 
 // GraphQL query for all moves
 const GET_ALL_MOVES = gql`
@@ -50,7 +31,7 @@ const GET_ALL_MOVES = gql`
   }
 `;
 
-// Type to color mapping (from PokeCard)
+// Type to color mapping
 const TYPE_COLORS: Record<string, string> = {
   normal: '#9ca3af',
   fire: '#f97316',
@@ -88,10 +69,6 @@ const formatMoveName = (name: string): string => {
 };
 
 export default function MoveDex() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   // Search & Filters State
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -109,9 +86,7 @@ export default function MoveDex() {
       setDebouncedSearch(searchTerm);
     }, 500);
 
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [searchTerm]);
 
   // Pagination limit
@@ -136,7 +111,6 @@ export default function MoveDex() {
       search: debouncedSearch
     },
     onCompleted: () => {
-      // Reset offset when filters change
       setOffset(0);
     }
   });
@@ -145,6 +119,7 @@ export default function MoveDex() {
   const totalCount = data?.getAllMoves?.totalCount || 0;
   const hasMore = movesList.length > 0 && movesList.length < totalCount;
 
+  // Infinite Scroll or Manual Trigger
   const loadMore = () => {
     const nextOffset = movesList.length;
     setOffset(nextOffset);
@@ -162,6 +137,23 @@ export default function MoveDex() {
     });
   };
 
+  // Scroll listener to automatically load more moves when near bottom
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 300
+      ) {
+        if (hasMore && !loading) {
+          loadMore();
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasMore, loading, movesList.length]);
+
   const handleOpenDetail = (move: Move) => {
     setSelectedMove(move);
     setDrawerOpen(true);
@@ -172,566 +164,354 @@ export default function MoveDex() {
   };
 
   // Lists of options
-  const generationOptions = [
+  const generationOptions = useMemo(() => [
     { value: 'ALL', label: 'All Gens' },
     ...Array.from({ length: 9 }, (_, i) => ({
       value: i + 1,
       label: `Gen ${i + 1}`
     }))
-  ];
+  ], []);
 
-  const typeOptions = [
+  const typeOptions = useMemo(() => [
     'ALL',
     'normal', 'fire', 'water', 'electric', 'grass', 'ice',
     'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
     'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
-  ];
+  ], []);
 
-  const categoryOptions = [
+  const categoryOptions = useMemo(() => [
     { value: 'ALL', label: 'All Cat.' },
     { value: 'physical', label: 'Physical' },
     { value: 'special', label: 'Special' },
     { value: 'status', label: 'Status' }
-  ];
+  ], []);
 
   return (
-    <Container maxWidth="xl" sx={{ pt: 4, pb: 10, px: { xs: 2, sm: 3 } }}>
+    <div className={styles.container}>
+      
       {/* Page Header */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 900,
-            letterSpacing: '-1px',
-            textTransform: 'uppercase',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 1,
-            mb: 1
-          }}
-        >
-          <FlashOn sx={{ color: '#eab308', fontSize: 36 }} />
+      <div className={styles.header}>
+        <h1 className={styles.title}>
+          <Zap className={styles.icon} />
           Move Dex
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, maxStyle: 500, mx: 'auto' }}>
+        </h1>
+        <p className={styles.desc}>
           Explore and analyze Pokemon physical, special, or status movesets.
-        </Typography>
-      </Box>
+        </p>
+      </div>
 
       {/* Search Bar */}
-      <Box sx={{ maxWidth: { xs: '100%', sm: '480px' }, mx: 'auto', mb: 2 }}>
-        <TextField
-          fullWidth
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} size={16} />
+        <input
+          type="text"
+          placeholder="Search moves..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search moves..."
-          variant="outlined"
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search sx={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.45)' }} />
-                </InputAdornment>
-              ),
-            }
-          }}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '20px',
-              bgcolor: isDark ? 'rgba(15, 23, 42, 0.6)' : 'rgba(241, 245, 249, 0.8)',
-              backdropFilter: 'blur(10px)',
-              '& fieldset': {
-                borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)',
-              },
-              '&:hover fieldset': {
-                borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.18)',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#3b82f6',
-              }
-            },
-            '& .MuiOutlinedInput-input': {
-              py: 1.5,
-              fontWeight: 600,
-              fontSize: '14px',
-              color: 'text.primary'
-            }
-          }}
+          className={styles.searchInput}
         />
-      </Box>
+      </div>
 
-      {/* Modern Premium Filter Bar */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: 2,
-          mb: 4,
-          borderRadius: '20px',
-          border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-          background: isDark
-            ? 'linear-gradient(135deg, rgba(30, 27, 75, 0.2) 0%, rgba(15, 15, 26, 0.4) 100%)'
-            : 'linear-gradient(135deg, rgba(241, 245, 249, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%)',
-          backdropFilter: 'blur(20px)',
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          gap: 2,
-          zIndex: 1
-        }}
-      >
-        {/* Gen Filter */}
-        <FormControl fullWidth size="medium">
-          <InputLabel id="gen-filter-label" sx={{ fontWeight: 600 }}>Generation</InputLabel>
-          <Select
-            labelId="gen-filter-label"
-            id="gen-filter"
-            value={genFilter}
-            label="Generation"
-            onChange={(e) => {
-              setGenFilter(e.target.value);
-            }}
-            sx={{
-              borderRadius: '12px',
-              fontWeight: 700,
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.15)',
-              }
-            }}
-          >
-            {generationOptions.map((opt) => (
-              <MenuItem key={opt.value} value={opt.value} sx={{ fontWeight: 600 }}>
-                {opt.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      {/* Modern Filter Bar */}
+      <div className={styles.filterCard}>
+        <div className={styles.filterRow}>
+          
+          {/* Generation filter */}
+          <div className={styles.formGroup}>
+            <span className={styles.inputLabel}>Generation</span>
+            <div className={styles.selectWrapper}>
+              <select
+                value={genFilter}
+                onChange={(e) => setGenFilter(e.target.value)}
+                className={styles.selectField}
+              >
+                {generationOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-        {/* Type Filter */}
-        <FormControl fullWidth size="medium">
-          <InputLabel id="type-filter-label" sx={{ fontWeight: 600 }}>Type</InputLabel>
-          <Select
-            labelId="type-filter-label"
-            id="type-filter"
-            value={typeFilter}
-            label="Type"
-            onChange={(e) => {
-              setTypeFilter(e.target.value);
-            }}
-            sx={{
-              borderRadius: '12px',
-              fontWeight: 700,
-              textTransform: 'capitalize',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.15)',
-              }
-            }}
-          >
-            {typeOptions.map((t) => (
-              <MenuItem key={t} value={t} sx={{ fontWeight: 600, textTransform: 'capitalize' }}>
-                {t === 'ALL' ? 'All Types' : t}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          {/* Type filter */}
+          <div className={styles.formGroup}>
+            <span className={styles.inputLabel}>Type</span>
+            <div className={styles.selectWrapper}>
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className={styles.selectField}
+              >
+                {typeOptions.map((t) => (
+                  <option key={t} value={t}>
+                    {t === 'ALL' ? 'All Types' : t}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-        {/* Category Filter */}
-        <FormControl fullWidth size="medium">
-          <InputLabel id="cat-filter-label" sx={{ fontWeight: 600 }}>Category</InputLabel>
-          <Select
-            labelId="cat-filter-label"
-            id="cat-filter"
-            value={catFilter}
-            label="Category"
-            onChange={(e) => {
-              setCatFilter(e.target.value);
-            }}
-            sx={{
-              borderRadius: '12px',
-              fontWeight: 700,
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.15)',
-              }
-            }}
-          >
-            {categoryOptions.map((opt) => (
-              <MenuItem key={opt.value} value={opt.value} sx={{ fontWeight: 600 }}>
-                {opt.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Paper>
+          {/* Category filter */}
+          <div className={styles.formGroup}>
+            <span className={styles.inputLabel}>Category</span>
+            <div className={styles.selectWrapper}>
+              <select
+                value={catFilter}
+                onChange={(e) => setCatFilter(e.target.value)}
+                className={styles.selectField}
+              >
+                {categoryOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       {/* Count Indicator */}
       {!loading && !error && (
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{
-            display: 'block',
-            mb: 3,
-            textAlign: 'center',
-            letterSpacing: 2,
-            textTransform: 'uppercase',
-            fontWeight: 800
-          }}
-        >
+        <span className={styles.infoLabel}>
           {totalCount} Moves {genFilter !== 'ALL' ? `· Gen ${genFilter}` : ''}{typeFilter !== 'ALL' ? ` · ${typeFilter.toUpperCase()}` : ''}{catFilter !== 'ALL' ? ` · ${catFilter.toUpperCase()}` : ''}
-        </Typography>
+        </span>
       )}
 
-      {/* Error or Listing */}
+      {/* Content Area */}
       {error ? (
-        <Alert severity="error" sx={{ borderRadius: '16px' }}>
+        <div style={{
+          padding: 20,
+          borderRadius: 12,
+          backgroundColor: 'rgba(239, 68, 68, 0.08)',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          color: '#ef4444',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          fontWeight: 700
+        }}>
+          <ShieldAlert />
           Backend offline — start the server on port 3000 to fetch real Moves.
-        </Alert>
+        </div>
       ) : loading && movesList.length === 0 ? (
-        /* Loading Skeletons */
-        <Grid container spacing={3}>
-          {Array.from({ length: 12 }).map((_, idx) => (
-            <Grid key={idx} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Skeleton variant="rounded" height={130} sx={{ borderRadius: '16px' }} />
-            </Grid>
+        /* Loading skeletons */
+        <div className={styles.grid}>
+          {[...Array(12)].map((_, idx) => (
+            <div
+              key={idx}
+              style={{
+                height: 110,
+                borderRadius: 16,
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid var(--border-main)',
+                animation: 'pulse 1.5s infinite ease-in-out'
+              }}
+            />
           ))}
-        </Grid>
+        </div>
       ) : (
-        /* Moves List Grid */
-        <Grid container spacing={3}>
-          <AnimatePresence mode="popLayout">
-            {movesList.map((move: Move, index: number) => {
-              const moveTypeColor = TYPE_COLORS[move.type.toLowerCase()] || '#9ca3af';
-              const moveCatColor = DAMAGE_CLASS_COLORS[move.damageClass.toLowerCase()] || '#6b7280';
+        /* Moves Grid */
+        <>
+          <div className={styles.grid}>
+            <AnimatePresence mode="popLayout">
+              {movesList.map((move: Move, index: number) => {
+                const moveTypeColor = TYPE_COLORS[move.type.toLowerCase()] || '#9ca3af';
+                const moveCatColor = DAMAGE_CLASS_COLORS[move.damageClass.toLowerCase()] || '#6b7280';
 
-              return (
-                <Grid key={`${move.name}-${index}`} size={{ xs: 12, sm: 6, md: 4 }}>
+                return (
                   <motion.div
+                    key={`${move.name}-${index}`}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.4) }}
-                    whileHover={{ y: -4 }}
+                    className={styles.moveCard}
+                    onClick={() => handleOpenDetail(move)}
+                    style={{
+                      borderColor: 'var(--border-main)',
+                      background: `linear-gradient(150deg, rgba(${parseInt(moveTypeColor.slice(1,3), 16) || 150}, ${parseInt(moveTypeColor.slice(3,5), 16) || 150}, ${parseInt(moveTypeColor.slice(5,7), 16) || 150}, 0.08) 0%, var(--bg-paper-glow) 80%)`
+                    }}
                   >
-                    <Card
-                      elevation={0}
-                      sx={{
-                        borderRadius: '16px',
-                        border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
-                        background: `linear-gradient(150deg, ${alpha(moveTypeColor, isDark ? 0.08 : 0.04)} 0%, ${theme.palette.background.paper} 80%)`,
-                        position: 'relative',
-                        transition: 'box-shadow 0.25s ease',
-                        '&:hover': {
-                          boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
-                          border: `1px solid ${alpha(moveTypeColor, 0.35)}`
-                        }
-                      }}
-                    >
-                      <CardActionArea onClick={() => handleOpenDetail(move)} sx={{ p: 2.5 }}>
-                        {/* Row 1: Title and Stats */}
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                          {/* Name */}
-                          <Typography
-                            variant="h6"
-                            sx={{
-                              fontWeight: 800,
-                              textTransform: 'capitalize',
-                              letterSpacing: '-0.3px',
-                              lineHeight: 1.2,
-                              pr: 1
-                            }}
-                          >
-                            {formatMoveName(move.name)}
-                          </Typography>
+                    {/* Top Row: Name and Stats */}
+                    <div className={styles.topRow}>
+                      <h3 className={styles.moveName}>
+                        {formatMoveName(move.name)}
+                      </h3>
 
-                          {/* Stats group */}
-                          <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexShrink: 0 }}>
-                            {/* Power */}
-                            <Box sx={{ textAlign: 'right' }}>
-                              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' }}>PWR</Typography>
-                              <Typography variant="body2" sx={{ fontWeight: 800, color: move.power ? 'text.primary' : 'text.disabled' }}>{move.power || '-'}</Typography>
-                            </Box>
-                            {/* Accuracy */}
-                            <Box sx={{ textAlign: 'right' }}>
-                              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' }}>ACC</Typography>
-                              <Typography variant="body2" sx={{ fontWeight: 800, color: move.accuracy ? 'text.primary' : 'text.disabled' }}>{move.accuracy ? `${move.accuracy}%` : '-'}</Typography>
-                            </Box>
-                            {/* PP */}
-                            <Box sx={{ textAlign: 'right' }}>
-                              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' }}>PP</Typography>
-                              <Typography variant="body2" sx={{ fontWeight: 800, color: move.pp ? 'text.primary' : 'text.disabled' }}>{move.pp || '-'}</Typography>
-                            </Box>
-                          </Box>
-                        </Box>
+                      {/* Stat parameters */}
+                      <div className={styles.statsRow}>
+                        <div className={styles.statItem}>
+                          <span className={styles.statLabel}>PWR</span>
+                          <span className={`${styles.statValue} ${move.power ? styles.active : ''}`}>
+                            {move.power || '-'}
+                          </span>
+                        </div>
+                        <div className={styles.statItem}>
+                          <span className={styles.statLabel}>ACC</span>
+                          <span className={`${styles.statValue} ${move.accuracy ? styles.active : ''}`}>
+                            {move.accuracy ? `${move.accuracy}%` : '-'}
+                          </span>
+                        </div>
+                        <div className={styles.statItem}>
+                          <span className={styles.statLabel}>PP</span>
+                          <span className={`${styles.statValue} ${move.pp ? styles.active : ''}`}>
+                            {move.pp || '-'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-                        {/* Row 2: Type and Category Chips */}
-                        <Box sx={{ display: 'flex', gap: 1 }}>
-                          {/* Type Chip */}
-                          <Chip
-                            label={move.type}
-                            size="small"
-                            sx={{
-                              bgcolor: alpha(moveTypeColor, 0.85),
-                              color: '#fff',
-                              fontSize: 9,
-                              fontWeight: 800,
-                              letterSpacing: 1,
-                              textTransform: 'uppercase',
-                              height: 20,
-                              px: 0.5
-                            }}
-                          />
-                          {/* Category Chip */}
-                          <Chip
-                            label={move.damageClass}
-                            size="small"
-                            sx={{
-                              bgcolor: alpha(moveCatColor, 0.85),
-                              color: '#fff',
-                              fontSize: 9,
-                              fontWeight: 800,
-                              letterSpacing: 1,
-                              textTransform: 'uppercase',
-                              height: 20,
-                              px: 0.5
-                            }}
-                          />
-                        </Box>
-                      </CardActionArea>
-                    </Card>
+                    {/* Badge chips row */}
+                    <div className={styles.chipsRow}>
+                      <span
+                        className={styles.badge}
+                        style={{ backgroundColor: moveTypeColor }}
+                      >
+                        {move.type}
+                      </span>
+                      <span
+                        className={styles.badge}
+                        style={{ backgroundColor: moveCatColor }}
+                      >
+                        {move.damageClass}
+                      </span>
+                    </div>
                   </motion.div>
-                </Grid>
-              );
-            })}
-          </AnimatePresence>
+                );
+              })}
+            </AnimatePresence>
 
-          {movesList.length === 0 && (
-            <Grid size={{ xs: 12 }}>
-              <Box sx={{ textAlign: 'center', py: 10, color: 'text.disabled' }}>
-                <HelpOutlined sx={{ fontSize: 60, mb: 1, opacity: 0.5 }} />
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>No Moves found.</Typography>
-                <Typography variant="body2">Try adjusting your filters.</Typography>
-              </Box>
-            </Grid>
+            {movesList.length === 0 && (
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '80px 0', color: 'var(--text-muted)' }}>
+                <HelpCircle size={48} style={{ opacity: 0.4, marginBottom: 12 }} />
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-secondary)' }}>No Moves found.</h3>
+                <p style={{ fontSize: 13, fontWeight: 600, marginTop: 4 }}>Try adjusting your filters or search keywords.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Load More Button */}
+          {hasMore && (
+            <div className={styles.loadMoreContainer}>
+              <button className={styles.loadMoreBtn} onClick={loadMore}>
+                Load More Moves
+              </button>
+            </div>
           )}
-        </Grid>
+        </>
       )}
 
-      {/* Load More Button */}
-      {!loading && hasMore && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-          <Button
-            variant="outlined"
-            onClick={loadMore}
-            sx={{
-              px: 6,
-              py: 1.5,
-              borderRadius: '50px',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: 1.5,
-              borderWidth: '2px',
-              borderColor: theme.palette.primary.main,
-              color: theme.palette.primary.main,
-              '&:hover': {
-                borderWidth: '2px',
-                bgcolor: alpha(theme.palette.primary.main, 0.05)
-              }
-            }}
-          >
-            Load More Moves
-          </Button>
-        </Box>
-      )}
-
-      {/* Swipeable Drawer for details */}
-      <SwipeableDrawer
-        anchor={isMobile ? 'bottom' : 'right'}
-        open={drawerOpen}
-        onClose={handleCloseDetail}
-        onOpen={() => {}}
-        id="move-detail-drawer"
-        slotProps={{
-          paper: {
-            sx: {
-              width: isMobile ? '100%' : '480px',
-              height: isMobile ? '82%' : '100%',
-              borderTopLeftRadius: isMobile ? '24px' : '0px',
-              borderTopRightRadius: isMobile ? '24px' : '0px',
-              background: isDark ? '#0f172a' : '#ffffff', // Slate/White
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              boxShadow: '0 -10px 40px rgba(0,0,0,0.15)'
-            }
-          }
-        }}
-      >
-        {selectedMove && (
+      {/* Slide Drawer detail overlays */}
+      <AnimatePresence>
+        {drawerOpen && selectedMove && (
           <>
-            {/* Header / Top Bar */}
-            <Box
-              sx={{
-                p: 3,
-                pb: 2,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
-              }}
+            {/* Backdrop */}
+            <motion.div
+              className={styles.drawerOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseDetail}
+            />
+
+            {/* Slider Sheet */}
+            <motion.div
+              className={styles.drawerSheet}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 26, stiffness: 200 }}
             >
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: 900,
-                  textTransform: 'capitalize',
-                  letterSpacing: '-0.5px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1
-                }}
-              >
-                <FlashOn sx={{ color: TYPE_COLORS[selectedMove.type.toLowerCase()] || '#eab308' }} />
-                {formatMoveName(selectedMove.name)}
-              </Typography>
-              <IconButton onClick={handleCloseDetail} sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}>
-                <Close />
-              </IconButton>
-            </Box>
+              {/* Header */}
+              <div className={styles.drawerHeader}>
+                <h2 className={styles.drawerTitle}>
+                  <Zap size={22} style={{ color: TYPE_COLORS[selectedMove.type.toLowerCase()] || '#eab308', marginRight: 4 }} />
+                  {formatMoveName(selectedMove.name)}
+                </h2>
+                <button className={styles.closeBtn} onClick={handleCloseDetail}>
+                  <X size={18} />
+                </button>
+              </div>
 
-            {/* Scrollable Content */}
-            <Box sx={{ p: 3.5, flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 3.5 }}>
-              
-              {/* Type and Category Chips side-by-side */}
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Chip
-                  label={selectedMove.type}
-                  sx={{
-                    bgcolor: TYPE_COLORS[selectedMove.type.toLowerCase()] || '#9ca3af',
-                    color: '#fff',
-                    fontSize: 12,
-                    fontWeight: 900,
-                    letterSpacing: 2,
-                    textTransform: 'uppercase',
-                    height: 36,
-                    px: 1.5,
-                    flex: 1,
-                    borderRadius: '10px',
-                    boxShadow: `0 4px 12px ${alpha(TYPE_COLORS[selectedMove.type.toLowerCase()] || '#9ca3af', 0.4)}`
-                  }}
-                />
-                <Chip
-                  label={selectedMove.damageClass}
-                  sx={{
-                    bgcolor: DAMAGE_CLASS_COLORS[selectedMove.damageClass.toLowerCase()] || '#6b7280',
-                    color: '#fff',
-                    fontSize: 12,
-                    fontWeight: 900,
-                    letterSpacing: 2,
-                    textTransform: 'uppercase',
-                    height: 36,
-                    px: 1.5,
-                    flex: 1,
-                    borderRadius: '10px',
-                    boxShadow: `0 4px 12px ${alpha(DAMAGE_CLASS_COLORS[selectedMove.damageClass.toLowerCase()] || '#6b7280', 0.4)}`
-                  }}
-                />
-              </Box>
+              {/* Drawer Body Scroll */}
+              <div className={styles.drawerBody}>
+                
+                {/* Badges */}
+                <div className={styles.badgeRow}>
+                  <span
+                    className={styles.drawerBadge}
+                    style={{
+                      backgroundColor: TYPE_COLORS[selectedMove.type.toLowerCase()] || '#9ca3af',
+                      boxShadow: `0 4px 12px rgba(0,0,0,0.15)`
+                    }}
+                  >
+                    {selectedMove.type}
+                  </span>
+                  <span
+                    className={styles.drawerBadge}
+                    style={{
+                      backgroundColor: DAMAGE_CLASS_COLORS[selectedMove.damageClass.toLowerCase()] || '#6b7280',
+                      boxShadow: `0 4px 12px rgba(0,0,0,0.15)`
+                    }}
+                  >
+                    {selectedMove.damageClass}
+                  </span>
+                </div>
 
-              {/* 3 Stats Columns Grid */}
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  p: 2.5,
-                  borderRadius: '16px',
-                  bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`
-                }}
-              >
-                {/* Power */}
-                <Box sx={{ textAlign: 'center', flex: 1 }}>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: selectedMove.power ? 'text.primary' : 'text.disabled' }}>
-                    {selectedMove.power || '-'}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, fontSize: '10px' }}>
-                    Power
-                  </Typography>
-                </Box>
-                <Divider orientation="vertical" flexItem sx={{ mx: 2, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
+                {/* Big Stats Row */}
+                <div className={styles.statsGrid}>
+                  <div className={styles.statCol}>
+                    <span className={`${styles.statNum} ${!selectedMove.power ? styles.disabled : ''}`}>
+                      {selectedMove.power || '-'}
+                    </span>
+                    <span className={styles.statName}>Power</span>
+                  </div>
+                  <div className={styles.statDivider} />
+                  <div className={styles.statCol}>
+                    <span className={`${styles.statNum} ${!selectedMove.accuracy ? styles.disabled : ''}`}>
+                      {selectedMove.accuracy ? `${selectedMove.accuracy}%` : '-'}
+                    </span>
+                    <span className={styles.statName}>Accuracy</span>
+                  </div>
+                  <div className={styles.statDivider} />
+                  <div className={styles.statCol}>
+                    <span className={`${styles.statNum} ${!selectedMove.pp ? styles.disabled : ''}`}>
+                      {selectedMove.pp || '-'}
+                    </span>
+                    <span className={styles.statName}>PP</span>
+                  </div>
+                </div>
 
-                {/* Accuracy */}
-                <Box sx={{ textAlign: 'center', flex: 1 }}>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: selectedMove.accuracy ? 'text.primary' : 'text.disabled' }}>
-                    {selectedMove.accuracy ? `${selectedMove.accuracy}%` : '-'}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, fontSize: '10px' }}>
-                    Accuracy
-                  </Typography>
-                </Box>
-                <Divider orientation="vertical" flexItem sx={{ mx: 2, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
-
-                {/* PP */}
-                <Box sx={{ textAlign: 'center', flex: 1 }}>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: selectedMove.pp ? 'text.primary' : 'text.disabled' }}>
-                    {selectedMove.pp || '-'}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, fontSize: '10px' }}>
-                    PP
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* Game Description Card */}
-              <Box
-                sx={{
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
-                  bgcolor: isDark ? 'rgba(30, 41, 59, 0.4)' : '#f8fafc' // Slate background
-                }}
-              >
-                <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
-                  <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#94a3b8' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px' }}>
-                    GAME DESCRIPTION
-                  </Typography>
-                </Box>
-                <Box sx={{ p: 2.5 }}>
-                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, lineHeight: 1.6 }}>
+                {/* Game description panel */}
+                <div className={styles.detailCard}>
+                  <div className={styles.cardHead}>Game Description</div>
+                  <div className={styles.cardContent}>
                     {selectedMove.description || 'No game description available for this move.'}
-                  </Typography>
-                </Box>
-              </Box>
+                  </div>
+                </div>
 
-              {/* Effect Card */}
-              <Box
-                sx={{
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
-                  bgcolor: isDark ? 'rgba(30, 41, 59, 0.4)' : '#f8fafc' // Slate background
-                }}
-              >
-                <Box sx={{ px: 2.5, py: 1.5, bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
-                  <Typography variant="caption" sx={{ fontWeight: 900, color: isDark ? '#94a3b8' : '#475569', letterSpacing: 1.5, textTransform: 'uppercase', fontSize: '11px' }}>
-                    EFFECT
-                  </Typography>
-                </Box>
-                <Box sx={{ p: 2.5 }}>
-                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, lineHeight: 1.6 }}>
+                {/* Battle effect panel */}
+                <div className={styles.detailCard}>
+                  <div className={styles.cardHead}>Effect Description</div>
+                  <div className={styles.cardContent}>
                     {selectedMove.effect || 'No special battle effect description available.'}
-                  </Typography>
-                </Box>
-              </Box>
+                  </div>
+                </div>
 
-              {/* Optional generation display */}
-              {selectedMove.generation && (
-                <Typography variant="caption" color="text.disabled" sx={{ textAlign: 'center', fontWeight: 700, mt: 'auto', pt: 2 }}>
-                  Introduced in Generation {selectedMove.generation}
-                </Typography>
-              )}
-            </Box>
+                {/* Introduced gen stamp */}
+                {selectedMove.generation && (
+                  <span className={styles.genLabel}>
+                    Introduced in Generation {selectedMove.generation}
+                  </span>
+                )}
+
+              </div>
+            </motion.div>
           </>
         )}
-      </SwipeableDrawer>
-    </Container>
+      </AnimatePresence>
+    </div>
   );
 }
