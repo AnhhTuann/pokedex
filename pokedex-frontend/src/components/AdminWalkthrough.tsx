@@ -21,6 +21,8 @@ const GET_WALKTHROUGHS = gql`
       id
       gameVersion
       chapterTitle
+      description
+      coverImage
       content
       order
       language
@@ -29,11 +31,13 @@ const GET_WALKTHROUGHS = gql`
 `;
 
 const UPSERT_WALKTHROUGH = gql`
-  mutation UpsertWalkthrough($id: Int, $gameVersion: String!, $chapterTitle: String!, $content: String!, $order: Int!, $language: String) {
-    upsertWalkthrough(id: $id, gameVersion: $gameVersion, chapterTitle: $chapterTitle, content: $content, order: $order, language: $language) {
+  mutation UpsertWalkthrough($id: Int, $gameVersion: String!, $chapterTitle: String!, $description: String, $coverImage: String, $content: String!, $order: Int!, $language: String) {
+    upsertWalkthrough(id: $id, gameVersion: $gameVersion, chapterTitle: $chapterTitle, description: $description, coverImage: $coverImage, content: $content, order: $order, language: $language) {
       id
       gameVersion
       chapterTitle
+      description
+      coverImage
       content
       order
       language
@@ -87,6 +91,8 @@ export default function AdminWalkthrough() {
   const [gameVersion, setGameVersion] = useState('emerald');
   const [language, setLanguage] = useState('vi');
   const [chapterTitle, setChapterTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [coverImage, setCoverImage] = useState('');
   const [order, setOrder] = useState<number>(1);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -126,6 +132,8 @@ export default function AdminWalkthrough() {
   const handleResetForm = () => {
     setEditingId(null);
     setChapterTitle('');
+    setDescription('');
+    setCoverImage('');
     // Automatically set next order based on existing chapter counts
     const existing = data?.getWalkthroughs || [];
     const nextOrder = existing.length > 0 ? Math.max(...existing.map((c: any) => c.order)) + 1 : 1;
@@ -151,6 +159,8 @@ export default function AdminWalkthrough() {
           id: editingId,
           gameVersion,
           chapterTitle,
+          description,
+          coverImage,
           content: htmlContent,
           order: Number(order),
           language
@@ -169,6 +179,8 @@ export default function AdminWalkthrough() {
   const handleEditChapter = (chapter: any) => {
     setEditingId(chapter.id);
     setChapterTitle(chapter.chapterTitle);
+    setDescription(chapter.description || '');
+    setCoverImage(chapter.coverImage || '');
     setOrder(chapter.order);
     setLanguage(chapter.language || 'vi');
     editor?.commands.setContent(chapter.content);
@@ -387,6 +399,26 @@ export default function AdminWalkthrough() {
                 />
 
                 <TextField
+                  label="Description"
+                  placeholder="e.g. Bắt Pokemon đầu tiên và lấy huy hiệu đá."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  fullWidth
+                  size="small"
+                  multiline
+                  rows={2}
+                />
+
+                <TextField
+                  label="Cover Image URL"
+                  placeholder="e.g. https://example.com/banner.jpg"
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
+                  fullWidth
+                  size="small"
+                />
+
+                <TextField
                   label="Order / Sequence"
                   type="number"
                   placeholder="e.g. 1"
@@ -471,9 +503,18 @@ export default function AdminWalkthrough() {
                       >
                         <ListItemText
                           primary={
-                            <Typography sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
-                              Order {chapter.order}: {chapter.chapterTitle}
-                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                              {chapter.coverImage && (
+                                <Box 
+                                  component="img" 
+                                  src={chapter.coverImage} 
+                                  sx={{ width: 40, height: 24, borderRadius: '4px', objectFit: 'cover' }} 
+                                />
+                              )}
+                              <Typography sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
+                                {chapter.order}: {chapter.chapterTitle}
+                              </Typography>
+                            </Box>
                           }
                         />
                       </ListItem>

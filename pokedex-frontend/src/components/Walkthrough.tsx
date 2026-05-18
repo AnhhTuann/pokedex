@@ -6,7 +6,7 @@ import {
   List, ListItemButton, ListItemText, Divider, Stack, Button, CircularProgress, alpha, useTheme,
   ToggleButton, ToggleButtonGroup
 } from '@mui/material';
-import { ImportContacts, NavigateNext, Settings, AutoStories } from '@mui/icons-material';
+import { ImportContacts, NavigateNext, NavigateBefore, Settings, AutoStories } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { VERSION_COLORS } from '../App';
 
@@ -16,6 +16,8 @@ const GET_WALKTHROUGHS = gql`
       id
       gameVersion
       chapterTitle
+      description
+      coverImage
       content
       order
       language
@@ -89,6 +91,29 @@ export default function Walkthrough() {
   const activeChapter = chapters.find((c: any) => c.id === selectedChapterId);
   const cleanHTML = activeChapter ? DOMPurify.sanitize(activeChapter.content) : '';
   const gameColor = VERSION_COLORS[gameVersion] || theme.palette.primary.main;
+
+  // Extract TOC and inject IDs
+  let toc: { id: string, text: string, level: number }[] = [];
+  let processedHTML = cleanHTML;
+  if (activeChapter) {
+    let index = 0;
+    processedHTML = cleanHTML.replace(/<(h[23])>(.*?)<\/\1>/gi, (match, tag, inner) => {
+      const id = `toc-heading-${index++}`;
+      toc.push({ id, text: inner.replace(/<[^>]+>/g, ''), level: parseInt(tag[1]) });
+      return `<${tag} id="${id}">${inner}</${tag}>`;
+    });
+  }
+
+  const activeIndex = chapters.findIndex((c: any) => c.id === selectedChapterId);
+  const prevChapter = activeIndex > 0 ? chapters[activeIndex - 1] : null;
+  const nextChapter = activeIndex >= 0 && activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
+
+  const handleScrollToHeading = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: '1400px', mx: 'auto', p: { xs: 1, md: 3 } }}>
@@ -359,6 +384,28 @@ export default function Walkthrough() {
             <CardContent sx={{ p: { xs: 2.5, md: 4 } }}>
               {activeChapter ? (
                 <Box>
+                  {/* Hero Banner with Cover Image */}
+                  {activeChapter.coverImage && (
+                    <Box 
+                      sx={{ 
+                        width: '100%', 
+                        height: { xs: '200px', md: '300px' },
+                        mb: 4,
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        position: 'relative',
+                        boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
+                      }}
+                    >
+                      <Box 
+                        component="img"
+                        src={activeChapter.coverImage}
+                        sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                      <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }} />
+                    </Box>
+                  )}
+
                   {/* Chapter Header */}
                   <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 2, flexWrap: 'wrap', gap: 1 }}>
                     <Box sx={{ px: 1.5, py: 0.5, borderRadius: '6px', bgcolor: alpha(gameColor, 0.2), border: `1px solid ${alpha(gameColor, 0.4)}` }}>
@@ -366,15 +413,50 @@ export default function Walkthrough() {
                         Chapter {activeChapter.order}
                       </Typography>
                     </Box>
-                    <Typography variant="h5" sx={{ fontWeight: 950, letterSpacing: -0.5, fontFamily: '"Be Vietnam Pro", "Inter", sans-serif' }}>
+                    <Typography variant="h4" sx={{ fontWeight: 950, letterSpacing: -0.5, fontFamily: '"Be Vietnam Pro", "Inter", sans-serif' }}>
                       {activeChapter.chapterTitle}
                     </Typography>
                   </Stack>
+                  
+                  {activeChapter.description && (
+                    <Typography variant="subtitle1" sx={{ color: 'text.secondary', fontWeight: 600, mb: 3, fontStyle: 'italic', borderLeft: `4px solid ${gameColor}`, pl: 2 }}>
+                      {activeChapter.description}
+                    </Typography>
+                  )}
+                  
+                  {/* Table of Contents */}
+                  {toc.length > 0 && (
+                    <Box sx={{ mb: 4, p: 3, borderRadius: '12px', bgcolor: alpha(gameColor, 0.05), border: `1px solid ${alpha(gameColor, 0.15)}` }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 2, textTransform: 'uppercase', letterSpacing: '1px', color: gameColor }}>
+                        Nội dung chính
+                      </Typography>
+                      <List sx={{ p: 0, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                        {toc.map((item) => (
+                          <Box 
+                            key={item.id} 
+                            onClick={() => handleScrollToHeading(item.id)}
+                            sx={{ 
+                              pl: item.level === 3 ? 3 : 0, 
+                              cursor: 'pointer',
+                              color: 'text.secondary',
+                              transition: 'all 0.2s',
+                              '&:hover': { color: gameColor, transform: 'translateX(4px)' }
+                            }}
+                          >
+                            <Typography sx={{ fontSize: item.level === 3 ? '0.85rem' : '0.95rem', fontWeight: item.level === 2 ? 700 : 500 }}>
+                              • {item.text}
+                            </Typography>
+                          </Box>
+                        ))}
+                      </List>
+                    </Box>
+                  )}
+                  
                   <Divider sx={{ mb: 4, opacity: 0.1 }} />
 
                   {/* Sanitized HTML Output Canvas with Enhanced Typography & Scoped Styling */}
                   <Box
-                    dangerouslySetInnerHTML={{ __html: cleanHTML }}
+                    dangerouslySetInnerHTML={{ __html: processedHTML }}
                     sx={{
                       fontFamily: '"Be Vietnam Pro", "Inter", sans-serif',
                       color: 'text.primary',
@@ -458,6 +540,36 @@ export default function Walkthrough() {
                       }
                     }}
                   />
+
+                  {/* Footer Navigation */}
+                  <Divider sx={{ mt: 6, mb: 4, opacity: 0.1 }} />
+                  <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                    {prevChapter ? (
+                      <Button
+                        startIcon={<NavigateBefore />}
+                        onClick={() => setSelectedChapterId(prevChapter.id)}
+                        sx={{ color: 'text.secondary', fontWeight: 700, p: 2, borderRadius: '12px', '&:hover': { bgcolor: alpha(gameColor, 0.1), color: gameColor } }}
+                      >
+                        <Box sx={{ textAlign: 'left' }}>
+                          <Typography variant="caption" sx={{ display: 'block', opacity: 0.6 }}>Chương trước</Typography>
+                          <Typography variant="body2">{prevChapter.chapterTitle}</Typography>
+                        </Box>
+                      </Button>
+                    ) : <Box />}
+                    
+                    {nextChapter ? (
+                      <Button
+                        endIcon={<NavigateNext />}
+                        onClick={() => setSelectedChapterId(nextChapter.id)}
+                        sx={{ color: 'text.secondary', fontWeight: 700, p: 2, borderRadius: '12px', '&:hover': { bgcolor: alpha(gameColor, 0.1), color: gameColor } }}
+                      >
+                        <Box sx={{ textAlign: 'right' }}>
+                          <Typography variant="caption" sx={{ display: 'block', opacity: 0.6 }}>Chương tiếp</Typography>
+                          <Typography variant="body2">{nextChapter.chapterTitle}</Typography>
+                        </Box>
+                      </Button>
+                    ) : <Box />}
+                  </Stack>
                 </Box>
               ) : (
                 <Box sx={{ py: 12, textAlign: 'center', opacity: 0.5 }}>

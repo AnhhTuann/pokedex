@@ -135,6 +135,8 @@ export const typeDefs = `#graphql
     id: Int!
     gameVersion: String!
     chapterTitle: String!
+    description: String
+    coverImage: String
     content: String!
     order: Int!
     language: String!
@@ -152,12 +154,13 @@ export const typeDefs = `#graphql
     getLocations(version: String!): [String!]!
     getLocationEncounters(locationName: String!, version: String!): [EncounterListItem!]!
     getWalkthroughs(gameVersion: String!, language: String!): [Walkthrough!]!
+    getWalkthrough(id: Int!): Walkthrough
   }
 
   type Mutation {
     toggleFavorite(pokemonId: Int!): Boolean!
     saveTeam(pokemonIds: [Int!]!): Boolean!
-    upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, content: String!, order: Int!, language: String): Walkthrough!
+    upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, description: String, coverImage: String, content: String!, order: Int!, language: String): Walkthrough!
     deleteWalkthrough(id: Int!): Boolean!
   }
 `;

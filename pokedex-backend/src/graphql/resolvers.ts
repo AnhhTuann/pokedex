@@ -61,6 +61,12 @@ export const resolvers = {
         },
         orderBy: { order: 'asc' }
       });
+    },
+
+    getWalkthrough: async (_: any, { id }: { id: number }) => {
+      return await prisma.walkthrough.findUnique({
+        where: { id }
+      });
     }
   },
 
@@ -106,10 +112,12 @@ export const resolvers = {
       return true;
     },
 
-    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, content, order, language }: any) => {
+    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, description, coverImage, content, order, language }: any) => {
       const data = {
         gameVersion: gameVersion.toLowerCase(),
         chapterTitle,
+        description,
+        coverImage,
         content,
         order,
         language: language ? language.toLowerCase() : 'vi'

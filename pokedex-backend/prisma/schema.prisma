@@ -222,6 +222,8 @@ model Walkthrough {
   id           Int      @id @default(autoincrement())
   gameVersion  String   // e.g. 'emerald', 'firered'
   chapterTitle String
+  description  String?  // Short summary of the chapter
+  coverImage   String?  // Hero image URL
   content      String   // Contains HTML rich content string from TipTap
   order        Int      // To sort chapters in order
   language     String   @default("vi") // 'vi' or 'en'
