@@ -57,88 +57,82 @@ export const VERSION_COLORS: Record<string, string> = {
   'legends-za': '#22c55e',
 };
 
-export const GENERATION_VERSIONS = [
+export type GameVersionRow = {
+  type: 'pair' | 'single';
+  games: { name: string; label: string }[];
+};
+
+export interface GenerationGroup {
+  gen: string;
+  rows: GameVersionRow[];
+}
+
+export const GENERATION_VERSIONS: GenerationGroup[] = [
   {
     gen: "Generation I",
-    games: [
-      { name: "red", label: "Red" },
-      { name: "blue", label: "Blue" },
-      { name: "yellow", label: "Yellow" }
+    rows: [
+      { type: 'pair', games: [{ name: "red", label: "Red" }, { name: "blue", label: "Blue" }] },
+      { type: 'single', games: [{ name: "yellow", label: "Yellow" }] }
     ]
   },
   {
     gen: "Generation II",
-    games: [
-      { name: "gold", label: "Gold" },
-      { name: "silver", label: "Silver" },
-      { name: "crystal", label: "Crystal" }
+    rows: [
+      { type: 'pair', games: [{ name: "gold", label: "Gold" }, { name: "silver", label: "Silver" }] },
+      { type: 'single', games: [{ name: "crystal", label: "Crystal" }] }
     ]
   },
   {
     gen: "Generation III",
-    games: [
-      { name: "ruby", label: "Ruby" },
-      { name: "sapphire", label: "Sapphire" },
-      { name: "emerald", label: "Emerald" },
-      { name: "firered", label: "FireRed" },
-      { name: "leafgreen", label: "LeafGreen" }
+    rows: [
+      { type: 'pair', games: [{ name: "ruby", label: "Ruby" }, { name: "sapphire", label: "Sapphire" }] },
+      { type: 'single', games: [{ name: "emerald", label: "Emerald" }] },
+      { type: 'pair', games: [{ name: "firered", label: "FireRed" }, { name: "leafgreen", label: "LeafGreen" }] }
     ]
   },
   {
     gen: "Generation IV",
-    games: [
-      { name: "diamond", label: "Diamond" },
-      { name: "pearl", label: "Pearl" },
-      { name: "platinum", label: "Platinum" },
-      { name: "heartgold", label: "HeartGold" },
-      { name: "soulsilver", label: "SoulSilver" }
+    rows: [
+      { type: 'pair', games: [{ name: "diamond", label: "Diamond" }, { name: "pearl", label: "Pearl" }] },
+      { type: 'single', games: [{ name: "platinum", label: "Platinum" }] },
+      { type: 'pair', games: [{ name: "heartgold", label: "HeartGold" }, { name: "soulsilver", label: "SoulSilver" }] }
     ]
   },
   {
     gen: "Generation V",
-    games: [
-      { name: "black", label: "Black" },
-      { name: "white", label: "White" },
-      { name: "black-2", label: "Black 2" },
-      { name: "white-2", label: "White 2" }
+    rows: [
+      { type: 'pair', games: [{ name: "black", label: "Black" }, { name: "white", label: "White" }] },
+      { type: 'pair', games: [{ name: "black-2", label: "Black 2" }, { name: "white-2", label: "White 2" }] }
     ]
   },
   {
     gen: "Generation VI",
-    games: [
-      { name: "x", label: "X" },
-      { name: "y", label: "Y" },
-      { name: "omega-ruby", label: "Omega Ruby" },
-      { name: "alpha-sapphire", label: "Alpha Sapphire" }
+    rows: [
+      { type: 'pair', games: [{ name: "x", label: "X" }, { name: "y", label: "Y" }] },
+      { type: 'pair', games: [{ name: "omega-ruby", label: "Omega Ruby" }, { name: "alpha-sapphire", label: "Alpha Sapphire" }] }
     ]
   },
   {
     gen: "Generation VII",
-    games: [
-      { name: "sun", label: "Sun" },
-      { name: "moon", label: "Moon" },
-      { name: "ultra-sun", label: "Ultra Sun" },
-      { name: "ultra-moon", label: "Ultra Moon" },
-      { name: "lets-go-pikachu", label: "Let's Go Pikachu" },
-      { name: "lets-go-eevee", label: "Let's Go Eevee" }
+    rows: [
+      { type: 'pair', games: [{ name: "sun", label: "Sun" }, { name: "moon", label: "Moon" }] },
+      { type: 'pair', games: [{ name: "ultra-sun", label: "Ultra Sun" }, { name: "ultra-moon", label: "Ultra Moon" }] },
+      { type: 'pair', games: [{ name: "lets-go-pikachu", label: "Let's Go Pikachu" }, { name: "lets-go-eevee", label: "Let's Go Eevee" }] }
     ]
   },
   {
     gen: "Generation VIII",
-    games: [
-      { name: "sword", label: "Sword" },
-      { name: "shield", label: "Shield" },
-      { name: "brilliant-diamond", label: "Brilliant Diamond" },
-      { name: "shining-pearl", label: "Shining Pearl" },
-      { name: "legends-arceus", label: "Legends: Arceus" }
+    rows: [
+      { type: 'pair', games: [{ name: "sword", label: "Sword" }, { name: "shield", label: "Shield" }] },
+      { type: 'pair', games: [{ name: "brilliant-diamond", label: "Brilliant Diamond" }, { name: "shining-pearl", label: "Shining Pearl" }] },
+      { type: 'single', games: [{ name: "legends-arceus", label: "Legends: Arceus" }] }
     ]
   },
   {
     gen: "Generation IX",
-    games: [
-      { name: "scarlet", label: "Scarlet" },
-      { name: "violet", label: "Violet" },
-      { name: "legends-za", label: "Legends: Z-A" }
+    rows: [
+      { type: 'pair', games: [{ name: "scarlet", label: "Scarlet" }, { name: "violet", label: "Violet" }] },
+      { type: 'single', games: [{ name: "legends-za", label: "Legends: Z-A" }] }
     ]
   }
 ];
@@ -172,13 +166,13 @@ export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   moon: 'original-alola',
   'ultra-sun': 'updated-alola',
   'ultra-moon': 'updated-alola',
-  'lets-go-pikachu': 'kanto',
-  'lets-go-eevee': 'kanto',
+  'lets-go-pikachu': 'letsgo-kanto',
+  'lets-go-eevee': 'letsgo-kanto',
   sword: 'galar',
   shield: 'galar',
   'brilliant-diamond': 'original-sinnoh',
   'shining-pearl': 'original-sinnoh',
-  'legends-arceus': 'extended-sinnoh',
+  'legends-arceus': 'hisui',
   scarlet: 'paldea',
   violet: 'paldea',
   'legends-za': 'kalos-central',

@@ -613,7 +613,7 @@ export default function CatchTracker() {
                   <MenuItem key={gen.gen} disabled sx={{ fontWeight: 900, opacity: 0.8, color: 'primary.main', fontSize: '0.75rem', letterSpacing: 1, textTransform: 'uppercase' }}>
                     {gen.gen}
                   </MenuItem>,
-                  ...gen.games.map((game) => (
+                  ...gen.rows.flatMap((row) => row.games).map((game) => (
                     <MenuItem key={game.name} value={game.name} sx={{ pl: 4, fontWeight: 700 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: VERSION_COLORS[game.name] || '#ccc' }} />

@@ -401,58 +401,118 @@ export default function LocationDex() {
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ p: 3, maxHeight: '460px' }}>
-          {GENERATION_VERSIONS.map((genGroup) => (
-            <Box key={genGroup.gen} sx={{ mb: 3 }}>
-              <Typography
-                variant="caption"
-                sx={{
-                  fontWeight: 900,
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.45)',
-                  display: 'block',
-                  mb: 1.5
-                }}
-              >
-                {genGroup.gen}
-              </Typography>
-              <Grid container spacing={1}>
-                {genGroup.games.map((game) => {
-                  const isSelected = selectedVersion === game.name;
-                  const btnColor = VERSION_COLORS[game.name] || '#ec4899';
-                  return (
-                    <Grid size={{ xs: 6, sm: 4 }} key={game.name}>
-                      <Button
-                        fullWidth
-                        variant={isSelected ? "contained" : "outlined"}
-                        onClick={() => handleSelectVersion(game.name)}
-                        sx={{
-                          borderRadius: '12px',
-                          py: 1.2,
-                          fontWeight: 800,
-                          textTransform: 'capitalize',
-                          fontSize: '13px',
-                          bgcolor: isSelected ? btnColor : 'transparent',
-                          color: isSelected ? '#ffffff' : 'text.primary',
-                          borderColor: isSelected ? 'transparent' : isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.15)',
-                          '&:hover': {
-                            bgcolor: isSelected ? alpha(btnColor, 0.85) : isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                            borderColor: isSelected ? 'transparent' : btnColor
-                          },
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1
-                        }}
-                      >
-                        {isSelected && <CheckCircle sx={{ fontSize: 16 }} />}
-                        {game.label}
-                      </Button>
+          <Stack spacing={4}>
+            {GENERATION_VERSIONS.map((g) => (
+              <Box key={g.gen}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 800,
+                      color: 'text.secondary',
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      fontSize: '0.75rem',
+                      whiteSpace: 'nowrap',
+                      opacity: 0.8
+                    }}
+                  >
+                    {g.gen}
+                  </Typography>
+                  <Divider sx={{ flex: 1, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }} />
+                </Box>
+                <Stack spacing={1.5}>
+                  {g.rows.map((row, rowIdx) => (
+                    <Grid container spacing={1.5} key={rowIdx}>
+                      {row.games.map((game) => {
+                        const isSelected = selectedVersion.toLowerCase() === game.name.toLowerCase();
+                        let vColor = VERSION_COLORS[game.name] || '#6366f1';
+                        
+                        if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
+                          vColor = '#555555';
+                        }
+
+                        const isArceus = game.name === 'legends-arceus';
+                        const isZA = game.name === 'legends-za';
+                        const isSpecial = isArceus || isZA;
+                        const specialColor = isArceus ? '#fbbf24' : '#22c55e'; // Gold/Yellow vs Green Neon
+
+                        const getContrastColor = (color: string) => {
+                          const c = color.toLowerCase();
+                          if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff') {
+                            return '#0f172a';
+                          }
+                          return '#ffffff';
+                        };
+
+                        const contrastColor = getContrastColor(vColor);
+
+                        // Apply sizes: pairs get half width on all screens, singles get full width
+                        const sizeProps = row.type === 'pair' ? { xs: 6 } : { xs: 12 };
+
+                        return (
+                          <Grid size={sizeProps} key={game.name}>
+                            <Button
+                              fullWidth
+                              onClick={() => handleSelectVersion(game.name)}
+                              sx={{
+                                fontWeight: 800,
+                                letterSpacing: '0.5px',
+                                borderRadius: '28px', // Premium pill-shaped
+                                border: isSelected 
+                                  ? `1.5px solid ${vColor}` 
+                                  : `1.5px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}`,
+                                color: isSelected ? contrastColor : (isDark ? '#94a3b8' : '#475569'),
+                                bgcolor: isSelected 
+                                  ? vColor 
+                                  : (isDark ? 'rgba(30, 41, 59, 0.45)' : '#ffffff'),
+                                boxShadow: isSelected 
+                                  ? `0 8px 24px ${alpha(vColor, 0.4)}` 
+                                  : 'none',
+                                textTransform: 'uppercase',
+                                fontSize: '0.78rem',
+                                height: '46px',
+                                px: 2,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'center',
+                                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                                '&:hover': {
+                                  bgcolor: isSelected 
+                                    ? vColor
+                                    : (isDark ? 'rgba(30, 41, 59, 0.7)' : '#f1f5f9'),
+                                  borderColor: isSelected ? vColor : (isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'),
+                                  transform: 'translateY(-2px)',
+                                  boxShadow: isSelected 
+                                    ? `0 12px 28px ${alpha(vColor, 0.45)}`
+                                    : `0 4px 12px ${isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.05)'}`,
+                                }
+                              }}
+                            >
+                              <Box 
+                                sx={{ 
+                                  width: 10, 
+                                  height: 10, 
+                                  borderRadius: '50%', 
+                                  bgcolor: isSelected ? contrastColor : vColor, 
+                                  boxShadow: isSelected ? 'none' : `0 0 8px ${vColor}`,
+                                  mr: 1.5, 
+                                  flexShrink: 0 
+                                }} 
+                              />
+                              <Box sx={{ flex: 1, textAlign: 'left', fontWeight: isSelected ? 900 : 700 }}>
+                                {game.label}
+                              </Box>
+                            </Button>
+                          </Grid>
+                        );
+                      })}
                     </Grid>
-                  );
-                })}
-              </Grid>
-            </Box>
-          ))}
+                  ))}
+                </Stack>
+              </Box>
+            ))}
+          </Stack>
         </DialogContent>
         <DialogActions sx={{ p: 3, borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}` }}>
           <Button onClick={() => setVersionModalOpen(false)} sx={{ fontWeight: 800 }}>Cancel</Button>

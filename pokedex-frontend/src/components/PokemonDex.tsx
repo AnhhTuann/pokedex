@@ -45,7 +45,7 @@ export default function PokemonDex() {
   const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
 
   if (selectedVersion === 'legends-za') {
-    queryRegion = zaTab === 'lumiose' ? 'kalos-central-lumiose' : 'kalos-central-hyperspace';
+    queryRegion = zaTab === 'lumiose' ? 'lumiose-city' : 'hyperspace';
   }
 
   const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({

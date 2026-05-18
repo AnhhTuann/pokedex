@@ -484,61 +484,98 @@ export default function MainLayout() {
                   </Typography>
                   <Divider sx={{ flex: 1, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }} />
                 </Box>
-                <Grid container spacing={1.5}>
-                  {g.games.map((game) => {
-                    const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
-                    let vColor = VERSION_COLORS[game.name] || '#6366f1';
-                    
-                    if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
-                      vColor = '#555555';
-                    }
+                <Stack spacing={1.5}>
+                  {g.rows.map((row, rowIdx) => (
+                    <Grid container spacing={1.5} key={rowIdx}>
+                      {row.games.map((game) => {
+                        const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
+                        let vColor = VERSION_COLORS[game.name] || '#6366f1';
+                        
+                        if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
+                          vColor = '#555555';
+                        }
 
-                    const isArceus = game.name === 'legends-arceus';
-                    const isZA = game.name === 'legends-za';
-                    const isSpecial = isArceus || isZA;
-                    const specialColor = isArceus ? '#fbbf24' : '#22c55e'; // Gold/Yellow vs Green Neon
+                        const isArceus = game.name === 'legends-arceus';
+                        const isZA = game.name === 'legends-za';
+                        const isSpecial = isArceus || isZA;
+                        const specialColor = isArceus ? '#fbbf24' : '#22c55e'; // Gold/Yellow vs Green Neon
 
-                    return (
-                      <Grid size={{ xs: 6, sm: 4, md: 2.4 }} key={game.name}>
-                        <Button
-                          fullWidth
-                          onClick={() => {
-                            setSelectedVersion(game.name);
-                            setVersionDialogOpen(false);
-                          }}
-                          sx={{
-                            fontWeight: 'bold',
-                            letterSpacing: '0.5px',
-                            borderRadius: '10px',
-                            border: isActive 
-                              ? `2.5px solid ${isSpecial ? specialColor : vColor}` 
-                              : `1.5px solid ${isSpecial ? specialColor : alpha(vColor, 0.45)}`,
-                            color: '#ffffff',
-                            bgcolor: isActive 
-                              ? (isSpecial ? alpha(specialColor, 0.35) : alpha(vColor, 0.45)) 
-                              : (isSpecial ? alpha(specialColor, 0.15) : alpha(vColor, 0.15)),
-                            boxShadow: isActive 
-                              ? `0 6px 20px ${isSpecial ? specialColor : alpha(vColor, 0.5)}` 
-                              : (isSpecial ? `0 0 10px ${alpha(specialColor, 0.25)}` : 'none'),
-                            textTransform: 'capitalize',
-                            height: '42px',
-                            transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                            '&:hover': {
-                              bgcolor: isSpecial ? alpha(specialColor, 0.3) : alpha(vColor, 0.3),
-                              borderColor: isSpecial ? specialColor : vColor,
-                              borderStyle: 'solid',
-                              borderWidth: isSpecial ? '2.5px' : '2px',
-                              transform: 'scale(1.04) translateY(-2px)',
-                              boxShadow: `0 8px 18px ${isSpecial ? alpha(specialColor, 0.5) : alpha(vColor, 0.35)}`,
-                            }
-                          }}
-                        >
-                          {game.label}
-                        </Button>
-                      </Grid>
-                    );
-                  })}
-                </Grid>
+                        const getContrastColor = (color: string) => {
+                          const c = color.toLowerCase();
+                          if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff') {
+                            return '#0f172a';
+                          }
+                          return '#ffffff';
+                        };
+
+                        const contrastColor = getContrastColor(vColor);
+
+                        // Apply sizes: pairs get half width on all screens, singles get full width
+                        const sizeProps = row.type === 'pair' ? { xs: 6 } : { xs: 12 };
+
+                        return (
+                          <Grid size={sizeProps} key={game.name}>
+                            <Button
+                              fullWidth
+                              onClick={() => {
+                                setSelectedVersion(game.name);
+                                setVersionDialogOpen(false);
+                              }}
+                              sx={{
+                                fontWeight: 800,
+                                letterSpacing: '0.5px',
+                                borderRadius: '28px', // Premium pill-shaped!
+                                border: isActive 
+                                  ? `1.5px solid ${vColor}` 
+                                  : `1.5px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}`,
+                                color: isActive ? contrastColor : (isDark ? '#94a3b8' : '#475569'),
+                                bgcolor: isActive 
+                                  ? vColor 
+                                  : (isDark ? 'rgba(30, 41, 59, 0.45)' : '#ffffff'),
+                                boxShadow: isActive 
+                                  ? `0 8px 24px ${alpha(vColor, 0.4)}` 
+                                  : 'none',
+                                textTransform: 'uppercase',
+                                fontSize: '0.78rem',
+                                height: '46px',
+                                px: 2,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'center',
+                                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                                '&:hover': {
+                                  bgcolor: isActive 
+                                    ? vColor
+                                    : (isDark ? 'rgba(30, 41, 59, 0.7)' : '#f1f5f9'),
+                                  borderColor: isActive ? vColor : (isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'),
+                                  transform: 'translateY(-2px)',
+                                  boxShadow: isActive 
+                                    ? `0 12px 28px ${alpha(vColor, 0.45)}`
+                                    : `0 4px 12px ${isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.05)'}`,
+                                }
+                              }}
+                            >
+                              <Box 
+                                sx={{ 
+                                  width: 10, 
+                                  height: 10, 
+                                  borderRadius: '50%', 
+                                  bgcolor: isActive ? contrastColor : vColor, 
+                                  boxShadow: isActive ? 'none' : `0 0 8px ${vColor}`,
+                                  mr: 1.5, 
+                                  flexShrink: 0 
+                                }} 
+                              />
+                              <Box sx={{ flex: 1, textAlign: 'left', fontWeight: isActive ? 900 : 700 }}>
+                                {game.label}
+                              </Box>
+                            </Button>
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  ))}
+                </Stack>
               </Box>
             ))}
           </Stack>
