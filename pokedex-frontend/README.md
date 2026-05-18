@@ -1,22 +1,123 @@
-# 🎨 PokéDex Frontend
+# 🎨 Elite PokéDex Frontend - Modern React & Tailwind SPA
 
-Module này xử lý toàn bộ phần hiển thị và trải nghiệm người dùng của Elite PokéDex.
+Chào mừng bạn đến với **PokéDex Frontend**! Đây là giao diện người dùng (UI/UX) của ứng dụng **Elite PokéDex Wiki**, một Single Page Application (SPA) cao cấp được xây dựng bằng **React**, **Vite**, **TypeScript**, **Apollo Client (GraphQL)**, **Material-UI (MUI)** và **Tailwind CSS v4**.
 
-## 🏗️ Cấu trúc thư mục
-- `src/components`: Các thành phần UI dùng chung (PokeCard, Sidebar, TopBar, TypeBadge...).
-- `src/pages`: Các trang chính (Pokedex, MoveDex, AbilityDex, ItemDex, LocationDex...).
-- `src/graphql`: Định nghĩa các Query và Mutation bằng `gql`.
-- `src/hooks`: Custom hooks (useDebounce, useVersionFilter...).
-- `src/utils`: Logic tính toán (Type Matchups, Color mapping).
-- `src/theme`: Cấu hình Theme Dark Mode của Material-UI.
+Với phong cách thiết kế **Dark Mode Neon**, các hiệu ứng chuyển động mượt mà (sử dụng **Framer Motion/Motion**), ứng dụng mang lại trải nghiệm tương tác trực quan sống động hàng đầu dành cho các tín đồ Pokémon.
 
-## 📦 Package quan trọng
-- `@mui/material`: Hệ thống UI component chính.
-- `@apollo/client`: Quản lý gọi API GraphQL và caching dữ liệu.
-- `react-router-dom`: Quản lý điều hướng đa trang.
-- `use-debounce`: Tối ưu hóa hiệu suất ô tìm kiếm.
+---
 
-## 💡 Giải pháp kỹ thuật nổi bật
-- **Global Version State:** Sử dụng Context/State để quản lý bản game đang chọn, từ đó đồng bộ dữ liệu lọc trên toàn bộ các module khác nhau.
-- **Conditional Rendering:** Tối ưu hóa TopBar để ẩn/hiện nút Shiny và Version tùy theo trang người dùng đang đứng.
-- **Dynamic Styling:** Thẻ Pokemon tự động thay đổi màu nền theo hệ chính, tạo hiệu ứng thị giác chuyên nghiệp.
+## ✨ Tính năng cao cấp nổi bật
+
+*   **⚡ Advanced PokéDex Wiki:**
+    *   Tìm kiếm và lọc Pokémon theo thời gian thực (Debounced Search) kết hợp lọc theo **Hệ (Type)**, **Thế hệ (Generation)**, **Khu vực (Region)** và **Bản game (Version)**.
+    *   Tự động thay đổi tông màu thẻ Pokémon (PokeCard) theo hệ chính của Pokémon đó.
+*   **🎙️ PokeDetail Modal & Text-to-Speech:**
+    *   Xem thông tin chi tiết: Chỉ số cơ bản (HP, Attack, Defense...) vẽ dưới dạng Radar/Bar Chart trực quan.
+    *   Bảng phân tích tương khắc hệ (Type Matchups) tự động tính toán hệ số sát thương nhận vào.
+    *   Tính năng **Voice Entry** tích hợp bộ đọc **Text-to-Speech (Giọng nói)** để đọc to mô tả Pokémon như một chiếc thiết bị Pokedex thực thụ trong anime!
+    *   Sơ đồ tiến hóa (Evolution Chain) dạng cây dễ hiểu.
+    *   Xem danh sách các dạng phụ (Alternative Forms) và dạng tiến hóa Mega.
+*   **🧠 Smart Team Builder (Xây dựng Đội hình Thông minh):**
+    *   Xây dựng đội hình lên tới 6 Pokémon.
+    *   Tính năng **Auto-Build (Đề xuất Tự động)** sử dụng thuật toán thông minh để phân tích Pokémon và đề xuất ngay lập tức: **Bộ chiêu thức tối ưu (Moveset)**, **Đặc tính (Ability)**, **Vật phẩm trang bị (Held Item)**, và **Bản tính (Nature)** phù hợp nhất cho đấu giải.
+    *   Hỗ trợ **Import/Export Team** dưới dạng tệp JSON tiện lợi.
+*   **📊 Damage Calculator (Bộ tính sát thương PvP):**
+    *   Công cụ giả lập chiến đấu nâng cao cho phép tính toán lượng sát thương cụ thể mà một chiêu thức của Pokémon tấn công gây ra cho Pokémon phòng thủ.
+    *   Tùy chỉnh: Cấp độ, Chỉ số IVs/EVs, Bản tính (Nature), Vật phẩm, Trạng thái thời tiết và Địa hình chiến đấu.
+*   **🎮 Hệ thống Wiki chuyên sâu:**
+    *   **MoveDex:** Danh sách chiêu thức đầy đủ thông số (Damage Class, Uy lực, PP, Accuracy, Mô tả).
+    *   **AbilityDex:** Danh mục đặc tính và lọc nhanh các Pokémon sở hữu đặc tính đó.
+    *   **ItemDex:** Kho vật phẩm, Pokeball, đá tiến hóa, quả mọng (Berries) cùng giá tiền và hiệu ứng chi tiết.
+    *   **LocationDex:** Tra cứu điểm bắt Pokémon hoang dã theo từng phiên bản game, cấp độ xuất hiện, phương thức bắt (câu cá, đi bụi cỏ, lướt sóng) và tỉ lệ gặp dạng phần trăm (`%`).
+    *   **TypeDex & NatureDex:** Bảng tra cứu thuộc tính tương khắc và thuộc tính thay đổi chỉ số của 25 bản tính Pokémon.
+*   **📝 CMS Walkthrough (Admin):**
+    *   Giao diện viết bài hướng dẫn (Walkthrough) chuyên nghiệp tích hợp trình soạn thảo WYSIWYG hiện đại (**Tiptap Editor**).
+    *   Hỗ trợ kéo thả sắp xếp thứ tự chương (`@hello-pangea/dnd`), lưu bài viết đa ngôn ngữ.
+
+---
+
+## 📁 Cấu trúc thư mục mã nguồn
+
+```bash
+pokedex-frontend/
+├── src/
+│   ├── components/            # Thư mục chính chứa các Trang và Component của hệ thống
+│   │   ├── PokeCard.tsx       # Thẻ hiển thị Pokémon ngoài danh sách (Auto-coloring theo hệ)
+│   │   ├── PokeDetail.tsx     # Modal chi tiết Pokémon (Stats Chart, TTS Voice, Evolutions)
+│   │   ├── TeamBuilder.tsx    # Giao diện Smart Team Builder và logic Auto-Build
+│   │   ├── DamageCalculator.tsx# Bộ giả lập tính toán sát thương PvP
+│   │   ├── CatchTracker.tsx   # Danh sách đánh dấu những Pokémon đã bắt được
+│   │   ├── AbilityDex.tsx     # Bảng tra cứu Đặc tính (Ability)
+│   │   ├── MoveDex.tsx        # Bảng tra cứu Chiêu thức (Moves)
+│   │   ├── ItemDex.tsx        # Bảng tra cứu Vật phẩm (Items)
+│   │   ├── LocationDex.tsx    # Tra cứu điểm bắt Pokémon hoang dã
+│   │   ├── TypeDex.tsx        # Bảng tính toán song hệ
+│   │   ├── NatureDex.tsx      # Tra cứu chỉ số tăng/giảm theo Bản tính
+│   │   ├── Walkthrough.tsx    # Trang đọc hướng dẫn chơi game theo từng chương
+│   │   └── AdminWalkthrough.tsx# Trình soạn thảo CMS dành cho Admin (Tiptap Editor)
+│   ├── hooks/                 # Custom React Hooks
+│   │   └── usePokemon.ts      # Hook tiện ích hỗ trợ fetch dữ liệu
+│   ├── lib/                   # Chứa các Context và Store dùng chung
+│   │   ├── ThemeContext.tsx   # Quản lý giao diện sáng/tối (MUI Theme)
+│   │   ├── MyPokedexContext.tsx# Context quản lý trạng thái Pokémon yêu thích toàn cục
+│   │   ├── catchStore.ts      # Store quản lý danh sách Pokémon đã bắt (Zustand)
+│   │   ├── teamStore.ts       # Store quản lý danh sách đội hình thi đấu (Zustand)
+│   │   └── pokeApi.ts         # Cấu hình Apollo Client để kết nối với Backend GraphQL
+│   ├── pages/                 # Các trang phụ trợ
+│   │   └── UIShowcase.tsx     # Trang giới thiệu các Component thiết kế
+│   ├── types.ts               # Định nghĩa các TypeScript interfaces
+│   ├── index.css              # Tệp CSS chính (Cấu hình màu sắc, phông chữ và Tailwind)
+│   ├── App.tsx                # File định tuyến chính và cấu trúc Layout chính
+│   └── main.tsx               # Điểm khởi chạy React app kết nối với DOM
+├── index.html                 # Tệp HTML chính
+├── package.json               # dependencies & scripts
+├── tsconfig.json              # Cấu hình TypeScript
+└── vite.config.ts             # Cấu hình đóng gói Vite
+```
+
+---
+
+## 🛠️ Cài đặt & Chạy dưới Local
+
+### 1. Cài đặt các thư viện phụ thuộc
+Đứng tại thư mục `/pokedex-frontend`, chạy lệnh sau để tải các packages:
+```bash
+npm install
+```
+
+### 2. Cấu hình biến môi trường kết nối API
+Tạo file `.env` tại thư mục `/pokedex-frontend` (nếu cần thiết kế động địa chỉ GraphQL API):
+```env
+VITE_GRAPHQL_API_URL=http://localhost:3000/graphql
+```
+*Lưu ý: Mặc định, cấu hình Apollo Client trong `src/lib/pokeApi.ts` đã tự động trỏ tới địa chỉ `http://localhost:3000/graphql` của local server.*
+
+### 3. Khởi động ứng dụng trong môi trường phát triển (Dev Server)
+```bash
+npm run dev
+```
+Giao diện PokéDex sẽ sẵn sàng tại địa chỉ: **`http://localhost:5173`**  
+Mở trình duyệt và truy cập địa chỉ trên để trải nghiệm ứng dụng!
+
+### 4. Biên dịch đóng gói sản phẩm (Build Production)
+Để tạo ra các tệp tĩnh tối ưu hóa để triển khai thực tế (deploy):
+```bash
+npm run build
+```
+Thư mục `/dist` chứa toàn bộ mã nguồn HTML/JS/CSS đã nén tối đa sẽ được sinh ra.
+
+---
+
+## 📦 Các thư viện công nghệ cốt lõi
+
+*   **Vite & React 19:** Nền tảng xây dựng SPA siêu tốc với cơ chế Hot Module Replacement (HMR).
+*   **Apollo Client:** Quản lý truy xuất dữ liệu GraphQL từ server và tự động lưu bộ nhớ đệm (caching) ở client để tăng tốc độ tải trang tiếp theo.
+*   **Material-UI (MUI v9) & Emotion:** Cung cấp hệ thống giao diện cao cấp (Grid, Table, Modal, Select, Slider) đáp ứng tốt mọi kích thước màn hình.
+*   **Tailwind CSS v4:** Viết các class tùy chỉnh giao diện nhanh chóng, linh hoạt.
+*   **Zustand:** Thư viện quản lý state cực kỳ nhẹ để lưu trữ danh sách đội hình và theo dõi bắt Pokémon.
+*   **Tiptap Editor:** Bộ soạn thảo WYSIWYG chuyên nghiệp hỗ trợ gõ nội dung cẩm nang dạng Rich Text, bảng biểu và chèn hình ảnh.
+*   **Framer Motion:** Tạo ra các hiệu ứng mở Modal, Hover thẻ Pokémon và các chuyển động mượt mà như một ứng dụng native.
+
+---
+
+Chúc bạn xây dựng được những đội hình mạnh mẽ và khám phá thế giới Pokémon đầy thú vị cùng **Elite PokéDex Wiki Frontend**! 🚀
