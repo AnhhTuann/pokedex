@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 import { X, Sparkles, Save, Flame, Target, Shield, CheckCircle } from 'lucide-react';
-import styles from './MovesModal.module.scss';
+import styles from '../styles/components/MovesModal.module.scss';
 
 const GET_POKEMON_MOVES = gql`
   query GetPokemonMoves($id: Int!) {

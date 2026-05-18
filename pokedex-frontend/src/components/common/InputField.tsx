@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "../../lib/utils";
-import styles from "./InputField.module.scss";
+import styles from "../../styles/components/common/InputField.module.scss";
 
 export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;

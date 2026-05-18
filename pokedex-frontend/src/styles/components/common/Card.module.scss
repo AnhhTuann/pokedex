@@ -1,0 +1,36 @@
+@import "../../variables";
+@import "../../mixins";
+
+.card {
+  border-radius: $radius-lg;
+  border: 1px solid transparent;
+  transition: all $transition-normal;
+}
+
+// ─── Variants ─────────────────────────────────────────────
+.standard {
+  background-color: $bg-paper;
+  border-color: $border-main;
+  box-shadow: $shadow-sm;
+}
+
+.glass {
+  @include glass;
+}
+
+// ─── Paddings ─────────────────────────────────────────────
+.p_none {
+  padding: 0;
+}
+
+.p_sm {
+  padding: 12px;
+}
+
+.p_md {
+  padding: 20px;
+}
+
+.p_lg {
+  padding: 32px;
+}

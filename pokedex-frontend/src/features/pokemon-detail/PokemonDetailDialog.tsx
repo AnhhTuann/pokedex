@@ -9,7 +9,7 @@ import { EvolutionChain } from './EvolutionChain';
 import { PokedexVoice } from './PokedexVoice';
 import { MoveList } from './MoveList';
 import { Button } from '../../components/common/Button';
-import styles from './PokemonDetailDialog.module.scss';
+import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface PokemonDetailDialogProps {
   id: number | null;

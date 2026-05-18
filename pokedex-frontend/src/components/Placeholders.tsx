@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import {
   Zap, Brain, Backpack, Map, Layers, Compass
 } from 'lucide-react';
-import styles from './Placeholders.module.scss';
+import styles from '../styles/components/Placeholders.module.scss';
 
 interface PlaceholderDexProps {
   title: string;

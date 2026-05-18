@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 import { formatSpeciesId } from '../lib/utils';
 import { X, ChevronRight, Sparkles, Volume2, Play, Pause, Square, Mic } from 'lucide-react';
-import styles from './PokeDetail.module.scss';
+import styles from '../styles/components/PokeDetail.module.scss';
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {

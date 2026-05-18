@@ -7,7 +7,7 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   ResponsiveContainer, Legend, Tooltip,
 } from 'recharts';
-import styles from './CompareModal.module.scss';
+import styles from '../styles/components/CompareModal.module.scss';
 
 interface CompareModalProps { ids: number[]; onClose: () => void; }
 

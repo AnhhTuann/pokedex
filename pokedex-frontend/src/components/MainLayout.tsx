@@ -23,7 +23,7 @@ import { useColorMode } from '../main';
 import { useTeamStore } from '../lib/teamStore';
 import GameModal from './GameModal';
 import { VERSION_COLORS, GENERATION_VERSIONS } from '../App';
-import styles from './MainLayout.module.scss';
+import styles from '../styles/components/MainLayout.module.scss';
 
 // ─── Custom Pokeball SVG Icon ─────────────────────────────
 const PokeballIcon = ({ className, size = 24 }: { className?: string; size?: number }) => (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Search } from "lucide-react";
 import { InputField } from "./common/InputField";
-import styles from "./SearchBar.module.scss";
+import styles from "../styles/components/SearchBar.module.scss";
 
 interface SearchBarProps {
   value: string;

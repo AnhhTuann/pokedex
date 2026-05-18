@@ -1,0 +1,123 @@
+@import "../../variables";
+@import "../../mixins";
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-sans;
+  font-weight: 500;
+  border-radius: $radius-md;
+  border: 1px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: all $transition-fast;
+  outline: none;
+  
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// ─── Button Variants ──────────────────────────────────────
+.primary {
+  background-color: $primary;
+  color: white;
+  box-shadow: $shadow-sm;
+  
+  &:hover {
+    background-color: lighten(#6366f1, 6%);
+    box-shadow: $glow-primary;
+  }
+  
+  :global(.dark) &:hover {
+    background-color: lighten(#818cf8, 6%);
+    box-shadow: $glow-primary;
+  }
+}
+
+.secondary {
+  background-color: rgba(129, 140, 248, 0.08);
+  color: $text-primary;
+  border: 1px solid $border-main;
+  
+  &:hover {
+    background-color: rgba(129, 140, 248, 0.15);
+    border-color: $border-hover;
+  }
+}
+
+.outline {
+  background-color: transparent;
+  color: $text-primary;
+  border: 1px solid $border-main;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: $text-primary;
+  }
+}
+
+.ghost {
+  background-color: transparent;
+  color: $text-secondary;
+  
+  &:hover {
+    background-color: rgba(129, 140, 248, 0.08);
+    color: $text-primary;
+  }
+}
+
+.danger {
+  background-color: #ef4444;
+  color: white;
+  
+  &:hover {
+    background-color: #dc2626;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+  }
+}
+
+// ─── Button Sizes ─────────────────────────────────────────
+.sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+.md {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.lg {
+  height: 48px;
+  padding: 0 24px;
+  font-size: 16px;
+}
+
+.icon {
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  border-radius: $radius-md;
+}
+
+// ─── Loading Animations ────────────────────────────────────
+.spinner {
+  margin-right: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

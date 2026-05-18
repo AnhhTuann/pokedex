@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
-import styles from './Card.module.scss';
+import styles from '../../styles/components/common/Card.module.scss';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   glass?: boolean;

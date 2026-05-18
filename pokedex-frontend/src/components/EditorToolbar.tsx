@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Editor } from '@tiptap/react';
 import { useQuery, gql } from '@apollo/client';
 import { Bold, Italic, Heading1, Heading2, List, ListOrdered, Table, Target, X, Loader } from 'lucide-react';
-import styles from './EditorToolbar.module.scss';
+import styles from '../styles/components/EditorToolbar.module.scss';
 
 const GET_POKEMON_SUGGESTIONS = gql`
   query GetPokemonSuggestions($search: String) {

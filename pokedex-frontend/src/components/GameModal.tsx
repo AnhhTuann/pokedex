@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, RefreshCw, Trophy, Frown } from 'lucide-react';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON_DETAIL } from './PokeDetail';
-import styles from './GameModal.module.scss';
+import styles from '../styles/components/GameModal.module.scss';
 
 interface GameModalProps { onClose: () => void; }
 

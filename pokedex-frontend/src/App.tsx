@@ -1,18 +1,18 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
-import PokemonDex from './components/PokemonDex';
-import LocationDex from './components/LocationDex';
-import TypeDex from './components/TypeDex';
-import MoveDex from './components/MoveDex';
-import AbilityDex from './components/AbilityDex';
-import ItemDex from './components/ItemDex';
-import NatureDex from './components/NatureDex';
-import TeamBuilder from './components/TeamBuilder';
-import CatchTracker from './components/CatchTracker';
-import DamageCalculator from './components/DamageCalculator';
-import Walkthrough from './components/Walkthrough';
-import AdminWalkthrough from './components/AdminWalkthrough';
+import PokemonDex from './pages/PokemonDex';
+import LocationDex from './pages/LocationDex';
+import TypeDex from './pages/TypeDex';
+import MoveDex from './pages/MoveDex';
+import AbilityDex from './pages/AbilityDex';
+import ItemDex from './pages/ItemDex';
+import NatureDex from './pages/NatureDex';
+import TeamBuilder from './pages/TeamBuilder';
+import CatchTracker from './pages/CatchTracker';
+import DamageCalculator from './pages/DamageCalculator';
+import Walkthrough from './pages/Walkthrough';
+import AdminWalkthrough from './pages/AdminWalkthrough';
 import UIShowcase from './pages/UIShowcase';
 
 export const VERSION_COLORS: Record<string, string> = {

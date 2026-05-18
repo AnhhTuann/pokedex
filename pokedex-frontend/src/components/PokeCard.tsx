@@ -6,7 +6,7 @@ import { PokemonListItem } from "../types";
 import { useMyPokedex } from "../lib/MyPokedexContext";
 import { useTeamStore } from "../lib/teamStore";
 import { formatSpeciesId, cn } from "../lib/utils";
-import styles from "./PokeCard.module.scss";
+import styles from "../styles/components/PokeCard.module.scss";
 
 const TYPE_COLORS: Record<string, string> = {
   normal: "#9ca3af", fire: "#f97316", water: "#3b82f6", electric: "#eab308",
