@@ -341,6 +341,7 @@ export default function MainLayout() {
                           if (vColor2.toLowerCase() === '#000000' || vColor2 === 'black' || vColor2 === '#000') vColor2 = '#555555';
                           
                           const styleInfo = getVersionColorStyle(game1.name);
+                          const inactiveBg = `linear-gradient(90deg, rgba(${hexToRgb(vColor1)}, 0.08) 50%, rgba(${hexToRgb(vColor2)}, 0.08) 50%)`;
                           
                           return (
                             <div key={rowIdx} className={styles.gameGrid} style={{ gridTemplateColumns: '1fr' }}>
@@ -354,29 +355,49 @@ export default function MainLayout() {
                                   isActive && styles.gameButtonActive
                                 )}
                                 style={{
-                                  background: isActive ? styleInfo.bg : undefined,
+                                  background: isActive ? styleInfo.bg : inactiveBg,
                                   color: isActive ? styleInfo.text : undefined,
-                                  borderColor: isActive ? 'transparent' : undefined,
+                                  borderColor: isActive ? 'transparent' : 'rgba(var(--primary-rgb), 0.1)',
                                   boxShadow: isActive ? `0 8px 24px ${styleInfo.shadow}` : undefined,
+                                  padding: 0,
+                                  overflow: 'hidden'
                                 } as React.CSSProperties}
                               >
-                                <span 
-                                  className={styles.gameDot}
-                                  style={{
-                                    '--dot-color': vColor1,
-                                    border: isActive ? '1.5px solid #ffffff' : 'none'
-                                  } as React.CSSProperties}
-                                />
-                                <span 
-                                  className={styles.gameDot}
-                                  style={{
-                                    '--dot-color': vColor2,
-                                    border: isActive ? '1.5px solid #ffffff' : 'none',
-                                    marginLeft: '-6px',
-                                    marginRight: '12px'
-                                  } as React.CSSProperties}
-                                />
-                                <span>{game1.label} / {game2.label}</span>
+                                <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%' }}>
+                                  {/* Left Half */}
+                                  <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', height: '100%' }}>
+                                    <span 
+                                      className={styles.gameDot}
+                                      style={{
+                                        '--dot-color': vColor1,
+                                        border: isActive ? '1.5px solid #ffffff' : 'none',
+                                        marginRight: 0
+                                      } as React.CSSProperties}
+                                    />
+                                    <span style={{ fontWeight: 800 }}>{game1.label}</span>
+                                  </div>
+
+                                  {/* Split Divider */}
+                                  <div style={{
+                                    width: '1px',
+                                    height: '22px',
+                                    backgroundColor: isActive ? 'rgba(255, 255, 255, 0.3)' : 'rgba(var(--primary-rgb), 0.15)',
+                                    transition: 'all 0.2s'
+                                  }} />
+
+                                  {/* Right Half */}
+                                  <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', height: '100%' }}>
+                                    <span 
+                                      className={styles.gameDot}
+                                      style={{
+                                        '--dot-color': vColor2,
+                                        border: isActive ? '1.5px solid #ffffff' : 'none',
+                                        marginRight: 0
+                                      } as React.CSSProperties}
+                                    />
+                                    <span style={{ fontWeight: 800 }}>{game2.label}</span>
+                                  </div>
+                                </div>
                               </button>
                             </div>
                           );

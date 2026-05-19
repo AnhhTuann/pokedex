@@ -234,7 +234,7 @@ export function getVersionColorStyle(versionName: string) {
           const c1 = VERSION_COLORS[row.games[0].name] || '#6366f1';
           const c2 = VERSION_COLORS[row.games[1].name] || '#6366f1';
           return {
-            bg: `linear-gradient(135deg, ${c1}, ${c2})`,
+            bg: `linear-gradient(90deg, ${c1} 50%, ${c2} 50%)`,
             text: '#ffffff',
             shadow: `rgba(${hexToRgb(c1)}, 0.3)`,
             isGradient: true,
