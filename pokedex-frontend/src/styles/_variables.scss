@@ -4,28 +4,33 @@
   --font-mono: "JetBrains Mono", monospace;
   --font-display: "Be Vietnam Pro", "Plus Jakarta Sans", "Inter", sans-serif;
 
-  // Colors Light Theme - Retro Soft Pink & Navy
-  --bg-default: #fec7d7;
-  --bg-paper: rgba(255, 255, 255, 0.75);
-  --bg-paper-glow: rgba(255, 255, 255, 0.9);
-  --text-primary: #0e172c;
-  --text-secondary: #3b4252;
-  --text-muted: #5e697e;
-  --border-main: rgba(14, 23, 44, 0.08);
-  --border-hover: rgba(14, 23, 44, 0.25);
+  // Colors Light Theme - Gemstone Glisten & Shine
+  --bg-default: #F5F5F7;
+  --bg-paper: rgba(255, 255, 255, 0.7);
+  --bg-paper-glow: rgba(255, 255, 255, 0.85);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-main: rgba(26, 191, 255, 0.15);
+  --border-hover: rgba(26, 191, 255, 0.35);
+  --inset-glow: rgba(255, 255, 255, 0.6);
   
-  --primary: #0e172c;
-  --primary-rgb: 14, 23, 44;
-  --secondary: #a786df;
-  --secondary-rgb: 167, 134, 223;
-  --accent-green: #2cb67d;
+  --primary: #1ABFFF;
+  --primary-rgb: 26, 191, 255;
+  --secondary: #FF1AFF;
+  --secondary-rgb: 255, 26, 255;
+  --accent-green: #00FFC6;
   --accent-yellow: #fbbf24;
+  --accent-orange: #FF6B6B;
   
-  --shadow-sm: 0 1px 3px rgba(14, 23, 44, 0.04);
-  --shadow-md: 0 8px 24px rgba(14, 23, 44, 0.06);
-  --shadow-lg: 0 20px 40px rgba(14, 23, 44, 0.08);
-  --glow-primary: 0 0 16px rgba(14, 23, 44, 0.15);
-  --glow-secondary: 0 0 16px rgba(167, 134, 223, 0.25);
+  --primary-gradient: linear-gradient(135deg, #1ABFFF 0%, #FF1AFF 100%);
+  --accent-orange-gradient: linear-gradient(135deg, #FF6B6B 0%, #FFC371 100%);
+  
+  --shadow-sm: 0 1px 3px rgba(26, 191, 255, 0.05);
+  --shadow-md: 0 8px 30px rgba(26, 191, 255, 0.08);
+  --shadow-lg: 0 20px 40px rgba(26, 191, 255, 0.12);
+  --glow-primary: 0 0 18px rgba(26, 191, 255, 0.35);
+  --glow-secondary: 0 0 18px rgba(255, 26, 255, 0.35);
   
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -38,28 +43,33 @@
 }
 
 html.dark {
-  // Colors Dark Theme - Matte Charcoal & Electric Purple
-  --bg-default: #16161a;
-  --bg-paper: rgba(36, 36, 42, 0.7);
-  --bg-paper-glow: rgba(46, 46, 56, 0.5);
-  --text-primary: #fffffe;
-  --text-secondary: #94a1b2;
-  --text-muted: #5e6a7d;
-  --border-main: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(127, 90, 240, 0.4);
+  // Colors Dark Theme - Bioluminescent & Cyber Cyberpunk Theme
+  --bg-default: #0D1117;
+  --bg-paper: rgba(1, 4, 9, 0.35);
+  --bg-paper-glow: rgba(13, 17, 23, 0.2);
+  --text-primary: #ffffff;
+  --text-secondary: #c9d1d9;
+  --text-muted: #8b949e;
+  --border-main: rgba(0, 255, 255, 0.16);
+  --border-hover: rgba(0, 255, 255, 0.45);
+  --inset-glow: rgba(0, 255, 255, 0.08);
   
-  --primary: #7f5af0;
-  --primary-rgb: 127, 90, 240;
-  --secondary: #2cb67d;
-  --secondary-rgb: 44, 182, 125;
-  --accent-green: #2cb67d;
-  --accent-yellow: #FFE600;
+  --primary: #00FFFF;
+  --primary-rgb: 0, 255, 255;
+  --secondary: #FF007F;
+  --secondary-rgb: 255, 0, 127;
+  --accent-green: #00FFC6;
+  --accent-yellow: #BD00FF;
+  --accent-orange: #BD00FF;
+  
+  --primary-gradient: linear-gradient(135deg, #00FFFF 0%, #BD00FF 100%);
+  --accent-orange-gradient: linear-gradient(135deg, #BD00FF 0%, #FF007F 100%);
   
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.6);
   --shadow-lg: 0 24px 50px rgba(0, 0, 0, 0.8);
-  --glow-primary: 0 0 24px rgba(127, 90, 240, 0.45);
-  --glow-secondary: 0 0 24px rgba(44, 182, 125, 0.4);
+  --glow-primary: 0 0 25px rgba(0, 255, 255, 0.55), 0 0 10px rgba(189, 0, 255, 0.35);
+  --glow-secondary: 0 0 25px rgba(255, 0, 127, 0.55);
 }
 
 // ─── Sass Variables ───────────────────────────────────────
@@ -80,6 +90,8 @@ $primary: var(--primary);
 $secondary: var(--secondary);
 $accent-green: var(--accent-green);
 $accent-yellow: var(--accent-yellow);
+$primary-gradient: var(--primary-gradient);
+$accent-orange-gradient: var(--accent-orange-gradient);
 
 $shadow-sm: var(--shadow-sm);
 $shadow-md: var(--shadow-md);

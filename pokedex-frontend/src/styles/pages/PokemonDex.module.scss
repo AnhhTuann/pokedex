@@ -21,8 +21,11 @@
   transition: all $transition-normal;
   
   &:focus-within {
-    border-color: var(--secondary);
-    box-shadow: 0 8px 32px rgba(0, 229, 255, 0.15), var(--glow-secondary);
+    border: 1px solid transparent;
+    background-image: linear-gradient(var(--bg-paper), var(--bg-paper)), var(--primary-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: var(--shadow-lg), var(--glow-primary);
   }
 }
 

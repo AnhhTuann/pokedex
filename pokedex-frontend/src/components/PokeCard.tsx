@@ -16,6 +16,31 @@ interface PokeCardProps {
   isSelectedForCompare?: boolean;
 }
 
+function getBackgroundColor(type: string): string {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case "grass": return "#c3deb0";
+    case "fire": return "#f2ad7c";
+    case "water": return "#6cbce5";
+    case "bug": return "#d2e59b";
+    case "normal": return "#e2e2df";
+    case "poison": return "#dbb5e7";
+    case "electric": return "#fdf0a6";
+    case "ground": return "#ecd0a1";
+    case "fairy": return "#f6c4d7";
+    case "fighting": return "#dfa1a1";
+    case "psychic": return "#f8b8cc";
+    case "rock": return "#dcd3bd";
+    case "steel": return "#cfd8dc";
+    case "ice": return "#b2ebf2";
+    case "ghost": return "#c2b7e0";
+    case "dragon": return "#9fa8da";
+    case "dark": return "#bcaaa4";
+    case "flying": return "#c5cae9";
+    default: return "#f5f5f7";
+  }
+}
+
 export default function PokeCard({
   pokemon,
   onClick,
@@ -27,6 +52,8 @@ export default function PokeCard({
   const { isShinyMode } = useTeamStore();
   const isFav = isFavorite(pokemon.id);
   const primaryColor = TYPE_COLORS[pokemon.types[0].toLowerCase()] || "#9ca3af";
+  const primaryType = pokemon.types[0] || "normal";
+  const cardBgColor = getBackgroundColor(primaryType);
 
   const isMega = !!pokemon.isMega || 
     pokemon.name.toLowerCase().endsWith("-mega") ||
@@ -37,6 +64,14 @@ export default function PokeCard({
   const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
     ? pokemon.name.replace("Mega ", "") + "-Mega"
     : pokemon.name;
+
+  const cleanName = pokemon.name.toLowerCase()
+    .replace(/[\s.-]/g, "")
+    .replace("mega", "");
+
+  const gifSrc = isShinyMode
+    ? `https://play.pokemonshowdown.com/sprites/ani-shiny/${cleanName}.gif`
+    : `https://play.pokemonshowdown.com/sprites/ani/${cleanName}.gif`;
 
   return (
     <motion.div
@@ -59,8 +94,8 @@ export default function PokeCard({
           isCompareMode && !isSelectedForCompare && styles.faded
         )}
         style={{
-          background: `linear-gradient(145deg, ${primaryColor}20 0%, ${primaryColor}05 60%, transparent 100%)`,
-          borderColor: isSelectedForCompare ? undefined : `${primaryColor}40`
+          background: `linear-gradient(135deg, ${cardBgColor}f0 0%, ${cardBgColor}d0 100%)`,
+          borderColor: isSelectedForCompare ? undefined : `${primaryColor}50`
         }}
       >
         {/* Favorite Button */}
@@ -88,17 +123,22 @@ export default function PokeCard({
           }}
         >
           <img
-            src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
+            src={gifSrc}
             alt={pokemon.name}
             loading="lazy"
             className={styles.pokemonImage}
             onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
               const target = e.currentTarget;
-              const baseId = pokemon.speciesId || pokemon.id;
-              target.onerror = null;
-              target.src = isShinyMode
-                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+              const staticFallback = isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image;
+              if (target.src !== staticFallback) {
+                target.src = staticFallback;
+              } else {
+                const baseId = pokemon.speciesId || pokemon.id;
+                target.onerror = null;
+                target.src = isShinyMode
+                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+              }
             }}
           />
           {isMega && (

@@ -35,7 +35,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-main);
-  box-shadow: var(--shadow-md), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-md), inset 0 1px 1px var(--inset-glow);
 }
 
 @mixin holographic-sheen {

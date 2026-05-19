@@ -17,6 +17,31 @@ interface PokemonDetailDialogProps {
   onSelect?: (id: number) => void;
 }
 
+function getBackgroundColor(type: string): string {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case "grass": return "#c3deb0";
+    case "fire": return "#f2ad7c";
+    case "water": return "#6cbce5";
+    case "bug": return "#d2e59b";
+    case "normal": return "#e2e2df";
+    case "poison": return "#dbb5e7";
+    case "electric": return "#fdf0a6";
+    case "ground": return "#ecd0a1";
+    case "fairy": return "#f6c4d7";
+    case "fighting": return "#dfa1a1";
+    case "psychic": return "#f8b8cc";
+    case "rock": return "#dcd3bd";
+    case "steel": return "#cfd8dc";
+    case "ice": return "#b2ebf2";
+    case "ghost": return "#c2b7e0";
+    case "dragon": return "#9fa8da";
+    case "dark": return "#bcaaa4";
+    case "flying": return "#c5cae9";
+    default: return "#f5f5f7";
+  }
+}
+
 export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, onClose, onSelect }) => {
   const { selectedVersion, team, addMember, removeMember, isShinyMode } = useTeamStore();
   const [showShiny, setShowShiny] = useState(isShinyMode);
@@ -43,7 +68,17 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
 
   const inTeam = team.some(m => m.id === id);
   const accentColor = p ? (TYPE_COLORS[p.types[0]] || '#6366f1') : '#6366f1';
+  const primaryType = p ? p.types[0] : "normal";
+  const detailBgColor = getBackgroundColor(primaryType);
   const isMega = p?.name.toLowerCase().includes('mega') || p?.category?.toLowerCase().includes('mega');
+
+  const cleanName = p ? p.name.toLowerCase()
+    .replace(/[\s.-]/g, "")
+    .replace("mega", "") : "";
+
+  const gifSrc = showShiny
+    ? `https://play.pokemonshowdown.com/sprites/ani-shiny/${cleanName}.gif`
+    : `https://play.pokemonshowdown.com/sprites/ani/${cleanName}.gif`;
 
   return (
     <AnimatePresence>
@@ -76,17 +111,17 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                 <div 
                   className={styles.leftPanel}
                   style={{ 
-                    background: `linear-gradient(135deg, ${accentColor}25 0%, ${accentColor}08 50%, transparent 100%)` 
+                    background: `linear-gradient(135deg, ${detailBgColor} 0%, ${detailBgColor}dd 100%)` 
                   }}
                 >
                   {/* Decorative background circle */}
                   <div 
                     className={styles.bgCircle}
-                    style={{ backgroundColor: accentColor }}
+                    style={{ backgroundColor: `${accentColor}30` }}
                   />
 
                   <div className={styles.headerActions}>
-                    <span className={styles.speciesId}>
+                    <span className={styles.speciesId} style={{ color: '#5c6c94' }}>
                       {formatSpeciesId(p.speciesId || id)}
                     </span>
                     <div className={styles.buttons}>
@@ -94,10 +129,16 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         onClick={() => setShowShiny(!showShiny)}
                         className={`${styles.actionBtn} ${showShiny ? styles.shinyActive : ''}`}
                         title="Toggle Shiny View"
+                        style={{ color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' }}
                       >
                         <Sparkles size={16} />
                       </button>
-                      <button onClick={onClose} className={styles.actionBtn} title="Close Dialog">
+                      <button 
+                        onClick={onClose} 
+                        className={styles.actionBtn} 
+                        title="Close Dialog"
+                        style={{ color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' }}
+                      >
                         <X size={20} />
                       </button>
                     </div>
@@ -119,14 +160,27 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         />
                       )}
                       <img
-                        src={showShiny && p.shinyImage ? p.shinyImage : p.image}
+                        src={gifSrc}
                         alt={p.name}
                         className={styles.pokemonImage}
+                        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                          const target = e.currentTarget;
+                          const staticFallback = showShiny && p.shinyImage ? p.shinyImage : p.image;
+                          if (target.src !== staticFallback) {
+                            target.src = staticFallback;
+                          } else {
+                            const baseId = p.speciesId || id;
+                            target.onerror = null;
+                            target.src = showShiny
+                              ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                              : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                          }
+                        }}
                       />
                     </motion.div>
 
                     <div className={styles.nameBlock}>
-                      <h2 className={styles.pokemonName}>
+                      <h2 className={styles.pokemonName} style={{ color: '#141926' }}>
                         {p.name}
                       </h2>
                       <div className={styles.typeContainer}>
@@ -141,7 +195,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         ))}
                       </div>
                       {p.category && (
-                        <p className={styles.categoryText}>
+                        <p className={styles.categoryText} style={{ color: '#3e4a68' }}>
                           {p.category}
                         </p>
                       )}
