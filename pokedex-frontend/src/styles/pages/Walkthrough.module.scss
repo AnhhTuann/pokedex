@@ -113,7 +113,8 @@
 .rightPanel {
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-main);
-  background: rgba(13, 13, 21, 0.4);
+  background: var(--bg-paper);
+  box-shadow: var(--shadow-md);
   min-height: 520px;
 }
 
@@ -213,7 +214,7 @@
   }
 
   &.active {
-    color: #ffffff;
+    color: var(--text-primary);
 
     .chapterText {
       font-weight: 850;

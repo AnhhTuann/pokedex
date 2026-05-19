@@ -134,7 +134,7 @@ export default function MainLayout() {
 
       {/* Footer Signature */}
       <div className={styles.footerSignature}>
-        Console v2.0
+        Console v3.0
       </div>
     </>
   );

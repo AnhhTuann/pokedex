@@ -132,7 +132,11 @@ export default function Walkthrough() {
                 return (
                   <button key={ch.id} onClick={() => setSelectedChapterId(ch.id)}
                     className={`${styles.chapterBtn} ${isActive ? styles.active : ''}`}
-                    style={{ border: isActive ? `1px solid ${gameColor}55` : 'transparent', background: isActive ? `${gameColor}1a` : 'transparent' }}>
+                    style={{ 
+                      border: isActive ? `1px solid ${gameColor}55` : 'transparent', 
+                      background: isActive ? `${gameColor}1a` : 'transparent',
+                      color: isActive ? gameColor : undefined
+                    }}>
                     {isActive && <span className={styles.chapterIndicator} style={{ background:gameColor }}/>}
                     <span className={styles.chapterText}>{ch.chapterTitle}</span>
                     <ChevronRight size={14} className={styles.chapterIcon}/>
@@ -238,16 +242,16 @@ export default function Walkthrough() {
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
         .walkthrough-content h1 { display:none!important; }
-        .walkthrough-content h2 { color:${gameColor};font-size:1.5rem;font-weight:800;margin-top:2.5rem;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.5rem; }
+        .walkthrough-content h2 { color:${gameColor};font-size:1.5rem;font-weight:800;margin-top:2.5rem;margin-bottom:1rem;border-bottom:1px solid var(--border-main);padding-bottom:0.5rem; }
         .walkthrough-content h3 { font-size:1.15rem;font-weight:700;margin-top:2rem;margin-bottom:0.75rem;color:var(--text-primary); }
-        .walkthrough-content p { font-size:1rem;line-height:1.8;color:var(--text-secondary);margin-bottom:1.25rem; }
+        .walkthrough-content p { font-size:1rem;line-height:1.8;color:var(--text-primary);margin-bottom:1.25rem;opacity:0.9; }
         .walkthrough-content strong { color:var(--text-primary);font-weight:700; }
         .walkthrough-content ul,.walkthrough-content ol { margin-bottom:1.25rem;padding-left:1.5rem;color:var(--text-secondary);line-height:1.8; }
         .walkthrough-content li { margin-bottom:0.25rem; }
-        .walkthrough-content table { width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.95rem;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.15);border:1px solid rgba(255,255,255,0.08);background:rgba(15,15,25,0.3); }
-        .walkthrough-content th { background:${gameColor}14;color:var(--text-primary);font-weight:800;padding:12px 16px;text-align:left;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;border-bottom:2px solid ${gameColor}4d; }
-        .walkthrough-content td { padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-secondary);vertical-align:middle; }
-        .walkthrough-content tbody tr:hover { background:rgba(255,255,255,0.02); }
+        .walkthrough-content table { width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.95rem;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--border-main);background:var(--bg-paper-glow); }
+        .walkthrough-content th { background:${gameColor}14;color:var(--text-primary);font-weight:800;padding:14px 18px;text-align:left;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;border-bottom:2px solid ${gameColor}4d; }
+        .walkthrough-content td { padding:14px 18px;border-bottom:1px solid var(--border-main);color:var(--text-secondary);vertical-align:middle; }
+        .walkthrough-content tbody tr:hover { background:rgba(var(--primary-rgb), 0.04); }
         .walkthrough-content img { max-width:64px;display:inline-block;vertical-align:middle;margin:0 4px;transition:transform 0.2s,filter 0.2s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
         .walkthrough-content img:hover { transform:scale(1.2) translateY(-2px);filter:drop-shadow(0 8px 12px ${gameColor}66); }
         .walkthrough-content blockquote { border-left:4px solid ${gameColor};padding:12px 20px;margin:20px 0;background:${gameColor}0d;border-radius:0 8px 8px 0;color:var(--text-secondary);font-style:italic; }
