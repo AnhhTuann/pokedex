@@ -88,7 +88,16 @@ export default function MainLayout() {
 
   const getContrastColor = (color: string) => {
     const c = color.toLowerCase();
-    if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff' || c === '#facc15') {
+    if (
+      c === '#eab308' || 
+      c === '#fbbf24' || 
+      c === '#a5f3fc' || 
+      c === '#e5e7eb' || 
+      c === '#f3f4f6' || 
+      c === '#ffffff' || 
+      c === '#facc15' || 
+      c === '#a9b0b3'
+    ) {
       return '#0f172a';
     }
     return '#ffffff';
@@ -223,8 +232,8 @@ export default function MainLayout() {
                   const overrides: Record<string, string> = {
                     '#e3350d': '#B91C1C', // Deep Red
                     '#1b53ba': '#1D4ED8', // Rich Royal Blue
-                    '#f5c518': '#A16207', // Dark Gold
-                    '#d4af37': '#9A3412', // Rich Bronze/Gold
+                    '#f5c518': '#B8860B', // Beautiful deep metallic Gold
+                    '#d4af37': '#B8860B', // Beautiful deep metallic Gold
                     '#4fc1e9': '#0369A1', // Deep Cyan
                     '#c0392b': '#991B1B', // Rich Ruby
                     '#0f52ba': '#1E40AF', // Deep Royal Sapphire
@@ -234,7 +243,7 @@ export default function MainLayout() {
                     '#5dade2': '#0369A1', // Deep Blue
                     '#ff8fa3': '#BE185D', // Deep Pink
                     '#8a9597': '#475569', // Deep Platinum
-                    '#b8860b': '#78350F', // Deep Amber
+                    '#b8860b': '#B8860B', // Keep HeartGold as a rich gold!
                     '#708090': '#334155', // Deep Slate
                     '#1abfff': '#0369A1', // Deep Sky Blue
                     '#ff007f': '#BE185D', // Deep Rose
@@ -256,7 +265,7 @@ export default function MainLayout() {
                     style={{
                       background: isPair ? 'transparent' : resolvedBg,
                       '--v-bg': isPair ? 'transparent' : resolvedBg,
-                      '--v-text': styleInfo.text,
+                      '--v-text': getContrastColor(resolvedBg),
                       '--v-box-shadow': isDark ? `0 0 12px ${styleInfo.shadow}` : '0 4px 10px rgba(0, 0, 0, 0.15)',
                       '--v-box-shadow-hover': isDark ? `0 0 20px ${styleInfo.shadow}` : '0 6px 14px rgba(0, 0, 0, 0.2)',
                       borderRadius: '19px',
@@ -276,9 +285,10 @@ export default function MainLayout() {
                           alignItems: 'center',
                           height: '100%',
                           background: resolvedC1,
-                          padding: '0 8px'
+                          padding: '0 8px',
+                          color: getContrastColor(resolvedC1)
                         }}>
-                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>{game1Label.toUpperCase()}</span>
+                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap', color: getContrastColor(resolvedC1) }}>{game1Label.toUpperCase()}</span>
                         </div>
                         {/* Right Half */}
                         <div style={{
@@ -288,9 +298,10 @@ export default function MainLayout() {
                           alignItems: 'center',
                           height: '100%',
                           background: resolvedC2,
-                          padding: '0 8px'
+                          padding: '0 8px',
+                          color: getContrastColor(resolvedC2)
                         }}>
-                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>{game2Label.toUpperCase()}</span>
+                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap', color: getContrastColor(resolvedC2) }}>{game2Label.toUpperCase()}</span>
                         </div>
                         {/* Symmetrical Split Divider positioned at absolute center */}
                         <div style={{
