@@ -267,7 +267,10 @@ export const pokemonService = {
       });
     }
 
-    const totalCount = results.length;
+    const uniqueKeys = new Set(
+      results.map(r => r.regionalNumber !== null && r.regionalNumber !== undefined ? `R-${r.regionalNumber}` : `N-${r.speciesId}`)
+    );
+    const totalCount = uniqueKeys.size;
     const paginatedResults = results.slice(offset, offset + limit);
 
     return {
