@@ -186,6 +186,93 @@ export function getRegionAndGame(versionName: string) {
   return { region, game };
 }
 
+function hexToRgb(hex: string): string {
+  let c = hex.substring(1);
+  if (c.length === 3) {
+    c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+  }
+  const num = parseInt(c, 16);
+  return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+}
+
+export function getVersionDisplayName(versionName: string): string {
+  const nameLower = versionName.toLowerCase();
+  if (nameLower === 'all') return 'ALL VERSIONS';
+  
+  for (const g of GENERATION_VERSIONS) {
+    for (const row of g.rows) {
+      if (row.type === 'pair') {
+        const hasGame = row.games.some(g => g.name.toLowerCase() === nameLower);
+        if (hasGame) {
+          return row.games.map(g => g.label).join(' / ');
+        }
+      } else {
+        const game = row.games.find(g => g.name.toLowerCase() === nameLower);
+        if (game) return game.label;
+      }
+    }
+  }
+  return versionName;
+}
+
+export function getVersionColorStyle(versionName: string) {
+  const nameLower = versionName.toLowerCase();
+  if (nameLower === 'all') {
+    return {
+      bg: '#4b5563',
+      text: '#ffffff',
+      shadow: 'rgba(75, 85, 99, 0.3)',
+      isGradient: false
+    };
+  }
+  
+  for (const g of GENERATION_VERSIONS) {
+    for (const row of g.rows) {
+      if (row.type === 'pair') {
+        const hasGame = row.games.some(g => g.name.toLowerCase() === nameLower);
+        if (hasGame) {
+          const c1 = VERSION_COLORS[row.games[0].name] || '#6366f1';
+          const c2 = VERSION_COLORS[row.games[1].name] || '#6366f1';
+          return {
+            bg: `linear-gradient(135deg, ${c1}, ${c2})`,
+            text: '#ffffff',
+            shadow: `rgba(${hexToRgb(c1)}, 0.3)`,
+            isGradient: true,
+            c1,
+            c2
+          };
+        }
+      } else {
+        const game = row.games.find(g => g.name.toLowerCase() === nameLower);
+        if (game) {
+          const c = VERSION_COLORS[game.name] || '#6366f1';
+          
+          let contrastColor = '#ffffff';
+          const cLower = c.toLowerCase();
+          if (cLower === '#eab308' || cLower === '#fbbf24' || cLower === '#a5f3fc' || cLower === '#e5e7eb' || cLower === '#ffffff') {
+            contrastColor = '#0f172a';
+          }
+          
+          return {
+            bg: c,
+            text: contrastColor,
+            shadow: `rgba(${hexToRgb(c)}, 0.4)`,
+            isGradient: false
+          };
+        }
+      }
+    }
+  }
+  
+  const c = VERSION_COLORS[versionName] || '#6366f1';
+  return {
+    bg: c,
+    text: '#ffffff',
+    shadow: `rgba(${hexToRgb(c)}, 0.4)`,
+    isGradient: false
+  };
+}
+
 export default function App() {
   return (
     <Routes>

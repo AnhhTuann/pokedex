@@ -281,7 +281,7 @@
   gap: 8px;
   transition: all $transition-fast;
   box-shadow: 0 0 12px var(--v-shadow, rgba(var(--primary-rgb), 0.3));
-  background-color: var(--v-bg, #E3350D);
+  background: var(--v-bg, #E3350D);
   color: var(--v-text, #fff);
   
   &:hover {
