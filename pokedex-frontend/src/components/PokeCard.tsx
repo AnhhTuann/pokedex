@@ -65,14 +65,6 @@ export default function PokeCard({
     ? pokemon.name.replace("Mega ", "") + "-Mega"
     : pokemon.name;
 
-  const cleanName = pokemon.name.toLowerCase()
-    .replace(/[\s.-]/g, "")
-    .replace("mega", "");
-
-  const gifSrc = isShinyMode
-    ? `https://play.pokemonshowdown.com/sprites/ani-shiny/${cleanName}.gif`
-    : `https://play.pokemonshowdown.com/sprites/ani/${cleanName}.gif`;
-
   return (
     <motion.div
       layoutId={`pokemon-card-${pokemon.id}`}
@@ -123,22 +115,17 @@ export default function PokeCard({
           }}
         >
           <img
-            src={gifSrc}
+            src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
             alt={pokemon.name}
             loading="lazy"
             className={styles.pokemonImage}
             onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
               const target = e.currentTarget;
-              const staticFallback = isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image;
-              if (target.src !== staticFallback) {
-                target.src = staticFallback;
-              } else {
-                const baseId = pokemon.speciesId || pokemon.id;
-                target.onerror = null;
-                target.src = isShinyMode
-                  ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                  : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
-              }
+              const baseId = pokemon.speciesId || pokemon.id;
+              target.onerror = null;
+              target.src = isShinyMode
+                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
             }}
           />
           {isMega && (

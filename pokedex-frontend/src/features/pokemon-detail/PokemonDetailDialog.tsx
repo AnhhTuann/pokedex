@@ -72,14 +72,6 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
   const detailBgColor = getBackgroundColor(primaryType);
   const isMega = p?.name.toLowerCase().includes('mega') || p?.category?.toLowerCase().includes('mega');
 
-  const cleanName = p ? p.name.toLowerCase()
-    .replace(/[\s.-]/g, "")
-    .replace("mega", "") : "";
-
-  const gifSrc = showShiny
-    ? `https://play.pokemonshowdown.com/sprites/ani-shiny/${cleanName}.gif`
-    : `https://play.pokemonshowdown.com/sprites/ani/${cleanName}.gif`;
-
   return (
     <AnimatePresence>
       {id && (
@@ -160,21 +152,16 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         />
                       )}
                       <img
-                        src={gifSrc}
+                        src={showShiny && p.shinyImage ? p.shinyImage : p.image}
                         alt={p.name}
                         className={styles.pokemonImage}
                         onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                           const target = e.currentTarget;
-                          const staticFallback = showShiny && p.shinyImage ? p.shinyImage : p.image;
-                          if (target.src !== staticFallback) {
-                            target.src = staticFallback;
-                          } else {
-                            const baseId = p.speciesId || id;
-                            target.onerror = null;
-                            target.src = showShiny
-                              ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                              : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
-                          }
+                          const baseId = p.speciesId || id;
+                          target.onerror = null;
+                          target.src = showShiny
+                            ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
+                            : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
                         }}
                       />
                     </motion.div>
