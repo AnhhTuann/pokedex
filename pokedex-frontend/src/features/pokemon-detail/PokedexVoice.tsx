@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, Square, AudioLines, Volume2 } from 'lucide-react';
 import { Button } from '../../components/common/Button';
-import styles from './PokemonDetailDialog.module.scss';
+import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface PokedexVoiceProps {
   description: string;

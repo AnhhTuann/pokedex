@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight } from 'lucide-react';
 import { TYPE_COLORS } from '../../lib/utils';
-import styles from './PokemonDetailDialog.module.scss';
+import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface Evolution {
   id: number;

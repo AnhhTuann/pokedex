@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { ShoppingBag, Search, X, HelpCircle, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Item } from '../types';
+import { useDebounce } from '../hooks/useDebounce';
+import { capitalizeSlug } from '../lib/utils';
 import styles from '../styles/pages/ItemDex.module.scss';
 
 const GET_ALL_ITEMS = gql`
@@ -14,19 +16,14 @@ const GET_ALL_ITEMS = gql`
   }
 `;
 
-const fmt = (name: string) => name.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+const fmt = capitalizeSlug;
 const disp = (v: any) => (v===null||v===undefined||v===0||v==='') ? '-' : v;
 
 export default function ItemDex() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [selectedItem, setSelectedItem] = useState<Item|null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(()=>setDebouncedSearch(searchTerm),500);
-    return ()=>clearTimeout(t);
-  }, [searchTerm]);
 
   const limit = 30;
   const { data, loading, error, fetchMore } = useQuery<{getAllItems:{results:Item[];totalCount:number}}>(GET_ALL_ITEMS, {

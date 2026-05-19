@@ -42,3 +42,15 @@ export const STAT_COLORS = [
   '#22c55e', // SP.DEF
   '#f59e0b', // SPEED
 ];
+
+/**
+ * Capitalizes a dash-separated slug (e.g. "leaf-green" -> "Leaf Green")
+ */
+export function capitalizeSlug(slug: string): string {
+  if (!slug) return '';
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+

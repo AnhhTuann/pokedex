@@ -1,4 +1,5 @@
 @import "../variables";
+@import "../mixins";
 
 .modalOverlay {
   position: fixed;
@@ -235,16 +236,7 @@
   overflow-y: auto;
   flex: 1;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--border-hover);
-    border-radius: var(--radius-full);
-  }
+  @include custom-scrollbar($thumb-color: var(--border-hover));
 }
 
 .progressBar {

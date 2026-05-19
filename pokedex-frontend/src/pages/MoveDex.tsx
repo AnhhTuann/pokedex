@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Zap,
@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Move } from '../types';
+import { TYPE_COLORS, capitalizeSlug } from '../lib/utils';
+import { useDebounce } from '../hooks/useDebounce';
 import styles from '../styles/pages/MoveDex.module.scss';
 
 // GraphQL query for all moves
@@ -31,28 +33,6 @@ const GET_ALL_MOVES = gql`
   }
 `;
 
-// Type to color mapping
-const TYPE_COLORS: Record<string, string> = {
-  normal: '#9ca3af',
-  fire: '#f97316',
-  water: '#3b82f6',
-  electric: '#eab308',
-  grass: '#22c55e',
-  ice: '#06b6d4',
-  fighting: '#ef4444',
-  poison: '#a855f7',
-  ground: '#d97706',
-  flying: '#818cf8',
-  psychic: '#ec4899',
-  bug: '#84cc16',
-  rock: '#78716c',
-  ghost: '#7c3aed',
-  dragon: '#1d4ed8',
-  dark: '#374151',
-  steel: '#6b7280',
-  fairy: '#f472b6',
-};
-
 // Damage Class Colors
 const DAMAGE_CLASS_COLORS: Record<string, string> = {
   physical: '#e11d48', // Red / Rose
@@ -61,17 +41,12 @@ const DAMAGE_CLASS_COLORS: Record<string, string> = {
 };
 
 // Helper to format move names (e.g. swords-dance -> Swords Dance)
-const formatMoveName = (name: string): string => {
-  return name
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
+const formatMoveName = capitalizeSlug;
 
 export default function MoveDex() {
   // Search & Filters State
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [genFilter, setGenFilter] = useState<number | string>('ALL');
   const [typeFilter, setTypeFilter] = useState<string>('ALL');
   const [catFilter, setCatFilter] = useState<string>('ALL');
@@ -79,15 +54,6 @@ export default function MoveDex() {
   // Drawer Detail State
   const [selectedMove, setSelectedMove] = useState<Move | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  // Debounce search input
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchTerm);
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [searchTerm]);
 
   // Pagination limit
   const limit = 30;

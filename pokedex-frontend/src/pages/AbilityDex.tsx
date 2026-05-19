@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Brain, Search, X, HelpCircle, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Ability } from '../types';
+import { TYPE_COLORS, capitalizeSlug } from '../lib/utils';
+import { useDebounce } from '../hooks/useDebounce';
 import styles from '../styles/pages/AbilityDex.module.scss';
 
 const GET_ALL_ABILITIES = gql`
@@ -14,27 +16,15 @@ const GET_ALL_ABILITIES = gql`
   }
 `;
 
-const TYPE_COLORS: Record<string, string> = {
-  normal:'#9ca3af',fire:'#f97316',water:'#3b82f6',electric:'#eab308',
-  grass:'#22c55e',ice:'#06b6d4',fighting:'#ef4444',poison:'#a855f7',
-  ground:'#d97706',flying:'#818cf8',psychic:'#ec4899',bug:'#84cc16',
-  rock:'#78716c',ghost:'#7c3aed',dragon:'#1d4ed8',dark:'#374151',
-  steel:'#6b7280',fairy:'#f472b6',
-};
-
-const fmt = (name: string) => name.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+const fmt = capitalizeSlug;
 
 export default function AbilityDex() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [genFilter, setGenFilter] = useState<number|string>('ALL');
   const [selectedAbility, setSelectedAbility] = useState<Ability|null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(()=>setDebouncedSearch(searchTerm), 500);
-    return ()=>clearTimeout(t);
-  }, [searchTerm]);
 
   const limit = 24;
   const queryGen = genFilter==='ALL' ? null : Number(genFilter);

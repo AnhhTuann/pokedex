@@ -99,3 +99,43 @@
   scrollbar-width: thin;
   scrollbar-color: $thumb-color transparent;
 }
+
+// ─── Modal and Drawer Layouts ──────────────────────────────
+@mixin overlay-fixed($bg: rgba(0, 0, 0, 0.7), $blur: 8px, $z-index: var(--z-modal)) {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $bg;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  z-index: $z-index;
+}
+
+@mixin drawer-sheet-right($max-width: 520px, $bg: var(--bg-paper), $z-index: calc(var(--z-modal) + 1)) {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  max-width: $max-width;
+  height: 100%;
+  background-color: $bg;
+  border-left: 1px solid var(--border-main);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  z-index: $z-index;
+
+  @media (max-width: $breakpoint-sm) {
+    max-width: 100%;
+    height: 85%;
+    top: auto;
+    bottom: 0;
+    border-left: 0;
+    border-top: 1px solid var(--border-main);
+    border-top-left-radius: var(--radius-3xl);
+    border-top-right-radius: var(--radius-3xl);
+  }
+}
+

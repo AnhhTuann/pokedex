@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TYPE_COLORS } from '../../lib/utils';
 import { Swords, Sparkles, ShieldAlert } from 'lucide-react';
-import styles from './PokemonDetailDialog.module.scss';
+import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface Move {
   name: string;

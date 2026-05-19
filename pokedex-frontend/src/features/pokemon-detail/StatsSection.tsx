@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { STAT_COLORS } from '../../lib/utils';
-import styles from './PokemonDetailDialog.module.scss';
+import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface Stat {
   name: string;

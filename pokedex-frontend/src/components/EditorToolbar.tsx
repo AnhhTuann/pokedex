@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Editor } from '@tiptap/react';
 import { useQuery, gql } from '@apollo/client';
 import { Bold, Italic, Heading1, Heading2, List, ListOrdered, Table, Target, X, Loader } from 'lucide-react';
+import { useDebounce } from '../hooks/useDebounce';
 import styles from '../styles/components/EditorToolbar.module.scss';
 
 const GET_POKEMON_SUGGESTIONS = gql`
@@ -17,13 +18,8 @@ interface EditorToolbarProps { editor: Editor | null; }
 export default function EditorToolbar({ editor }: EditorToolbarProps) {
   const [spriteOpen, setSpriteOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 300);
   const [selectedPokemon, setSelectedPokemon] = useState<{ id: number; name: string; image: string } | null>(null);
-
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(searchTerm), 300);
-    return () => clearTimeout(t);
-  }, [searchTerm]);
 
   const { data, loading } = useQuery(GET_POKEMON_SUGGESTIONS, {
     variables: { search: debouncedSearch },

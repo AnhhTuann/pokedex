@@ -5,6 +5,7 @@ import { Plus, X, Zap, Shield, Brain, Star, Upload, Download, Copy, HelpCircle, 
 import html2canvas from 'html2canvas';
 import { useTeamStore, TeamMember } from '../lib/teamStore';
 import { TYPE_LIST, calculateDamageTaken } from '../utils/typeMatchups';
+import { TYPE_COLORS } from '../lib/utils';
 import styles from '../styles/pages/TeamBuilder.module.scss';
 
 const GET_POKEMON_FOR_TEAM = gql`
@@ -24,14 +25,6 @@ const GET_POKEMON_BUILDER_DETAILS = gql`
     }
   }
 `;
-
-const TYPE_COLORS: Record<string, string> = {
-  normal:'#9ca3af',fire:'#f97316',water:'#3b82f6',electric:'#eab308',
-  grass:'#22c55e',ice:'#06b6d4',fighting:'#ef4444',poison:'#a855f7',
-  ground:'#d97706',flying:'#818cf8',psychic:'#ec4899',bug:'#84cc16',
-  rock:'#78716c',ghost:'#7c3aed',dragon:'#1d4ed8',dark:'#374151',
-  steel:'#6b7280',fairy:'#f472b6',
-};
 
 const COMPETITIVE_ITEMS = [
   'Leftovers','Life Orb','Choice Band','Choice Specs','Choice Scarf',

@@ -17,7 +17,7 @@ import { useTeamStore } from '../lib/teamStore';
 import { useCatchStore } from '../lib/catchStore';
 import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../App';
 import PokeDetail from '../components/PokeDetail';
-import { formatSpeciesId } from '../lib/utils';
+import { formatSpeciesId, TYPE_COLORS } from '../lib/utils';
 import { useColorMode } from '../main';
 import styles from '../styles/pages/CatchTracker.module.scss';
 
@@ -30,26 +30,6 @@ const GET_POKEMON_LIST = gql`
   }
 `;
 
-const TYPE_COLORS: Record<string, string> = {
-  normal: "#9ca3af",
-  fire: "#f97316",
-  water: "#3b82f6",
-  electric: "#eab308",
-  grass: "#22c55e",
-  ice: "#06b6d4",
-  fighting: "#ef4444",
-  poison: "#a855f7",
-  ground: "#d97706",
-  flying: "#818cf8",
-  psychic: "#ec4899",
-  bug: "#84cc16",
-  rock: "#78716c",
-  ghost: "#7c3aed",
-  dragon: "#1d4ed8",
-  dark: "#374151",
-  steel: "#6b7280",
-  fairy: "#f472b6",
-};
 
 // ── OPTIMIZED CHILD CARD COMPONENT (React.memo) ──
 interface TrackerCardProps {

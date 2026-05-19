@@ -1,4 +1,5 @@
 @import "../variables";
+@import "../mixins";
 
 .overlay {
   position: fixed;
@@ -220,20 +221,7 @@
   > * {
     flex-shrink: 0;
   }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    &:hover {
-      background: rgba(255, 255, 255, 0.16);
-    }
-  }
+  @include custom-scrollbar;
 
   @media (max-width: $breakpoint-md) {
     padding: 24px;
