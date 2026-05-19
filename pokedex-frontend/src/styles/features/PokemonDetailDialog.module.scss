@@ -47,6 +47,7 @@
   padding: 32px;
   overflow: hidden;
   border-right: 1px solid var(--border-main);
+  background-color: #080a10;
 
   @media (max-width: $breakpoint-md) {
     border-right: none;
@@ -98,7 +99,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background-color: rgba(255, 255, 255, 0.05);
     color: var(--text-secondary);
     cursor: pointer;
@@ -107,6 +108,7 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.12);
       color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
     &.shinyActive {
@@ -218,6 +220,10 @@
   flex-direction: column;
   gap: 32px;
 
+  :global(html:not(.dark)) & {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+
   > * {
     flex-shrink: 0;
   }
@@ -260,9 +266,17 @@
   text-align: center;
   transition: var(--transition-fast);
 
+  :global(html:not(.dark)) & {
+    background-color: rgba(255, 255, 255, 0.55);
+  }
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.06);
     border-color: var(--border-hover);
+
+    :global(html:not(.dark)) & {
+      background-color: rgba(255, 255, 255, 0.85);
+    }
   }
 
   .traitIcon {
@@ -305,6 +319,10 @@
     background-color: rgba(255, 255, 255, 0.05);
     padding: 2px 8px;
     border-radius: 4px;
+
+    :global(html:not(.dark)) & {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
   }
 }
 
@@ -376,6 +394,10 @@
       background-color: rgba(255, 255, 255, 0.05);
       position: relative;
       overflow: hidden;
+
+      :global(html:not(.dark)) & {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
     }
 
     .statBarFill {
@@ -395,6 +417,10 @@
   border: 1px solid var(--border-main);
   padding: 20px;
   backdrop-filter: blur(8px);
+
+  :global(html:not(.dark)) & {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
 
   .soundwaves {
     position: absolute;
@@ -637,10 +663,18 @@
     text-align: left;
     transition: var(--transition-fast);
 
+    :global(html:not(.dark)) & {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.06);
       border-color: rgba(var(--primary-rgb), 0.3);
       transform: translateY(-2px);
+
+      :global(html:not(.dark)) & {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
     }
 
     .formIconBg {
@@ -652,6 +686,10 @@
       border-radius: var(--radius-md);
       background-color: rgba(8, 9, 15, 0.6);
       transition: transform var(--transition-normal);
+
+      :global(html:not(.dark)) & {
+        background-color: rgba(255, 255, 255, 0.65);
+      }
     }
 
     &:hover .formIconBg {
@@ -695,6 +733,10 @@
     background-color: rgba(255, 255, 255, 0.04);
     padding: 4px;
     border-radius: var(--radius-md);
+
+    :global(html:not(.dark)) & {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
   }
 
   .tabBtn {
@@ -717,6 +759,10 @@
       background-color: rgba(255, 255, 255, 0.08);
       color: var(--primary);
       box-shadow: var(--shadow-sm);
+
+      :global(html:not(.dark)) & {
+        background-color: rgba(255, 255, 255, 0.85);
+      }
     }
   }
 
@@ -725,6 +771,10 @@
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-main);
     background-color: rgba(15, 23, 42, 0.15);
+
+    :global(html:not(.dark)) & {
+      background-color: rgba(255, 255, 255, 0.45);
+    }
   }
 
   .movesTable {

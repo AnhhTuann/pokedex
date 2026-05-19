@@ -9,6 +9,7 @@ import { EvolutionChain } from './EvolutionChain';
 import { PokedexVoice } from './PokedexVoice';
 import { MoveList } from './MoveList';
 import { Button } from '../../components/common/Button';
+import { useColorMode } from '../../main';
 import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface PokemonDetailDialogProps {
@@ -45,6 +46,8 @@ function getBackgroundColor(type: string): string {
 export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, onClose, onSelect }) => {
   const { selectedVersion, team, addMember, removeMember, isShinyMode } = useTeamStore();
   const [showShiny, setShowShiny] = useState(isShinyMode);
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
   
   const { pokemon: p, loading } = usePokemonDetail(id, selectedVersion);
 
@@ -103,17 +106,19 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                 <div 
                   className={styles.leftPanel}
                   style={{ 
-                    background: `linear-gradient(135deg, ${detailBgColor} 0%, ${detailBgColor}dd 100%)` 
+                    background: isDark 
+                      ? `radial-gradient(circle at 50% 45%, ${accentColor}3d 0%, rgba(15, 23, 42, 0.35) 60%, rgba(8, 9, 15, 0.95) 100%)` 
+                      : `linear-gradient(135deg, ${detailBgColor} 0%, ${detailBgColor}dd 100%)`
                   }}
                 >
                   {/* Decorative background circle */}
                   <div 
                     className={styles.bgCircle}
-                    style={{ backgroundColor: `${accentColor}30` }}
+                    style={{ backgroundColor: `${accentColor}${isDark ? '20' : '30'}` }}
                   />
 
                   <div className={styles.headerActions}>
-                    <span className={styles.speciesId} style={{ color: '#5c6c94' }}>
+                    <span className={styles.speciesId} style={!isDark ? { color: '#5c6c94' } : undefined}>
                       {formatSpeciesId(p.speciesId || id)}
                     </span>
                     <div className={styles.buttons}>
@@ -121,7 +126,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         onClick={() => setShowShiny(!showShiny)}
                         className={`${styles.actionBtn} ${showShiny ? styles.shinyActive : ''}`}
                         title="Toggle Shiny View"
-                        style={{ color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' }}
+                        style={!isDark ? { color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' } : undefined}
                       >
                         <Sparkles size={16} />
                       </button>
@@ -129,7 +134,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         onClick={onClose} 
                         className={styles.actionBtn} 
                         title="Close Dialog"
-                        style={{ color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' }}
+                        style={!isDark ? { color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' } : undefined}
                       >
                         <X size={20} />
                       </button>
@@ -167,7 +172,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                     </motion.div>
 
                     <div className={styles.nameBlock}>
-                      <h2 className={styles.pokemonName} style={{ color: '#141926' }}>
+                      <h2 className={styles.pokemonName} style={!isDark ? { color: '#141926' } : undefined}>
                         {p.name}
                       </h2>
                       <div className={styles.typeContainer}>
@@ -182,7 +187,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         ))}
                       </div>
                       {p.category && (
-                        <p className={styles.categoryText} style={{ color: '#3e4a68' }}>
+                        <p className={styles.categoryText} style={!isDark ? { color: '#3e4a68' } : undefined}>
                           {p.category}
                         </p>
                       )}

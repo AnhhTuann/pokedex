@@ -88,10 +88,20 @@ export default function MainLayout() {
 
   const getContrastColor = (color: string) => {
     const c = color.toLowerCase();
-    if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff') {
+    if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff' || c === '#facc15') {
       return '#0f172a';
     }
     return '#ffffff';
+  };
+
+  const getLightModeInactiveColor = (gameName: string, vColor: string): string => {
+    const nameLower = gameName.toLowerCase();
+    if (nameLower === "yellow" || nameLower === "lets-go-pikachu") return "#a17a00";
+    if (nameLower === "gold" || nameLower === "heartgold") return "#9a7d1c";
+    if (nameLower === "silver" || nameLower === "platinum" || nameLower === "white" || nameLower === "white-2" || nameLower === "soulsilver") {
+      return "#475569";
+    }
+    return vColor;
   };
 
   // Build the sidebar inner content
@@ -134,7 +144,7 @@ export default function MainLayout() {
 
       {/* Footer Signature */}
       <div className={styles.footerSignature}>
-        Console v3.0
+        Console v3.2
       </div>
     </>
   );
@@ -333,16 +343,14 @@ export default function MainLayout() {
             {/* Modal Header */}
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
-                <Gamepad2 size={22} />
+                <Gamepad2 size={26} />
                 <span>SELECT GAME VERSION</span>
               </h2>
               <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)}>
-                <X size={18} />
+                <X size={22} />
               </button>
             </div>
             
-            <div className={styles.divider} />
-
             {/* Modal Body */}
             <div className={styles.modalBody}>
               {/* All Versions button */}
@@ -353,16 +361,9 @@ export default function MainLayout() {
                     setVersionDialogOpen(false);
                   }}
                   className={cn(
-                    styles.gameButton,
-                    selectedVersion === 'ALL' && styles.gameButtonActive
+                    styles.allVersionsBtn,
+                    selectedVersion !== 'ALL' && styles.unselected
                   )}
-                  style={{
-                    maxWidth: '280px',
-                    justifyContent: 'center',
-                    '--game-color': 'var(--primary)',
-                    '--game-text-color': '#ffffff',
-                    '--game-shadow': 'rgba(var(--primary-rgb), 0.4)'
-                  } as React.CSSProperties}
                 >
                   ALL VERSIONS
                 </button>
@@ -377,152 +378,74 @@ export default function MainLayout() {
                       <div className={styles.genDivider} />
                     </div>
                     
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       {g.rows.map((row, rowIdx) => {
-                        if (row.type === 'pair' && row.games.length === 2) {
-                          const game1 = row.games[0];
-                          const game2 = row.games[1];
-                          const isActive = selectedVersion.toLowerCase() === game1.name.toLowerCase() ||
-                                           selectedVersion.toLowerCase() === game2.name.toLowerCase();
-                          
-                          let vColor1 = VERSION_COLORS[game1.name] || '#6366f1';
-                          let vColor2 = VERSION_COLORS[game2.name] || '#6366f1';
-                          if (vColor1.toLowerCase() === '#000000' || vColor1 === 'black' || vColor1 === '#000') vColor1 = '#555555';
-                          if (vColor2.toLowerCase() === '#000000' || vColor2 === 'black' || vColor2 === '#000') vColor2 = '#555555';
-                          
-                          const styleInfo = getVersionColorStyle(game1.name);
-                          const inactiveBg = `linear-gradient(90deg, rgba(${hexToRgb(vColor1)}, 0.08) 50%, rgba(${hexToRgb(vColor2)}, 0.08) 50%)`;
-                          
-                          return (
-                            <div key={rowIdx} className={styles.gameGrid} style={{ gridTemplateColumns: '1fr' }}>
-                              <button
-                                onClick={() => {
-                                  setSelectedVersion(game1.name);
-                                  setVersionDialogOpen(false);
-                                }}
-                                className={cn(
-                                  styles.gameButton,
-                                  isActive && styles.gameButtonActive
-                                )}
-                                style={{
-                                  background: 'transparent',
-                                  color: isActive ? styleInfo.text : undefined,
-                                  borderColor: isActive ? 'transparent' : 'rgba(var(--primary-rgb), 0.1)',
-                                  boxShadow: isActive ? `0 8px 24px ${styleInfo.shadow}` : undefined,
-                                  padding: 0,
-                                  borderRadius: '28px',
-                                  overflow: 'hidden',
-                                  isolation: 'isolate'
-                                } as React.CSSProperties}
-                              >
-                                <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', position: 'relative' }}>
-                                  {/* Left Half */}
-                                  <div style={{
-                                    width: '50%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    height: '100%',
-                                    background: isActive ? vColor1 : `rgba(${hexToRgb(vColor1)}, 0.08)`,
-                                    padding: '0 8px'
-                                  }}>
-                                    <span 
-                                      className={styles.gameDot}
-                                      style={{
-                                        '--dot-color': isActive ? '#ffffff' : vColor1,
-                                        border: 'none',
-                                        marginRight: 0
-                                      } as React.CSSProperties}
-                                    />
-                                    <span style={{ fontWeight: 800, fontSize: '11px', whiteSpace: 'nowrap' }}>{game1.label.toUpperCase()}</span>
-                                  </div>
-
-                                  {/* Right Half */}
-                                  <div style={{
-                                    width: '50%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    height: '100%',
-                                    background: isActive ? vColor2 : `rgba(${hexToRgb(vColor2)}, 0.08)`,
-                                    padding: '0 8px'
-                                  }}>
-                                    <span 
-                                      className={styles.gameDot}
-                                      style={{
-                                        '--dot-color': isActive ? '#ffffff' : vColor2,
-                                        border: 'none',
-                                        marginRight: 0
-                                      } as React.CSSProperties}
-                                    />
-                                    <span style={{ fontWeight: 800, fontSize: '11px', whiteSpace: 'nowrap' }}>{game2.label.toUpperCase()}</span>
-                                  </div>
-
-                                  {/* Symmetrical Split Divider positioned at absolute center */}
-                                  <div style={{
-                                    position: 'absolute',
-                                    left: '50%',
-                                    top: 0,
-                                    bottom: 0,
-                                    transform: 'translateX(-50%)',
-                                    width: '2px',
-                                    backgroundColor: isActive ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.1)',
-                                    transition: 'all 0.2s',
-                                    pointerEvents: 'none',
-                                    zIndex: 10
-                                  }} />
-                                </div>
-                              </button>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div key={rowIdx} className={styles.gameGrid} style={{ gridTemplateColumns: '1fr' }}>
-                              {row.games.map((game) => {
-                                const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
-                                let vColor = VERSION_COLORS[game.name] || '#6366f1';
-                                
-                                if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
-                                  vColor = '#555555';
-                                }
-                                
-                                const contrastColor = getContrastColor(vColor);
-                                
-                                return (
-                                  <button
-                                    key={game.name}
-                                    onClick={() => {
-                                      setSelectedVersion(game.name);
-                                      setVersionDialogOpen(false);
-                                    }}
-                                    className={cn(
-                                      styles.gameButton,
-                                      isActive && styles.gameButtonActive
-                                    )}
-                                    style={{
-                                      '--game-color': vColor,
-                                      '--game-text-color': contrastColor,
-                                      '--game-shadow': `rgba(${hexToRgb(vColor)}, 0.4)`,
-                                      borderRadius: '28px',
-                                      overflow: 'hidden',
-                                      isolation: 'isolate'
-                                    } as React.CSSProperties}
-                                  >
-                                    <span 
-                                      className={styles.gameDot}
-                                      style={{
-                                        '--dot-color': isActive ? contrastColor : vColor
-                                      } as React.CSSProperties}
-                                    />
-                                    <span>{game.label}</span>
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          );
-                        }
+                        const isPair = row.type === 'pair' && row.games.length === 2;
+                        return (
+                          <div key={rowIdx} className={styles.gameGrid} style={!isPair ? { gridTemplateColumns: '1fr' } : undefined}>
+                            {row.games.map((game) => {
+                              const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
+                              let vColor = VERSION_COLORS[game.name] || '#6366f1';
+                              
+                              if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
+                                vColor = '#555555';
+                              }
+                              
+                              const contrastColor = getContrastColor(vColor);
+                              
+                              return (
+                                <button
+                                  key={game.name}
+                                  onClick={() => {
+                                    setSelectedVersion(game.name);
+                                    setVersionDialogOpen(false);
+                                  }}
+                                  className={cn(
+                                    styles.gameButton,
+                                    isActive && styles.gameButtonActive
+                                  )}
+                                  style={
+                                    {
+                                      background: isActive 
+                                        ? vColor 
+                                        : isDark 
+                                          ? '#13171F' 
+                                          : `rgba(${hexToRgb(vColor)}, 0.08)`,
+                                      borderColor: isActive 
+                                        ? vColor 
+                                        : isDark 
+                                          ? vColor 
+                                          : `rgba(${hexToRgb(vColor)}, 0.18)`,
+                                      color: isActive 
+                                        ? contrastColor 
+                                        : isDark 
+                                          ? '#F1F5F9' 
+                                          : getLightModeInactiveColor(game.name, vColor),
+                                      boxShadow: isActive 
+                                        ? isDark 
+                                          ? `0 0 16px rgba(${hexToRgb(vColor)}, 0.45)`
+                                          : `0 8px 24px rgba(${hexToRgb(vColor)}, 0.35)`
+                                        : 'none',
+                                    } as React.CSSProperties
+                                  }
+                                >
+                                  <span 
+                                    className={styles.gameDot}
+                                    style={
+                                      {
+                                        backgroundColor: isActive ? contrastColor : vColor,
+                                        boxShadow: isDark 
+                                          ? `0 0 10px ${vColor}, 0 0 20px ${vColor}`
+                                          : `0 0 8px ${vColor}`,
+                                      } as React.CSSProperties
+                                    }
+                                  />
+                                  <span>{game.label.toUpperCase()}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
                       })}
                     </div>
                   </div>
@@ -530,14 +453,11 @@ export default function MainLayout() {
               </div>
             </div>
 
-            <div className={styles.divider} />
-
             {/* Modal Footer */}
             <div className={styles.modalFooter}>
               <button 
                 onClick={() => setVersionDialogOpen(false)} 
-                className={styles.gameButton}
-                style={{ width: 'auto', height: '36px', padding: '0 16px', borderRadius: '8px' }}
+                className={styles.cancelBtn}
               >
                 CANCEL
               </button>

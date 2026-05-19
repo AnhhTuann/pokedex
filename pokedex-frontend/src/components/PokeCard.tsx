@@ -6,6 +6,7 @@ import { PokemonListItem } from "../types";
 import { useMyPokedex } from "../lib/MyPokedexContext";
 import { useTeamStore } from "../lib/teamStore";
 import { formatSpeciesId, cn, TYPE_COLORS } from "../lib/utils";
+import { useColorMode } from "../main";
 import styles from "../styles/components/PokeCard.module.scss";
 
 interface PokeCardProps {
@@ -60,6 +61,31 @@ function getBackgroundColor(type: string): string {
   }
 }
 
+function getPastelBackgroundColor(type: string): string {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case "grass": return "#c3deb0";
+    case "fire": return "#f2ad7c";
+    case "water": return "#6cbce5";
+    case "bug": return "#d2e59b";
+    case "normal": return "#e2e2df";
+    case "poison": return "#dbb5e7";
+    case "electric": return "#fdf0a6";
+    case "ground": return "#ecd0a1";
+    case "fairy": return "#f6c4d7";
+    case "fighting": return "#dfa1a1";
+    case "psychic": return "#f8b8cc";
+    case "rock": return "#dcd3bd";
+    case "steel": return "#cfd8dc";
+    case "ice": return "#b2ebf2";
+    case "ghost": return "#c2b7e0";
+    case "dragon": return "#9fa8da";
+    case "dark": return "#bcaaa4";
+    case "flying": return "#c5cae9";
+    default: return "#f5f5f7";
+  }
+}
+
 export default function PokeCard({
   pokemon,
   onClick,
@@ -69,10 +95,14 @@ export default function PokeCard({
 }: PokeCardProps) {
   const { isFavorite, toggleFavorite } = useMyPokedex();
   const { isShinyMode } = useTeamStore();
+  const { mode } = useColorMode();
+  const isDark = mode === "dark";
+  
   const isFav = isFavorite(pokemon.id);
   const primaryColor = TYPE_COLORS[pokemon.types[0].toLowerCase()] || "#9ca3af";
   const primaryType = pokemon.types[0] || "normal";
-  const cardBgColor = getBackgroundColor(primaryType);
+  
+  const pastelBgColor = getPastelBackgroundColor(primaryType);
 
   const isMega =
     !!pokemon.isMega ||
@@ -110,6 +140,10 @@ export default function PokeCard({
           {
             "--primary-color": primaryColor,
             "--primary-color-glow": `${primaryColor}40`,
+            "--card-bg": isDark
+              ? undefined
+              : `linear-gradient(135deg, ${pastelBgColor} 0%, ${pastelBgColor}dd 100%)`,
+            borderColor: !isDark ? "rgba(0, 0, 0, 0.04)" : undefined,
           } as React.CSSProperties
         }
       >
@@ -124,6 +158,15 @@ export default function PokeCard({
             isFav ? styles.isFavorite : styles.isNotFavorite,
           )}
           title={isFav ? "Remove from My Pokédex" : "Add to My Pokédex"}
+          style={
+            !isDark && !isFav
+              ? {
+                  color: "#5c6c94",
+                  backgroundColor: "rgba(255, 255, 255, 0.45)",
+                  borderColor: "rgba(0, 0, 0, 0.06)",
+                }
+              : undefined
+          }
         >
           <Heart size={16} fill={isFav ? "currentColor" : "none"} />
         </button>
@@ -132,11 +175,17 @@ export default function PokeCard({
         <div
           className={styles.imageContainer}
           style={{
-            backgroundColor: `${primaryColor}15`,
+            backgroundColor: isDark ? `${primaryColor}15` : "rgba(255, 255, 255, 0.45)",
             boxShadow: isMega
               ? `0 0 20px ${primaryColor}70, inset 0 2px 8px rgba(0, 0, 0, 0.3)`
-              : undefined,
-            border: isMega ? `2px dashed ${primaryColor}70` : undefined,
+              : !isDark
+                ? "inset 0 2px 4px rgba(0, 0, 0, 0.03)"
+                : undefined,
+            border: isMega 
+              ? `2px dashed ${primaryColor}70` 
+              : !isDark 
+                ? "2px solid rgba(255, 255, 255, 0.6)" 
+                : undefined,
           }}
         >
           <img
@@ -162,15 +211,15 @@ export default function PokeCard({
 
         {/* Info */}
         <div className={styles.info}>
-          <p className={styles.idText}>
+          <p className={styles.idText} style={!isDark ? { color: "#5c6c94" } : undefined}>
             {pokemon.regionalNumber !== undefined &&
             pokemon.regionalNumber !== null
               ? pokemon.regionalNumber.toString().padStart(3, "0")
               : formatSpeciesId(pokemon.speciesId || pokemon.id)}
           </p>
-          <h3 className={styles.nameText}>{displayName}</h3>
+          <h3 className={styles.nameText} style={!isDark ? { color: "#141926" } : undefined}>{displayName}</h3>
           {pokemon.category && (
-            <p className={styles.categoryText}>{pokemon.category}</p>
+            <p className={styles.categoryText} style={!isDark ? { color: "#3e4a68" } : undefined}>{pokemon.category}</p>
           )}
 
           {/* Types */}

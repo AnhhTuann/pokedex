@@ -19,7 +19,7 @@
   @include glass;
   @include holographic-sheen;
 
-  background-color: rgba(20, 20, 30, 0.6) !important;
+  background: var(--card-bg, rgba(20, 20, 30, 0.6)) !important;
   backdrop-filter: blur(12px) !important;
   transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   border-width: 2px;
