@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { Sparkles, Heart, Scale } from 'lucide-react';
 import PokeCard from '../components/PokeCard';
@@ -7,7 +7,7 @@ import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDia
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame } from '../App';
+import { getRegionAndGame, getGameGeneration } from '../App';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
@@ -25,7 +25,12 @@ export default function PokemonDex() {
   const [selectedId, setSelectedId]   = useState<number | null>(null);
   const [viewMode, setViewMode]       = useState<ViewMode>('all');
   const [compareIds, setCompareIds]   = useState<number[]>([]);
+  const [dexMode, setDexMode]         = useState<'regional' | 'national'>('regional');
   const [zaTab, setZaTab]             = useState<'lumiose' | 'hyperspace'>('lumiose');
+
+  useEffect(() => {
+    setDexMode('regional');
+  }, [selectedVersion]);
 
   const isCompareMode = viewMode === 'compare';
   const showFavorites = viewMode === 'favorites';
@@ -42,11 +47,21 @@ export default function PokemonDex() {
   };
 
   const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
-  let queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
-  const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+  const gameGen = getGameGeneration(selectedVersion);
+  const isGen2OrHigher = gameGen >= 2;
 
-  if (selectedVersion === 'legends-za') {
-    queryRegion = zaTab === 'lumiose' ? 'lumiose-city' : 'hyperspace';
+  let queryRegion: string | undefined = undefined;
+  let queryGame: string | undefined = undefined;
+  let queryMaxGen: number | undefined = undefined;
+
+  if (isGen2OrHigher && dexMode === 'national') {
+    queryMaxGen = gameGen;
+  } else {
+    queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
+    queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+    if (selectedVersion === 'legends-za') {
+      queryRegion = zaTab === 'lumiose' ? 'lumiose-city' : 'hyperspace';
+    }
   }
 
   const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({
@@ -57,7 +72,8 @@ export default function PokemonDex() {
     gen: genFilter, 
     ids: showFavorites ? favorites : null,
     region: queryRegion,
-    game: queryGame
+    game: queryGame,
+    maxGen: queryMaxGen
   });
 
   const hasMore = pokemonList.length > 0 && pokemonList.length < totalCount;
@@ -117,8 +133,45 @@ export default function PokemonDex() {
         </div>
       </div>
 
+      {/* Regional vs National Dex Switcher */}
+      {isGen2OrHigher && selectedVersion !== 'ALL' && (
+        <div className={styles.dexTabWrapper}>
+          <div className={styles.dexToggle}>
+            <button
+              onClick={() => setDexMode('regional')}
+              className={cn(
+                styles.dexTab,
+                dexMode === 'regional' && styles.activeDexTab
+              )}
+            >
+              {(() => {
+                if (!rawRegion) return 'Regional Dex';
+                const parts = rawRegion.split('-');
+                const capitalized = parts
+                  .map(p => {
+                    if (p === 'original' || p === 'extended' || p === 'updated' || p === 'letsgo') return '';
+                    return p.charAt(0).toUpperCase() + p.slice(1);
+                  })
+                  .filter(Boolean)
+                  .join(' ');
+                return `${capitalized || 'Regional'} Dex`;
+              })()}
+            </button>
+            <button
+              onClick={() => setDexMode('national')}
+              className={cn(
+                styles.dexTab,
+                dexMode === 'national' && styles.activeDexTab
+              )}
+            >
+              National Dex
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Legends: Z-A Regional Tabs */}
-      {selectedVersion === 'legends-za' && (
+      {selectedVersion === 'legends-za' && dexMode === 'regional' && (
         <div className={styles.zaTabWrapper}>
           <div className={styles.zaToggle}>
             <button

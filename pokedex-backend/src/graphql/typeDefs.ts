@@ -144,7 +144,7 @@ export const typeDefs = `#graphql
 
   type Query {
     ping: String
-    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String): PokemonListResponse
+    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String, maxGen: Int): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
     myTeam: [PokemonListItem!]!

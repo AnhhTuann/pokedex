@@ -21,7 +21,7 @@ const client = new ApolloClient({
       Query: {
         fields: {
           pokemonList: {
-            keyArgs: ["search", "type", "gen", "ids", "region", "game"],
+            keyArgs: ["search", "type", "gen", "ids", "region", "game", "maxGen"],
             merge(existing, incoming, { args }) {
               const offset = args?.offset || 0;
               const merged = existing ? existing.results.slice(0) : [];

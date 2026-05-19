@@ -10,6 +10,7 @@ export interface PokemonListParams {
   ids?: number[] | null;
   region?: string | null;
   game?: string | null;
+  maxGen?: number | null;
 }
 
 export function usePokemonList(params: PokemonListParams) {

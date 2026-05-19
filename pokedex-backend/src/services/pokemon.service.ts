@@ -151,7 +151,7 @@ export const pokemonService = {
   getFullEvolutionChain,
   getAlternativeForms,
   
-  pokemonList: async ({ limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, region = null, game = null }: any) => {
+  pokemonList: async ({ limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, region = null, game = null, maxGen = null }: any) => {
     if (ids && Array.isArray(ids) && ids.length === 0) {
       return { results: [], totalCount: 0 };
     }
@@ -172,6 +172,8 @@ export const pokemonService = {
 
     if (gen !== null) {
       where.generation = gen;
+    } else if (maxGen !== null) {
+      where.generation = { lte: maxGen };
     }
     if (ids && Array.isArray(ids) && ids.length > 0) {
       where.pokedexNumber = { in: ids };
