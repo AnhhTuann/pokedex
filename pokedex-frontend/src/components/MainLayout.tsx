@@ -213,24 +213,42 @@ export default function MainLayout() {
                     className={styles.versionBtn}
                     onClick={() => setVersionDialogOpen(true)}
                     style={{
-                      '--v-bg': styleInfo.bg,
+                      background: isPair ? 'transparent' : styleInfo.bg,
+                      '--v-bg': isPair ? 'transparent' : styleInfo.bg,
                       '--v-text': styleInfo.text,
                       '--v-shadow': styleInfo.shadow,
                       borderRadius: '19px',
                       overflow: 'hidden',
                       isolation: 'isolate',
-                      padding: isPair ? 0 : '0 18px'
+                      padding: isPair ? 0 : '0 18px',
+                      border: '1px solid rgba(255, 255, 255, 0.15)'
                     } as React.CSSProperties}
                   >
                     {isPair ? (
-                      <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', minWidth: '150px', position: 'relative' }}>
+                      <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', minWidth: '280px', position: 'relative' }}>
                         {/* Left Half */}
-                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px' }}>{game1Label.toUpperCase()}</span>
+                        <div style={{
+                          width: '50%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: '100%',
+                          background: styleInfo.c1 || '#6366f1',
+                          padding: '0 8px'
+                        }}>
+                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>{game1Label.toUpperCase()}</span>
                         </div>
                         {/* Right Half */}
-                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px' }}>{game2Label.toUpperCase()}</span>
+                        <div style={{
+                          width: '50%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: '100%',
+                          background: styleInfo.c2 || '#6366f1',
+                          padding: '0 8px'
+                        }}>
+                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>{game2Label.toUpperCase()}</span>
                         </div>
                         {/* Symmetrical Split Divider positioned at absolute center */}
                         <div style={{
@@ -241,11 +259,12 @@ export default function MainLayout() {
                           width: '1px',
                           height: '14px',
                           backgroundColor: 'rgba(255, 255, 255, 0.35)',
-                          pointerEvents: 'none'
+                          pointerEvents: 'none',
+                          zIndex: 2
                         }} />
                       </div>
                     ) : (
-                      <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px' }}>
+                      <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
                         {selectedVersion === 'ALL'
                           ? 'ALL VERSIONS'
                           : getVersionDisplayName(selectedVersion).toUpperCase()}
@@ -386,7 +405,7 @@ export default function MainLayout() {
                                   isActive && styles.gameButtonActive
                                 )}
                                 style={{
-                                  background: isActive ? styleInfo.bg : inactiveBg,
+                                  background: 'transparent',
                                   color: isActive ? styleInfo.text : undefined,
                                   borderColor: isActive ? 'transparent' : 'rgba(var(--primary-rgb), 0.1)',
                                   boxShadow: isActive ? `0 8px 24px ${styleInfo.shadow}` : undefined,
@@ -398,7 +417,16 @@ export default function MainLayout() {
                               >
                                 <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', position: 'relative' }}>
                                   {/* Left Half */}
-                                  <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', height: '100%' }}>
+                                  <div style={{
+                                    width: '50%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    height: '100%',
+                                    background: isActive ? vColor1 : `rgba(${hexToRgb(vColor1)}, 0.08)`,
+                                    padding: '0 8px'
+                                  }}>
                                     <span 
                                       className={styles.gameDot}
                                       style={{
@@ -407,11 +435,20 @@ export default function MainLayout() {
                                         marginRight: 0
                                       } as React.CSSProperties}
                                     />
-                                    <span style={{ fontWeight: 800 }}>{game1.label.toUpperCase()}</span>
+                                    <span style={{ fontWeight: 800, fontSize: '11px', whiteSpace: 'nowrap' }}>{game1.label.toUpperCase()}</span>
                                   </div>
 
                                   {/* Right Half */}
-                                  <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', height: '100%' }}>
+                                  <div style={{
+                                    width: '50%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    height: '100%',
+                                    background: isActive ? vColor2 : `rgba(${hexToRgb(vColor2)}, 0.08)`,
+                                    padding: '0 8px'
+                                  }}>
                                     <span 
                                       className={styles.gameDot}
                                       style={{
@@ -420,7 +457,7 @@ export default function MainLayout() {
                                         marginRight: 0
                                       } as React.CSSProperties}
                                     />
-                                    <span style={{ fontWeight: 800 }}>{game2.label.toUpperCase()}</span>
+                                    <span style={{ fontWeight: 800, fontSize: '11px', whiteSpace: 'nowrap' }}>{game2.label.toUpperCase()}</span>
                                   </div>
 
                                   {/* Symmetrical Split Divider positioned at absolute center */}
@@ -433,7 +470,8 @@ export default function MainLayout() {
                                     height: '22px',
                                     backgroundColor: isActive ? 'rgba(255, 255, 255, 0.3)' : 'rgba(var(--primary-rgb), 0.15)',
                                     transition: 'all 0.2s',
-                                    pointerEvents: 'none'
+                                    pointerEvents: 'none',
+                                    zIndex: 2
                                   }} />
                                 </div>
                               </button>
