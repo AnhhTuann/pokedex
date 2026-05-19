@@ -68,6 +68,34 @@ function hexToRgb(hex: string): string {
   return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
 }
 
+const MENU_COLORS: Record<string, string> = {
+  '/': '#E3350D',
+  '/tracker': '#4CAF50',
+  '/moves': '#FF9800',
+  '/abilities': '#9C27B0',
+  '/items': '#FFC107',
+  '/locations': '#009688',
+  '/types': '#3F51B5',
+  '/natures': '#E91E63',
+  '/teambuilder': '#2196F3',
+  '/calculator': '#D32F2F',
+  '/walkthrough': '#00BCD4',
+};
+
+function getRouteColor(pathname: string): string {
+  if (pathname.startsWith('/tracker')) return '#4CAF50';
+  if (pathname.startsWith('/moves')) return '#FF9800';
+  if (pathname.startsWith('/abilities')) return '#9C27B0';
+  if (pathname.startsWith('/items')) return '#FFC107';
+  if (pathname.startsWith('/locations')) return '#009688';
+  if (pathname.startsWith('/types')) return '#3F51B5';
+  if (pathname.startsWith('/natures')) return '#E91E63';
+  if (pathname.startsWith('/teambuilder')) return '#2196F3';
+  if (pathname.startsWith('/calculator')) return '#D32F2F';
+  if (pathname.startsWith('/walkthrough') || pathname.startsWith('/admin')) return '#00BCD4';
+  return '#E3350D'; // Fallback to Pokédex (root / and /pokemon)
+}
+
 export default function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -130,6 +158,9 @@ export default function MainLayout() {
       <nav className={styles.navMenu}>
         {MENU_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;
+          const itemColor = MENU_COLORS[item.path] || '#6366f1';
+          const itemRgb = hexToRgb(itemColor);
+
           return (
             <button
               key={item.text}
@@ -141,9 +172,28 @@ export default function MainLayout() {
                 styles.navButton,
                 isActive && styles.navButtonActive
               )}
+              style={{
+                '--primary': itemColor,
+                '--primary-rgb': itemRgb,
+              } as React.CSSProperties}
             >
-              <span className={styles.navIcon}>{item.icon}</span>
-              <span className={styles.navText}>{item.text}</span>
+              <span 
+                className={styles.navIcon}
+                style={{
+                  color: isActive ? itemColor : `rgba(${itemRgb}, 0.55)`,
+                  filter: isActive ? `drop-shadow(0 0 6px rgba(${itemRgb}, 0.4))` : 'none'
+                }}
+              >
+                {item.icon}
+              </span>
+              <span 
+                className={styles.navText}
+                style={{
+                  color: isActive ? itemColor : undefined
+                }}
+              >
+                {item.text}
+              </span>
             </button>
           );
         })}
@@ -162,8 +212,20 @@ export default function MainLayout() {
   const currentVersionText = getContrastColor(currentVersionColor);
   const currentVersionShadow = `rgba(${hexToRgb(currentVersionColor)}, 0.35)`;
 
+  const activeColor = getRouteColor(location.pathname);
+  const activeRgb = hexToRgb(activeColor);
+
   return (
-    <div className={styles.appContainer}>
+    <div 
+      className={styles.appContainer}
+      style={{
+        '--primary': activeColor,
+        '--primary-rgb': activeRgb,
+        '--glow-primary': isDark 
+          ? `0 0 25px rgba(${activeRgb}, 0.55), 0 0 10px rgba(189, 0, 255, 0.35)`
+          : `0 0 18px rgba(${activeRgb}, 0.35)`
+      } as React.CSSProperties}
+    >
       
       {/* ── Mobile Sidebar Overlay ── */}
       <div 
