@@ -21,7 +21,11 @@ body {
 
 // Global Custom Scrollbar on all scrollable elements
 * {
-  @include custom-scrollbar;
+  @include custom-scrollbar(
+    6px, 
+    rgba(29, 29, 29, 0.15), 
+    rgba(29, 29, 29, 0.3)
+  );
 }
 
 html.dark * {
@@ -84,8 +88,8 @@ a {
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 12px rgba(129, 140, 248, 0.2); }
-  50% { box-shadow: 0 0 24px rgba(129, 140, 248, 0.5); }
+  0%, 100% { box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.2); }
+  50% { box-shadow: 0 0 24px rgba(var(--primary-rgb), 0.5); }
 }
 
 // Utility classes

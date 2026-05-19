@@ -150,7 +150,7 @@
   }
 
   .nativeSwitch:checked + .switchSlider {
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(var(--primary-rgb), 0.25);
     border-color: var(--primary);
 
     &::after {

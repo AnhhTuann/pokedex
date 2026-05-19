@@ -300,9 +300,9 @@ export default function MainLayout() {
                   style={{
                     maxWidth: '280px',
                     justifyContent: 'center',
-                    '--game-color': '#6366f1',
+                    '--game-color': 'var(--primary)',
                     '--game-text-color': '#ffffff',
-                    '--game-shadow': 'rgba(99, 102, 241, 0.4)'
+                    '--game-shadow': 'rgba(var(--primary-rgb), 0.4)'
                   } as React.CSSProperties}
                 >
                   ALL VERSIONS

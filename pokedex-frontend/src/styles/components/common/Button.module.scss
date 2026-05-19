@@ -33,23 +33,18 @@
   box-shadow: $shadow-sm;
   
   &:hover {
-    background-color: lighten(#6366f1, 6%);
-    box-shadow: $glow-primary;
-  }
-  
-  :global(.dark) &:hover {
-    background-color: lighten(#818cf8, 6%);
+    filter: brightness(1.08);
     box-shadow: $glow-primary;
   }
 }
 
 .secondary {
-  background-color: rgba(129, 140, 248, 0.08);
+  background-color: rgba(var(--primary-rgb), 0.06);
   color: $text-primary;
   border: 1px solid $border-main;
   
   &:hover {
-    background-color: rgba(129, 140, 248, 0.15);
+    background-color: rgba(var(--primary-rgb), 0.12);
     border-color: $border-hover;
   }
 }
@@ -70,7 +65,7 @@
   color: $text-secondary;
   
   &:hover {
-    background-color: rgba(129, 140, 248, 0.08);
+    background-color: rgba(var(--primary-rgb), 0.06);
     color: $text-primary;
   }
 }

@@ -45,7 +45,7 @@
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  box-shadow: 0 12px 36px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 12px 36px rgba(var(--primary-rgb), 0.35);
 }
 
 .contentWrapper {

@@ -27,7 +27,7 @@
   }
 }
 
-// ─── Tab Switchers ────────────────────────────────────────
+// ───// Tab Switchers ────────────────────────────────────────
 .modeToggleWrapper {
   display: flex;
   justify-content: center;
@@ -39,7 +39,7 @@
   display: inline-flex;
   border-radius: $radius-md;
   padding: 4px;
-  background-color: rgba(129, 140, 248, 0.05);
+  background-color: rgba(var(--primary-rgb), 0.04);
   border: 1px solid $border-main;
 }
 
@@ -115,7 +115,7 @@
   display: inline-flex;
   border-radius: $radius-md;
   padding: 4px;
-  background-color: rgba(129, 140, 248, 0.04);
+  background-color: rgba(var(--primary-rgb), 0.04);
   border: 1px solid $border-main;
 }
 
@@ -140,7 +140,7 @@
 .activeZaTab {
   background: linear-gradient(135deg, $primary 0%, $secondary 100%);
   color: white !important;
-  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
 }
 
 // ─── Text Informative Labels ──────────────────────────────
@@ -190,7 +190,7 @@
 // ─── Loading Skeletons ─────────────────────────────────────
 .skeletonCard {
   height: 288px;
-  background-color: rgba(129, 140, 248, 0.05);
+  background-color: var(--border-main);
   border: 1px solid $border-main;
   border-radius: $radius-lg;
   animation: pulsePulse 1.5s ease-in-out infinite;

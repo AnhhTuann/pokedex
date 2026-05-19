@@ -95,16 +95,16 @@
     transition: var(--transition-normal);
 
     &.p1 {
-      background: rgba(99, 102, 241, 0.1);
+      background: rgba(var(--primary-rgb), 0.1);
       &:hover {
-        background: rgba(99, 102, 241, 0.15);
+        background: rgba(var(--primary-rgb), 0.15);
       }
     }
 
     &.p2 {
-      background: rgba(236, 72, 153, 0.1);
+      background: rgba(var(--secondary-rgb), 0.1);
       &:hover {
-        background: rgba(236, 72, 153, 0.15);
+        background: rgba(var(--secondary-rgb), 0.15);
       }
     }
   }
@@ -126,8 +126,8 @@
     text-transform: capitalize;
     letter-spacing: -0.5px;
     
-    &.p1 { color: #6366f1; }
-    &.p2 { color: #ec4899; }
+    &.p1 { color: var(--primary); }
+    &.p2 { color: var(--secondary); }
   }
 }
 
@@ -147,13 +147,13 @@
   letter-spacing: 0.05em;
 
   &.p1 {
-    background: rgba(99, 102, 241, 0.15);
-    color: #a5b4fc;
+    background: rgba(var(--primary-rgb), 0.12);
+    color: var(--primary);
   }
 
   &.p2 {
-    background: rgba(236, 72, 153, 0.15);
-    color: #f9a8d4;
+    background: rgba(var(--secondary-rgb), 0.12);
+    color: var(--secondary);
   }
 }
 

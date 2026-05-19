@@ -25,7 +25,7 @@
 
 .header {
   padding: 20px 24px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.08));
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--secondary-rgb), 0.08));
   border-bottom: 1px solid var(--border-main);
   display: flex;
   align-items: center;
@@ -69,12 +69,12 @@
   width: 200px;
   height: 200px;
   border-radius: var(--radius-full);
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(var(--primary-rgb), 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  border: 1px solid rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
 
   .pokemonImage {
     width: 150px;
@@ -87,7 +87,7 @@
     position: absolute;
     top: 4px;
     right: 4px;
-    background: #6366f1;
+    background: var(--primary);
     color: #fff;
     font-weight: 900;
     font-size: 10px;
@@ -95,7 +95,7 @@
     letter-spacing: 1px;
     padding: 4px 10px;
     border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
   }
 }
 
@@ -141,18 +141,18 @@
   padding: 12px;
   border-radius: var(--radius-md);
   border: none;
-  background: #6366f1;
+  background: var(--primary);
   color: #fff;
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.3);
   transition: var(--transition-normal);
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+    box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.45);
   }
 }
 
@@ -207,17 +207,17 @@
   padding: 12px 32px;
   border-radius: var(--radius-md);
   border: none;
-  background: #6366f1;
+  background: var(--primary);
   color: #fff;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   transition: var(--transition-normal);
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.3);
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+    box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.45);
   }
 }
 

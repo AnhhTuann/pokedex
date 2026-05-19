@@ -47,7 +47,7 @@
   transition: background-color $transition-fast;
   
   &:hover {
-    background-color: rgba(129, 140, 248, 0.08);
+    background-color: rgba(var(--primary-rgb), 0.06);
   }
 }
 
@@ -187,7 +187,7 @@
   
   &:hover {
     color: $text-primary;
-    background-color: rgba(129, 140, 248, 0.04);
+    background-color: rgba(var(--primary-rgb), 0.04);
     transform: translateX(4px);
     
     .navIcon {
@@ -197,7 +197,7 @@
 }
 
 .navButtonActive {
-  background-color: rgba(99, 102, 241, 0.12);
+  background-color: rgba(var(--primary-rgb), 0.12);
   color: $primary;
   font-weight: 800;
   
@@ -280,14 +280,14 @@
   align-items: center;
   gap: 8px;
   transition: all $transition-fast;
-  box-shadow: 0 0 12px var(--v-shadow, rgba(99, 102, 241, 0.3));
-  background-color: var(--v-bg, #6366f1);
+  box-shadow: 0 0 12px var(--v-shadow, rgba(var(--primary-rgb), 0.3));
+  background-color: var(--v-bg, #E3350D);
   color: var(--v-text, #fff);
   
   &:hover {
     filter: brightness(1.15);
     transform: translateY(-1px);
-    box-shadow: 0 0 20px var(--v-shadow, rgba(99, 102, 241, 0.45));
+    box-shadow: 0 0 20px var(--v-shadow, rgba(var(--primary-rgb), 0.45));
   }
 }
 
@@ -365,7 +365,7 @@
 }
 
 .actionIconBtn {
-  background-color: rgba(129, 140, 248, 0.08);
+  background-color: rgba(var(--primary-rgb), 0.08);
   color: $primary;
   border: none;
   width: 36px;
@@ -393,7 +393,7 @@
   transition: all $transition-fast;
   
   &:hover {
-    background-color: rgba(129, 140, 248, 0.08);
+    background-color: rgba(var(--primary-rgb), 0.06);
     color: $text-primary;
   }
 }
@@ -467,7 +467,7 @@
   transition: all $transition-fast;
   
   &:hover {
-    background-color: rgba(129, 140, 248, 0.08);
+    background-color: rgba(var(--primary-rgb), 0.06);
     color: $text-primary;
   }
 }
@@ -540,12 +540,12 @@
   border: 1.5px solid $border-main;
   cursor: pointer;
   transition: all $transition-normal;
-  background-color: rgba(129, 140, 248, 0.03);
+  background-color: rgba(var(--primary-rgb), 0.03);
   color: $text-secondary;
   width: 100%;
   
   &:hover {
-    background-color: rgba(129, 140, 248, 0.08);
+    background-color: rgba(var(--primary-rgb), 0.06);
     border-color: $border-hover;
     transform: translateY(-2px);
   }
