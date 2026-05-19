@@ -256,11 +256,12 @@ export default function MainLayout() {
                           left: '50%',
                           top: '50%',
                           transform: 'translate(-50%, -50%)',
-                          width: '1px',
-                          height: '14px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.35)',
+                          width: '2px',
+                          height: '20px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                          boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)',
                           pointerEvents: 'none',
-                          zIndex: 2
+                          zIndex: 10
                         }} />
                       </div>
                     ) : (
@@ -466,12 +467,13 @@ export default function MainLayout() {
                                     left: '50%',
                                     top: '50%',
                                     transform: 'translate(-50%, -50%)',
-                                    width: '1px',
-                                    height: '22px',
-                                    backgroundColor: isActive ? 'rgba(255, 255, 255, 0.3)' : 'rgba(var(--primary-rgb), 0.15)',
+                                    width: '2px',
+                                    height: '24px',
+                                    backgroundColor: isActive ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)',
+                                    boxShadow: '0 0 4px rgba(0, 0, 0, 0.2)',
                                     transition: 'all 0.2s',
                                     pointerEvents: 'none',
-                                    zIndex: 2
+                                    zIndex: 10
                                   }} />
                                 </div>
                               </button>
