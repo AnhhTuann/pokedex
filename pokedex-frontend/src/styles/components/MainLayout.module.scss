@@ -14,9 +14,10 @@
   position: fixed;
   top: 0;
   right: 0;
-  height: 64px;
+  height: 70px;
   @include glass;
-  border-bottom: 1px solid $border-main;
+  border-bottom: 1px solid var(--border-main);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   z-index: 100;
   display: flex;
   justify-content: space-between;
@@ -78,8 +79,9 @@
   top: 0;
   left: 0;
   height: 100vh;
-  background-color: $bg-paper;
-  border-right: 1px solid $border-main;
+  @include glass;
+  border-right: 1px solid var(--border-main);
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   z-index: 110;
@@ -139,9 +141,10 @@
 }
 
 .brandLogo {
-  color: $primary;
+  color: var(--primary);
   display: flex;
   align-items: center;
+  filter: drop-shadow(0 0 8px var(--primary));
 }
 
 .brandText {
@@ -149,8 +152,9 @@
   font-weight: 900;
   font-size: 20px;
   letter-spacing: -1px;
-  color: $primary;
+  color: var(--primary);
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
 }
 
 .divider {
@@ -161,59 +165,68 @@
 
 .navMenu {
   flex: 1;
-  padding: 16px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   overflow-y: auto;
   overflow-x: hidden;
+  @include custom-scrollbar;
 }
 
 .navButton {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 12px 16px;
+  padding: 12px 18px;
   border-radius: $radius-md;
-  color: $text-secondary;
+  color: var(--text-secondary);
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   text-align: left;
-  transition: all $transition-fast;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   width: 100%;
   
   &:hover {
-    color: $text-primary;
-    background-color: rgba(var(--primary-rgb), 0.04);
-    transform: translateX(4px);
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
+    transform: translateX(6px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     
     .navIcon {
-      color: $primary;
+      color: var(--primary);
+      transform: scale(1.1) rotate(5deg);
+      filter: drop-shadow(0 0 8px var(--primary));
     }
   }
 }
 
 .navButtonActive {
-  background-color: rgba(var(--primary-rgb), 0.12);
-  color: $primary;
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.03) 100%);
+  border-color: rgba(var(--primary-rgb), 0.2);
+  color: var(--primary);
   font-weight: 800;
+  box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.05);
   
   &::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 20%;
-    height: 60%;
+    top: 25%;
+    height: 50%;
     width: 4px;
     border-radius: 4px;
-    background-color: $primary;
+    background-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
   }
   
   .navIcon {
-    color: $primary;
+    color: var(--primary);
+    filter: drop-shadow(0 0 8px var(--primary));
   }
 }
 

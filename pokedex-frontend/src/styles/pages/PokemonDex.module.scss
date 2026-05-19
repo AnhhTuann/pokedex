@@ -14,16 +14,15 @@
 // ─── Search Bar Frame ─────────────────────────────────────
 .searchWrapper {
   margin-bottom: 32px;
-  background-color: $bg-paper;
-  border: 1px solid $border-main;
-  box-shadow: $shadow-sm;
+  @include glass;
   border-radius: $radius-lg;
-  padding: 16px;
-  transition: border-color $transition-normal, box-shadow $transition-normal;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: all $transition-normal;
   
   &:focus-within {
-    border-color: $border-hover;
-    box-shadow: $shadow-md;
+    border-color: var(--secondary);
+    box-shadow: 0 8px 32px rgba(0, 229, 255, 0.15), var(--glow-secondary);
   }
 }
 
@@ -38,27 +37,30 @@
 .modeToggle {
   display: inline-flex;
   border-radius: $radius-md;
-  padding: 4px;
-  background-color: rgba(var(--primary-rgb), 0.04);
-  border: 1px solid $border-main;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-main);
+  backdrop-filter: blur(10px);
 }
 
 .modeBtn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 24px;
+  padding: 12px 28px;
   border-radius: $radius-sm;
-  font-size: 14px;
-  font-weight: 700;
-  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
   background: transparent;
-  color: $text-secondary;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all $transition-fast;
   
   &:hover {
-    color: $text-primary;
+    color: var(--text-primary);
     background-color: rgba(255, 255, 255, 0.03);
   }
   
@@ -69,39 +71,24 @@
 }
 
 .activeBtnAll {
-  background-color: $bg-paper;
-  color: $primary !important;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-main;
-  
-  :global(.dark) & {
-    box-shadow: $glow-primary;
-    background-color: rgba(0, 229, 255, 0.15);
-  }
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.25) 0%, rgba(var(--primary-rgb), 0.05) 100%) !important;
+  color: var(--primary) !important;
+  border-color: rgba(var(--primary-rgb), 0.4) !important;
+  box-shadow: var(--glow-primary);
 }
 
 .activeBtnFav {
-  background-color: $bg-paper;
-  color: $secondary !important;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-main;
-  
-  :global(.dark) & {
-    box-shadow: $glow-secondary;
-    background-color: rgba(168, 85, 247, 0.15);
-  }
+  background: linear-gradient(135deg, rgba(var(--secondary-rgb), 0.25) 0%, rgba(var(--secondary-rgb), 0.05) 100%) !important;
+  color: var(--secondary) !important;
+  border-color: rgba(var(--secondary-rgb), 0.4) !important;
+  box-shadow: var(--glow-secondary);
 }
 
 .activeBtnComp {
-  background-color: $bg-paper;
-  color: #a855f7 !important;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-main;
-  
-  :global(.dark) & {
-    box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
-    background-color: rgba(168, 85, 247, 0.15);
-  }
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.05) 100%) !important;
+  color: #c084fc !important;
+  border-color: rgba(168, 85, 247, 0.4) !important;
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
 }
 
 // ─── Legends: Z-A Regional Tabs ───────────────────────────
@@ -236,31 +223,33 @@
 .dexToggle {
   display: inline-flex;
   border-radius: $radius-md;
-  padding: 4px;
-  background-color: rgba(var(--primary-rgb), 0.04);
-  border: 1px solid $border-main;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-main);
+  backdrop-filter: blur(10px);
 }
 
 .dexTab {
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-radius: $radius-sm;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: none;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
   background: transparent;
-  color: $text-secondary;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all $transition-fast;
   
   &:hover {
-    color: $text-primary;
+    color: var(--text-primary);
   }
 }
 
 .activeDexTab {
-  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+  box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.45);
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }

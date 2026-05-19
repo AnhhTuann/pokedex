@@ -133,11 +133,11 @@ export default function Walkthrough() {
                   <button key={ch.id} onClick={() => setSelectedChapterId(ch.id)}
                     className={`${styles.chapterBtn} ${isActive ? styles.active : ''}`}
                     style={{ 
-                      border: isActive ? `1px solid ${gameColor}55` : 'transparent', 
-                      background: isActive ? `${gameColor}1a` : 'transparent',
+                      border: isActive ? `1px solid ${gameColor}50` : undefined, 
+                      background: isActive ? `${gameColor}15` : undefined,
                       color: isActive ? gameColor : undefined
                     }}>
-                    {isActive && <span className={styles.chapterIndicator} style={{ background:gameColor }}/>}
+                    <span className={styles.chapterIndicator} style={{ background: isActive ? gameColor : undefined }}/>
                     <span className={styles.chapterText}>{ch.chapterTitle}</span>
                     <ChevronRight size={14} className={styles.chapterIcon}/>
                   </button>
@@ -162,7 +162,7 @@ export default function Walkthrough() {
 
                 {/* Chapter Header */}
                 <div className={styles.chapterMeta}>
-                  <span className={styles.orderBadge} style={{ background:`${gameColor}33`, border:`1px solid ${gameColor}66`, color:gameColor }}>
+                  <span className={styles.orderBadge} style={{ background:`${gameColor}20`, border:`1px solid ${gameColor}40`, color:gameColor }}>
                     Chapter {activeChapter.order}
                   </span>
                   <h2 className={styles.chapterTitle}>{activeChapter.chapterTitle}</h2>
@@ -176,7 +176,7 @@ export default function Walkthrough() {
 
                 {/* TOC */}
                 {toc.length > 0 && (
-                  <div className={styles.toc} style={{ background:`${gameColor}0d`, border:`1px solid ${gameColor}26` }}>
+                  <div className={styles.toc} style={{ background:`${gameColor}08`, border:`1px solid ${gameColor}20` }}>
                     <span className={styles.tocTitle} style={{ color:gameColor }}>Nội dung chính</span>
                     <div className={styles.tocList}>
                       {toc.map(item => (
@@ -204,7 +204,7 @@ export default function Walkthrough() {
                   {prevChapter ? (
                     <button onClick={() => setSelectedChapterId(prevChapter.id)}
                       className={`${styles.navBtn} ${styles.left}`}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${gameColor}1a`; (e.currentTarget as HTMLElement).style.color=gameColor; }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${gameColor}15`; (e.currentTarget as HTMLElement).style.color=gameColor; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.color='var(--text-secondary)'; }}>
                       <ChevronLeft size={18}/>
                       <div>
@@ -216,7 +216,7 @@ export default function Walkthrough() {
                   {nextChapter ? (
                     <button onClick={() => setSelectedChapterId(nextChapter.id)}
                       className={`${styles.navBtn} ${styles.right}`}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${gameColor}1a`; (e.currentTarget as HTMLElement).style.color=gameColor; }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${gameColor}15`; (e.currentTarget as HTMLElement).style.color=gameColor; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.color='var(--text-secondary)'; }}>
                       <div>
                         <span className={styles.navBtnSub}>Chương tiếp</span>
@@ -242,19 +242,24 @@ export default function Walkthrough() {
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
         .walkthrough-content h1 { display:none!important; }
-        .walkthrough-content h2 { color:${gameColor};font-size:1.5rem;font-weight:800;margin-top:2.5rem;margin-bottom:1rem;border-bottom:1px solid var(--border-main);padding-bottom:0.5rem; }
-        .walkthrough-content h3 { font-size:1.15rem;font-weight:700;margin-top:2rem;margin-bottom:0.75rem;color:var(--text-primary); }
-        .walkthrough-content p { font-size:1rem;line-height:1.8;color:var(--text-primary);margin-bottom:1.25rem;opacity:0.9; }
-        .walkthrough-content strong { color:var(--text-primary);font-weight:700; }
-        .walkthrough-content ul,.walkthrough-content ol { margin-bottom:1.25rem;padding-left:1.5rem;color:var(--text-secondary);line-height:1.8; }
-        .walkthrough-content li { margin-bottom:0.25rem; }
-        .walkthrough-content table { width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.95rem;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--border-main);background:var(--bg-paper-glow); }
-        .walkthrough-content th { background:${gameColor}14;color:var(--text-primary);font-weight:800;padding:14px 18px;text-align:left;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;border-bottom:2px solid ${gameColor}4d; }
-        .walkthrough-content td { padding:14px 18px;border-bottom:1px solid var(--border-main);color:var(--text-secondary);vertical-align:middle; }
-        .walkthrough-content tbody tr:hover { background:rgba(var(--primary-rgb), 0.04); }
-        .walkthrough-content img { max-width:64px;display:inline-block;vertical-align:middle;margin:0 4px;transition:transform 0.2s,filter 0.2s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
-        .walkthrough-content img:hover { transform:scale(1.2) translateY(-2px);filter:drop-shadow(0 8px 12px ${gameColor}66); }
-        .walkthrough-content blockquote { border-left:4px solid ${gameColor};padding:12px 20px;margin:20px 0;background:${gameColor}0d;border-radius:0 8px 8px 0;color:var(--text-secondary);font-style:italic; }
+        .walkthrough-content h2 { color:${gameColor};font-size:1.6rem;font-weight:900;margin-top:3rem;margin-bottom:1.25rem;border-bottom:2px solid var(--border-main);padding-bottom:0.6rem;text-shadow: 0 0 12px ${gameColor}20; }
+        .walkthrough-content h3 { font-size:1.2rem;font-weight:800;margin-top:2.2rem;margin-bottom:0.8rem;color:var(--text-primary); }
+        .walkthrough-content p { font-size:0.98rem;line-height:1.85;color:var(--text-secondary);margin-bottom:1.35rem; }
+        .walkthrough-content strong { color:var(--text-primary);font-weight:800; }
+        .walkthrough-content ul,.walkthrough-content ol { margin-bottom:1.35rem;padding-left:1.6rem;color:var(--text-secondary);line-height:1.85; }
+        .walkthrough-content li { margin-bottom:0.35rem; }
+        
+        /* Premium Card style tables */
+        .walkthrough-content table { width:100%;border-collapse:separate;border-spacing:0;margin:2rem 0;font-size:0.95rem;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);box-shadow:0 12px 36px rgba(0,0,0,0.2);backdrop-filter:blur(10px); }
+        .walkthrough-content th { background:${gameColor}18;color:var(--text-primary);font-weight:900;padding:16px 20px;text-align:left;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.8px;border-bottom:2px solid ${gameColor}40; }
+        .walkthrough-content td { padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:middle;transition:all 0.2s; }
+        .walkthrough-content tbody tr:last-child td { border-bottom: none; }
+        .walkthrough-content tbody tr:hover td { background:${gameColor}08;color:var(--text-primary); }
+        
+        .walkthrough-content img { max-width:64px;display:inline-block;vertical-align:middle;margin:0 6px;transition:all 0.3s cubic-bezier(0.25, 1, 0.5, 1);filter:drop-shadow(0 6px 10px rgba(0,0,0,0.2)); }
+        .walkthrough-content img:hover { transform:scale(1.25) translateY(-4px);filter:drop-shadow(0 12px 18px ${gameColor}70); }
+        
+        .walkthrough-content blockquote { border-left:4px solid ${gameColor};padding:16px 24px;margin:24px 0;background:linear-gradient(90deg, ${gameColor}0c, transparent);border-radius:0 12px 12px 0;color:var(--text-secondary);font-style:italic; }
       `}</style>
     </div>
   );

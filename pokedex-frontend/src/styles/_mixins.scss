@@ -31,11 +31,45 @@
 
 // ─── Visual Effects Mixins ────────────────────────────────
 @mixin glass {
-  background: var(--bg-paper-glow);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-paper);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-main);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-md), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+@mixin holographic-sheen {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: "";
+    position: absolute;
+    top: -150%;
+    left: -150%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.03) 40%,
+      rgba(0, 229, 255, 0.12) 48%,
+      rgba(255, 46, 85, 0.12) 52%,
+      rgba(255, 255, 255, 0.03) 60%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    transform: rotate(-15deg);
+    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+    top: -50%;
+    left: -50%;
+  }
 }
 
 @mixin glow-hover($glow-var: var(--glow-primary), $translate-y: -4px) {
