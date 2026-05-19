@@ -62,9 +62,16 @@ const TrackerCard = React.memo<TrackerCardProps>(({
           ? '#fbbf24'
           : isCaught 
             ? '#10b981' 
-            : undefined
+            : undefined,
+        cursor: 'pointer'
       }}
-      onClick={() => onToggleCaught(pokemon.id)}
+      onClick={() => {
+        if (isCaught || isShiny) {
+          onViewDetails(pokemon.id);
+        } else {
+          onToggleCaught(pokemon.id);
+        }
+      }}
     >
       {/* Action buttons (top-right corner) */}
       <div className={styles.cardActions}>
