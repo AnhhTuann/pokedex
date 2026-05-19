@@ -217,16 +217,48 @@ export default function MainLayout() {
                 const displayName = getVersionDisplayName(selectedVersion);
                 const [game1Label, game2Label] = isPair ? displayName.split(' / ') : ['', ''];
 
+                // Light Mode header color override helper
+                const getLightModeHeaderColor = (color: string): string => {
+                  const c = color.toLowerCase();
+                  const overrides: Record<string, string> = {
+                    '#e3350d': '#B91C1C', // Deep Red
+                    '#1b53ba': '#1D4ED8', // Rich Royal Blue
+                    '#f5c518': '#A16207', // Dark Gold
+                    '#d4af37': '#9A3412', // Rich Bronze/Gold
+                    '#4fc1e9': '#0369A1', // Deep Cyan
+                    '#c0392b': '#991B1B', // Rich Ruby
+                    '#0f52ba': '#1E40AF', // Deep Royal Sapphire
+                    '#00a86b': '#047857', // Deep Emerald
+                    '#ff4500': '#B91C1C', // Dark Orange Red
+                    '#32cd32': '#15803D', // Deep Green
+                    '#5dade2': '#0369A1', // Deep Blue
+                    '#ff8fa3': '#BE185D', // Deep Pink
+                    '#8a9597': '#475569', // Deep Platinum
+                    '#b8860b': '#78350F', // Deep Amber
+                    '#708090': '#334155', // Deep Slate
+                    '#1abfff': '#0369A1', // Deep Sky Blue
+                    '#ff007f': '#BE185D', // Deep Rose
+                    '#ea580c': '#C2410C', // Deep Orange
+                    '#1e40af': '#1E3A8A', // Deep Blue
+                  };
+                  return overrides[c] || c;
+                };
+
+                const resolvedC1 = isDark ? (styleInfo.c1 || '#6366f1') : getLightModeHeaderColor(styleInfo.c1 || '#6366f1');
+                const resolvedC2 = isDark ? (styleInfo.c2 || '#6366f1') : getLightModeHeaderColor(styleInfo.c2 || '#6366f1');
+                const resolvedBg = isDark ? styleInfo.bg : getLightModeHeaderColor(styleInfo.bg);
+
                 return (
                   <button
                     id="game-version-selector-btn"
                     className={styles.versionBtn}
                     onClick={() => setVersionDialogOpen(true)}
                     style={{
-                      background: isPair ? 'transparent' : styleInfo.bg,
-                      '--v-bg': isPair ? 'transparent' : styleInfo.bg,
+                      background: isPair ? 'transparent' : resolvedBg,
+                      '--v-bg': isPair ? 'transparent' : resolvedBg,
                       '--v-text': styleInfo.text,
-                      '--v-shadow': styleInfo.shadow,
+                      '--v-box-shadow': isDark ? `0 0 12px ${styleInfo.shadow}` : '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '--v-box-shadow-hover': isDark ? `0 0 20px ${styleInfo.shadow}` : '0 6px 14px rgba(0, 0, 0, 0.2)',
                       borderRadius: '19px',
                       overflow: 'hidden',
                       isolation: 'isolate',
@@ -243,7 +275,7 @@ export default function MainLayout() {
                           justifyContent: 'center',
                           alignItems: 'center',
                           height: '100%',
-                          background: styleInfo.c1 || '#6366f1',
+                          background: resolvedC1,
                           padding: '0 8px'
                         }}>
                           <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>{game1Label.toUpperCase()}</span>
@@ -255,7 +287,7 @@ export default function MainLayout() {
                           justifyContent: 'center',
                           alignItems: 'center',
                           height: '100%',
-                          background: styleInfo.c2 || '#6366f1',
+                          background: resolvedC2,
                           padding: '0 8px'
                         }}>
                           <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>{game2Label.toUpperCase()}</span>
