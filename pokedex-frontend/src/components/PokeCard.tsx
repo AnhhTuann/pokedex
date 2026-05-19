@@ -19,25 +19,44 @@ interface PokeCardProps {
 function getBackgroundColor(type: string): string {
   const typeLower = type.toLowerCase();
   switch (typeLower) {
-    case "grass": return "#c3deb0";
-    case "fire": return "#f2ad7c";
-    case "water": return "#6cbce5";
-    case "bug": return "#d2e59b";
-    case "normal": return "#e2e2df";
-    case "poison": return "#dbb5e7";
-    case "electric": return "#fdf0a6";
-    case "ground": return "#ecd0a1";
-    case "fairy": return "#f6c4d7";
-    case "fighting": return "#dfa1a1";
-    case "psychic": return "#f8b8cc";
-    case "rock": return "#dcd3bd";
-    case "steel": return "#cfd8dc";
-    case "ice": return "#b2ebf2";
-    case "ghost": return "#c2b7e0";
-    case "dragon": return "#9fa8da";
-    case "dark": return "#bcaaa4";
-    case "flying": return "#c5cae9";
-    default: return "#f5f5f7";
+    case "grass":
+      return "#1a472a";
+    case "fire":
+      return "#3d1f15";
+    case "water":
+      return "#0f2d3d";
+    case "bug":
+      return "#1a2a0f";
+    case "normal":
+      return "#1a1a1f";
+    case "poison":
+      return "#261a2d";
+    case "electric":
+      return "#2d2810";
+    case "ground":
+      return "#2d1f0f";
+    case "fairy":
+      return "#2d151f";
+    case "fighting":
+      return "#2d151a";
+    case "psychic":
+      return "#2d1a28";
+    case "rock":
+      return "#1f1f1a";
+    case "steel":
+      return "#1a1d1f";
+    case "ice":
+      return "#0f2028";
+    case "ghost":
+      return "#1a162d";
+    case "dragon":
+      return "#151a2d";
+    case "dark":
+      return "#0f0f15";
+    case "flying":
+      return "#151a2d";
+    default:
+      return "#14141a";
   }
 }
 
@@ -55,15 +74,17 @@ export default function PokeCard({
   const primaryType = pokemon.types[0] || "normal";
   const cardBgColor = getBackgroundColor(primaryType);
 
-  const isMega = !!pokemon.isMega || 
+  const isMega =
+    !!pokemon.isMega ||
     pokemon.name.toLowerCase().endsWith("-mega") ||
     pokemon.name.toLowerCase().includes("-mega-") ||
     pokemon.name.toLowerCase().startsWith("mega ") ||
     pokemon.name.toLowerCase().endsWith(" mega");
-    
-  const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
-    ? pokemon.name.replace("Mega ", "") + "-Mega"
-    : pokemon.name;
+
+  const displayName =
+    pokemon.isMega && pokemon.name.startsWith("Mega ")
+      ? pokemon.name.replace("Mega ", "") + "-Mega"
+      : pokemon.name;
 
   return (
     <motion.div
@@ -83,12 +104,14 @@ export default function PokeCard({
           styles.pokeCard,
           isSelectedForCompare && styles.selectedCompare,
           isMega && styles.megaCard,
-          isCompareMode && !isSelectedForCompare && styles.faded
+          isCompareMode && !isSelectedForCompare && styles.faded,
         )}
-        style={{
-          background: `linear-gradient(135deg, ${cardBgColor}f0 0%, ${cardBgColor}d0 100%)`,
-          borderColor: isSelectedForCompare ? undefined : `${primaryColor}50`
-        }}
+        style={
+          {
+            "--primary-color": primaryColor,
+            "--primary-color-glow": `${primaryColor}40`,
+          } as React.CSSProperties
+        }
       >
         {/* Favorite Button */}
         <button
@@ -98,7 +121,7 @@ export default function PokeCard({
           }}
           className={cn(
             styles.favoriteBtn,
-            isFav ? styles.isFavorite : styles.isNotFavorite
+            isFav ? styles.isFavorite : styles.isNotFavorite,
           )}
           title={isFav ? "Remove from My Pokédex" : "Add to My Pokédex"}
         >
@@ -106,16 +129,22 @@ export default function PokeCard({
         </button>
 
         {/* Pokemon Image */}
-        <div 
+        <div
           className={styles.imageContainer}
           style={{
-            backgroundColor: `${primaryColor}25`,
-            boxShadow: isMega ? `0 0 20px ${primaryColor}70` : undefined,
-            border: isMega ? `2px dashed ${primaryColor}90` : undefined,
+            backgroundColor: `${primaryColor}15`,
+            boxShadow: isMega
+              ? `0 0 20px ${primaryColor}70, inset 0 2px 8px rgba(0, 0, 0, 0.3)`
+              : undefined,
+            border: isMega ? `2px dashed ${primaryColor}70` : undefined,
           }}
         >
           <img
-            src={isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
+            src={
+              isShinyMode && pokemon.shinyImage
+                ? pokemon.shinyImage
+                : pokemon.image
+            }
             alt={pokemon.name}
             loading="lazy"
             className={styles.pokemonImage}
@@ -128,27 +157,20 @@ export default function PokeCard({
                 : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
             }}
           />
-          {isMega && (
-            <div className={styles.megaBadge}>
-              Mega
-            </div>
-          )}
+          {isMega && <div className={styles.megaBadge}>Mega</div>}
         </div>
 
         {/* Info */}
         <div className={styles.info}>
           <p className={styles.idText}>
-            {pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
+            {pokemon.regionalNumber !== undefined &&
+            pokemon.regionalNumber !== null
               ? pokemon.regionalNumber.toString().padStart(3, "0")
               : formatSpeciesId(pokemon.speciesId || pokemon.id)}
           </p>
-          <h3 className={styles.nameText}>
-            {displayName}
-          </h3>
+          <h3 className={styles.nameText}>{displayName}</h3>
           {pokemon.category && (
-            <p className={styles.categoryText}>
-              {pokemon.category}
-            </p>
+            <p className={styles.categoryText}>{pokemon.category}</p>
           )}
 
           {/* Types */}
@@ -157,7 +179,9 @@ export default function PokeCard({
               <span
                 key={type}
                 className={styles.typeBadge}
-                style={{ backgroundColor: TYPE_COLORS[type.toLowerCase()] || "#9ca3af" }}
+                style={{
+                  backgroundColor: TYPE_COLORS[type.toLowerCase()] || "#9ca3af",
+                }}
               >
                 {type}
               </span>

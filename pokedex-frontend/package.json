@@ -31,11 +31,7 @@
     "react-dom": "^19.0.1",
     "react-router-dom": "^7.15.0",
     "recharts": "^3.8.1",
-    "zustand": "^5.0.13",
-    "@mui/material": "^5.16.7",
-    "@mui/icons-material": "^5.16.7",
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0"
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
