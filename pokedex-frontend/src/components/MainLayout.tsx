@@ -254,12 +254,11 @@ export default function MainLayout() {
                         <div style={{
                           position: 'absolute',
                           left: '50%',
-                          top: '50%',
-                          transform: 'translate(-50%, -50%)',
+                          top: 0,
+                          bottom: 0,
+                          transform: 'translateX(-50%)',
                           width: '2px',
-                          height: '20px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                          boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)',
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
                           pointerEvents: 'none',
                           zIndex: 10
                         }} />
@@ -465,12 +464,11 @@ export default function MainLayout() {
                                   <div style={{
                                     position: 'absolute',
                                     left: '50%',
-                                    top: '50%',
-                                    transform: 'translate(-50%, -50%)',
+                                    top: 0,
+                                    bottom: 0,
+                                    transform: 'translateX(-50%)',
                                     width: '2px',
-                                    height: '24px',
-                                    backgroundColor: isActive ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)',
-                                    boxShadow: '0 0 4px rgba(0, 0, 0, 0.2)',
+                                    backgroundColor: isActive ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.1)',
                                     transition: 'all 0.2s',
                                     pointerEvents: 'none',
                                     zIndex: 10
