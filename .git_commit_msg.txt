@@ -1,1 +1,2 @@
 chore: update seed.ts with dynamic generation categorization and fix team seeding
+tôi là tuấn 
