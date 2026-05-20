@@ -41,38 +41,38 @@ Với phong cách thiết kế **Dark Mode Neon**, các hiệu ứng chuyển đ
 ```bash
 pokedex-frontend/
 ├── src/
-│   ├── components/            # Thư mục chính chứa các Trang và Component của hệ thống
-│   │   ├── PokeCard.tsx       # Thẻ hiển thị Pokémon ngoài danh sách (Auto-coloring theo hệ)
-│   │   ├── PokeDetail.tsx     # Modal chi tiết Pokémon (Stats Chart, TTS Voice, Evolutions)
-│   │   ├── TeamBuilder.tsx    # Giao diện Smart Team Builder và logic Auto-Build
-│   │   ├── DamageCalculator.tsx# Bộ giả lập tính toán sát thương PvP
-│   │   ├── CatchTracker.tsx   # Danh sách đánh dấu những Pokémon đã bắt được
-│   │   ├── AbilityDex.tsx     # Bảng tra cứu Đặc tính (Ability)
-│   │   ├── MoveDex.tsx        # Bảng tra cứu Chiêu thức (Moves)
-│   │   ├── ItemDex.tsx        # Bảng tra cứu Vật phẩm (Items)
-│   │   ├── LocationDex.tsx    # Tra cứu điểm bắt Pokémon hoang dã
-│   │   ├── TypeDex.tsx        # Bảng tính toán song hệ
-│   │   ├── NatureDex.tsx      # Tra cứu chỉ số tăng/giảm theo Bản tính
-│   │   ├── Walkthrough.tsx    # Trang đọc hướng dẫn chơi game theo từng chương
-│   │   └── AdminWalkthrough.tsx# Trình soạn thảo CMS dành cho Admin (Tiptap Editor)
-│   ├── hooks/                 # Custom React Hooks
-│   │   └── usePokemon.ts      # Hook tiện ích hỗ trợ fetch dữ liệu
-│   ├── lib/                   # Chứa các Context và Store dùng chung
-│   │   ├── ThemeContext.tsx   # Quản lý giao diện sáng/tối (MUI Theme)
-│   │   ├── MyPokedexContext.tsx# Context quản lý trạng thái Pokémon yêu thích toàn cục
-│   │   ├── catchStore.ts      # Store quản lý danh sách Pokémon đã bắt (Zustand)
-│   │   ├── teamStore.ts       # Store quản lý danh sách đội hình thi đấu (Zustand)
-│   │   └── pokeApi.ts         # Cấu hình Apollo Client để kết nối với Backend GraphQL
-│   ├── pages/                 # Các trang phụ trợ
-│   │   └── UIShowcase.tsx     # Trang giới thiệu các Component thiết kế
-│   ├── types.ts               # Định nghĩa các TypeScript interfaces
-│   ├── index.css              # Tệp CSS chính (Cấu hình màu sắc, phông chữ và Tailwind)
-│   ├── App.tsx                # File định tuyến chính và cấu trúc Layout chính
-│   └── main.tsx               # Điểm khởi chạy React app kết nối với DOM
-├── index.html                 # Tệp HTML chính
-├── package.json               # dependencies & scripts
-├── tsconfig.json              # Cấu hình TypeScript
-└── vite.config.ts             # Cấu hình đóng gói Vite
+│   ├── components/            # Components chính
+│   │   ├── PokeCard.tsx       # Thẻ Pokémon (Auto-coloring)
+│   │   ├── PokeDetail.tsx     # Chi tiết (Stats, TTS Voice)
+│   │   ├── TeamBuilder.tsx    # Smart Team Builder
+│   │   ├── DamageCalculator.tsx # Tính sát thương PvP
+│   │   ├── CatchTracker.tsx   # Danh sách Pokémon đã bắt
+│   │   ├── AbilityDex.tsx     # Bảng Đặc tính
+│   │   ├── MoveDex.tsx        # Bảng Chiêu thức
+│   │   ├── ItemDex.tsx        # Bảng Vật phẩm
+│   │   ├── LocationDex.tsx    # Điểm xuất hiện
+│   │   ├── TypeDex.tsx        # Bảng song hệ
+│   │   ├── NatureDex.tsx      # Tăng/giảm chỉ số
+│   │   ├── Walkthrough.tsx    # Cẩm nang chơi game
+│   │   └── AdminWalkthrough.tsx # Trình soạn thảo CMS (Tiptap)
+│   ├── hooks/                 # Custom Hooks
+│   │   └── usePokemon.ts      # Fetch dữ liệu GraphQL
+│   ├── lib/                   # Context và Store
+│   │   ├── ThemeContext.tsx   # Quản lý giao diện (MUI)
+│   │   ├── MyPokedexContext.tsx # Quản lý yêu thích
+│   │   ├── catchStore.ts      # Store Pokémon đã bắt
+│   │   ├── teamStore.ts       # Store đội hình thi đấu
+│   │   └── pokeApi.ts         # Cấu hình Apollo Client
+│   ├── pages/                 # Trang phụ trợ
+│   │   └── UIShowcase.tsx     # Showcase UI Component
+│   ├── types.ts               # TypeScript interfaces
+│   ├── index.css              # File CSS & Tailwind
+│   ├── App.tsx                # Định tuyến Layout
+│   └── main.tsx               # Entry kết nối React DOM
+├── index.html                 # Tệp HTML gốc
+├── package.json               # Dependencies
+├── tsconfig.json              # Cấu hình TS
+└── vite.config.ts             # Cấu hình Vite
 ```
 
 ---
@@ -85,14 +85,31 @@ pokedex-frontend/
 npm install
 ```
 
-### 2. Cấu hình biến môi trường kết nối API
-Tạo file `.env` tại thư mục `/pokedex-frontend` (nếu cần thiết kế động địa chỉ GraphQL API):
+### 2. Cấu hình biến môi trường kết nối API Backend
+Dự án sử dụng Vite, do đó các biến môi trường cấu hình bắt buộc phải có tiền tố `VITE_`.
+Tạo file `.env` tại thư mục `/pokedex-frontend`:
+
+**Chạy Local:**
 ```env
 VITE_GRAPHQL_API_URL=http://localhost:3000/graphql
 ```
-*Lưu ý: Mặc định, cấu hình Apollo Client trong `src/lib/pokeApi.ts` đã tự động trỏ tới địa chỉ `http://localhost:3000/graphql` của local server.*
 
-### 3. Khởi động ứng dụng trong môi trường phát triển (Dev Server)
+**Chạy Production (Kết nối tới Backend đã deploy trên Render):**
+```env
+VITE_GRAPHQL_API_URL=https://<ten_app_cua_ban>.onrender.com/graphql
+```
+*(Ví dụ: `VITE_GRAPHQL_API_URL=https://pokedex-t9xl.onrender.com/graphql`)*
+
+### 3. Hướng dẫn Deploy lên Vercel (Production)
+Frontend này đã sẵn sàng để triển khai trực tiếp lên **Vercel**:
+1. Đẩy mã nguồn lên GitHub.
+2. Tại Vercel, chọn Import Project và trỏ vào thư mục `pokedex-frontend` làm Root Directory.
+3. Trong phần **Environment Variables** của Vercel, hãy thêm biến:
+   * Key: `VITE_GRAPHQL_API_URL`
+   * Value: `https://<ten_app_cua_ban>.onrender.com/graphql` (URL của backend đang chạy trên Render)
+4. Nhấn Deploy và trải nghiệm.
+
+### 4. Khởi động ứng dụng trong môi trường phát triển (Dev Server)
 ```bash
 npm run dev
 ```

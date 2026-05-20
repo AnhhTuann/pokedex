@@ -73,18 +73,18 @@ flowchart TD
 
 ```bash
 pokedex/
-├── pokedex-backend/       # GraphQL Server xử lý Database PostgreSQL qua Prisma ORM
-│   ├── prisma/            # File cấu hình schema.prisma định nghĩa mô hình dữ liệu
-│   ├── scripts/           # Các script cào dữ liệu từ PokéAPI & Seeding Walkthrough
-│   ├── src/               # Express & Apollo Server code (TypeDefs, Resolvers, Services)
-│   └── package.json       # dependencies & scripts backend
+├── pokedex-backend/       # GraphQL Server & Prisma ORM
+│   ├── prisma/            # Cấu hình schema.prisma
+│   ├── scripts/           # Script cào dữ liệu PokéAPI
+│   ├── src/               # Code Express & Apollo Server
+│   └── package.json       # Dependencies backend
 │
-├── pokedex-frontend/      # React Client xây dựng giao diện hiển thị Dark Neon mượt mà
-│   ├── src/               # React Code (Pages, Components, Context, Zustand Stores)
-│   └── package.json       # dependencies & scripts frontend
+├── pokedex-frontend/      # React Client (Vite, Tailwind)
+│   ├── src/               # React Components, Context, Store
+│   └── package.json       # Dependencies frontend
 │
-├── README.md              # Tài liệu hướng dẫn chính (file này)
-└── server_log.txt         # Lịch sử ghi nhận hoạt động server
+├── README.md              # Tài liệu hướng dẫn chính
+└── server_log.txt         # Lịch sử hoạt động server
 ```
 
 ---
@@ -102,9 +102,9 @@ Mở một cửa sổ dòng lệnh (Terminal) tại thư mục `/pokedex-backend
     ```bash
     npm install
     ```
-2.  Tạo file `.env` tại thư mục này và cấu hình URL cơ sở dữ liệu PostgreSQL của bạn:
+2.  Tạo file `.env` tại thư mục này và cấu hình URL cơ sở dữ liệu PostgreSQL (Local hoặc Neon Cloud DB):
     ```env
-    DATABASE_URL="postgresql://postgres:username_cua_ban@localhost:5432/pokedex?schema=public"
+    DATABASE_URL="postgresql://<user>:<pass>@<host>:5432/<db_name>?sslmode=require"
     ```
 3.  Đồng bộ cấu hình bảng cơ sở dữ liệu (Database Schema):
     ```bash
@@ -136,11 +136,23 @@ Mở một cửa sổ dòng lệnh (Terminal) thứ hai tại thư mục `/poked
     ```bash
     npm install
     ```
-2.  Khởi chạy Client dev server:
+2.  Thiết lập file `.env` chứa đường dẫn tới API Backend:
+    ```env
+    VITE_GRAPHQL_API_URL=http://localhost:3000/graphql
+    # Hoặc trỏ tới URL Production nếu Backend đã deploy trên Render
+    ```
+3.  Khởi chạy Client dev server:
     ```bash
     npm run dev
     ```
     *Giao diện người dùng sẽ chạy tại địa chỉ: `http://localhost:5173`*
+
+### 4. Hướng dẫn Triển khai (Deploy Production)
+Hệ thống này được thiết kế để dễ dàng triển khai lên các dịch vụ đám mây miễn phí:
+*   **Database:** Sử dụng [Neon.tech](https://neon.tech/) Serverless PostgresSQL.
+*   **Backend:** Triển khai Node.js server lên [Render.com](https://render.com/).
+*   **Frontend:** Triển khai Vite React App lên [Vercel.com](https://vercel.com/) (nhớ cấu hình `VITE_GRAPHQL_API_URL` trỏ về Render).
+Xem chi tiết cách kết nối trong `README.md` của từng thư mục tương ứng!
 
 ---
 

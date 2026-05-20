@@ -24,30 +24,30 @@ API Server này cung cấp toàn bộ kho dữ liệu chi tiết về Pokémon (
 ```bash
 pokedex-backend/
 ├── prisma/
-│   ├── schema.prisma          # Định nghĩa Database Schema (Models, Relations, Indexes)
-│   └── seeds/                 # Chứa dữ liệu tĩnh/mock (nếu có)
+│   ├── schema.prisma          # Định nghĩa Database Schema (Models)
+│   └── seeds/                 # Chứa dữ liệu tĩnh/mock
 ├── scripts/
-│   ├── seed.ts                # Script chính: Cào dữ liệu Pokemon, Forms, Moves từ PokéAPI
-│   ├── seed-abilities.ts      # Script cào chi tiết Ability (mô tả, thế hệ)
-│   ├── seed-items.ts          # Script cào và ánh xạ Vật phẩm (Items)
-│   ├── seed-encounters.ts     # Script cào điểm xuất hiện (Encounters) & tỉ lệ bắt
-│   └── seed-walkthrough.ts    # Script seed dữ liệu cẩm nang từ file JSON
+│   ├── seed.ts                # Cào dữ liệu Pokemon, Moves từ PokéAPI
+│   ├── seed-abilities.ts      # Cào chi tiết Ability
+│   ├── seed-items.ts          # Cào chi tiết Items
+│   ├── seed-encounters.ts     # Cào điểm xuất hiện (Encounters)
+│   └── seed-walkthrough.ts    # Seed dữ liệu cẩm nang từ JSON
 ├── src/
 │   ├── db/
-│   │   └── prisma.ts          # Khởi tạo và export PrismaClient toàn cục (Singleton pattern)
+│   │   └── prisma.ts          # Khởi tạo PrismaClient
 │   ├── graphql/
-│   │   ├── resolvers.ts       # Nơi tập hợp các Query và Mutation resolvers, gọi tới Services
-│   │   └── typeDefs.ts        # GraphQL Schema Definition Language (SDL)
-│   ├── services/              # Tách biệt mã nguồn xử lý logic nghiệp vụ & DB Queries
-│   │   ├── pokemon.service.ts # Logic truy vấn, tìm kiếm, lọc Pokemon nâng cao
-│   │   ├── move.service.ts    # Logic truy vấn và lọc chiêu thức
-│   │   ├── ability.service.ts # Logic truy vấn đặc tính và danh sách Pokemon sở hữu
-│   │   ├── item.service.ts    # Logic quản lý vật phẩm trong game
-│   │   └── location.service.ts# Logic điểm bắt và thông tin khu vực theo bản game
-│   └── index.ts               # Điểm khởi đầu của ứng dụng (Express Server + Apollo Server)
-├── .env.example               # Mẫu cấu hình biến môi trường
-├── package.json               # Quản lý dependencies & scripts chạy dự án
-└── tsconfig.json              # Cấu hình TypeScript compiler
+│   │   ├── resolvers.ts       # GraphQL Resolvers
+│   │   └── typeDefs.ts        # GraphQL Schema (SDL)
+│   ├── services/              # Logic xử lý nghiệp vụ
+│   │   ├── pokemon.service.ts # Logic truy vấn Pokemon
+│   │   ├── move.service.ts    # Logic truy vấn Chiêu thức
+│   │   ├── ability.service.ts # Logic truy vấn Đặc tính
+│   │   ├── item.service.ts    # Logic quản lý Vật phẩm
+│   │   └── location.service.ts# Logic điểm xuất hiện
+│   └── index.ts               # File chạy Server (Express + Apollo)
+├── .env.example               # Mẫu cấu hình môi trường
+├── package.json               # Cấu hình dependencies
+└── tsconfig.json              # Cấu hình TypeScript
 ```
 
 ---
@@ -58,16 +58,29 @@ pokedex-backend/
 *   **Node.js:** Phiên bản 18 trở lên.
 *   **PostgreSQL:** Đã cài đặt và đang chạy dịch vụ cơ sở dữ liệu trên máy tính của bạn.
 
-### 2. Thiết lập biến môi trường
-Tạo file `.env` tại thư mục gốc của `/pokedex-backend` (hoặc sao chép từ `.env.example`):
+### 2. Thiết lập biến môi trường kết nối Database
+Tạo file `.env` tại thư mục gốc của `/pokedex-backend` (hoặc sao chép từ `.env.example`).
+Bạn có thể kết nối với DB ở Local (máy cá nhân) hoặc sử dụng Cloud DB (như Neon.tech):
 
+**Tùy chọn A: Dùng Local PostgreSQL**
 ```env
-DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<db_name>?schema=public"
+DATABASE_URL="postgresql://postgres:tuan2525@localhost:5432/pokedex?schema=public"
 PORT=3000
 ```
-*Thay thế `<username>`, `<password>`, `<db_name>` bằng thông tin kết nối PostgreSQL của bạn.*
 
-### 3. Cài đặt thư viện dependencies
+**Tùy chọn B: Dùng Cloud PostgreSQL (Neon.tech)**
+```env
+DATABASE_URL="postgresql://<neon_user>:<neon_password>@ep-xxx-xxx.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+PORT=3000
+```
+*Thay thế `<neon_user>`, `<neon_password>` bằng thông tin kết nối Neon của bạn. Lưu ý phải có `?sslmode=require`.*
+
+### 3. Hướng dẫn Deploy lên Render (Production)
+Backend này đã được tối ưu để dễ dàng Deploy lên **Render.com** (Web Service):
+1. Kết nối repo GitHub với Render.
+2. Thiết lập **Build Command**: `yarn && yarn build` (hoặc `npm install && npm run build`)
+3. Thiết lập **Start Command**: `yarn start` (hoặc `npm start`)
+4. Thêm biến môi trường `DATABASE_URL` (URL của Neon.tech) vào phần Environment Variables trên Render.
 ```bash
 npm install
 ```
