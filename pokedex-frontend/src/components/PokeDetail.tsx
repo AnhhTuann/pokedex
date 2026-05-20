@@ -5,7 +5,7 @@ import { formatSpeciesId, TYPE_COLORS } from '../lib/utils';
 import { X, ChevronRight, Sparkles, Volume2, Play, Pause, Square, Mic } from 'lucide-react';
 import styles from '../styles/components/PokeDetail.module.scss';
 import { useColorMode } from '../main';
-import { extractDominantColor, getExtractedColors } from '../lib/colorExtractor';
+import { extractDominantColor, getExtractedColors, addOpacityToColor } from '../lib/colorExtractor';
 
 
 export const GET_POKEMON_DETAIL = gql`
@@ -197,7 +197,7 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
         style={
           !isDark && p?.types && p.types.length > 0
             ? {
-                background: `linear-gradient(135deg, ${pastelBgColor}99 0%, rgba(255, 255, 255, 0.98) 100%)`,
+                background: `linear-gradient(135deg, ${addOpacityToColor(pastelBgColor, 0.6)} 0%, rgba(255, 255, 255, 0.98) 100%)`,
                 border: `1px solid ${primaryColor}2e`,
                 boxShadow: `0 20px 40px ${primaryColor}12`
               }

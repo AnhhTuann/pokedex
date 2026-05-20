@@ -7,7 +7,7 @@ import { useMyPokedex } from "../lib/MyPokedexContext";
 import { useTeamStore } from "../lib/teamStore";
 import { formatSpeciesId, cn, TYPE_COLORS } from "../lib/utils";
 import { useColorMode } from "../main";
-import { extractDominantColor, getExtractedColors } from "../lib/colorExtractor";
+import { extractDominantColor, getExtractedColors, addOpacityToColor } from "../lib/colorExtractor";
 import styles from "../styles/components/PokeCard.module.scss";
 
 interface PokeCardProps {
@@ -97,7 +97,7 @@ export default function PokeCard({
             "--primary-color-glow": primaryColorGlow,
             "--card-bg": isDark
               ? undefined
-              : `linear-gradient(135deg, ${pastelBgColor} 0%, ${pastelBgColor}dd 100%)`,
+              : `linear-gradient(135deg, ${pastelBgColor} 0%, ${addOpacityToColor(pastelBgColor, 0.85)} 100%)`,
             borderColor: !isDark ? "rgba(0, 0, 0, 0.04)" : undefined,
           } as React.CSSProperties
         }

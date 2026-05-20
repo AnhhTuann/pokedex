@@ -179,3 +179,27 @@ export function getExtractedColors(
     };
   }
 }
+
+/**
+ * Safely adds opacity to a HEX or HSL color string
+ */
+export function addOpacityToColor(color: string, opacity: number): string {
+  if (!color) return 'transparent';
+  
+  // If it's a HEX color
+  if (color.startsWith('#')) {
+    const alphaHex = Math.round(opacity * 255).toString(16).padStart(2, '0');
+    return `${color}${alphaHex}`;
+  }
+  
+  // If it's an HSL color like hsl(120, 30%, 90%)
+  if (color.startsWith('hsl')) {
+    if (color.startsWith('hsla')) {
+      return color.replace(/,\s*[\d.]+\s*\)$/, `, ${opacity})`);
+    }
+    return color.replace('hsl', 'hsla').replace(')', `, ${opacity})`);
+  }
+  
+  return color;
+}
+

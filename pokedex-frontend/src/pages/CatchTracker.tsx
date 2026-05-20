@@ -19,7 +19,7 @@ import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../App';
 import PokeDetail from '../components/PokeDetail';
 import { formatSpeciesId, TYPE_COLORS } from '../lib/utils';
 import { useColorMode } from '../main';
-import { extractDominantColor, getExtractedColors } from '../lib/colorExtractor';
+import { extractDominantColor, getExtractedColors, addOpacityToColor } from '../lib/colorExtractor';
 import styles from '../styles/pages/CatchTracker.module.scss';
 
 const GET_POKEMON_LIST = gql`
@@ -95,7 +95,7 @@ const TrackerCard = React.memo<TrackerCardProps>(({
         cursor: 'pointer',
         background: isDark
           ? undefined
-          : `linear-gradient(135deg, ${pastelBgColor} 0%, ${pastelBgColor}dd 100%)`,
+          : `linear-gradient(135deg, ${pastelBgColor} 0%, ${addOpacityToColor(pastelBgColor, 0.85)} 100%)`,
         ['--primary-color' as any]: primaryColor,
         ['--primary-color-glow' as any]: primaryColorGlow,
       }}
