@@ -60,10 +60,7 @@ export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: 
         ctx.drawImage(img, 0, 0, 30, 30);
         const imgData = ctx.getImageData(0, 0, 30, 30).data;
 
-        const colorCounts: Record<string, { count: number; r: number; g: number; b: number }> = {};
-        let maxCount = 0;
-        let dominant = { r: 120, g: 120, b: 120 }; // Default neutral gray
-        let found = false;
+        const colorCounts: Record<string, { count: number; r: number; g: number; b: number; maxChroma: number }> = {};
 
         for (let i = 0; i < imgData.length; i += 4) {
           const r = imgData[i];
@@ -78,6 +75,9 @@ export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: 
           if (r > 235 && g > 235 && b > 235) continue;
           if (r < 25 && g < 25 && b < 25) continue;
 
+          // Calculate chroma (color intensity / saturation)
+          const chroma = Math.max(r, g, b) - Math.min(r, g, b);
+
           // Bucket colors (rounding) to group similar pixels
           const rBucket = Math.round(r / 12) * 12;
           const gBucket = Math.round(g / 12) * 12;
@@ -85,13 +85,27 @@ export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: 
           const key = `${rBucket},${gBucket},${bBucket}`;
 
           if (!colorCounts[key]) {
-            colorCounts[key] = { count: 0, r, g, b };
+            colorCounts[key] = { count: 0, r, g, b, maxChroma: chroma };
           }
           colorCounts[key].count++;
+          if (chroma > colorCounts[key].maxChroma) {
+            colorCounts[key].maxChroma = chroma;
+          }
+        }
 
-          if (colorCounts[key].count > maxCount) {
-            maxCount = colorCounts[key].count;
-            dominant = { r, g, b };
+        let maxScore = 0;
+        let dominant = { r: 120, g: 120, b: 120 }; // Default neutral gray
+        let found = false;
+
+        for (const key in colorCounts) {
+          const item = colorCounts[key];
+          // Score formula: count * (chroma + 15). 
+          // Adding 15 ensures pure gray/silver Pokemons (like Magneton) still work,
+          // while colorful elements are heavily prioritized.
+          const score = item.count * (item.maxChroma + 15);
+          if (score > maxScore) {
+            maxScore = score;
+            dominant = { r: item.r, g: item.g, b: item.b };
             found = true;
           }
         }
