@@ -19,10 +19,12 @@ export function rgbToHsl(r: number, g: number, b: number) {
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
+    if (max === r) {
+      h = (g - b) / d + (g < b ? 6 : 0);
+    } else if (max === g) {
+      h = (b - r) / d + 2;
+    } else {
+      h = (r - g) / d + 4;
     }
     h /= 6;
   }
@@ -95,7 +97,7 @@ export function extractDominantColor(imageUrl: string, primaryType?: string): Pr
         }
 
         let typeHue: number | null = null;
-        if (primaryType) {
+        if (primaryType && primaryType.toLowerCase() !== 'normal') {
           const defaultColor = TYPE_COLORS[primaryType.toLowerCase()] || '#9ca3af';
           const typeHsl = hexToHsl(defaultColor);
           typeHue = typeHsl.h;
@@ -114,9 +116,11 @@ export function extractDominantColor(imageUrl: string, primaryType?: string): Pr
             const itemHsl = rgbToHsl(item.r, item.g, item.b);
             const hueDiff = Math.abs(itemHsl.h - typeHue);
             const shortestHueDiff = Math.min(hueDiff, 360 - hueDiff);
-            if (shortestHueDiff < 50) {
-              // Up to 2.5x boost for colors matching the Pokemon's primary type
-              typeBoost = 1.0 + 1.5 * (1.0 - shortestHueDiff / 50);
+            if (shortestHueDiff < 60) {
+              // Up to 8.0x boost for colors matching the Pokemon's primary type.
+              // This is crucial for Pokemon like Blastoise (slate blue vs brown shell)
+              // and Beedrill (yellow vs white/gray wings).
+              typeBoost = 1.0 + 7.0 * (1.0 - shortestHueDiff / 60);
             }
           }
 

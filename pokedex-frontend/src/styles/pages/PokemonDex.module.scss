@@ -14,18 +14,29 @@
 // ─── Search Bar Frame ─────────────────────────────────────
 .searchWrapper {
   margin-bottom: 32px;
-  @include glass;
   border-radius: $radius-lg;
-  padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 16px 24px;
   transition: all $transition-normal;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  :global(.dark) & {
+    background: rgba(1, 4, 9, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  }
   
   &:focus-within {
-    border: 1px solid transparent;
-    background-image: linear-gradient(var(--bg-paper), var(--bg-paper)), var(--primary-gradient);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    box-shadow: var(--shadow-lg), var(--glow-primary);
+    border-color: rgba(var(--primary-rgb), 0.35);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 0 15px rgba(var(--primary-rgb), 0.1);
+    
+    :global(.dark) & {
+      border-color: rgba(var(--primary-rgb), 0.4);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--primary-rgb), 0.15);
+    }
   }
 }
 

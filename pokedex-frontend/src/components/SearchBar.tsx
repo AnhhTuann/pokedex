@@ -1,6 +1,7 @@
-import React from "react";
-import { Search } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Search, ChevronDown } from "lucide-react";
 import { InputField } from "./common/InputField";
+import { cn } from "../lib/utils";
 import styles from "../styles/components/SearchBar.module.scss";
 
 interface SearchBarProps {
@@ -54,10 +55,26 @@ export default function SearchBar({
   genValue,
   onGenChange,
 }: SearchBarProps) {
-  const handleGenChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value;
-    onGenChange?.(val === "all" ? null : Number(val));
-  };
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [isGenOpen, setIsGenOpen] = useState(false);
+  
+  const typeRef = useRef<HTMLDivElement>(null);
+  const genRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (typeRef.current && !typeRef.current.contains(event.target as Node)) {
+        setIsTypeOpen(false);
+      }
+      if (genRef.current && !genRef.current.contains(event.target as Node)) {
+        setIsGenOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -71,35 +88,106 @@ export default function SearchBar({
       </div>
 
       <div className={styles.dropdownGroup}>
-        <div className={styles.dropdownWrapper}>
-          <select
-            value={typeValue}
-            onChange={(e) => onTypeChange(e.target.value)}
-            className={styles.select}
-            aria-label="Filter by Type"
-          >
-            <option value="">All Types</option>
-            {POKEMON_TYPES.map((t) => (
-              <option key={t} value={t.toLowerCase()}>
-                {t}
-              </option>
-            ))}
-          </select>
+        {/* Custom Type Filter */}
+        <div className={styles.dropdownWrapper} ref={typeRef}>
+          <div className={styles.customSelectContainer}>
+            <button
+              type="button"
+              className={cn(styles.customSelectTrigger, isTypeOpen && styles.active)}
+              onClick={() => {
+                setIsTypeOpen(!isTypeOpen);
+                setIsGenOpen(false);
+              }}
+              aria-label="Filter by Type"
+            >
+              <span>
+                {typeValue
+                  ? typeValue.charAt(0).toUpperCase() + typeValue.slice(1)
+                  : "All Types"}
+              </span>
+              <ChevronDown
+                size={16}
+                className={cn(styles.arrowIcon, isTypeOpen && styles.rotated)}
+              />
+            </button>
+            
+            {isTypeOpen && (
+              <div className={styles.customDropdown}>
+                <div
+                  className={cn(
+                    styles.dropdownOption,
+                    !typeValue && styles.selectedOption
+                  )}
+                  onClick={() => {
+                    onTypeChange("");
+                    setIsTypeOpen(false);
+                  }}
+                >
+                  All Types
+                </div>
+                {POKEMON_TYPES.map((t) => (
+                  <div
+                    key={t}
+                    className={cn(
+                      styles.dropdownOption,
+                      typeValue === t.toLowerCase() && styles.selectedOption
+                    )}
+                    onClick={() => {
+                      onTypeChange(t.toLowerCase());
+                      setIsTypeOpen(false);
+                    }}
+                  >
+                    {t}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className={styles.dropdownWrapper}>
-          <select
-            value={genValue ?? "all"}
-            onChange={handleGenChange}
-            className={styles.select}
-            aria-label="Filter by Generation"
-          >
-            {GENERATIONS.map((g) => (
-              <option key={g.value} value={g.value}>
-                {g.label}
-              </option>
-            ))}
-          </select>
+        {/* Custom Gen Filter */}
+        <div className={styles.dropdownWrapper} ref={genRef}>
+          <div className={styles.customSelectContainer}>
+            <button
+              type="button"
+              className={cn(styles.customSelectTrigger, isGenOpen && styles.active)}
+              onClick={() => {
+                setIsGenOpen(!isGenOpen);
+                setIsTypeOpen(false);
+              }}
+              aria-label="Filter by Generation"
+            >
+              <span>
+                {genValue !== null && genValue !== undefined
+                  ? GENERATIONS.find((g) => g.value === genValue)?.label
+                  : "All Gens"}
+              </span>
+              <ChevronDown
+                size={16}
+                className={cn(styles.arrowIcon, isGenOpen && styles.rotated)}
+              />
+            </button>
+            
+            {isGenOpen && (
+              <div className={styles.customDropdown}>
+                {GENERATIONS.map((g) => (
+                  <div
+                    key={g.value}
+                    className={cn(
+                      styles.dropdownOption,
+                      ((genValue === g.value) || (genValue === null && g.value === "all")) && styles.selectedOption
+                    )}
+                    onClick={() => {
+                      onGenChange?.(g.value === "all" ? null : Number(g.value));
+                      setIsGenOpen(false);
+                    }}
+                  >
+                    {g.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
