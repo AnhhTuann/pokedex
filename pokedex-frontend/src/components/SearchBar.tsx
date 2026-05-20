@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, X } from "lucide-react";
 import { InputField } from "./common/InputField";
 import { cn } from "../lib/utils";
 import styles from "../styles/components/SearchBar.module.scss";
@@ -93,22 +93,50 @@ export default function SearchBar({
           <div className={styles.customSelectContainer}>
             <button
               type="button"
-              className={cn(styles.customSelectTrigger, isTypeOpen && styles.active)}
+              className={cn(
+                styles.customSelectTrigger, 
+                isTypeOpen && styles.active,
+                !typeValue && styles.isPlaceholder
+              )}
               onClick={() => {
                 setIsTypeOpen(!isTypeOpen);
                 setIsGenOpen(false);
               }}
               aria-label="Filter by Type"
             >
-              <span>
+              <span className={styles.triggerText}>
                 {typeValue
                   ? typeValue.charAt(0).toUpperCase() + typeValue.slice(1)
                   : "All Types"}
               </span>
-              <ChevronDown
-                size={16}
-                className={cn(styles.arrowIcon, isTypeOpen && styles.rotated)}
-              />
+              <div className={styles.triggerActions}>
+                {typeValue && (
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    className={styles.clearButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onTypeChange("");
+                      setIsTypeOpen(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.stopPropagation();
+                        onTypeChange("");
+                        setIsTypeOpen(false);
+                      }
+                    }}
+                    aria-label="Clear Type Filter"
+                  >
+                    <X size={14} />
+                  </span>
+                )}
+                <ChevronDown
+                  size={16}
+                  className={cn(styles.arrowIcon, isTypeOpen && styles.rotated)}
+                />
+              </div>
             </button>
             
             {isTypeOpen && (
@@ -150,22 +178,50 @@ export default function SearchBar({
           <div className={styles.customSelectContainer}>
             <button
               type="button"
-              className={cn(styles.customSelectTrigger, isGenOpen && styles.active)}
+              className={cn(
+                styles.customSelectTrigger, 
+                isGenOpen && styles.active,
+                (genValue === null || genValue === undefined) && styles.isPlaceholder
+              )}
               onClick={() => {
                 setIsGenOpen(!isGenOpen);
                 setIsTypeOpen(false);
               }}
               aria-label="Filter by Generation"
             >
-              <span>
+              <span className={styles.triggerText}>
                 {genValue !== null && genValue !== undefined
                   ? GENERATIONS.find((g) => g.value === genValue)?.label
                   : "All Gens"}
               </span>
-              <ChevronDown
-                size={16}
-                className={cn(styles.arrowIcon, isGenOpen && styles.rotated)}
-              />
+              <div className={styles.triggerActions}>
+                {genValue !== null && genValue !== undefined && (
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    className={styles.clearButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onGenChange?.(null);
+                      setIsGenOpen(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.stopPropagation();
+                        onGenChange?.(null);
+                        setIsGenOpen(false);
+                      }
+                    }}
+                    aria-label="Clear Generation Filter"
+                  >
+                    <X size={14} />
+                  </span>
+                )}
+                <ChevronDown
+                  size={16}
+                  className={cn(styles.arrowIcon, isGenOpen && styles.rotated)}
+                />
+              </div>
             </button>
             
             {isGenOpen && (
