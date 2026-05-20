@@ -692,3 +692,129 @@
     display: inline-block;
   }
 }
+
+// ─── Elegant Light Theme Overrides ─────────────────────────
+:global(html:not(.dark)) {
+  .modalOverlay {
+    background: rgba(15, 23, 42, 0.25);
+    backdrop-filter: blur(12px);
+  }
+
+  .dialogPaper {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  .closeBtn {
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #475569;
+    background: rgba(0, 0, 0, 0.02);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #0f172a;
+    }
+  }
+
+  .statBlock {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+
+  .abilityChip {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.06);
+    color: #334155;
+  }
+
+  .divider {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .voicePaper {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+
+  .stopBtn {
+    border-color: #ef4444;
+    color: #ef4444;
+    background: transparent;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.04);
+    }
+  }
+
+  .statBarRow {
+    .progressTrack {
+      background: rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .totalRow {
+    border-top-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .habitatCard {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+
+  .evoImageWrapper {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.06);
+    
+    &:hover {
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .megaCard {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+
+    &:hover {
+      border-color: rgba(0, 0, 0, 0.15) !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .moveCard {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
+
+    &:hover {
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.03);
+    }
+  }
+
+  .moveMethodLabel {
+    background: rgba(0, 0, 0, 0.04);
+    color: #475569;
+  }
+
+  .tabsRow {
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+
+    .tabBtn {
+      color: #64748b;
+
+      &:hover {
+        color: #0f172a;
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      &.active {
+        background: rgba(var(--primary-rgb), 0.06);
+      }
+    }
+  }
+}

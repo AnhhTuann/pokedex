@@ -31,6 +31,31 @@ const GET_POKEMON_LIST = gql`
 `;
 
 
+function getPastelBackgroundColor(type: string): string {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case "grass": return "#c3deb0";
+    case "fire": return "#f2ad7c";
+    case "water": return "#6cbce5";
+    case "bug": return "#d2e59b";
+    case "normal": return "#e2e2df";
+    case "poison": return "#dbb5e7";
+    case "electric": return "#fdf0a6";
+    case "ground": return "#ecd0a1";
+    case "fairy": return "#f6c4d7";
+    case "fighting": return "#dfa1a1";
+    case "psychic": return "#f8b8cc";
+    case "rock": return "#dcd3bd";
+    case "steel": return "#cfd8dc";
+    case "ice": return "#b2ebf2";
+    case "ghost": return "#c2b7e0";
+    case "dragon": return "#9fa8da";
+    case "dark": return "#bcaaa4";
+    case "flying": return "#c5cae9";
+    default: return "#f5f5f7";
+  }
+}
+
 // ── OPTIMIZED CHILD CARD COMPONENT (React.memo) ──
 interface TrackerCardProps {
   pokemon: PokemonListItem;
@@ -51,7 +76,11 @@ const TrackerCard = React.memo<TrackerCardProps>(({
   onToggleShiny,
   onViewDetails
 }) => {
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
   const primaryColor = TYPE_COLORS[pokemon.types[0]] || '#9ca3af';
+  const primaryType = pokemon.types[0] || 'normal';
+  const pastelBgColor = getPastelBackgroundColor(primaryType);
   const isMarked = isCaught || isShiny;
 
   return (
@@ -62,8 +91,13 @@ const TrackerCard = React.memo<TrackerCardProps>(({
           ? '#fbbf24'
           : isCaught 
             ? '#10b981' 
-            : undefined,
-        cursor: 'pointer'
+            : !isDark
+              ? 'rgba(0, 0, 0, 0.05)'
+              : undefined,
+        cursor: 'pointer',
+        background: isDark
+          ? undefined
+          : `linear-gradient(135deg, ${pastelBgColor} 0%, ${pastelBgColor}dd 100%)`
       }}
       onClick={() => {
         if (isCaught || isShiny) {

@@ -4,6 +4,32 @@ import { useTeamStore } from '../lib/teamStore';
 import { formatSpeciesId, TYPE_COLORS } from '../lib/utils';
 import { X, ChevronRight, Sparkles, Volume2, Play, Pause, Square, Mic } from 'lucide-react';
 import styles from '../styles/components/PokeDetail.module.scss';
+import { useColorMode } from '../main';
+
+function getPastelBackgroundColor(type: string): string {
+  const typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case "grass": return "#c3deb0";
+    case "fire": return "#f2ad7c";
+    case "water": return "#6cbce5";
+    case "bug": return "#d2e59b";
+    case "normal": return "#e2e2df";
+    case "poison": return "#dbb5e7";
+    case "electric": return "#fdf0a6";
+    case "ground": return "#ecd0a1";
+    case "fairy": return "#f6c4d7";
+    case "fighting": return "#dfa1a1";
+    case "psychic": return "#f8b8cc";
+    case "rock": return "#dcd3bd";
+    case "steel": return "#cfd8dc";
+    case "ice": return "#b2ebf2";
+    case "ghost": return "#c2b7e0";
+    case "dragon": return "#9fa8da";
+    case "dark": return "#bcaaa4";
+    case "flying": return "#c5cae9";
+    default: return "#f5f5f7";
+  }
+}
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {
@@ -39,6 +65,8 @@ interface PokeDetailProps {
 }
 
 export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: PokeDetailProps) {
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
   const { team, addMember, removeMember } = useTeamStore();
   const [selectedVersion, setSelectedVersion] = useState<string>('');
   const [isShiny, setIsShiny] = useState<boolean>(false);
@@ -163,7 +191,19 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()}>
+      <div
+        className={styles.dialogPaper}
+        onClick={e => e.stopPropagation()}
+        style={
+          !isDark && p?.types && p.types.length > 0
+            ? {
+                background: `linear-gradient(135deg, ${getPastelBackgroundColor(p.types[0])}99 0%, rgba(255, 255, 255, 0.98) 100%)`,
+                border: `1px solid ${primaryColor}2e`,
+                boxShadow: `0 20px 40px ${primaryColor}12`
+              }
+            : undefined
+        }
+      >
         {/* Header Block */}
         <div className={styles.headerPanel}>
           {/* Close button */}
@@ -188,8 +228,10 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
                 className={styles.pokemonImageWrapper}
                 onClick={toggleShiny}
                 style={{
-                  background: `radial-gradient(circle, ${primaryColor}1a 0%, ${primaryColor}03 70%)`,
-                  border: `2px solid ${primaryColor}2b`
+                  background: isDark
+                    ? `radial-gradient(circle, ${primaryColor}1a 0%, ${primaryColor}03 70%)`
+                    : `radial-gradient(circle, ${primaryColor}26 0%, ${primaryColor}08 70%)`,
+                  border: `2px solid ${isDark ? `${primaryColor}2b` : `${primaryColor}4f`}`
                 }}
               >
                 {displayImage && (
@@ -275,7 +317,18 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
             <hr className={styles.divider} />
 
             {/* Voice Soundwaves and Description */}
-            <div className={styles.voicePaper}>
+            <div
+              className={styles.voicePaper}
+              style={
+                !isDark
+                  ? {
+                      background: `${primaryColor}0a`,
+                      border: `1px solid ${primaryColor}1a`,
+                      borderLeft: `5px solid ${primaryColor}`
+                    }
+                  : undefined
+              }
+            >
               {isSpeakingDescription && (
                 <div className={styles.soundWave}>
                   <span style={{ width: 3, height: 16, background: 'var(--primary)', animation: 'soundBar 0.8s infinite alternate' }} />
@@ -503,8 +556,16 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
                           className={styles.evoImageWrapper}
                           onClick={() => onSelectPokemonId && onSelectPokemonId(evo.id)}
                           style={{
-                            background: `radial-gradient(circle, ${primaryColor}14 0%, transparent 70%)`,
-                            border: `1px solid ${evo.id === pokemonId ? primaryColor : 'var(--border-main)'}`
+                            background: isDark
+                              ? `radial-gradient(circle, ${primaryColor}14 0%, transparent 70%)`
+                              : `radial-gradient(circle, ${primaryColor}22 0%, transparent 70%)`,
+                            border: `1px solid ${
+                              evo.id === pokemonId
+                                ? primaryColor
+                                : isDark
+                                ? 'var(--border-main)'
+                                : 'rgba(0, 0, 0, 0.08)'
+                            }`
                           }}
                         >
                           {evoImg && (
