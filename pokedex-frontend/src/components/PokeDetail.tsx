@@ -165,12 +165,13 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
 
   const displayImage = isShiny ? (p?.shinyImage || p?.image) : p?.image;
 
+  const primaryType = p?.types && p.types.length > 0 ? p.types[0] : 'normal';
   const [extractedRgb, setExtractedRgb] = useState<{ r: number; g: number; b: number } | null>(null);
 
   useEffect(() => {
     if (!displayImage) return;
     let active = true;
-    extractDominantColor(displayImage).then((rgb) => {
+    extractDominantColor(displayImage, primaryType).then((rgb) => {
       if (active) {
         setExtractedRgb(rgb);
       }
@@ -178,9 +179,8 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
     return () => {
       active = false;
     };
-  }, [displayImage]);
+  }, [displayImage, primaryType]);
 
-  const primaryType = p?.types && p.types.length > 0 ? p.types[0] : 'normal';
   const { primaryColor: dynamicPrimaryColor, pastelBgColor } = getExtractedColors(
     extractedRgb,
     primaryType,

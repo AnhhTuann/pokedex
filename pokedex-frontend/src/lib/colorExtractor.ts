@@ -36,10 +36,11 @@ export function rgbToHsl(r: number, g: number, b: number) {
 /**
  * Extracts dominant color from image URL using canvas downscaling
  */
-export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: number; b: number } | null> {
+export function extractDominantColor(imageUrl: string, primaryType?: string): Promise<{ r: number; g: number; b: number } | null> {
   if (!imageUrl) return Promise.resolve(null);
-  if (colorCache[imageUrl]) {
-    return Promise.resolve(colorCache[imageUrl]);
+  const cacheKey = `${imageUrl}_${primaryType || ''}`;
+  if (colorCache[cacheKey]) {
+    return Promise.resolve(colorCache[cacheKey]);
   }
 
   return new Promise((resolve) => {
@@ -93,16 +94,34 @@ export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: 
           }
         }
 
+        let typeHue: number | null = null;
+        if (primaryType) {
+          const defaultColor = TYPE_COLORS[primaryType.toLowerCase()] || '#9ca3af';
+          const typeHsl = hexToHsl(defaultColor);
+          typeHue = typeHsl.h;
+        }
+
         let maxScore = 0;
         let dominant = { r: 120, g: 120, b: 120 }; // Default neutral gray
         let found = false;
 
         for (const key in colorCounts) {
           const item = colorCounts[key];
-          // Score formula: count * (chroma + 15). 
-          // Adding 15 ensures pure gray/silver Pokemons (like Magneton) still work,
-          // while colorful elements are heavily prioritized.
-          const score = item.count * (item.maxChroma + 15);
+          
+          // Calculate type-matching boost based on hue proximity
+          let typeBoost = 1.0;
+          if (typeHue !== null) {
+            const itemHsl = rgbToHsl(item.r, item.g, item.b);
+            const hueDiff = Math.abs(itemHsl.h - typeHue);
+            const shortestHueDiff = Math.min(hueDiff, 360 - hueDiff);
+            if (shortestHueDiff < 50) {
+              // Up to 2.5x boost for colors matching the Pokemon's primary type
+              typeBoost = 1.0 + 1.5 * (1.0 - shortestHueDiff / 50);
+            }
+          }
+
+          // Score formula: count * (chroma + 15) * typeBoost. 
+          const score = item.count * (item.maxChroma + 15) * typeBoost;
           if (score > maxScore) {
             maxScore = score;
             dominant = { r: item.r, g: item.g, b: item.b };
@@ -112,7 +131,7 @@ export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: 
 
         const result = found ? dominant : null;
         if (result) {
-          colorCache[imageUrl] = result;
+          colorCache[cacheKey] = result;
         }
         resolve(result);
       } catch (e) {

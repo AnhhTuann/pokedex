@@ -43,7 +43,7 @@ export default function PokeCard({
 
   useEffect(() => {
     let active = true;
-    extractDominantColor(imageUrl).then((rgb) => {
+    extractDominantColor(imageUrl, primaryType).then((rgb) => {
       if (active) {
         setExtractedRgb(rgb);
       }
