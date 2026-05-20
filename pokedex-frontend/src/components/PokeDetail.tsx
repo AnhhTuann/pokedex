@@ -5,31 +5,8 @@ import { formatSpeciesId, TYPE_COLORS } from '../lib/utils';
 import { X, ChevronRight, Sparkles, Volume2, Play, Pause, Square, Mic } from 'lucide-react';
 import styles from '../styles/components/PokeDetail.module.scss';
 import { useColorMode } from '../main';
+import { extractDominantColor, getExtractedColors } from '../lib/colorExtractor';
 
-function getPastelBackgroundColor(type: string): string {
-  const typeLower = type.toLowerCase();
-  switch (typeLower) {
-    case "grass": return "#c3deb0";
-    case "fire": return "#f2ad7c";
-    case "water": return "#6cbce5";
-    case "bug": return "#d2e59b";
-    case "normal": return "#e2e2df";
-    case "poison": return "#dbb5e7";
-    case "electric": return "#fdf0a6";
-    case "ground": return "#ecd0a1";
-    case "fairy": return "#f6c4d7";
-    case "fighting": return "#dfa1a1";
-    case "psychic": return "#f8b8cc";
-    case "rock": return "#dcd3bd";
-    case "steel": return "#cfd8dc";
-    case "ice": return "#b2ebf2";
-    case "ghost": return "#c2b7e0";
-    case "dragon": return "#9fa8da";
-    case "dark": return "#bcaaa4";
-    case "flying": return "#c5cae9";
-    default: return "#f5f5f7";
-  }
-}
 
 export const GET_POKEMON_DETAIL = gql`
   query GetPokemonDetail($id: Int!, $version: String) {
@@ -186,8 +163,31 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
 
   if (!pokemonId) return null;
 
-  const primaryColor = p?.types && p.types.length > 0 ? (TYPE_COLORS[p.types[0]] || '#3f51b5') : '#3f51b5';
   const displayImage = isShiny ? (p?.shinyImage || p?.image) : p?.image;
+
+  const [extractedRgb, setExtractedRgb] = useState<{ r: number; g: number; b: number } | null>(null);
+
+  useEffect(() => {
+    if (!displayImage) return;
+    let active = true;
+    extractDominantColor(displayImage).then((rgb) => {
+      if (active) {
+        setExtractedRgb(rgb);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [displayImage]);
+
+  const primaryType = p?.types && p.types.length > 0 ? p.types[0] : 'normal';
+  const { primaryColor: dynamicPrimaryColor, pastelBgColor } = getExtractedColors(
+    extractedRgb,
+    primaryType,
+    isDark
+  );
+
+  const primaryColor = dynamicPrimaryColor;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -197,7 +197,7 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
         style={
           !isDark && p?.types && p.types.length > 0
             ? {
-                background: `linear-gradient(135deg, ${getPastelBackgroundColor(p.types[0])}99 0%, rgba(255, 255, 255, 0.98) 100%)`,
+                background: `linear-gradient(135deg, ${pastelBgColor}99 0%, rgba(255, 255, 255, 0.98) 100%)`,
                 border: `1px solid ${primaryColor}2e`,
                 boxShadow: `0 20px 40px ${primaryColor}12`
               }

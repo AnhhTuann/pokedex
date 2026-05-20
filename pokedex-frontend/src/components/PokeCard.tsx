@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Heart } from "lucide-react";
 import { Card } from "./common/Card";
@@ -7,6 +7,7 @@ import { useMyPokedex } from "../lib/MyPokedexContext";
 import { useTeamStore } from "../lib/teamStore";
 import { formatSpeciesId, cn, TYPE_COLORS } from "../lib/utils";
 import { useColorMode } from "../main";
+import { extractDominantColor, getExtractedColors } from "../lib/colorExtractor";
 import styles from "../styles/components/PokeCard.module.scss";
 
 interface PokeCardProps {
@@ -17,74 +18,7 @@ interface PokeCardProps {
   isSelectedForCompare?: boolean;
 }
 
-function getBackgroundColor(type: string): string {
-  const typeLower = type.toLowerCase();
-  switch (typeLower) {
-    case "grass":
-      return "#1a472a";
-    case "fire":
-      return "#3d1f15";
-    case "water":
-      return "#0f2d3d";
-    case "bug":
-      return "#1a2a0f";
-    case "normal":
-      return "#1a1a1f";
-    case "poison":
-      return "#261a2d";
-    case "electric":
-      return "#2d2810";
-    case "ground":
-      return "#2d1f0f";
-    case "fairy":
-      return "#2d151f";
-    case "fighting":
-      return "#2d151a";
-    case "psychic":
-      return "#2d1a28";
-    case "rock":
-      return "#1f1f1a";
-    case "steel":
-      return "#1a1d1f";
-    case "ice":
-      return "#0f2028";
-    case "ghost":
-      return "#1a162d";
-    case "dragon":
-      return "#151a2d";
-    case "dark":
-      return "#0f0f15";
-    case "flying":
-      return "#151a2d";
-    default:
-      return "#14141a";
-  }
-}
 
-function getPastelBackgroundColor(type: string): string {
-  const typeLower = type.toLowerCase();
-  switch (typeLower) {
-    case "grass": return "#c3deb0";
-    case "fire": return "#f2ad7c";
-    case "water": return "#6cbce5";
-    case "bug": return "#d2e59b";
-    case "normal": return "#e2e2df";
-    case "poison": return "#dbb5e7";
-    case "electric": return "#fdf0a6";
-    case "ground": return "#ecd0a1";
-    case "fairy": return "#f6c4d7";
-    case "fighting": return "#dfa1a1";
-    case "psychic": return "#f8b8cc";
-    case "rock": return "#dcd3bd";
-    case "steel": return "#cfd8dc";
-    case "ice": return "#b2ebf2";
-    case "ghost": return "#c2b7e0";
-    case "dragon": return "#9fa8da";
-    case "dark": return "#bcaaa4";
-    case "flying": return "#c5cae9";
-    default: return "#f5f5f7";
-  }
-}
 
 export default function PokeCard({
   pokemon,
@@ -99,10 +33,31 @@ export default function PokeCard({
   const isDark = mode === "dark";
   
   const isFav = isFavorite(pokemon.id);
-  const primaryColor = TYPE_COLORS[pokemon.types[0].toLowerCase()] || "#9ca3af";
   const primaryType = pokemon.types[0] || "normal";
   
-  const pastelBgColor = getPastelBackgroundColor(primaryType);
+  const [extractedRgb, setExtractedRgb] = useState<{ r: number; g: number; b: number } | null>(null);
+
+  const imageUrl = isShinyMode && pokemon.shinyImage
+    ? pokemon.shinyImage
+    : pokemon.image;
+
+  useEffect(() => {
+    let active = true;
+    extractDominantColor(imageUrl).then((rgb) => {
+      if (active) {
+        setExtractedRgb(rgb);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [imageUrl]);
+
+  const { primaryColor, primaryColorGlow, pastelBgColor } = getExtractedColors(
+    extractedRgb,
+    primaryType,
+    isDark
+  );
 
   const isMega =
     !!pokemon.isMega ||
@@ -139,7 +94,7 @@ export default function PokeCard({
         style={
           {
             "--primary-color": primaryColor,
-            "--primary-color-glow": `${primaryColor}40`,
+            "--primary-color-glow": primaryColorGlow,
             "--card-bg": isDark
               ? undefined
               : `linear-gradient(135deg, ${pastelBgColor} 0%, ${pastelBgColor}dd 100%)`,
