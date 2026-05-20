@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Sparkles,
@@ -9,7 +9,9 @@ import {
   HelpCircle,
   Eye,
   Settings,
-  AlertTriangle
+  AlertTriangle,
+  ChevronDown,
+  X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PokemonListItem } from '../types';
@@ -17,7 +19,7 @@ import { useTeamStore } from '../lib/teamStore';
 import { useCatchStore } from '../lib/catchStore';
 import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../App';
 import PokeDetail from '../components/PokeDetail';
-import { formatSpeciesId, TYPE_COLORS } from '../lib/utils';
+import { formatSpeciesId, TYPE_COLORS, cn } from '../lib/utils';
 import { useColorMode } from '../main';
 import { extractDominantColor, getExtractedColors, addOpacityToColor } from '../lib/colorExtractor';
 import styles from '../styles/pages/CatchTracker.module.scss';
@@ -218,6 +220,42 @@ export default function CatchTracker() {
 
   // Dynamic chunk rendering limit to guarantee instant page load (infinite scrolling)
   const [visibleLimit, setVisibleLimit] = useState(40);
+
+  // Custom Select Dropdowns State & Refs
+  const [isVersionOpen, setIsVersionOpen] = useState(false);
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+
+  const versionRef = useRef<HTMLDivElement>(null);
+  const typeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (versionRef.current && !versionRef.current.contains(event.target as Node)) {
+        setIsVersionOpen(false);
+      }
+      if (typeRef.current && !typeRef.current.contains(event.target as Node)) {
+        setIsTypeOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const activeVersionLabel = useMemo(() => {
+    if (selectedVersion === 'ALL') return 'ALL VERSIONS';
+    for (const gen of GENERATION_VERSIONS) {
+      for (const row of gen.rows) {
+        for (const game of row.games) {
+          if (game.name === selectedVersion) {
+            return game.label;
+          }
+        }
+      }
+    }
+    return selectedVersion;
+  }, [selectedVersion]);
 
   // Confirmations
   const [confirmMarkAllOpen, setConfirmMarkAllOpen] = useState(false);
@@ -445,44 +483,177 @@ export default function CatchTracker() {
         <div className={styles.filterRow}>
           
           {/* Game version dropdown */}
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} ref={versionRef}>
             <span className={styles.inputLabel}>Game Version</span>
-            <div className={styles.selectWrapper}>
-              <select
-                value={selectedVersion}
-                onChange={(e) => setSelectedVersion(e.target.value)}
-                className={styles.selectField}
+            <div className={styles.customSelectContainer}>
+              <button
+                type="button"
+                className={cn(
+                  styles.customSelectTrigger,
+                  isVersionOpen && styles.active,
+                  selectedVersion === 'ALL' && styles.isPlaceholder
+                )}
+                onClick={() => {
+                  setIsVersionOpen(!isVersionOpen);
+                  setIsTypeOpen(false);
+                }}
+                aria-label="Filter by Game Version"
               >
-                <option value="ALL">ALL VERSIONS</option>
-                {GENERATION_VERSIONS.map((gen) => [
-                  <optgroup key={gen.gen} label={gen.gen.toUpperCase()}>
-                    {gen.rows.flatMap((row) => row.games).map((game) => (
-                      <option key={game.name} value={game.name}>
-                        {game.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ])}
-              </select>
+                <span className={styles.triggerText}>{activeVersionLabel}</span>
+                <div className={styles.triggerActions}>
+                  {selectedVersion !== 'ALL' && (
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      className={styles.clearButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedVersion('ALL');
+                        setIsVersionOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.stopPropagation();
+                          setSelectedVersion('ALL');
+                          setIsVersionOpen(false);
+                        }
+                      }}
+                      aria-label="Clear Game Version Filter"
+                    >
+                      <X size={14} />
+                    </span>
+                  )}
+                  <ChevronDown
+                    size={16}
+                    className={cn(styles.arrowIcon, isVersionOpen && styles.rotated)}
+                  />
+                </div>
+              </button>
+
+              {isVersionOpen && (
+                <div className={styles.customDropdown}>
+                  <div
+                    className={cn(
+                      styles.dropdownOption,
+                      selectedVersion === 'ALL' && styles.selectedOption
+                    )}
+                    onClick={() => {
+                      setSelectedVersion('ALL');
+                      setIsVersionOpen(false);
+                    }}
+                  >
+                    ALL VERSIONS
+                  </div>
+                  {GENERATION_VERSIONS.map((gen) => (
+                    <div key={gen.gen}>
+                      <div className={styles.dropdownHeader}>
+                        {gen.gen.toUpperCase()}
+                      </div>
+                      {gen.rows.flatMap((row) => row.games).map((game) => (
+                        <div
+                          key={game.name}
+                          className={cn(
+                            styles.dropdownOption,
+                            selectedVersion === game.name && styles.selectedOption
+                          )}
+                          onClick={() => {
+                            setSelectedVersion(game.name);
+                            setIsVersionOpen(false);
+                          }}
+                        >
+                          {game.label}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Type Filter */}
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} ref={typeRef}>
             <span className={styles.inputLabel}>Type</span>
-            <div className={styles.selectWrapper}>
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className={styles.selectField}
+            <div className={styles.customSelectContainer}>
+              <button
+                type="button"
+                className={cn(
+                  styles.customSelectTrigger,
+                  isTypeOpen && styles.active,
+                  !typeFilter && styles.isPlaceholder
+                )}
+                onClick={() => {
+                  setIsTypeOpen(!isTypeOpen);
+                  setIsVersionOpen(false);
+                }}
+                aria-label="Filter by Type"
               >
-                <option value="">All Types</option>
-                {Object.keys(TYPE_COLORS).map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
+                <span className={styles.triggerText}>
+                  {typeFilter
+                    ? typeFilter.charAt(0).toUpperCase() + typeFilter.slice(1)
+                    : 'All Types'}
+                </span>
+                <div className={styles.triggerActions}>
+                  {typeFilter && (
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      className={styles.clearButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTypeFilter('');
+                        setIsTypeOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.stopPropagation();
+                          setTypeFilter('');
+                          setIsTypeOpen(false);
+                        }
+                      }}
+                      aria-label="Clear Type Filter"
+                    >
+                      <X size={14} />
+                    </span>
+                  )}
+                  <ChevronDown
+                    size={16}
+                    className={cn(styles.arrowIcon, isTypeOpen && styles.rotated)}
+                  />
+                </div>
+              </button>
+
+              {isTypeOpen && (
+                <div className={styles.customDropdown}>
+                  <div
+                    className={cn(
+                      styles.dropdownOption,
+                      !typeFilter && styles.selectedOption
+                    )}
+                    onClick={() => {
+                      setTypeFilter('');
+                      setIsTypeOpen(false);
+                    }}
+                  >
+                    All Types
+                  </div>
+                  {Object.keys(TYPE_COLORS).map((type) => (
+                    <div
+                      key={type}
+                      className={cn(
+                        styles.dropdownOption,
+                        typeFilter === type && styles.selectedOption
+                      )}
+                      onClick={() => {
+                        setTypeFilter(type);
+                        setIsTypeOpen(false);
+                      }}
+                    >
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

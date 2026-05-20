@@ -1,16 +1,19 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
   Zap,
   Search,
   HelpCircle,
   X,
-  ShieldAlert
+  ShieldAlert,
+  ChevronDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Move } from '../types';
-import { TYPE_COLORS, capitalizeSlug } from '../lib/utils';
+import { TYPE_COLORS, capitalizeSlug, cn } from '../lib/utils';
 import { useDebounce } from '../hooks/useDebounce';
+import { useColorMode } from '../main';
+import { getExtractedColors } from '../lib/colorExtractor';
 import styles from '../styles/pages/MoveDex.module.scss';
 
 // GraphQL query for all moves
@@ -44,12 +47,42 @@ const DAMAGE_CLASS_COLORS: Record<string, string> = {
 const formatMoveName = capitalizeSlug;
 
 export default function MoveDex() {
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
+
   // Search & Filters State
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearch = useDebounce(searchTerm, 500);
   const [genFilter, setGenFilter] = useState<number | string>('ALL');
   const [typeFilter, setTypeFilter] = useState<string>('ALL');
   const [catFilter, setCatFilter] = useState<string>('ALL');
+
+  // Custom Select Dropdowns State & Refs
+  const [isGenOpen, setIsGenOpen] = useState(false);
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [isCatOpen, setIsCatOpen] = useState(false);
+
+  const genRef = useRef<HTMLDivElement>(null);
+  const typeRef = useRef<HTMLDivElement>(null);
+  const catRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (genRef.current && !genRef.current.contains(event.target as Node)) {
+        setIsGenOpen(false);
+      }
+      if (typeRef.current && !typeRef.current.contains(event.target as Node)) {
+        setIsTypeOpen(false);
+      }
+      if (catRef.current && !catRef.current.contains(event.target as Node)) {
+        setIsCatOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Drawer Detail State
   const [selectedMove, setSelectedMove] = useState<Move | null>(null);
@@ -183,56 +216,227 @@ export default function MoveDex() {
         <div className={styles.filterRow}>
           
           {/* Generation filter */}
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} ref={genRef}>
             <span className={styles.inputLabel}>Generation</span>
-            <div className={styles.selectWrapper}>
-              <select
-                value={genFilter}
-                onChange={(e) => setGenFilter(e.target.value)}
-                className={styles.selectField}
+            <div className={styles.customSelectContainer}>
+              <button
+                type="button"
+                className={cn(
+                  styles.customSelectTrigger,
+                  isGenOpen && styles.active,
+                  genFilter === 'ALL' && styles.isPlaceholder
+                )}
+                onClick={() => {
+                  setIsGenOpen(!isGenOpen);
+                  setIsTypeOpen(false);
+                  setIsCatOpen(false);
+                }}
+                aria-label="Filter by Generation"
               >
-                {generationOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                <span className={styles.triggerText}>
+                  {genFilter === 'ALL'
+                    ? 'All Gens'
+                    : generationOptions.find((o) => o.value === Number(genFilter))?.label || genFilter}
+                </span>
+                <div className={styles.triggerActions}>
+                  {genFilter !== 'ALL' && (
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      className={styles.clearButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setGenFilter('ALL');
+                        setIsGenOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.stopPropagation();
+                          setGenFilter('ALL');
+                          setIsGenOpen(false);
+                        }
+                      }}
+                      aria-label="Clear Generation Filter"
+                    >
+                      <X size={14} />
+                    </span>
+                  )}
+                  <ChevronDown
+                    size={16}
+                    className={cn(styles.arrowIcon, isGenOpen && styles.rotated)}
+                  />
+                </div>
+              </button>
+
+              {isGenOpen && (
+                <div className={styles.customDropdown}>
+                  {generationOptions.map((opt) => (
+                    <div
+                      key={opt.value}
+                      className={cn(
+                        styles.dropdownOption,
+                        String(genFilter) === String(opt.value) && styles.selectedOption
+                      )}
+                      onClick={() => {
+                        setGenFilter(String(opt.value));
+                        setIsGenOpen(false);
+                      }}
+                    >
+                      {opt.label}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Type filter */}
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} ref={typeRef}>
             <span className={styles.inputLabel}>Type</span>
-            <div className={styles.selectWrapper}>
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className={styles.selectField}
+            <div className={styles.customSelectContainer}>
+              <button
+                type="button"
+                className={cn(
+                  styles.customSelectTrigger,
+                  isTypeOpen && styles.active,
+                  typeFilter === 'ALL' && styles.isPlaceholder
+                )}
+                onClick={() => {
+                  setIsTypeOpen(!isTypeOpen);
+                  setIsGenOpen(false);
+                  setIsCatOpen(false);
+                }}
+                aria-label="Filter by Type"
               >
-                {typeOptions.map((t) => (
-                  <option key={t} value={t}>
-                    {t === 'ALL' ? 'All Types' : t}
-                  </option>
-                ))}
-              </select>
+                <span className={styles.triggerText}>
+                  {typeFilter === 'ALL'
+                    ? 'All Types'
+                    : typeFilter.charAt(0).toUpperCase() + typeFilter.slice(1)}
+                </span>
+                <div className={styles.triggerActions}>
+                  {typeFilter !== 'ALL' && (
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      className={styles.clearButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTypeFilter('ALL');
+                        setIsTypeOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.stopPropagation();
+                          setTypeFilter('ALL');
+                          setIsTypeOpen(false);
+                        }
+                      }}
+                      aria-label="Clear Type Filter"
+                    >
+                      <X size={14} />
+                    </span>
+                  )}
+                  <ChevronDown
+                    size={16}
+                    className={cn(styles.arrowIcon, isTypeOpen && styles.rotated)}
+                  />
+                </div>
+              </button>
+
+              {isTypeOpen && (
+                <div className={styles.customDropdown}>
+                  {typeOptions.map((t) => (
+                    <div
+                      key={t}
+                      className={cn(
+                        styles.dropdownOption,
+                        typeFilter === t && styles.selectedOption
+                      )}
+                      onClick={() => {
+                        setTypeFilter(t);
+                        setIsTypeOpen(false);
+                      }}
+                    >
+                      {t === 'ALL' ? 'All Types' : t.charAt(0).toUpperCase() + t.slice(1)}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Category filter */}
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} ref={catRef}>
             <span className={styles.inputLabel}>Category</span>
-            <div className={styles.selectWrapper}>
-              <select
-                value={catFilter}
-                onChange={(e) => setCatFilter(e.target.value)}
-                className={styles.selectField}
+            <div className={styles.customSelectContainer}>
+              <button
+                type="button"
+                className={cn(
+                  styles.customSelectTrigger,
+                  isCatOpen && styles.active,
+                  catFilter === 'ALL' && styles.isPlaceholder
+                )}
+                onClick={() => {
+                  setIsCatOpen(!isCatOpen);
+                  setIsGenOpen(false);
+                  setIsTypeOpen(false);
+                }}
+                aria-label="Filter by Category"
               >
-                {categoryOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                <span className={styles.triggerText}>
+                  {catFilter === 'ALL'
+                    ? 'All Cat.'
+                    : categoryOptions.find((o) => o.value === catFilter)?.label || catFilter}
+                </span>
+                <div className={styles.triggerActions}>
+                  {catFilter !== 'ALL' && (
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      className={styles.clearButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCatFilter('ALL');
+                        setIsCatOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.stopPropagation();
+                          setCatFilter('ALL');
+                          setIsCatOpen(false);
+                        }
+                      }}
+                      aria-label="Clear Category Filter"
+                    >
+                      <X size={14} />
+                    </span>
+                  )}
+                  <ChevronDown
+                    size={16}
+                    className={cn(styles.arrowIcon, isCatOpen && styles.rotated)}
+                  />
+                </div>
+              </button>
+
+              {isCatOpen && (
+                <div className={styles.customDropdown}>
+                  {categoryOptions.map((opt) => (
+                    <div
+                      key={opt.value}
+                      className={cn(
+                        styles.dropdownOption,
+                        catFilter === opt.value && styles.selectedOption
+                      )}
+                      onClick={() => {
+                        setCatFilter(String(opt.value));
+                        setIsCatOpen(false);
+                      }}
+                    >
+                      {opt.label}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -297,7 +501,9 @@ export default function MoveDex() {
                     onClick={() => handleOpenDetail(move)}
                     style={{
                       borderColor: 'var(--border-main)',
-                      background: `linear-gradient(150deg, rgba(${parseInt(moveTypeColor.slice(1,3), 16) || 150}, ${parseInt(moveTypeColor.slice(3,5), 16) || 150}, ${parseInt(moveTypeColor.slice(5,7), 16) || 150}, 0.08) 0%, var(--bg-paper-glow) 80%)`
+                      background: isDark
+                        ? `linear-gradient(150deg, rgba(${parseInt(moveTypeColor.slice(1,3), 16) || 150}, ${parseInt(moveTypeColor.slice(3,5), 16) || 150}, ${parseInt(moveTypeColor.slice(5,7), 16) || 150}, 0.08) 0%, var(--bg-paper-glow) 80%)`
+                        : `linear-gradient(135deg, ${getExtractedColors(null, move.type, false).pastelBgColor}f2 0%, ${getExtractedColors(null, move.type, false).pastelBgColor}c0 100%)`
                     }}
                   >
                     {/* Top Row: Name and Stats */}
@@ -335,13 +541,13 @@ export default function MoveDex() {
                         className={styles.badge}
                         style={{ backgroundColor: moveTypeColor }}
                       >
-                        {move.type}
+                        {move.type.charAt(0).toUpperCase() + move.type.slice(1)}
                       </span>
                       <span
                         className={styles.badge}
                         style={{ backgroundColor: moveCatColor }}
                       >
-                        {move.damageClass}
+                        {move.damageClass.charAt(0).toUpperCase() + move.damageClass.slice(1)}
                       </span>
                     </div>
                   </motion.div>
@@ -413,7 +619,7 @@ export default function MoveDex() {
                       boxShadow: `0 4px 12px rgba(0,0,0,0.15)`
                     }}
                   >
-                    {selectedMove.type}
+                    {selectedMove.type.charAt(0).toUpperCase() + selectedMove.type.slice(1)}
                   </span>
                   <span
                     className={styles.drawerBadge}
@@ -422,7 +628,7 @@ export default function MoveDex() {
                       boxShadow: `0 4px 12px rgba(0,0,0,0.15)`
                     }}
                   >
-                    {selectedMove.damageClass}
+                    {selectedMove.damageClass.charAt(0).toUpperCase() + selectedMove.damageClass.slice(1)}
                   </span>
                 </div>
 

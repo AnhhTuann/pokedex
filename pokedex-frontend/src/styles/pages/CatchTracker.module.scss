@@ -197,6 +197,8 @@
 }
 
 .filterCard {
+  position: relative;
+  z-index: 10;
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-main);
   background-color: var(--bg-paper-glow);
@@ -683,4 +685,181 @@
     border-color: var(--primary);
     box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.15);
   }
+}
+
+/* ─── Custom Floating Dropdown Styles ─── */
+.customSelectContainer {
+  position: relative;
+  width: 100%;
+}
+
+.customSelectTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  width: 100%;
+  border-radius: var(--radius-sm, 12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.65);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  transition: all var(--transition-normal, 0.25s);
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+  
+  :global(.dark) & {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  &.isPlaceholder {
+    color: var(--text-muted);
+    font-weight: 500;
+    
+    :global(.dark) & {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  &:hover {
+    border-color: rgba(var(--primary-rgb), 0.35);
+    background-color: rgba(255, 255, 255, 0.8);
+    
+    :global(.dark) & {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  &:focus, &.active {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+    background-color: rgba(255, 255, 255, 0.9);
+    
+    :global(.dark) & {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
+    }
+  }
+}
+
+.triggerText {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.triggerActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: #ff4a4a;
+    
+    :global(.dark) & {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #ff5c5c;
+    }
+  }
+}
+
+.arrowIcon {
+  color: var(--text-muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.rotated {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+
+.customDropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  margin-bottom: 8px;
+  border-radius: var(--radius-sm, 12px);
+  background-color: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+  
+  scrollbar-width: thin;
+  
+  :global(.dark) & {
+    background-color: rgba(20, 24, 33, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.55);
+  }
+}
+
+.dropdownOption {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  
+  &:hover {
+    background-color: rgba(26, 191, 255, 0.08);
+    color: var(--primary);
+    
+    :global(.dark) & {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+  }
+}
+
+.selectedOption {
+  background-color: rgba(26, 191, 255, 0.12) !important;
+  color: var(--primary) !important;
+  font-weight: 700;
+  
+  :global(.dark) & {
+    background-color: rgba(0, 255, 255, 0.12) !important;
+    color: var(--primary) !important;
+  }
+}
+
+.dropdownHeader {
+  padding: 8px 16px 4px 16px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  pointer-events: none;
+  opacity: 0.8;
 }
