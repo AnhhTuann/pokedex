@@ -195,12 +195,18 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
         className={styles.dialogPaper}
         onClick={e => e.stopPropagation()}
         style={
-          !isDark && p?.types && p.types.length > 0
-            ? {
-                background: `linear-gradient(135deg, ${addOpacityToColor(pastelBgColor, 0.6)} 0%, rgba(255, 255, 255, 0.98) 100%)`,
-                border: `1px solid ${primaryColor}2e`,
-                boxShadow: `0 20px 40px ${primaryColor}12`
-              }
+          p?.types && p.types.length > 0
+            ? isDark
+              ? {
+                  background: `linear-gradient(135deg, ${addOpacityToColor(pastelBgColor, 0.25)} 0%, rgba(20, 20, 30, 0.98) 100%)`,
+                  border: `1px solid ${addOpacityToColor(primaryColor, 0.25)}`,
+                  boxShadow: `0 20px 40px ${addOpacityToColor(primaryColor, 0.1)}`
+                }
+              : {
+                  background: `linear-gradient(135deg, ${addOpacityToColor(pastelBgColor, 0.6)} 0%, rgba(255, 255, 255, 0.98) 100%)`,
+                  border: `1px solid ${primaryColor}2e`,
+                  boxShadow: `0 20px 40px ${primaryColor}12`
+                }
             : undefined
         }
       >

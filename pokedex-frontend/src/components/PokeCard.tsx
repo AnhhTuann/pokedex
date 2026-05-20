@@ -88,7 +88,6 @@ export default function PokeCard({
         className={cn(
           styles.pokeCard,
           isSelectedForCompare && styles.selectedCompare,
-          isMega && styles.megaCard,
           isCompareMode && !isSelectedForCompare && styles.faded,
         )}
         style={
@@ -96,7 +95,7 @@ export default function PokeCard({
             "--primary-color": primaryColor,
             "--primary-color-glow": primaryColorGlow,
             "--card-bg": isDark
-              ? undefined
+              ? `linear-gradient(135deg, ${addOpacityToColor(pastelBgColor, 0.75)} 0%, ${addOpacityToColor(pastelBgColor, 0.45)} 100%)`
               : `linear-gradient(135deg, ${pastelBgColor} 0%, ${addOpacityToColor(pastelBgColor, 0.85)} 100%)`,
             borderColor: !isDark ? "rgba(0, 0, 0, 0.04)" : undefined,
           } as React.CSSProperties

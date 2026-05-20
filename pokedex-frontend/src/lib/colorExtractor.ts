@@ -112,6 +112,20 @@ export function extractDominantColor(imageUrl: string): Promise<{ r: number; g: 
 }
 
 /**
+ * Converts HEX to HSL
+ */
+export function hexToHsl(hex: string) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) {
+    hex = hex.split('').map(char => char + char).join('');
+  }
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  return rgbToHsl(r, g, b);
+}
+
+/**
  * Returns dynamic UI colors based on extracted dominant color
  */
 export function getExtractedColors(
@@ -145,6 +159,17 @@ export function getExtractedColors(
       case "dark": pastel = "#bcaaa4"; break;
       case "flying": pastel = "#c5cae9"; break;
     }
+
+    if (isDark) {
+      const { h, s } = hexToHsl(pastel);
+      const darkPastel = `hsl(${h}, ${Math.min(s, 25)}%, 14%)`;
+      return {
+        primaryColor: defaultColor,
+        primaryColorGlow: `${defaultColor}40`,
+        pastelBgColor: darkPastel
+      };
+    }
+
     return {
       primaryColor: defaultColor,
       primaryColorGlow: `${defaultColor}40`,
@@ -159,10 +184,13 @@ export function getExtractedColors(
     const activeS = Math.max(s, 75); // make it highly saturated for glow
     const activeL = Math.max(35, Math.min(l, 55)); // maintain brightness but keep details visible
     const primary = `hsl(${h}, ${activeS}%, ${activeL}%)`;
+    // Softer dark pastel color for background tint:
+    // Saturation around 25%, Lightness around 14% to make it dark and premium.
+    const darkPastel = `hsl(${h}, ${Math.min(s, 25)}%, 14%)`;
     return {
       primaryColor: primary,
       primaryColorGlow: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.35)`,
-      pastelBgColor: `hsl(${h}, ${Math.min(s, 45)}%, 88%)`
+      pastelBgColor: darkPastel
     };
   } else {
     // Elegant, highly readable color for Light Mode

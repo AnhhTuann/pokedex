@@ -94,7 +94,7 @@ const TrackerCard = React.memo<TrackerCardProps>(({
               : undefined,
         cursor: 'pointer',
         background: isDark
-          ? undefined
+          ? `linear-gradient(135deg, ${addOpacityToColor(pastelBgColor, 0.75)} 0%, ${addOpacityToColor(pastelBgColor, 0.45)} 100%)`
           : `linear-gradient(135deg, ${pastelBgColor} 0%, ${addOpacityToColor(pastelBgColor, 0.85)} 100%)`,
         ['--primary-color' as any]: primaryColor,
         ['--primary-color-glow' as any]: primaryColorGlow,
