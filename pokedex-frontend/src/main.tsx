@@ -15,7 +15,7 @@ import "./index.scss";
 
 // ─── Apollo Client ────────────────────────────────────────
 const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
