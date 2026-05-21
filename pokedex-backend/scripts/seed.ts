@@ -848,7 +848,18 @@ async function main() {
   }
 
   // Step 3: Mock User Team
-  console.log("Seeding mock team...");
+  console.log("Seeding mock user and team...");
+  await prisma.user.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      username: 'mockuser',
+      email: 'mock@example.com',
+      passwordHash: 'dummyhash',
+    },
+  });
+
   const team = await prisma.team.upsert({
     where: { userId: 1 },
     update: {},
