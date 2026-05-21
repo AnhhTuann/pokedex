@@ -30,6 +30,21 @@
   }
 }
 
+.headerWithSidebar {
+  left: 260px;
+  width: calc(100% - 260px);
+  
+  @include respond-to(md) {
+    left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+.headerFull {
+  left: 0;
+  width: 100%;
+}
+
 .leftGroup {
   display: flex;
   align-items: center;
@@ -89,11 +104,11 @@
   overflow: hidden;
   
   @include respond-to(md) {
-    transform: translateX(-100%);
+    transform: translateX(-100%) !important;
     width: 260px !important;
     
     &.mobileOpen {
-      transform: translateX(0);
+      transform: translateX(0) !important;
       box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
     }
   }
@@ -108,10 +123,6 @@
   width: 0;
   border-right-width: 0;
   transform: translateX(-100%);
-  
-  @include respond-to(md) {
-    transform: translateX(-100%);
-  }
 }
 
 .sidebarOverlay {
@@ -265,6 +276,21 @@
     padding: 16px;
     padding-top: 80px;
   }
+}
+
+.mainWithSidebar {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  
+  @include respond-to(md) {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+.mainFull {
+  margin-left: 0;
+  width: 100%;
 }
 
 // ─── Header Quick Actions ──────────────────────────────────

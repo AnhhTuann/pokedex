@@ -246,11 +246,7 @@ export default function MainLayout() {
 
       {/* ── Header Top Navigation Bar ── */}
       <header 
-        className={styles.header}
-        style={{
-          left: isSidebarOpen ? '260px' : '0',
-          width: isSidebarOpen ? 'calc(100% - 260px)' : '100vw'
-        } as React.CSSProperties}
+        className={cn(styles.header, isSidebarOpen ? styles.headerWithSidebar : styles.headerFull)}
       >
         <div className={styles.leftGroup}>
           {/* Hamburger Mobile */}
@@ -429,11 +425,7 @@ export default function MainLayout() {
 
       {/* ── Main Routing Content Panel ── */}
       <main 
-        className={styles.mainContent}
-        style={{
-          marginLeft: isSidebarOpen ? '260px' : '0',
-          width: isSidebarOpen ? 'calc(100% - 260px)' : '100vw'
-        } as React.CSSProperties}
+        className={cn(styles.mainContent, isSidebarOpen ? styles.mainWithSidebar : styles.mainFull)}
       >
         <Outlet />
       </main>
