@@ -1,9 +1,7 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import {
-  Zap, Brain, Backpack, Map, Layers, Compass
-} from 'lucide-react';
-import styles from '../styles/components/Placeholders.module.scss';
+import React from "react";
+import { motion } from "motion/react";
+import { Zap, Brain, Backpack, Map, Layers, Compass } from "lucide-react";
+import styles from "../styles/components/Placeholders.module.scss";
 
 interface PlaceholderDexProps {
   title: string;
@@ -12,13 +10,18 @@ interface PlaceholderDexProps {
   gradient: string;
 }
 
-function BasePlaceholderDex({ title, subtitle, icon, gradient }: PlaceholderDexProps) {
+function BasePlaceholderDex({
+  title,
+  subtitle,
+  icon,
+  gradient,
+}: PlaceholderDexProps) {
   return (
     <div className={styles.container}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className={styles.card}>
           {/* Background decorative glow */}
@@ -38,7 +41,7 @@ function BasePlaceholderDex({ title, subtitle, icon, gradient }: PlaceholderDexP
             transition={{
               duration: 4,
               repeat: Infinity,
-              ease: 'easeInOut',
+              ease: "easeInOut",
             }}
             style={{ zIndex: 1 }}
           >
@@ -61,9 +64,7 @@ function BasePlaceholderDex({ title, subtitle, icon, gradient }: PlaceholderDexP
             >
               {title}
             </h2>
-            <p className={styles.subtitle}>
-              {subtitle}
-            </p>
+            <p className={styles.subtitle}>{subtitle}</p>
             <span className={styles.badge}>
               🚧 Wiki Section Work In Progress
             </span>
