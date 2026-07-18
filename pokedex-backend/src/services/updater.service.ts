@@ -87,14 +87,14 @@ export const updaterService = {
       if (data.sprites?.other?.['official-artwork']?.front_default) {
         localImageUrl = await downloadAndOptimizeImage(
           data.sprites.other['official-artwork'].front_default, 
-          `pokemon/${id}.webp`
+          `pokemon/normal/${data.name}.webp`
         );
       }
 
       if (data.sprites?.other?.['official-artwork']?.front_shiny) {
         localShinyUrl = await downloadAndOptimizeImage(
           data.sprites.other['official-artwork'].front_shiny, 
-          `pokemon/${id}_shiny.webp`
+          `pokemon/shiny/${data.name}.webp`
         );
       }
 
