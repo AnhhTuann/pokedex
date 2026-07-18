@@ -226,7 +226,7 @@ export default function NatureDex() {
                         {nature.bestFor.map(pk => (
                           <div key={pk.id} className={styles.pokemonPill}>
                             <img
-                              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pk.id}.png`}
+                              src={`http://localhost:4000/images/pokemon/normal/${pk.name.toLowerCase()}.webp`}
                               alt={pk.name}
                               className={styles.sprite}
                             />

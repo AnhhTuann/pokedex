@@ -160,13 +160,8 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                         src={showShiny && p.shinyImage ? p.shinyImage : p.image}
                         alt={p.name}
                         className={styles.pokemonImage}
-                        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                          const target = e.currentTarget;
-                          const baseId = p.speciesId || id;
-                          target.onerror = null;
-                          target.src = showShiny
-                            ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${baseId}.png`
-                            : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${baseId}.png`;
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/placeholder.png';
                         }}
                       />
                     </motion.div>
