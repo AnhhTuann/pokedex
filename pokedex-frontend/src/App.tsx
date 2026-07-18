@@ -1,5 +1,6 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import MainLayout from './components/MainLayout';
 import PokemonDex from './pages/PokemonDex';
 import LocationDex from './pages/LocationDex';
@@ -292,23 +293,38 @@ export function getVersionColorStyle(versionName: string) {
   };
 }
 
+const PageWrapper = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.25, ease: "easeInOut" }}
+    style={{ width: '100%', height: '100%' }}
+  >
+    {children}
+  </motion.div>
+);
+
 export default function App() {
+  const location = useLocation();
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<PokemonDex />} />
-        <Route path="/moves" element={<MoveDex />} />
-        <Route path="/abilities" element={<AbilityDex />} />
-        <Route path="/items" element={<ItemDex />} />
-        <Route path="/locations" element={<LocationDex />} />
-        <Route path="/types" element={<TypeDex />} />
-        <Route path="/natures" element={<NatureDex />} />
-        <Route path="/teambuilder" element={<TeamBuilder />} />
-        <Route path="/tracker" element={<CatchTracker />} />
-        <Route path="/calculator" element={<DamageCalculator />} />
-        <Route path="/walkthrough" element={<Walkthrough />} />
-        <Route path="/admin/walkthrough" element={<AdminWalkthrough />} />
-      </Route>
-    </Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<PageWrapper><PokemonDex /></PageWrapper>} />
+          <Route path="/moves" element={<PageWrapper><MoveDex /></PageWrapper>} />
+          <Route path="/abilities" element={<PageWrapper><AbilityDex /></PageWrapper>} />
+          <Route path="/items" element={<PageWrapper><ItemDex /></PageWrapper>} />
+          <Route path="/locations" element={<PageWrapper><LocationDex /></PageWrapper>} />
+          <Route path="/types" element={<PageWrapper><TypeDex /></PageWrapper>} />
+          <Route path="/natures" element={<PageWrapper><NatureDex /></PageWrapper>} />
+          <Route path="/teambuilder" element={<PageWrapper><TeamBuilder /></PageWrapper>} />
+          <Route path="/tracker" element={<PageWrapper><CatchTracker /></PageWrapper>} />
+          <Route path="/calculator" element={<PageWrapper><DamageCalculator /></PageWrapper>} />
+          <Route path="/walkthrough" element={<PageWrapper><Walkthrough /></PageWrapper>} />
+          <Route path="/admin/walkthrough" element={<PageWrapper><AdminWalkthrough /></PageWrapper>} />
+        </Route>
+      </Routes>
+    </AnimatePresence>
   );
 }

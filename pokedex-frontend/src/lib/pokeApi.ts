@@ -1,7 +1,7 @@
 import { PokemonListItem, Pokemon } from '../types';
 
-const GQL_ENDPOINT = 'http://localhost:4000/graphql';
-const API_BASE_URL = 'http://localhost:4000';
+const GQL_ENDPOINT = 'http://localhost:3000/graphql';
+const API_BASE_URL = 'http://localhost:3000';
 
 const LIST_QUERY = `
   query getPokemonList($limit: Int, $offset: Int) {

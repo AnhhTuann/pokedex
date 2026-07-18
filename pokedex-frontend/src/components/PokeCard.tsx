@@ -33,7 +33,7 @@ export default function PokeCard({
   const isDark = mode === "dark";
   
   const isFav = isFavorite(pokemon.id);
-  const primaryType = pokemon.types[0] || "normal";
+  const primaryType = pokemon.types?.[0] || "normal";
   
   const [extractedRgb, setExtractedRgb] = useState<{ r: number; g: number; b: number } | null>(null);
 

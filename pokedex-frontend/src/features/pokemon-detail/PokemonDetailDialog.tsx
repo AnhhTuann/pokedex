@@ -18,8 +18,8 @@ interface PokemonDetailDialogProps {
   onSelect?: (id: number) => void;
 }
 
-function getBackgroundColor(type: string): string {
-  const typeLower = type.toLowerCase();
+function getBackgroundColor(type: string | undefined): string {
+  const typeLower = (type || "normal").toLowerCase();
   switch (typeLower) {
     case "grass": return "#c3deb0";
     case "fire": return "#f2ad7c";
@@ -71,7 +71,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
 
   const inTeam = team.some(m => m.id === id);
   const accentColor = p ? (TYPE_COLORS[p.types[0]] || '#6366f1') : '#6366f1';
-  const primaryType = p ? p.types[0] : "normal";
+  const primaryType = p?.types?.[0] || "normal";
   const detailBgColor = getBackgroundColor(primaryType);
   const isMega = p?.name.toLowerCase().includes('mega') || p?.category?.toLowerCase().includes('mega');
 
@@ -144,8 +144,9 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                   <div className={styles.heroContent}>
                     <motion.div
                       key={showShiny ? 'shiny' : 'default'}
-                      initial={{ opacity: 0, rotate: -8, scale: 0.85 }}
+                      initial={{ opacity: 0, rotate: -10, scale: 0.7 }}
                       animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      transition={{ type: "spring", bounce: 0.5, duration: 0.6 }}
                       className={styles.imageWrapper}
                     >
                       {isMega && (

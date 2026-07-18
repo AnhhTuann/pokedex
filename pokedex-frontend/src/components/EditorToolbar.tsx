@@ -30,7 +30,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
 
   const handleInsertSprite = () => {
     if (selectedPokemon) {
-      const spriteUrl = `http://localhost:4000${selectedPokemon.image}`;
+      const spriteUrl = `http://localhost:3000${selectedPokemon.image}`;
       editor.chain().focus().setImage({ src: spriteUrl, alt: selectedPokemon.name }).run();
       setSpriteOpen(false);
       setSelectedPokemon(null);
@@ -100,7 +100,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
                   <div key={p.id}
                     onClick={() => setSelectedPokemon(p)}
                     className={`${styles.pokemonRow} ${selectedPokemon?.id===p.id ? styles.selected : ''}`}>
-                    <img src={`http://localhost:4000${p.image}`} alt={p.name} className={styles.pokemonImage}/>
+                    <img src={`http://localhost:3000${p.image}`} alt={p.name} className={styles.pokemonImage}/>
                     <span className={styles.pokemonName}>#{p.id} - {p.name}</span>
                   </div>
                 ))}
