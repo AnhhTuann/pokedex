@@ -8,10 +8,10 @@ API Server này cung cấp toàn bộ kho dữ liệu chi tiết về Pokémon (
 
 ## 🚀 Tính năng nổi bật
 
-*   **⚡ GraphQL API mạnh mẽ:** Cung cấp duy nhất một endpoint linh hoạt giúp Client truy vấn chính xác lượng dữ liệu cần thiết, giảm thiểu tình trạng over-fetching/under-fetching.
+*   **⚡ GraphQL API & Static File Server mạnh mẽ:** Cung cấp duy nhất một endpoint linh hoạt giúp Client truy vấn chính xác lượng dữ liệu. Hỗ trợ phục vụ tĩnh trực tiếp hàng ngàn file hình ảnh WebP từ thư mục `public/images/`.
 *   **🗄️ Prisma ORM & PostgreSQL:** Thiết kế cơ sở dữ liệu quan hệ chặt chẽ (Many-to-Many giữa Pokemon & Moves/Abilities), tối ưu hóa tốc độ truy vấn thông qua các chỉ mục (indexes).
 *   **🛠️ Seeding thông minh nâng cao:**
-    *   Cào dữ liệu tự động từ **PokéAPI** thông qua các script chia nhỏ có khả năng chịu lỗi cao.
+    *   Cào dữ liệu và tải hình ảnh hoàn toàn tự động từ **PokéAPI** thành định dạng WebP siêu nhẹ, lưu trữ Local giúp tăng tốc tối đa.
     *   Tự động phân tách các biến thể Pokémon (Alternative Forms, Mega, Alolan, Galar) thành các record riêng biệt để tối ưu hóa khả năng tìm kiếm & lọc của người dùng.
     *   Lọc dữ liệu đa ngôn ngữ để lưu trữ phần mô tả tiếng Anh chuẩn.
 *   **🌐 CMS Walkthrough tích hợp:** Hỗ trợ các Mutation GraphQL để Thêm/Sửa/Xóa (`upsertWalkthrough`, `deleteWalkthrough`) các bài viết hướng dẫn chơi game trực tiếp từ Admin Dashboard trên Frontend.

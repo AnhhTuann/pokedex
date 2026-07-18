@@ -10,10 +10,12 @@ Dự án được cấu trúc dạng monorepo đơn giản gồm 2 module chính
 
 ## ⚡ Các tính năng đột phá hàng đầu
 
-*   **⚡ Siêu Wiki Pokémon:**
+*   **⚡ Siêu Wiki Pokémon (Zero-Latency):**
+    *   **100% Offline-Capable Assets:** Lưu trữ cục bộ toàn bộ hơn 3000+ hình ảnh Pokémon (Bao gồm Mega, Alolan, GMax...) và Vật phẩm dưới định dạng WebP siêu nhẹ. Không phụ thuộc API bên ngoài, đảm bảo tốc độ tải trang tức thì không độ trễ.
     *   Lọc thông minh theo Hệ (Type), Thế hệ (Gen), Khu vực (Region) và Bản game đang chọn (Version).
     *   Tự động lọc các dạng Pokémon đặc biệt (Mega Evolution, Alolan, Galar, Gigantamax) dựa trên bản game. Ví dụ: *Bản game Emerald không có dạng Mega, nhưng bản game Omega Ruby thì có.*
     *   **Text-to-Speech (Đọc mô tả):** Hỗ trợ phát âm giọng nói đọc thông tin mô tả Pokémon như một thiết bị PokéDex thực tế.
+    *   **Ultra-Smooth Animations:** Tích hợp `Framer Motion` tạo hiệu ứng chuyển trang (Page Transitions) trơn tru và các hoạt ảnh nhún (Spring Bounce) sống động chuẩn Native App.
 *   **🧠 Smart Team Builder (Đội hình Tối ưu):**
     *   Xây dựng đội hình 6 thành viên thi đấu chuyên nghiệp.
     *   **Auto-Build:** Tự động đề xuất Bản tính (Nature), Vật phẩm (Held Item), Đặc tính (Ability) và Bộ 4 chiêu thức (Moveset) tối ưu nhất chỉ với một nút bấm nhờ vào thuật toán phân tích chỉ số Pokémon.

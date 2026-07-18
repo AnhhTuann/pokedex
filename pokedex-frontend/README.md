@@ -11,6 +11,8 @@ Với phong cách thiết kế **Dark Mode Neon**, các hiệu ứng chuyển đ
 *   **⚡ Advanced PokéDex Wiki:**
     *   Tìm kiếm và lọc Pokémon theo thời gian thực (Debounced Search) kết hợp lọc theo **Hệ (Type)**, **Thế hệ (Generation)**, **Khu vực (Region)** và **Bản game (Version)**.
     *   Tự động thay đổi tông màu thẻ Pokémon (PokeCard) theo hệ chính của Pokémon đó.
+    *   **Trải nghiệm Chuyển động Đỉnh Cao (Smooth Animations):** Tích hợp bộ thư viện `framer-motion` cho các hiệu ứng chuyển cảnh mượt mà (Fade & Slide Page Transitions) và hoạt ảnh nhấn lò xo (Spring Bounce) khi xem chi tiết.
+    *   **Tốc độ không độ trễ (Zero-Latency):** Cấu hình Vite Proxy độc quyền chuyển tiếp mọi truy xuất hình ảnh trực tiếp sang Backend nội bộ, tải hàng ngàn bức ảnh WebP trong chớp mắt mà không cần đợi API.
 *   **🎙️ PokeDetail Modal & Text-to-Speech:**
     *   Xem thông tin chi tiết: Chỉ số cơ bản (HP, Attack, Defense...) vẽ dưới dạng Radar/Bar Chart trực quan.
     *   Bảng phân tích tương khắc hệ (Type Matchups) tự động tính toán hệ số sát thương nhận vào.
