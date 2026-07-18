@@ -142,6 +142,13 @@ export const typeDefs = `#graphql
     language: String!
   }
 
+  type UpdateStatus {
+    type: String!
+    localCount: Int!
+    apiCount: Int!
+    hasUpdate: Boolean!
+  }
+
   type Query {
     ping: String
     pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String, maxGen: Int): PokemonListResponse
@@ -155,6 +162,7 @@ export const typeDefs = `#graphql
     getLocationEncounters(locationName: String!, version: String!): [EncounterListItem!]!
     getWalkthroughs(gameVersion: String!, language: String!): [Walkthrough!]!
     getWalkthrough(id: Int!): Walkthrough
+    checkUpdates: [UpdateStatus!]!
   }
 
   type Mutation {
@@ -162,5 +170,6 @@ export const typeDefs = `#graphql
     saveTeam(pokemonIds: [Int!]!): Boolean!
     upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, description: String, coverImage: String, content: String!, order: Int!, language: String): Walkthrough!
     deleteWalkthrough(id: Int!): Boolean!
+    syncNewData: Boolean!
   }
 `;

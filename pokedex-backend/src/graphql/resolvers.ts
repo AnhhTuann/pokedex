@@ -4,7 +4,7 @@ import { moveService } from '../services/move.service.js';
 import { abilityService } from '../services/ability.service.js';
 import { itemService } from '../services/item.service.js';
 import { locationService } from '../services/location.service.js';
-
+import { updaterService } from '../services/updater.service.js';
 export const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
@@ -67,7 +67,9 @@ export const resolvers = {
       return await prisma.walkthrough.findUnique({
         where: { id }
       });
-    }
+    },
+
+    checkUpdates: async () => updaterService.checkUpdates()
   },
 
   Mutation: {
@@ -140,7 +142,9 @@ export const resolvers = {
         where: { id }
       });
       return true;
-    }
+    },
+
+    syncNewData: async () => updaterService.syncNewData()
   },
 
   PokemonDetail: {

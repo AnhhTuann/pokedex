@@ -25,6 +25,9 @@ async function startServer() {
   app.use(express.json({ limit: '50mb' }));
   app.use(cors());
 
+  // Serve static images downloaded from PokeAPI
+  app.use('/images', express.static('public/images'));
+
   app.get('/api/ping', (req: Request, res: Response) => res.send('pong from Prisma backend!'));
 
   app.post('/api/download-session', (req: Request, res: Response) => {

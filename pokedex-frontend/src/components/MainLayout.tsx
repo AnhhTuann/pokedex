@@ -22,6 +22,7 @@ import {
 import { useColorMode } from '../main';
 import { useTeamStore } from '../lib/teamStore';
 import GameModal from './GameModal';
+import UpdateNotifier from './UpdateNotifier';
 import { VERSION_COLORS, GENERATION_VERSIONS, getVersionDisplayName, getVersionColorStyle } from '../App';
 import styles from '../styles/components/MainLayout.module.scss';
 
@@ -226,6 +227,7 @@ export default function MainLayout() {
           : `0 0 18px rgba(${activeRgb}, 0.35)`
       } as React.CSSProperties}
     >
+      <UpdateNotifier />
       
       {/* ── Mobile Sidebar Overlay ── */}
       <div 
