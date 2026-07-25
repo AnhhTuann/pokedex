@@ -17,22 +17,36 @@ body {
   transition: background-color $transition-normal, color $transition-normal;
   overflow-x: hidden;
   min-height: 100vh;
+  
+  // Immersive Background effect
+  &::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(var(--secondary-rgb), 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
 // Global Custom Scrollbar on all scrollable elements
 * {
   @include custom-scrollbar(
-    6px, 
-    rgba(29, 29, 29, 0.15), 
-    rgba(29, 29, 29, 0.3)
+    8px, 
+    rgba(15, 23, 42, 0.1), 
+    rgba(15, 23, 42, 0.25)
   );
 }
 
 html.dark * {
   @include custom-scrollbar(
-    6px, 
-    rgba(255, 255, 255, 0.08), 
-    rgba(255, 255, 255, 0.2)
+    8px, 
+    rgba(255, 255, 255, 0.05), 
+    rgba(255, 255, 255, 0.15)
   );
 }
 
@@ -43,8 +57,8 @@ html.dark {
   }
   
   select option {
-    background-color: #1a1a2e;
-    color: #f1f5f9;
+    background-color: #0f172a;
+    color: #f8fafc;
   }
 }
 
@@ -60,8 +74,35 @@ a {
 
 // ─── Text Selection ───────────────────────────────────────
 ::selection {
-  background-color: $primary;
-  color: white;
+  background-color: rgba(var(--primary-rgb), 0.3);
+  color: inherit;
+}
+
+// ─── Utility Classes (Glassmorphism & Glow) ───────────────
+.glass-panel {
+  background: $bg-paper;
+  backdrop-filter: $glass-blur;
+  -webkit-backdrop-filter: $glass-blur;
+  border: 1px solid $border-main;
+  box-shadow: $shadow-lg;
+  border-radius: $radius-lg;
+}
+
+.glass-panel-hover {
+  transition: all $transition-normal;
+  &:hover {
+    background: $bg-paper-glow;
+    border-color: $border-hover;
+    box-shadow: $glow-primary;
+    transform: translateY(-2px);
+  }
+}
+
+.text-gradient {
+  background: $primary-gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 // ─── Global Animation Helpers ─────────────────────────────
@@ -76,23 +117,21 @@ a {
   }
 }
 
-// Keyframes for micro-animations
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(12px); opacity: 0; }
+  from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.2); }
-  50% { box-shadow: 0 0 24px rgba(var(--primary-rgb), 0.5); }
+  0%, 100% { box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.2); }
+  50% { box-shadow: 0 0 32px rgba(var(--primary-rgb), 0.6); }
 }
 
-// Utility classes
 .glow-primary {
   box-shadow: $glow-primary;
 }

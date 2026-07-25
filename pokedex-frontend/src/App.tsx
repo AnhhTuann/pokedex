@@ -14,6 +14,9 @@ import CatchTracker from './pages/CatchTracker';
 import DamageCalculator from './pages/DamageCalculator';
 import Walkthrough from './pages/Walkthrough';
 import AdminWalkthrough from './pages/AdminWalkthrough';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import UserDashboard from './pages/UserDashboard';
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -323,6 +326,9 @@ export default function App() {
           <Route path="/calculator" element={<PageWrapper><DamageCalculator /></PageWrapper>} />
           <Route path="/walkthrough" element={<PageWrapper><Walkthrough /></PageWrapper>} />
           <Route path="/admin/walkthrough" element={<PageWrapper><AdminWalkthrough /></PageWrapper>} />
+          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+          <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
+          <Route path="/dashboard" element={<PageWrapper><UserDashboard /></PageWrapper>} />
         </Route>
       </Routes>
     </AnimatePresence>

@@ -17,9 +17,11 @@ import {
   Sun,
   Moon,
   X,
-  Sparkles
+  Sparkles,
+  User
 } from 'lucide-react';
 import { useColorMode } from '../main';
+import { useAuthStore } from '../lib/authStore';
 import { useTeamStore } from '../lib/teamStore';
 import GameModal from './GameModal';
 import UpdateNotifier from './UpdateNotifier';
@@ -103,6 +105,7 @@ export default function MainLayout() {
   const isMainDex = location.pathname === '/' || location.pathname.startsWith('/pokemon');
   const { mode, toggleColorMode } = useColorMode();
   const isDark = mode === 'dark';
+  const { user } = useAuthStore();
 
   const { isShinyMode, toggleShinyMode, selectedVersion, setSelectedVersion } = useTeamStore();
 
@@ -412,6 +415,15 @@ export default function MainLayout() {
             title="Who's That Pokémon? 🎮"
           >
             <Gamepad2 size={16} />
+          </button>
+
+          {/* User Button */}
+          <button
+            className={styles.actionIconBtn}
+            onClick={() => navigate(user ? '/dashboard' : '/login')}
+            title={user ? 'Dashboard' : 'Login'}
+          >
+            <User size={16} />
           </button>
 
           {/* Theme Toggle Button */}

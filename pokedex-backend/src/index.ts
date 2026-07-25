@@ -7,6 +7,9 @@ import cors from 'cors';
 import { prisma } from './db/prisma.js';
 import { typeDefs } from './graphql/typeDefs.js';
 import { resolvers } from './graphql/resolvers.js';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key-for-dev';
 
 const downloadSessions = new Map<string, { filename: string; mimeType: string; data: Buffer }>();
 
@@ -76,7 +79,21 @@ async function startServer() {
     downloadSessions.delete(token);
   });
 
-  app.use('/graphql', expressMiddleware(apolloServer));
+  app.use('/graphql', expressMiddleware(apolloServer, {
+    context: async ({ req }) => {
+      const authHeader = req.headers.authorization || '';
+      const token = authHeader.replace('Bearer ', '');
+      let user = null;
+      if (token) {
+        try {
+          user = jwt.verify(token, JWT_SECRET);
+        } catch (err) {
+          // invalid token
+        }
+      }
+      return { user };
+    }
+  }));
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Backend Server running on http://localhost:${PORT}`);

@@ -5,9 +5,16 @@ import { abilityService } from '../services/ability.service.js';
 import { itemService } from '../services/item.service.js';
 import { locationService } from '../services/location.service.js';
 import { updaterService } from '../services/updater.service.js';
+import { authService } from '../services/auth.service.js';
+
 export const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
+
+    me: async (_: any, __: any, context: any) => {
+      if (!context.user) return null;
+      return authService.me(context.user.userId);
+    },
 
     getLocations: async (_: any, { version }: { version: string }) => locationService.getLocations(version),
 
@@ -24,17 +31,19 @@ export const resolvers = {
     
     pokemon: async (_: any, { id }: { id: number }) => pokemonService.pokemonDetail(id),
 
-    myFavorites: async () => {
+    myFavorites: async (_: any, __: any, context: any) => {
+      const userId = context.user ? context.user.userId : 1;
       const favorites = await prisma.userPokemon.findMany({
-        where: { userId: 1 },
+        where: { userId },
         select: { pokemonId: true }
       });
       return favorites.map((f: any) => f.pokemonId);
     },
 
-    myTeam: async () => {
+    myTeam: async (_: any, __: any, context: any) => {
+      const userId = context.user ? context.user.userId : 1;
       const team = await prisma.team.findUnique({
-        where: { userId: 1 },
+        where: { userId },
         include: {
           slots: {
             orderBy: { slotOrder: 'asc' },
@@ -73,30 +82,36 @@ export const resolvers = {
   },
 
   Mutation: {
-    toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }) => {
+    register: async (_: any, args: any) => authService.register(args),
+    
+    login: async (_: any, args: any) => authService.login(args),
+
+    toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }, context: any) => {
+      const userId = context.user ? context.user.userId : 1;
       const existing = await prisma.userPokemon.findUnique({
-        where: { userId_pokemonId: { userId: 1, pokemonId } }
+        where: { userId_pokemonId: { userId, pokemonId } }
       });
 
       if (existing) {
         await prisma.userPokemon.delete({
-          where: { userId_pokemonId: { userId: 1, pokemonId } }
+          where: { userId_pokemonId: { userId, pokemonId } }
         });
         return false;
       } else {
         await prisma.userPokemon.create({
-          data: { userId: 1, pokemonId }
+          data: { userId, pokemonId }
         });
         return true;
       }
     },
 
-    saveTeam: async (_: any, { pokemonIds }: { pokemonIds: number[] }) => {
+    saveTeam: async (_: any, { pokemonIds }: { pokemonIds: number[] }, context: any) => {
+      const userId = context.user ? context.user.userId : 1;
       if (pokemonIds.length > 6) throw new Error("Team cannot have more than 6 members");
 
-      let team = await prisma.team.findUnique({ where: { userId: 1 } });
+      let team = await prisma.team.findUnique({ where: { userId } });
       if (!team) {
-        team = await prisma.team.create({ data: { userId: 1 } });
+        team = await prisma.team.create({ data: { userId } });
       }
 
       await prisma.teamSlot.deleteMany({ where: { teamId: team.id } });

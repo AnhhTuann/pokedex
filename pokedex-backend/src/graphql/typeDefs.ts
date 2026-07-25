@@ -1,4 +1,15 @@
 export const typeDefs = `#graphql
+  type User {
+    id: Int!
+    username: String!
+    email: String!
+  }
+
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   type PokemonListItem {
     id: Int!
     name: String!
@@ -151,6 +162,7 @@ export const typeDefs = `#graphql
 
   type Query {
     ping: String
+    me: User
     pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String, maxGen: Int): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
@@ -166,6 +178,8 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
+    register(username: String!, email: String!, password: String!): AuthPayload!
+    login(username: String!, password: String!): AuthPayload!
     toggleFavorite(pokemonId: Int!): Boolean!
     saveTeam(pokemonIds: [Int!]!): Boolean!
     upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, description: String, coverImage: String, content: String!, order: Int!, language: String): Walkthrough!

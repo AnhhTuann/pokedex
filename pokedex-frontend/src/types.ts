@@ -18,6 +18,9 @@ export interface Pokemon {
   name: string;
   types: string[];
   image: string;
+  shinyImage?: string;
+  height?: number;
+  weight?: number;
   stats?: {
     name: string;
     value: number;

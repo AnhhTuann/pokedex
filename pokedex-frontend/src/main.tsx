@@ -7,15 +7,30 @@ import {
   useEffect,
 } from "react";
 import { createRoot } from "react-dom/client";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { MyPokedexProvider } from "./lib/MyPokedexContext";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 
 // ─── Apollo Client ────────────────────────────────────────
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
