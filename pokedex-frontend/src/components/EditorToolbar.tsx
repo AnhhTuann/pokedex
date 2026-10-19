@@ -3,6 +3,7 @@ import { Editor } from '@tiptap/react';
 import { useQuery, gql } from '@apollo/client';
 import { Bold, Italic, Heading1, Heading2, List, ListOrdered, Table, Target, X, Loader } from 'lucide-react';
 import { useDebounce } from '../hooks/useDebounce';
+import { resolveAssetUrl } from '../lib/config';
 import styles from '../styles/components/EditorToolbar.module.scss';
 
 const GET_POKEMON_SUGGESTIONS = gql`
@@ -30,7 +31,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
 
   const handleInsertSprite = () => {
     if (selectedPokemon) {
-      const spriteUrl = `http://localhost:3000${selectedPokemon.image}`;
+      const spriteUrl = resolveAssetUrl(selectedPokemon.image) || '';
       editor.chain().focus().setImage({ src: spriteUrl, alt: selectedPokemon.name }).run();
       setSpriteOpen(false);
       setSelectedPokemon(null);
@@ -100,7 +101,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
                   <div key={p.id}
                     onClick={() => setSelectedPokemon(p)}
                     className={`${styles.pokemonRow} ${selectedPokemon?.id===p.id ? styles.selected : ''}`}>
-                    <img src={`http://localhost:3000${p.image}`} alt={p.name} className={styles.pokemonImage}/>
+                    <img src={resolveAssetUrl(p.image) || ''} alt={p.name} className={styles.pokemonImage}/>
                     <span className={styles.pokemonName}>#{p.id} - {p.name}</span>
                   </div>
                 ))}

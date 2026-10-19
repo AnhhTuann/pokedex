@@ -14,6 +14,7 @@ const REGISTER_MUTATION = gql`
         id
         username
         email
+        role
       }
     }
   }
@@ -83,6 +84,7 @@ export default function Register() {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', opacity: 0.8 }}>Password</label>
             <input
               type="password"
+              minLength={8}
               className={inputStyles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}

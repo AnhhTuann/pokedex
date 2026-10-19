@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import { API_BASE_URL } from '../lib/config';
 import styles from '../styles/pages/NatureDex.module.scss';
 
 interface NatureItem {
@@ -226,7 +227,7 @@ export default function NatureDex() {
                         {nature.bestFor.map(pk => (
                           <div key={pk.id} className={styles.pokemonPill}>
                             <img
-                              src={`http://localhost:3000/images/pokemon/normal/${pk.name.toLowerCase()}.webp`}
+                              src={`${API_BASE_URL}/images/pokemon/normal/${pk.name.toLowerCase()}.webp`}
                               alt={pk.name}
                               className={styles.sprite}
                             />

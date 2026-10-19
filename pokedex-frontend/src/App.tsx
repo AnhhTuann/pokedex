@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import MainLayout from './components/MainLayout';
-import PokemonDex from './pages/PokemonDex';
-import LocationDex from './pages/LocationDex';
-import TypeDex from './pages/TypeDex';
-import MoveDex from './pages/MoveDex';
-import AbilityDex from './pages/AbilityDex';
-import ItemDex from './pages/ItemDex';
-import NatureDex from './pages/NatureDex';
-import TeamBuilder from './pages/TeamBuilder';
-import CatchTracker from './pages/CatchTracker';
-import DamageCalculator from './pages/DamageCalculator';
-import Walkthrough from './pages/Walkthrough';
-import AdminWalkthrough from './pages/AdminWalkthrough';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import UserDashboard from './pages/UserDashboard';
+const PokemonDex = lazy(() => import('./pages/PokemonDex'));
+const LocationDex = lazy(() => import('./pages/LocationDex'));
+const TypeDex = lazy(() => import('./pages/TypeDex'));
+const MoveDex = lazy(() => import('./pages/MoveDex'));
+const AbilityDex = lazy(() => import('./pages/AbilityDex'));
+const ItemDex = lazy(() => import('./pages/ItemDex'));
+const NatureDex = lazy(() => import('./pages/NatureDex'));
+const TeamBuilder = lazy(() => import('./pages/TeamBuilder'));
+const CatchTracker = lazy(() => import('./pages/CatchTracker'));
+const DamageCalculator = lazy(() => import('./pages/DamageCalculator'));
+const Walkthrough = lazy(() => import('./pages/Walkthrough'));
+const AdminWalkthrough = lazy(() => import('./pages/AdminWalkthrough'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -304,7 +304,7 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
     transition={{ duration: 0.25, ease: "easeInOut" }}
     style={{ width: '100%', height: '100%' }}
   >
-    {children}
+    <Suspense fallback={null}>{children}</Suspense>
   </motion.div>
 );
 

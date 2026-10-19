@@ -230,7 +230,7 @@ export default function MainLayout() {
           : `0 0 18px rgba(${activeRgb}, 0.35)`
       } as React.CSSProperties}
     >
-      <UpdateNotifier />
+      {user?.role === 'admin' && <UpdateNotifier />}
       
       {/* ── Mobile Sidebar Overlay ── */}
       <div 
