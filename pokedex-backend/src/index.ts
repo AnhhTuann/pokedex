@@ -2,7 +2,7 @@ import { config } from './lib/config.js';
 import express, { Request, Response } from 'express';
 import { ApolloServer } from '@apollo/server';
 // @ts-ignore
-import { expressMiddleware } from '@apollo/server/express4';
+import { expressMiddleware } from '@as-integrations/express4';
 import cors from 'cors';
 import { prisma } from './db/prisma.js';
 import { typeDefs } from './graphql/typeDefs.js';
