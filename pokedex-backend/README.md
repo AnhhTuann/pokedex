@@ -1,6 +1,6 @@
 # ⚙️ Elite PokéDex Backend - GraphQL & Prisma API Server
 
-Chào mừng bạn đến với **PokéDex Backend API Server**! Đây là trái tim của hệ thống **Elite PokéDex Wiki**, một GraphQL Server hiệu năng cao được phát triển bằng **Node.js**, **Express**, **TypeScript**, **GraphQL Yoga** (sau này tối ưu hóa với **Apollo Server**) cùng **Prisma ORM** và **PostgreSQL**.
+Chào mừng bạn đến với **PokéDex Backend API Server**! Đây là trái tim của hệ thống **Elite PokéDex Wiki**, một GraphQL Server hiệu năng cao được phát triển bằng **Node.js**, **Express**, **TypeScript**, **Apollo Server** cùng **Prisma ORM** và **PostgreSQL**.
 
 API Server này cung cấp toàn bộ kho dữ liệu chi tiết về Pokémon (chỉ số, hệ, dạng Mega, Alolan, Galar), Chiêu thức (Moves), Đặc tính (Abilities), Vật phẩm (Items), Địa điểm bắt (Locations) với tỉ lệ xuất hiện, và hệ thống cẩm nang hướng dẫn chơi game (Walkthroughs).
 

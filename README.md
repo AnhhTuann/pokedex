@@ -3,8 +3,8 @@
 Chào mừng bạn đến với **Elite PokéDex Wiki**! Đây là dự án bách khoa toàn thư Pokémon full-stack cao cấp, cung cấp kho dữ liệu khổng lồ từ thế hệ đầu tiên đến thế hệ mới nhất. Dự án kết hợp những công nghệ web hiện đại để tạo ra một ứng dụng Wiki mượt mà, nhiều tính năng chuyên sâu và giao diện tối ưu hóa tuyệt đối cho trải nghiệm người dùng (UX).
 
 Dự án được cấu trúc dạng monorepo đơn giản gồm 2 module chính độc lập:
-1.  **[`pokedex-frontend`](file:///d:/pokedex/pokedex-frontend/README.md):** Ứng dụng Single Page Application (SPA) viết bằng React 19, Material-UI (MUI), Tailwind CSS v4 và Apollo Client.
-2.  **[`pokedex-backend`](file:///d:/pokedex/pokedex-backend/README.md):** API GraphQL Server viết bằng Node.js, Express, TypeScript, GraphQL Yoga/Apollo Server và Prisma ORM kết nối PostgreSQL.
+1.  **[`pokedex-frontend`](pokedex-frontend/README.md):** Ứng dụng Single Page Application (SPA) viết bằng React 19, SCSS Modules, Zustand và Apollo Client.
+2.  **[`pokedex-backend`](pokedex-backend/README.md):** API GraphQL Server viết bằng Node.js, Express, TypeScript, Apollo Server và Prisma ORM kết nối PostgreSQL.
 
 ---
 
@@ -43,7 +43,7 @@ flowchart TD
     end
 
     subgraph Backend [Module pokedex-backend]
-        Apollo <-->|HTTP Post /graphql| GQLServer[Apollo / Yoga GraphQL Server]
+        Apollo <-->|HTTP Post /graphql| GQLServer[Apollo GraphQL Server]
         GQLServer <-->|Gọi logic dịch vụ| Services[Custom Services]
         Services <-->|Truy vấn Type-Safe| Prisma[Prisma ORM]
     end
@@ -81,7 +81,7 @@ pokedex/
 │   ├── src/               # Code Express & Apollo Server
 │   └── package.json       # Dependencies backend
 │
-├── pokedex-frontend/      # React Client (Vite, Tailwind)
+├── pokedex-frontend/      # React Client (Vite, SCSS Modules)
 │   ├── src/               # React Components, Context, Store
 │   └── package.json       # Dependencies frontend
 │
@@ -94,7 +94,7 @@ pokedex/
 ## 🚀 Hướng dẫn khởi chạy nhanh toàn bộ dự án dưới Local
 
 ### 1. Yêu cầu hệ thống trước khi bắt đầu
-*   Đảm bảo bạn đã cài đặt **Node.js v18+**.
+*   Đảm bảo bạn đã cài đặt **Node.js v20+**.
 *   Đảm bảo dịch vụ **PostgreSQL** đang khởi chạy trên máy của bạn.
 
 ### 2. Cấu hình & Chạy Backend
@@ -107,7 +107,11 @@ Mở một cửa sổ dòng lệnh (Terminal) tại thư mục `/pokedex-backend
 2.  Tạo file `.env` tại thư mục này và cấu hình URL cơ sở dữ liệu PostgreSQL (Local hoặc Neon Cloud DB):
     ```env
     DATABASE_URL="postgresql://<user>:<pass>@<host>:5432/<db_name>?sslmode=require"
+    # Bắt buộc, tối thiểu 32 ký tự: openssl rand -hex 32
+    JWT_SECRET="<random-secret>"
+    CORS_ORIGINS="http://localhost:5173"
     ```
+    Xem đầy đủ các biến trong [`.env.example`](.env.example). Có thể chạy PostgreSQL local bằng `docker compose up -d`.
 3.  Đồng bộ cấu hình bảng cơ sở dữ liệu (Database Schema):
     ```bash
     npm run db:push
@@ -130,6 +134,10 @@ Mở một cửa sổ dòng lệnh (Terminal) tại thư mục `/pokedex-backend
     npm run dev
     ```
     *Server Backend sẽ chạy tại địa chỉ: `http://localhost:3000` và GraphQL endpoint tại: `http://localhost:3000/graphql`*
+6.  Cấp quyền admin (cần để sửa Walkthrough và đồng bộ dữ liệu) cho một tài khoản đã đăng ký:
+    ```bash
+    npm run make-admin -- <username>
+    ```
 
 ### 3. Cấu hình & Chạy Frontend
 Mở một cửa sổ dòng lệnh (Terminal) thứ hai tại thư mục `/pokedex-frontend`:
@@ -138,10 +146,9 @@ Mở một cửa sổ dòng lệnh (Terminal) thứ hai tại thư mục `/poked
     ```bash
     npm install
     ```
-2.  Thiết lập file `.env` chứa đường dẫn tới API Backend:
+2.  (Tuỳ chọn) Thiết lập file `.env` chứa đường dẫn tới API Backend. Khi để trống, dev server dùng proxy `/graphql` và `/images` tới `http://localhost:3000`:
     ```env
-    VITE_GRAPHQL_API_URL=http://localhost:3000/graphql
-    # Hoặc trỏ tới URL Production nếu Backend đã deploy trên Render
+    VITE_GRAPHQL_API_URL=https://<backend>.onrender.com/graphql
     ```
 3.  Khởi chạy Client dev server:
     ```bash
@@ -153,7 +160,7 @@ Mở một cửa sổ dòng lệnh (Terminal) thứ hai tại thư mục `/poked
 Hệ thống này được thiết kế để dễ dàng triển khai lên các dịch vụ đám mây miễn phí:
 *   **Database:** Sử dụng [Neon.tech](https://neon.tech/) Serverless PostgresSQL.
 *   **Backend:** Triển khai Node.js server lên [Render.com](https://render.com/).
-*   **Frontend:** Triển khai Vite React App lên [Vercel.com](https://vercel.com/) (nhớ cấu hình `VITE_GRAPHQL_API_URL` trỏ về Render).
+*   **Frontend:** Triển khai Vite React App lên [Vercel.com](https://vercel.com/) (nhớ cấu hình `VITE_GRAPHQL_API_URL` trỏ về Render, và thêm domain Vercel vào `CORS_ORIGINS` của backend; đặt `NODE_ENV=production`, `TRUST_PROXY=1`).
 Xem chi tiết cách kết nối trong `README.md` của từng thư mục tương ứng!
 
 ---
@@ -164,14 +171,13 @@ Xem chi tiết cách kết nối trong `README.md` của từng thư mục tươ
 | :--- | :--- | :--- |
 | **React 19** | Frontend | Thư viện giao diện chính, quản lý trạng thái mượt mà |
 | **Vite** | Frontend | Công cụ đóng gói & chạy dev server tốc độ cao |
-| **Material-UI (MUI)** | Frontend | Cung cấp hệ thống UI components đồng bộ, cao cấp |
-| **Tailwind CSS v4** | Frontend | Tiện ích thiết kế style nhanh chóng, hiện đại |
+| **SCSS Modules** | Frontend | Style theo từng component, biến & mixin dùng chung |
 | **Apollo Client** | Frontend | Truy vấn và lưu bộ nhớ đệm (Caching) GraphQL hiệu năng cao |
 | **Zustand** | Frontend | Quản lý state nhẹ, lưu trữ đội hình & theo dõi bắt Pokemon |
 | **Framer Motion** | Frontend | Thư viện tạo chuyển động, mở Modal mượt mà |
 | **Tiptap Editor** | Frontend | Trình soạn thảo WYSIWYG chuyên nghiệp cho CMS |
 | **Node.js / Express** | Backend | Nền tảng xây dựng GraphQL API Server |
-| **Apollo/Yoga Server**| Backend | Engine xử lý GraphQL Requests chính |
+| **Apollo Server**| Backend | Engine xử lý GraphQL Requests chính |
 | **Prisma ORM** | Backend | Quản lý Database PostgreSQL thông qua Type-safe models |
 | **PostgreSQL** | Database | Hệ quản trị cơ sở dữ liệu quan hệ mạnh mẽ |
 | **TypeScript** | Fullstack | Sử dụng cấu trúc nghiêm ngặt (Strict Mode) trên toàn dự án |
@@ -180,5 +186,5 @@ Xem chi tiết cách kết nối trong `README.md` của từng thư mục tươ
 
 Hãy cùng khám phá, phát triển và xây dựng những tính năng tuyệt vời hơn nữa trên **Elite PokéDex Wiki**! 🚀
 Nếu có bất kỳ vấn đề gì trong quá trình cài đặt hoặc vận hành, vui lòng mở tài liệu chi tiết của từng module:
-*   [Tài liệu chi tiết Backend ⚙️](file:///d:/pokedex/pokedex-backend/README.md)
-*   [Tài liệu chi tiết Frontend 🎨](file:///d:/pokedex/pokedex-frontend/README.md)
+*   [Tài liệu chi tiết Backend ⚙️](pokedex-backend/README.md)
+*   [Tài liệu chi tiết Frontend 🎨](pokedex-frontend/README.md)
