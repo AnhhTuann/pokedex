@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gql, useApolloClient, useQuery } from '@apollo/client';
 import { useAuthStore } from '../lib/authStore';
@@ -22,10 +22,11 @@ const GET_DASHBOARD_DATA = gql`
 export default function UserDashboard() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const loggingOut = useRef(false);
   const client = useApolloClient();
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !loggingOut.current) {
       navigate('/login');
     }
   }, [user, navigate]);
@@ -46,7 +47,7 @@ export default function UserDashboard() {
         </div>
         <button 
           className={`${buttonStyles.button} ${buttonStyles.danger || ''}`} 
-          onClick={() => { logout(); client.clearStore(); navigate('/'); }}
+          onClick={() => { loggingOut.current = true; logout(); client.clearStore(); navigate('/'); }}
         >
           Logout
         </button>
