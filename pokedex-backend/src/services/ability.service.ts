@@ -1,4 +1,5 @@
 import { prisma } from '../db/prisma.js';
+import { MAX_PAGE_SIZE, clampLimit, clampOffset } from '../lib/pagination.js';
 
 export const abilityService = {
   getAllAbilities: async ({ gen = null, limit = 20, offset = 0, search = '' }: any) => {
@@ -14,8 +15,8 @@ export const abilityService = {
     const results = await prisma.ability.findMany({
       where,
       orderBy: { name: 'asc' },
-      take: limit,
-      skip: offset,
+      take: clampLimit(limit, 20, MAX_PAGE_SIZE),
+      skip: clampOffset(offset),
       include: {
         pokemons: {
           include: {

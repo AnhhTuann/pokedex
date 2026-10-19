@@ -94,6 +94,7 @@ model User {
   username     String    @unique
   email        String    @unique
   passwordHash String
+  role         String    @default("user") // 'user' | 'admin'
 
   userPokemons UserPokemon[]
   team         Team?
