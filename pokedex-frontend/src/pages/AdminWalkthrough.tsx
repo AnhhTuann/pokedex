@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '../lib/authStore';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -43,6 +45,21 @@ const GAME_OPTIONS = [
 ];
 
 export default function AdminWalkthrough() {
+  const user = useAuthStore((state) => state.user);
+  if (user?.role !== 'admin') {
+    return (
+      <div className={styles.container} style={{ padding: '3rem', textAlign: 'center' }}>
+        <h2>Admin access required</h2>
+        <p style={{ opacity: 0.8 }}>
+          {user ? 'Your account does not have permission to edit walkthroughs.' : <>Please <Link to="/login">log in</Link> with an admin account.</>}
+        </p>
+      </div>
+    );
+  }
+  return <AdminWalkthroughEditor />;
+}
+
+function AdminWalkthroughEditor() {
   const [gameVersion, setGameVersion] = useState('emerald');
   const [language, setLanguage] = useState('vi');
   const [chapterTitle, setChapterTitle] = useState('');

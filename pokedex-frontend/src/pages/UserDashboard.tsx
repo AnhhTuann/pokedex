@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useApolloClient, useQuery } from '@apollo/client';
 import { useAuthStore } from '../lib/authStore';
 import styles from '../styles/pages/PokemonDex.module.scss';
 import cardStyles from '../styles/components/common/Card.module.scss';
@@ -22,6 +22,7 @@ const GET_DASHBOARD_DATA = gql`
 export default function UserDashboard() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const client = useApolloClient();
 
   useEffect(() => {
     if (!user) {
@@ -45,7 +46,7 @@ export default function UserDashboard() {
         </div>
         <button 
           className={`${buttonStyles.button} ${buttonStyles.danger || ''}`} 
-          onClick={() => { logout(); navigate('/'); }}
+          onClick={() => { logout(); client.clearStore(); navigate('/'); }}
         >
           Logout
         </button>
