@@ -1,8 +1,16 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Finding } from './types.js';
-import type { PokeApiClient } from './pokeApiClient.js';
+import { mapWithConcurrency, type PokeApiClient } from './pokeApiClient.js';
 import type { SourceSnapshot } from './sourceAudit.js';
+import {
+  catalogKey,
+  checkpointPath,
+  loadCheckpoint,
+  saveCheckpoint,
+  type CheckpointRecord,
+  type CheckpointState,
+} from './checkpoint.js';
 
 const idFromUrl = (url: string): number => {
   const parts = url.split('/').filter(Boolean);
@@ -17,8 +25,11 @@ const generationFromUrl = (url: string): number => {
 };
 
 export function parseGenerationMap(source: string): Record<string, number> {
-  const start = source.indexOf('getGameGeneration');
-  const block = source.slice(start, source.indexOf('\n}', start) + 2);
+  const mapStart = source.indexOf('export const GAME_TO_GENERATION');
+  const start = mapStart >= 0 ? mapStart : source.indexOf('getGameGeneration');
+  const endMarker = mapStart >= 0 ? '};' : '\n}';
+  const end = source.indexOf(endMarker, start);
+  const block = end >= 0 ? source.slice(start, end + endMarker.length) : source.slice(start);
   const result: Record<string, number> = {};
   for (const m of block.matchAll(/["']?([\w-]+)["']?:\s*(\d)\s*[,}]/g)) {
     result[m[1]] = Number(m[2]);
@@ -36,6 +47,15 @@ export function parseSeedGenerationRanges(source: string): Array<{ max: number; 
 
 export interface ReferenceSnapshot {
   totals: Record<string, number>;
+  counts: {
+    species: number;
+    pokemonForms: number;
+    varieties: number;
+    versions: number;
+    dexes: number;
+    generations: number;
+    speciesAudited: number;
+  };
   generations: Array<{
     generation: number;
     speciesIds: number[];
@@ -66,9 +86,18 @@ export interface ReferenceSnapshot {
     types: string[];
     abilities: Array<{ name: string; isHidden: boolean }>;
   }>;
+  formAudit: Array<{
+    id: number;
+    varieties: number;
+    formsChecked: number;
+    missingNormalImages: string[];
+    missingShinyImages: string[];
+  }>;
+  evolutionSample: Array<{ id: number; requirementCount: number; conditions: string[] }>;
   availabilitySample: Array<{ game: string; dex: string; sampleSpeciesPresent: string[] }>;
   encounterSample: Array<{ id: number; versions: string[] }>;
   learnsetSample: Array<{ id: number; versionGroupCount: number }>;
+  checkpoint: { key: string; resumedIds: number[]; failedIds: string[] };
   apiErrors: string[];
 }
 
@@ -77,17 +106,78 @@ export interface ReferenceAuditResult {
   reference: ReferenceSnapshot;
 }
 
+export interface ReferenceAuditOptions {
+  allSpecies?: boolean;
+  speciesIds?: number[];
+  resume?: boolean;
+  checkpointPath?: string;
+  concurrency?: number;
+  batchSize?: number;
+  onProgress?: (completed: number, total: number) => void;
+}
+
 const DEFAULT_SAMPLE = [
   1, 4, 25, 150, 151, 152, 197, 252, 386, 393, 413, 427, 479, 493, 495, 550,
   555, 641, 649, 650, 678, 721, 722, 741, 777, 778, 800, 809, 810, 818, 869,
   905, 906, 915, 1000, 1010, 1024, 1025,
 ];
 
+const asArray = <T>(value: unknown): T[] => (Array.isArray(value) ? (value as T[]) : []);
+
+const statsFrom = (data: any): Record<string, number> => {
+  const stats: Record<string, number> = {};
+  for (const stat of asArray<any>(data?.stats)) {
+    if (stat.stat?.name) stats[stat.stat.name] = stat.base_stat;
+  }
+  return stats;
+};
+
+const typesFrom = (data: any): string[] =>
+  asArray<any>(data?.types)
+    .slice()
+    .sort((a, b) => (a.slot ?? 0) - (b.slot ?? 0))
+    .map((entry) => entry.type?.name)
+    .filter(Boolean);
+
+const abilitiesFrom = (data: any): Array<{ name: string; isHidden: boolean }> =>
+  asArray<any>(data?.abilities)
+    .map((entry) => ({ name: entry.ability?.name, isHidden: Boolean(entry.is_hidden) }))
+    .filter((entry) => Boolean(entry.name));
+
+function evolutionConditions(chain: any): string[] {
+  const result: string[] = [];
+  const visit = (node: any) => {
+    for (const next of asArray<any>(node?.evolves_to)) {
+      for (const detail of asArray<any>(next.evolution_details)) {
+        const parts: string[] = [];
+        if (detail.trigger?.name) parts.push(`trigger=${detail.trigger.name}`);
+        if (detail.min_level !== null && detail.min_level !== undefined) parts.push(`level=${detail.min_level}`);
+        if (detail.item?.name) parts.push(`item=${detail.item.name}`);
+        if (detail.held_item?.name) parts.push(`held=${detail.held_item.name}`);
+        if (detail.is_trade) parts.push('trade=true');
+        if (detail.min_happiness) parts.push(`friendship=${detail.min_happiness}`);
+        if (detail.min_affection) parts.push(`affection=${detail.min_affection}`);
+        if (detail.time_of_day) parts.push(`time=${detail.time_of_day}`);
+        if (detail.known_move?.name) parts.push(`knownMove=${detail.known_move.name}`);
+        if (detail.location?.name) parts.push(`location=${detail.location.name}`);
+        if (detail.gender !== null && detail.gender !== undefined) parts.push(`gender=${detail.gender}`);
+        if (detail.needs_overworld_rain) parts.push('rain=true');
+        if (detail.turn_upside_down) parts.push('upsideDown=true');
+        if (parts.length) result.push(parts.join(','));
+      }
+      visit(next);
+    }
+  };
+  visit(chain);
+  return [...new Set(result)].sort();
+}
+
 export async function auditReference(
   client: PokeApiClient,
   source: SourceSnapshot,
   root: string,
   speciesLimit = DEFAULT_SAMPLE.length,
+  options: ReferenceAuditOptions = {},
 ): Promise<ReferenceAuditResult> {
   const findings: Finding[] = [];
   const apiErrors: string[] = [];
@@ -97,18 +187,8 @@ export async function auditReference(
   const totals: Record<string, number> = {};
   const catalogs: Record<string, Array<{ name: string; url: string }>> = {};
   for (const endpoint of [
-    'pokemon-species',
-    'pokemon',
-    'move',
-    'ability',
-    'item',
-    'location',
-    'nature',
-    'type',
-    'version',
-    'version-group',
-    'pokedex',
-    'generation',
+    'pokemon-species', 'pokemon', 'move', 'ability', 'item', 'location',
+    'nature', 'type', 'version', 'version-group', 'pokedex', 'generation',
   ]) {
     const result = await client.listAll<{ name: string; url: string }>(endpoint, 3000);
     if (!result.data) {
@@ -122,12 +202,12 @@ export async function auditReference(
     if (!result.ok) apiErrors.push(`${endpoint}: ${result.error}`);
   }
 
-  const speciesIds = (catalogs['pokemon-species'] ?? [])
+  const allSpeciesIds = (catalogs['pokemon-species'] ?? [])
     .map((entry) => idFromUrl(entry.url))
-    .filter((id) => Number.isFinite(id))
+    .filter((id) => Number.isFinite(id) && id > 0)
     .sort((a, b) => a - b);
-  const speciesGaps = speciesIds.filter((id, index) => id !== index + 1);
-  if (speciesIds.length && !speciesGaps.length) {
+  const speciesGaps = allSpeciesIds.filter((id, index) => id !== index + 1);
+  if (allSpeciesIds.length && !speciesGaps.length) {
     push({
       id: 'API-SPECIES-IDS-CORRECT',
       area: 'master-data',
@@ -135,7 +215,7 @@ export async function auditReference(
       classification: 'CORRECT',
       severity: 'info',
       message: 'PokéAPI species IDs form a continuous range; the catalog contains no gaps.',
-      evidence: [`ids 1..${speciesIds.length} (${speciesIds.length} species)`],
+      evidence: [`ids 1..${allSpeciesIds.length} (${allSpeciesIds.length} species)`],
       sources: ['https://pokeapi.co/api/v2/pokemon-species'],
     });
   } else if (speciesGaps.length) {
@@ -160,10 +240,10 @@ export async function auditReference(
     }
     generations.push({
       generation: gen,
-      speciesIds: (result.data.pokemon_species ?? []).map((p: any) => idFromUrl(p.url)),
-      versionGroups: (result.data.version_groups ?? []).map((v: any) => v.name),
-      moveCount: (result.data.moves ?? []).length,
-      typeNames: (result.data.types ?? []).map((t: any) => t.name),
+      speciesIds: asArray<any>(result.data.pokemon_species).map((p) => idFromUrl(p.url)).sort((a, b) => a - b),
+      versionGroups: asArray<any>(result.data.version_groups).map((v) => v.name),
+      moveCount: asArray<any>(result.data.moves).length,
+      typeNames: asArray<any>(result.data.types).map((t) => t.name),
     });
   }
 
@@ -179,10 +259,7 @@ export async function auditReference(
   const apiVersionNames = new Set((catalogs.version ?? []).map((v) => v.name));
   const missingVersionSlugs: string[] = [];
   const versionGenerationMismatch: string[] = [];
-  const gameVersionsSource = readFileSync(
-    join(root, 'pokedex-frontend/src/lib/gameVersions.ts'),
-    'utf8',
-  );
+  const gameVersionsSource = readFileSync(join(root, 'pokedex-frontend/src/lib/gameVersions.ts'), 'utf8');
   const frontendGenMap = parseGenerationMap(gameVersionsSource);
 
   for (const slug of source.supportedVersions) {
@@ -211,8 +288,7 @@ export async function auditReference(
       entity: 'supported game versions',
       classification: 'UNVERIFIED',
       severity: 'high',
-      message:
-        'Supported game slugs were not found in the PokéAPI version catalog. They may be unsupported by this reference source or use a different slug; do not infer data for them.',
+      message: 'Supported game slugs were not found in the PokéAPI version catalog. They may be unsupported by this reference source or use a different slug; do not infer data for them.',
       evidence: [`missing slugs: ${missingVersionSlugs.join(', ')}`],
       sources: ['https://pokeapi.co/api/v2/version', 'pokedex-frontend/src/lib/gameVersions.ts'],
       runtimeRequired: true,
@@ -230,7 +306,6 @@ export async function auditReference(
       sources: ['https://pokeapi.co/api/v2/version', 'pokedex-frontend/src/lib/gameVersions.ts'],
     });
   }
-
   if (!missingVersionSlugs.length && !versionGenerationMismatch.length && versions.length) {
     push({
       id: 'API-VERSIONS-CORRECT',
@@ -248,19 +323,20 @@ export async function auditReference(
   const pokedexes: ReferenceSnapshot['pokedexes'] = [];
   const invalidDexSlugs: string[] = [];
   const dexVersionGroupMismatch: string[] = [];
-  for (const slug of apiDexNames) {
+  for (const slug of [...apiDexNames].sort()) {
     const result = await client.get<any>(`/pokedex/${slug}`);
     if (!result.data) {
       apiErrors.push(`pokedex/${slug}: ${result.error}`);
       continue;
     }
-    const entries = result.data.pokemon_entries ?? [];
-    const entryCount = entries.length;
-    const versionGroups = (result.data.version_groups ?? []).map((v: any) => v.name);
-    const speciesNames = entries
-      .map((entry: any) => entry.pokemon_species?.name)
-      .filter(Boolean);
-    pokedexes.push({ name: slug, entryCount, versionGroups, speciesNames });
+    const entries = asArray<any>(result.data.pokemon_entries);
+    const versionGroupsForDex = asArray<any>(result.data.version_groups).map((v) => v.name);
+    pokedexes.push({
+      name: slug,
+      entryCount: entries.length,
+      versionGroups: versionGroupsForDex,
+      speciesNames: entries.map((entry) => entry.pokemon_species?.name).filter(Boolean).sort(),
+    });
   }
   const dexByName = new Map(pokedexes.map((dex) => [dex.name, dex]));
   for (const [game, dex] of Object.entries(source.regionalDexByVersion)) {
@@ -302,7 +378,6 @@ export async function auditReference(
       sources: ['https://pokeapi.co/api/v2/pokedex', 'pokedex-frontend/src/lib/gameVersions.ts'],
     });
   }
-
   if (!invalidDexSlugs.length) {
     push({
       id: 'API-DEX-SLUGS-CORRECT',
@@ -357,83 +432,237 @@ export async function auditReference(
     });
   }
 
-  const sampleIds = DEFAULT_SAMPLE.slice(0, Math.max(1, speciesLimit)).filter(
-    (id) => id <= (totals['pokemon-species'] || id),
-  );
-  const speciesSample: ReferenceSnapshot['speciesSample'] = [];
-  const missingImages: string[] = [];
-  const missingEvolutionChain: string[] = [];
-  const missingFlavorText: string[] = [];
-  for (const id of sampleIds) {
-    const result = await client.get<any>(`/pokemon-species/${id}`);
-    if (!result.data) {
-      apiErrors.push(`pokemon-species/${id}: ${result.error}`);
-      continue;
+  const key = catalogKey(allSpeciesIds.length ? allSpeciesIds : (options.speciesIds ?? DEFAULT_SAMPLE));
+  const checkpointFile = options.checkpointPath ?? join('audit', '.cache', 'pokeapi', 'checkpoints', `${key}.json`);
+  const checkpoint: CheckpointState = loadCheckpoint(checkpointFile, key, Boolean(options.resume));
+  const requestedIds = options.speciesIds
+    ? [...options.speciesIds]
+    : options.allSpecies || speciesLimit <= 0
+      ? allSpeciesIds
+      : DEFAULT_SAMPLE.slice(0, speciesLimit);
+  const targetIds = [...new Set(requestedIds)]
+    .filter((id) => Number.isFinite(id) && id > 0 && (!allSpeciesIds.length || allSpeciesIds.includes(id)))
+    .sort((a, b) => a - b);
+  const resumedIds = targetIds.filter((id) => checkpoint.completedIds.includes(id)).sort((a, b) => a - b);
+  const pendingIds = targetIds.filter((id) => !checkpoint.completedIds.includes(id));
+  const concurrency = Math.max(1, options.concurrency ?? 6);
+  const batchSize = Math.max(1, options.batchSize ?? 20);
+
+  const auditOne = async (id: number): Promise<{ id: number; record?: CheckpointRecord; error?: string }> => {
+    const errors: string[] = [];
+    const speciesResult = await client.get<any>(`/pokemon-species/${id}`);
+    if (!speciesResult.data) return { id, error: `pokemon-species/${id}: ${speciesResult.error}` };
+    const species = speciesResult.data;
+    const detailResult = await client.get<any>(`/pokemon/${id}`);
+    if (!detailResult.data) errors.push(`pokemon/${id}: ${detailResult.error}`);
+    const detail = detailResult.data ?? {};
+
+    const varietyNames: string[] = [];
+    const varietyForms: CheckpointRecord['varietyForms'] = [];
+    for (const variety of asArray<any>(species.varieties)) {
+      const name = variety.pokemon?.name;
+      if (!name) continue;
+      varietyNames.push(name);
+      const formResult = await client.get<any>(variety.pokemon.url ?? `/pokemon/${name}`);
+      if (!formResult.data) {
+        errors.push(`pokemon variety ${name}: ${formResult.error}`);
+        continue;
+      }
+      const formId = idFromUrl(variety.pokemon.url ?? '') || 0;
+      varietyForms.push({
+        name,
+        apiId: formId,
+        stats: statsFrom(formResult.data),
+        types: typesFrom(formResult.data),
+      });
     }
-    const data = result.data;
-    const varieties = (data.varieties ?? []).map((v: any) => v.pokemon?.name).filter(Boolean);
-    const imageNames = [...new Set([data.name, ...varieties])];
-    const localNormalImage = imageNames.some((name) =>
-      existsSync(join(root, `pokedex-backend/public/images/pokemon/normal/${name}.webp`)),
-    );
-    const localShinyImage = imageNames.some((name) =>
-      existsSync(join(root, `pokedex-backend/public/images/pokemon/shiny/${name}.webp`)),
-    );
-    if (!localNormalImage || !localShinyImage) {
-      missingImages.push(
-        `${id} ${data.name}: normal=${localNormalImage} shiny=${localShinyImage}`,
-      );
+    varietyNames.sort();
+
+    let conditions: string[] = [];
+    if (species.evolution_chain?.url) {
+      const chainResult = await client.get<any>(species.evolution_chain.url);
+      if (!chainResult.data) errors.push(`evolution-chain: ${chainResult.error}`);
+      else conditions = evolutionConditions(chainResult.data.chain ?? chainResult.data);
     }
-    if (!data.evolution_chain?.url) missingEvolutionChain.push(`${id} ${data.name}`);
-    const flavorLanguages = new Set(
-      (data.flavor_text_entries ?? []).map((entry: any) => entry.language?.name),
-    );
-    if (!flavorLanguages.has('en') || !flavorLanguages.has('vi')) {
-      missingFlavorText.push(`${id} ${data.name}: en=${flavorLanguages.has('en')} vi=${flavorLanguages.has('vi')}`);
-    }
-    speciesSample.push({
+
+    const encounterResult = await client.get<any[]>(`/pokemon/${id}/encounters`);
+    const encounterVersions = encounterResult.data
+      ? [...new Set(asArray<any>(encounterResult.data).map((e) => e.version?.name).filter(Boolean))].sort()
+      : [];
+    if (!encounterResult.data) errors.push(`pokemon/${id}/encounters: ${encounterResult.error}`);
+
+    const learnsetVersionGroups = [
+      ...new Set(
+        asArray<any>(detail.moves).flatMap((move) =>
+          asArray<any>(move.version_group_details)
+            .map((entry) => entry.version_group?.name)
+            .filter(Boolean),
+        ),
+      ),
+    ].sort();
+
+    const imageNames = [...new Set([species.name, ...varietyNames])].sort();
+    const normalDir = join(root, 'pokedex-backend/public/images/pokemon/normal');
+    const shinyDir = join(root, 'pokedex-backend/public/images/pokemon/shiny');
+    const missingNormalImages = imageNames.filter((name) => !existsSync(join(normalDir, `${name}.webp`)));
+    const missingShinyImages = imageNames.filter((name) => !existsSync(join(shinyDir, `${name}.webp`)));
+    const flavorTextLanguages = [
+      ...new Set(asArray<any>(species.flavor_text_entries).map((entry) => entry.language?.name).filter(Boolean)),
+    ].sort();
+
+    if (errors.length) return { id, error: errors.join('; ') };
+    return {
       id,
-      name: data.name,
-      generation: generationFromUrl(data.generation?.url ?? ''),
-      varieties,
-      hasEvolutionChain: Boolean(data.evolution_chain?.url),
-      flavorTextLanguages: flavorLanguages.size,
-      localNormalImage,
-      localShinyImage,
+      record: {
+        id,
+        name: species.name,
+        generation: generationFromUrl(species.generation?.url ?? ''),
+        varieties: varietyNames,
+        hasEvolutionChain: Boolean(species.evolution_chain?.url),
+        evolutionConditions: conditions,
+        flavorTextLanguages,
+        localNormalImages: imageNames.filter((name) => !missingNormalImages.includes(name)),
+        localShinyImages: imageNames.filter((name) => !missingShinyImages.includes(name)),
+        missingNormalImages,
+        missingShinyImages,
+        height: detail.height ?? 0,
+        weight: detail.weight ?? 0,
+        baseExperience: detail.base_experience ?? null,
+        stats: statsFrom(detail),
+        types: typesFrom(detail),
+        abilities: abilitiesFrom(detail),
+        varietyForms: varietyForms.sort((a, b) => a.name.localeCompare(b.name)),
+        encounterVersions,
+        learnsetVersionGroups,
+        errors: [],
+      },
+    };
+  };
+
+  let completed = resumedIds.length;
+  for (let offset = 0; offset < pendingIds.length; offset += batchSize) {
+    const batch = pendingIds.slice(offset, offset + batchSize);
+    const results = await mapWithConcurrency(batch, concurrency, auditOne);
+    for (const result of results) {
+      if (result.record) {
+        checkpoint.records[String(result.id)] = result.record;
+        if (!checkpoint.completedIds.includes(result.id)) checkpoint.completedIds.push(result.id);
+        delete checkpoint.failed[String(result.id)];
+        completed += 1;
+      } else {
+        checkpoint.failed[String(result.id)] = result.error ?? 'unknown error';
+        apiErrors.push(`species ${result.id}: ${result.error}`);
+      }
+    }
+    checkpoint.completedIds.sort((a, b) => a - b);
+    saveCheckpoint(checkpointFile, checkpoint);
+    options.onProgress?.(completed, targetIds.length);
+  }
+
+  const records = targetIds
+    .map((id) => checkpoint.records[String(id)])
+    .filter((record): record is CheckpointRecord => Boolean(record));
+
+  const speciesSample: ReferenceSnapshot['speciesSample'] = records.map((record) => ({
+    id: record.id,
+    name: record.name,
+    generation: record.generation,
+    varieties: record.varieties,
+    hasEvolutionChain: record.hasEvolutionChain,
+    flavorTextLanguages: record.flavorTextLanguages.length,
+    localNormalImage: record.missingNormalImages.length === 0,
+    localShinyImage: record.missingShinyImages.length === 0,
+  }));
+  const pokemonDetails: ReferenceSnapshot['pokemonDetails'] = records.map((record) => ({
+    id: record.id,
+    name: record.name,
+    generation: record.generation,
+    height: record.height,
+    weight: record.weight,
+    baseExperience: record.baseExperience,
+    stats: record.stats,
+    types: record.types,
+    abilities: record.abilities,
+  }));
+  const formAudit: ReferenceSnapshot['formAudit'] = records.map((record) => ({
+    id: record.id,
+    varieties: record.varieties.length,
+    formsChecked: record.varietyForms.length,
+    missingNormalImages: record.missingNormalImages,
+    missingShinyImages: record.missingShinyImages,
+  }));
+  const evolutionSample: ReferenceSnapshot['evolutionSample'] = records.map((record) => ({
+    id: record.id,
+    requirementCount: record.evolutionConditions.length,
+    conditions: record.evolutionConditions,
+  }));
+  const encounterSample: ReferenceSnapshot['encounterSample'] = records.map((record) => ({
+    id: record.id,
+    versions: record.encounterVersions,
+  }));
+  const learnsetSample: ReferenceSnapshot['learnsetSample'] = records.map((record) => ({
+    id: record.id,
+    versionGroupCount: record.learnsetVersionGroups.length,
+  }));
+
+  const missingImages = formAudit.flatMap((record) => [
+    ...record.missingNormalImages.map((name) => `${record.id} ${name}: normal missing`),
+    ...record.missingShinyImages.map((name) => `${record.id} ${name}: shiny missing`),
+  ]);
+  if (missingImages.length) {
+    push({
+      id: 'API-IMAGE-SAMPLE-MISSING',
+      area: 'images',
+      entity: 'local WebP assets',
+      classification: 'MISSING',
+      severity: 'medium',
+      message: 'Audited species or variety names lack local normal/shiny WebP assets. DB imageUrl may still point to remote PokeAPI URLs; runtime verification is required.',
+      evidence: missingImages.slice(0, 12),
+      sources: ['https://pokeapi.co/api/v2/pokemon-species', 'pokedex-backend/public/images'],
+      runtimeRequired: true,
+    });
+  } else if (records.length) {
+    push({
+      id: 'API-IMAGE-SAMPLE-CORRECT',
+      area: 'images',
+      entity: 'local WebP assets',
+      classification: 'CORRECT',
+      severity: 'info',
+      message: 'Every audited species and variety has local normal and shiny WebP assets.',
+      evidence: [`species audited: ${records.length}`],
+      sources: ['pokedex-backend/public/images', 'https://pokeapi.co/api/v2/pokemon-species'],
     });
   }
 
-  const pokemonDetails: ReferenceSnapshot['pokemonDetails'] = [];
-  for (const { id } of speciesSample) {
-    const result = await client.get<any>(`/pokemon/${id}`);
-    if (!result.data) {
-      apiErrors.push(`pokemon/${id}: ${result.error}`);
-      continue;
-    }
-    const data = result.data;
-    const stats: Record<string, number> = {};
-    for (const stat of data.stats ?? []) {
-      if (stat.stat?.name) stats[stat.stat.name] = stat.base_stat;
-    }
-    pokemonDetails.push({
-      id,
-      name: data.name,
-      generation: speciesSample.find((species) => species.id === id)?.generation ?? 0,
-      height: data.height,
-      weight: data.weight,
-      baseExperience: data.base_experience ?? null,
-      stats,
-      types: (data.types ?? [])
-        .slice()
-        .sort((a: any, b: any) => a.slot - b.slot)
-        .map((entry: any) => entry.type?.name)
-        .filter(Boolean),
-      abilities: (data.abilities ?? [])
-        .map((entry: any) => ({
-          name: entry.ability?.name,
-          isHidden: Boolean(entry.is_hidden),
-        }))
-        .filter((entry: any) => entry.name),
+  const missingEvolutionChain = speciesSample.filter((species) => !species.hasEvolutionChain);
+  if (missingEvolutionChain.length) {
+    push({
+      id: 'API-EVOLUTION-SAMPLE-MISSING',
+      area: 'evolution',
+      entity: 'evolution chains',
+      classification: 'UNVERIFIED',
+      severity: 'low',
+      message: 'Audited species have no evolution chain URL in the reference source; evolution requirements cannot be asserted for them.',
+      evidence: missingEvolutionChain.slice(0, 12).map((s) => `${s.id} ${s.name}`),
+      sources: ['https://pokeapi.co/api/v2/pokemon-species'],
+      runtimeRequired: true,
+    });
+  }
+
+  const missingFlavorText = records.filter(
+    (record) => !record.flavorTextLanguages.includes('en') || !record.flavorTextLanguages.includes('vi'),
+  );
+  if (missingFlavorText.length) {
+    push({
+      id: 'API-DESCRIPTION-LANGUAGE-COVERAGE',
+      area: 'master-data',
+      entity: 'descriptions',
+      classification: 'UNVERIFIED',
+      severity: 'low',
+      message: 'Audited species do not expose both en and vi flavor text from PokéAPI; curated descriptions cannot be sourced from this reference alone.',
+      evidence: missingFlavorText.slice(0, 12).map((r) => `${r.id} ${r.name}: ${r.flavorTextLanguages.join('/') || 'none'}`),
+      sources: ['https://pokeapi.co/api/v2/pokemon-species'],
+      runtimeRequired: true,
     });
   }
 
@@ -450,85 +679,6 @@ export async function auditReference(
     });
   }
 
-  if (missingImages.length) {
-    push({
-      id: 'API-IMAGE-SAMPLE-MISSING',
-      area: 'images',
-      entity: 'local WebP assets',
-      classification: 'MISSING',
-      severity: 'medium',
-      message: 'Sampled species lack local normal/shiny WebP assets. DB imageUrl may still point to remote PokeAPI URLs; runtime verification is required.',
-      evidence: missingImages.slice(0, 12),
-      sources: ['https://pokeapi.co/api/v2/pokemon-species', 'pokedex-backend/public/images'],
-      runtimeRequired: true,
-    });
-  }
-  if (!missingImages.length && speciesSample.length) {
-    push({
-      id: 'API-IMAGE-SAMPLE-CORRECT',
-      area: 'images',
-      entity: 'local WebP assets',
-      classification: 'CORRECT',
-      severity: 'info',
-      message: 'Every sampled species has at least one local normal and shiny WebP asset under a species or variety name.',
-      evidence: [`species sampled: ${speciesSample.length}`],
-      sources: ['pokedex-backend/public/images', 'https://pokeapi.co/api/v2/pokemon-species'],
-    });
-  }
-  if (missingEvolutionChain.length) {
-    push({
-      id: 'API-EVOLUTION-SAMPLE-MISSING',
-      area: 'evolution',
-      entity: 'evolution chains',
-      classification: 'MISSING',
-      severity: 'low',
-      message: 'Sampled species have no evolution chain URL in the reference source.',
-      evidence: missingEvolutionChain.slice(0, 12),
-      sources: ['https://pokeapi.co/api/v2/pokemon-species'],
-    });
-  }
-  if (missingFlavorText.length) {
-    push({
-      id: 'API-DESCRIPTION-LANGUAGE-COVERAGE',
-      area: 'master-data',
-      entity: 'descriptions',
-      classification: 'UNVERIFIED',
-      severity: 'low',
-      message: 'Sampled species do not expose both en and vi flavor text from PokéAPI; curated descriptions cannot be sourced from this reference alone.',
-      evidence: missingFlavorText.slice(0, 12),
-      sources: ['https://pokeapi.co/api/v2/pokemon-species'],
-      runtimeRequired: true,
-    });
-  }
-
-  const encounterSample: ReferenceSnapshot['encounterSample'] = [];
-  for (const id of sampleIds.slice(0, 8)) {
-    const result = await client.get<any[]>(`/pokemon/${id}/encounters`);
-    if (!result.data) {
-      apiErrors.push(`pokemon/${id}/encounters: ${result.error}`);
-      continue;
-    }
-    encounterSample.push({
-      id,
-      versions: [...new Set(result.data.map((e: any) => e.version?.name).filter(Boolean))].sort(),
-    });
-  }
-
-  const learnsetSample: ReferenceSnapshot['learnsetSample'] = [];
-  for (const id of sampleIds.slice(0, 4)) {
-    const result = await client.get<any>(`/pokemon/${id}`);
-    if (!result.data) {
-      apiErrors.push(`pokemon/${id}: ${result.error}`);
-      continue;
-    }
-    const groups = new Set<string>();
-    for (const move of result.data.moves ?? []) {
-      for (const detail of move.version_group_details ?? []) {
-        if (detail.version_group?.name) groups.add(detail.version_group.name);
-      }
-    }
-    learnsetSample.push({ id, versionGroupCount: groups.size });
-  }
   if (learnsetSample.some((s) => s.versionGroupCount > 0)) {
     push({
       id: 'API-LEARNSET-VERSION-DETAIL',
@@ -536,23 +686,40 @@ export async function auditReference(
       entity: 'learnsets',
       classification: 'MISSING',
       severity: 'high',
-      message:
-        'Reference learnsets carry per-version-group detail, but the local PokemonMove model has no version dimension; imported learnsets cannot be validated per game.',
-      evidence: learnsetSample.map((s) => `species ${s.id}: ${s.versionGroupCount} version groups`),
+      message: 'Reference learnsets carry per-version-group detail, but the local PokemonMove model has no version dimension; imported learnsets cannot be validated per game.',
+      evidence: learnsetSample.slice(0, 12).map((s) => `species ${s.id}: ${s.versionGroupCount} version groups`),
       sources: ['https://pokeapi.co/api/v2/pokemon/{id}', 'pokedex-backend/prisma/schema.prisma'],
     });
   }
 
+  const varietyRecords = records.reduce((sum, record) => sum + record.varieties.length, 0);
+  const formsChecked = records.reduce((sum, record) => sum + record.varietyForms.length, 0);
   const reference: ReferenceSnapshot = {
     totals,
+    counts: {
+      species: totals['pokemon-species'] ?? allSpeciesIds.length,
+      pokemonForms: totals.pokemon ?? 0,
+      varieties: varietyRecords,
+      versions: versions.length,
+      dexes: pokedexes.length,
+      generations: generations.length,
+      speciesAudited: records.length,
+    },
     generations,
     versions,
     pokedexes,
     speciesSample,
     pokemonDetails,
+    formAudit,
+    evolutionSample,
     availabilitySample,
     encounterSample,
     learnsetSample,
+    checkpoint: {
+      key,
+      resumedIds,
+      failedIds: Object.keys(checkpoint.failed).sort(),
+    },
     apiErrors,
   };
   return { findings, reference };

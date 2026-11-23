@@ -46,6 +46,8 @@ export interface AuditOutput {
   source?: unknown;
   db?: {
     connected: boolean;
+    readOnlyEnforced: boolean;
+    statementTimeoutMs: number;
     tableCounts: Record<string, number>;
     checks: Record<string, number>;
     notes: string[];

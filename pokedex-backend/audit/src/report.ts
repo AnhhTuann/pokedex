@@ -14,6 +14,9 @@ const PRIORITY: Array<[RegExp, number, string]> = [
   [/WALKTHROUGH/, 8, 'Walkthrough completeness'],
 ];
 
+const dbScope = (finding: Finding): boolean =>
+  finding.id.startsWith('DB-') || finding.id.startsWith('SCHEMA-') || finding.id === 'SRC-WALKTHROUGH-COVERAGE';
+
 export function buildFixPlan(findings: Finding[]): FixPlan[] {
   return findings
     .filter((f) => f.classification !== 'CORRECT' && f.classification !== 'UNVERIFIED')
@@ -21,16 +24,23 @@ export function buildFixPlan(findings: Finding[]): FixPlan[] {
       const match = PRIORITY.find(([pattern]) => pattern.test(finding.id + finding.area));
       const order = match?.[1] ?? 9;
       const area = match?.[2] ?? 'Other data quality work';
+      const needsDb = dbScope(finding);
       return {
         order,
         area,
         findingId: finding.id,
         action: finding.recommendation ?? finding.message,
-        dryRunCommand: 'npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>',
-        validationCommand: 'npm run audit -- --offline --schema-only && npm test && npm run build',
-        backupCommand: 'pg_dump "$AUDIT_DATABASE_URL" --schema-only -f backup-schema.sql && pg_dump "$AUDIT_DATABASE_URL" --data-only -f backup-data.sql',
-        rollbackCommand: 'psql "$AUDIT_DATABASE_URL" -f backup-data.sql  # operator-reviewed only',
-        runtimeRequired: Boolean(finding.runtimeRequired),
+        dryRunCommand: `npm run audit:dry-run -- --finding ${finding.id} --report audit/reports/current/audit.json`,
+        validationCommand: needsDb
+          ? 'npm run audit -- --db --out audit/reports/verify-db && npm run audit -- --offline --schema-only --out audit/reports/verify-schema'
+          : 'npm run audit:typecheck && npm run test:audit && npm test && npm run build',
+        backupCommand: needsDb
+          ? 'pg_dump -Fc --file="$BACKUP_PATH" "$AUDIT_DATABASE_URL"  # full logical backup, operator-approved staging/backup only'
+          : 'git rev-parse HEAD > pre-fix-commit.txt && git diff --binary > pre-fix.patch  # reviewed source checkpoint',
+        rollbackCommand: needsDb
+          ? 'KHÔNG replay data-only SQL vào DB đã populate. Phục hồi full backup vào DB MỚI, verify counts/relations, rồi operator mới đổi connection; mọi thao tác cần phê duyệt.'
+          : 'git revert <COMMIT_SHA> sau khi operator review; không force-push, không overwrite lịch sử.',
+        runtimeRequired: Boolean(finding.runtimeRequired) || needsDb,
       };
     })
     .sort((a, b) => a.order - b.order || a.findingId.localeCompare(b.findingId));
@@ -52,7 +62,13 @@ export function buildCoverage(
   detail.gamesCheckedAgainstApi = reference?.versions.length ?? 0;
   detail.regionalDexesChecked = reference?.pokedexes.length ?? 0;
   detail.speciesSampled = reference?.speciesSample.length ?? 0;
-  detail.speciesCatalogTotal = reference?.totals['pokemon-species'] ?? 0;
+  detail.speciesCatalogTotal = reference?.counts?.species ?? reference?.totals['pokemon-species'] ?? 0;
+  detail.pokemonFormCatalogTotal = reference?.counts?.pokemonForms ?? 0;
+  detail.varietyRecordsChecked = reference?.formAudit.reduce((sum, item) => sum + item.varieties, 0) ?? 0;
+  detail.varietyFormsChecked = reference?.formAudit.reduce((sum, item) => sum + item.formsChecked, 0) ?? 0;
+  detail.evolutionChainsAudited = reference?.evolutionSample.filter((item) => item.requirementCount > 0).length ?? 0;
+  detail.resumedSpecies = reference?.checkpoint.resumedIds.length ?? 0;
+  detail.failedSpecies = reference?.checkpoint.failedIds.length ?? 0;
   detail.moveCatalogTotal = reference?.totals.move ?? 0;
   detail.abilityCatalogTotal = reference?.totals.ability ?? 0;
   detail.itemCatalogTotal = reference?.totals.item ?? 0;
@@ -73,6 +89,8 @@ export function buildCoverage(
     detail.gamesCheckedAgainstApi +
     detail.regionalDexesChecked +
     detail.speciesSampled +
+    detail.varietyFormsChecked +
+    detail.evolutionChainsAudited +
     detail.encounterSpeciesSampled +
     detail.learnsetSpeciesSampled +
     detail.masterRecordsCompared +
@@ -81,6 +99,7 @@ export function buildCoverage(
     9; // generation checks
   const unchecked =
     Math.max(0, detail.speciesCatalogTotal - detail.speciesSampled) +
+    Math.max(0, detail.pokemonFormCatalogTotal - detail.varietyFormsChecked) +
     Math.max(0, detail.supportedGames - detail.gamesCheckedAgainstApi) +
     (db.connected ? 0 : 15);
   return { checked, unchecked, unverified, detail, byClassification };
@@ -104,6 +123,16 @@ export function renderMarkdown(output: AuditOutput, fixPlan: FixPlan[]): string 
   lines.push('');
   lines.push('> Dữ liệu trong code/schema **không** phải bằng chứng về nội dung database thật. Mọi mục `UNVERIFIED` cần chạy lại với DB staging/backup an toàn.');
   lines.push('');
+  if (referenceData?.counts) {
+    lines.push('## 0. Phân biệt species / form / DB rows');
+    lines.push('');
+    lines.push(`- Species PokéAPI: **${referenceData.counts.species}**`);
+    lines.push(`- Pokemon/form PokéAPI: **${referenceData.counts.pokemonForms}**`);
+    lines.push(`- Variety records đã kiểm tra: **${referenceData.counts.varieties}**`);
+    lines.push(`- Species đã kiểm tra: **${referenceData.counts.speciesAudited}** (resume: ${referenceData.checkpoint.resumedIds.length}, lỗi: ${referenceData.checkpoint.failedIds.length})`);
+    lines.push(`- DB rows: ${db?.connected ? 'xem bảng bên dưới' : '**BLOCKED — chưa có AUDIT_DATABASE_URL**'}`);
+    lines.push('');
+  }
   lines.push('## 1. Tổng quan database');
   lines.push('');
   lines.push('| Model | Số record (nếu có DB) |');

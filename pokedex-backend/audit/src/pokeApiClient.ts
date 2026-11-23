@@ -27,8 +27,31 @@ export const defaultPokeApiOptions: PokeApiOptions = {
   enabled: true,
 };
 
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Runs work with a fixed maximum number of in-flight promises, preserving input order. */
+export async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  work: (item: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  const limit = Math.max(1, Math.min(concurrency || 1, items.length || 1));
+  let cursor = 0;
+  const workers = Array.from({ length: limit }, async () => {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      results[index] = await work(items[index], index);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
 export class PokeApiClient {
-  private tail: Promise<unknown> = Promise.resolve();
+  private active = 0;
+  private readonly waiters: Array<() => void> = [];
   private readonly opts: PokeApiOptions;
 
   constructor(options: Partial<PokeApiOptions> = {}) {
@@ -44,9 +67,22 @@ export class PokeApiClient {
   }
 
   private async limited<T>(work: () => Promise<T>): Promise<T> {
-    const run = this.tail.then(work, work);
-    this.tail = run.catch(() => undefined);
-    return run;
+    const limit = Math.max(1, this.opts.concurrency);
+    if (this.active >= limit) {
+      await new Promise<void>((resolve) => this.waiters.push(resolve));
+    }
+    this.active += 1;
+    try {
+      return await work();
+    } finally {
+      this.active -= 1;
+      this.waiters.shift()?.();
+    }
+  }
+
+  private urlFor(path: string): string {
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${this.opts.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
   }
 
   async get<T = any>(path: string): Promise<ApiResult<T>> {
@@ -55,33 +91,37 @@ export class PokeApiClient {
       try {
         return { ok: true, data: JSON.parse(readFileSync(cachePath, 'utf8')) as T, fromCache: true };
       } catch {
-        /* corrupt cache: refetch */
+        /* corrupt cache: refetch if API enabled */
       }
     }
     if (!this.opts.enabled) {
-      return { ok: false, data: null, fromCache: false, error: 'API mode disabled' };
+      return { ok: false, data: null, fromCache: false, error: 'API mode disabled; no cached response' };
     }
     return this.limited(async () => {
       let lastError = '';
-      for (let attempt = 0; attempt < this.opts.retries; attempt += 1) {
+      for (let attempt = 0; attempt < Math.max(1, this.opts.retries); attempt += 1) {
         try {
-          const response = await fetch(`${this.opts.baseUrl}${path}`, {
+          const response = await fetch(this.urlFor(path), {
             signal: AbortSignal.timeout(this.opts.timeoutMs),
             headers: { Accept: 'application/json' },
           });
-          if (!response.ok) {
-            lastError = `HTTP ${response.status}`;
-            if (response.status >= 400 && response.status < 500) break;
-          } else {
+          if (response.ok) {
             const data = (await response.json()) as T;
             writeFileSync(cachePath, JSON.stringify(data));
             return { ok: true, data, fromCache: false } as ApiResult<T>;
           }
+          lastError = `HTTP ${response.status}`;
+          if (response.status === 429) {
+            const retryAfter = Number(response.headers.get('retry-after'));
+            await sleep(Number.isFinite(retryAfter) ? Math.min(retryAfter * 1000, 5000) : 1000);
+            continue;
+          }
+          if (response.status >= 400 && response.status < 500) break;
         } catch (error) {
           lastError = error instanceof Error ? error.message : String(error);
         }
         if (attempt + 1 < this.opts.retries) {
-          await new Promise((resolve) => setTimeout(resolve, 250 * 2 ** attempt));
+          await sleep(250 * 2 ** attempt);
         }
       }
       return { ok: false, data: null, fromCache: false, error: lastError };
@@ -96,11 +136,12 @@ export class PokeApiClient {
       return { ok: false, data: null, fromCache: result.fromCache, error: result.error };
     }
     const items = result.data.results as T[];
+    const complete = items.length >= result.data.count;
     return {
-      ok: items.length >= result.data.count,
+      ok: complete,
       data: items,
       fromCache: result.fromCache,
-      error: items.length >= result.data.count ? undefined : `partial list ${items.length}/${result.data.count}`,
+      error: complete ? undefined : `partial list ${items.length}/${result.data.count}`,
     };
   }
 }
