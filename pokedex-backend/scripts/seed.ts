@@ -847,39 +847,6 @@ async function main() {
     }
   }
 
-  // Step 3: Mock User Team
-  console.log("Seeding mock user and team...");
-  await prisma.user.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
-      id: 1,
-      username: 'mockuser',
-      email: 'mock@example.com',
-      passwordHash: 'dummyhash',
-    },
-  });
-
-  const team = await prisma.team.upsert({
-    where: { userId: 1 },
-    update: {},
-    create: {
-      userId: 1,
-    },
-  });
-
-  // Add Pikachu, Bulbasaur, Charmander, Squirtle if not exists
-  const mockTeamIds = [25, 1, 4, 7];
-  for (let i = 0; i < mockTeamIds.length; i++) {
-    await prisma.teamSlot.upsert({
-      where: {
-        teamId_slotOrder: { teamId: team.id, slotOrder: i + 1 },
-      },
-      update: { pokemonId: mockTeamIds[i] },
-      create: { teamId: team.id, slotOrder: i + 1, pokemonId: mockTeamIds[i] },
-    });
-  }
-
   // Step 4: Seed custom Z-A Megas (Meganium, Emboar, Feraligatr)
   console.log("Seeding custom Z-A Mega varieties...");
   const customMegas = [

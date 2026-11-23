@@ -13,10 +13,15 @@ import { MyPokedexProvider } from "./lib/MyPokedexContext";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
+import { GRAPHQL_URL, resolveAssetUrl } from "./lib/config";
+
+const assetFields = (...fields: string[]) => ({
+  fields: Object.fromEntries(fields.map((f) => [f, { read: (url: string | null | undefined) => resolveAssetUrl(url) }])),
+});
 
 // ─── Apollo Client ────────────────────────────────────────
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
+  uri: GRAPHQL_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -33,6 +38,10 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
+      PokemonListItem: assetFields("image", "shinyImage"),
+      PokemonDetail: assetFields("image", "shinyImage"),
+      PokemonVariety: assetFields("image", "shinyImage"),
+      Item: assetFields("spriteUrl"),
       Query: {
         fields: {
           pokemonList: {
@@ -79,11 +88,11 @@ function Root() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ApolloProvider client={client}>
-        <MyPokedexProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <MyPokedexProvider>
             <App />
-          </BrowserRouter>
-        </MyPokedexProvider>
+          </MyPokedexProvider>
+        </BrowserRouter>
       </ApolloProvider>
     </ColorModeContext.Provider>
   );

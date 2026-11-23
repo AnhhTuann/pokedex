@@ -1,6 +1,10 @@
 import { prisma } from '../db/prisma.js';
+import { BoundedCache } from '../lib/boundedCache.js';
+import { fetchWithTimeout } from '../lib/pokeApi.js';
+import { defensiveMatchups } from '../lib/typeMatchups.js';
+import { MAX_POKEMON_PAGE_SIZE, clampLimit, clampOffset } from '../lib/pagination.js';
 
-const evolutionChainCache = new Map<number, any>();
+const evolutionChainCache = new BoundedCache<number, any>(500);
 
 async function getFullEvolutionChain(pokemonId: number) {
   if (evolutionChainCache.has(pokemonId)) {
@@ -8,13 +12,13 @@ async function getFullEvolutionChain(pokemonId: number) {
   }
 
   try {
-    const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    const speciesRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
     if (!speciesRes.ok) return null;
     const speciesData = await speciesRes.json();
     const chainUrl = speciesData.evolution_chain?.url;
     if (!chainUrl) return null;
 
-    const chainRes = await fetch(chainUrl);
+    const chainRes = await fetchWithTimeout(chainUrl);
     if (!chainRes.ok) return null;
     const chainData = await chainRes.json();
 
@@ -53,7 +57,7 @@ async function getFullEvolutionChain(pokemonId: number) {
         });
       } else {
         try {
-          const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${item.name.toLowerCase()}`);
+          const pokeRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${item.name.toLowerCase()}`);
           if (pokeRes.ok) {
             const pokeData = await pokeRes.json();
             result.push({
@@ -80,7 +84,7 @@ async function getFullEvolutionChain(pokemonId: number) {
   }
 }
 
-const alternativeFormsCache = new Map<number, any[]>();
+const alternativeFormsCache = new BoundedCache<number, any[]>(500);
 
 async function getAlternativeForms(pokemonId: number): Promise<any[]> {
   if (alternativeFormsCache.has(pokemonId)) {
@@ -88,7 +92,7 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
   }
 
   try {
-    const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    const speciesRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
     if (!speciesRes.ok) return [];
     const speciesData = await speciesRes.json();
     const varieties = speciesData.varieties || [];
@@ -97,7 +101,7 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
     const forms = [];
     for (const v of nonDefault) {
       try {
-        const detailRes = await fetch(v.pokemon.url);
+        const detailRes = await fetchWithTimeout(v.pokemon.url);
         if (!detailRes.ok) continue;
         const d = await detailRes.json();
 
@@ -212,14 +216,21 @@ export const pokemonService = {
         entryMap.set(entry.pokemonId, entry.entryNumber);
       }
 
+      const formSpeciesIds = Array.from(new Set(
+        pokemons.filter((p) => !p.isDefault && p.speciesId).map((p) => p.speciesId as number)
+      ));
+      const basePokemons = formSpeciesIds.length > 0
+        ? await prisma.pokemon.findMany({
+            where: { pokedexNumber: { in: formSpeciesIds } },
+            select: { id: true, pokedexNumber: true }
+          })
+        : [];
+      const baseIdByPokedexNumber = new Map(basePokemons.map((b) => [b.pokedexNumber, b.id]));
+
       for (const p of pokemons) {
         let baseDbId = p.id;
         if (!p.isDefault && p.speciesId) {
-          const basePoke = await prisma.pokemon.findUnique({
-            where: { pokedexNumber: p.speciesId },
-            select: { id: true }
-          });
-          if (basePoke) baseDbId = basePoke.id;
+          baseDbId = baseIdByPokedexNumber.get(p.speciesId) ?? p.id;
         }
 
         const regNum = entryMap.get(baseDbId) || null;
@@ -273,7 +284,8 @@ export const pokemonService = {
       results.map(r => r.regionalNumber !== null && r.regionalNumber !== undefined ? `R-${r.regionalNumber}` : `N-${r.speciesId}`)
     );
     const totalCount = uniqueKeys.size;
-    const paginatedResults = results.slice(offset, offset + limit);
+    const start = clampOffset(offset);
+    const paginatedResults = results.slice(start, start + clampLimit(limit, 20, MAX_POKEMON_PAGE_SIZE));
 
     return {
       results: paginatedResults,
@@ -302,7 +314,7 @@ export const pokemonService = {
 
     if (!p) {
       try {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${id}`);
         if (!res.ok) return null;
         const d = await res.json();
 
@@ -318,7 +330,7 @@ export const pokemonService = {
         let alternativeForms: any[] = [];
 
         try {
-          const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
+          const speciesRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
           if (speciesRes.ok) {
             const speciesData = await speciesRes.json();
             const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
@@ -340,7 +352,7 @@ export const pokemonService = {
 
             for (const v of nonDefault) {
               try {
-                const detailRes = await fetch(v.pokemon.url);
+                const detailRes = await fetchWithTimeout(v.pokemon.url);
                 if (!detailRes.ok) continue;
                 const dVar = await detailRes.json();
 
@@ -391,11 +403,7 @@ export const pokemonService = {
 
         const evolutions = (await getFullEvolutionChain(id)) || [];
 
-        const matchups = [
-          { type: "fire", multiplier: 2.0 },
-          { type: "water", multiplier: 0.5 },
-          { type: "grass", multiplier: 0.5 }
-        ];
+        const matchups = defensiveMatchups(d.types.map((t: any) => t.type.name));
 
         let parts = d.name.split('-');
         let baseName = parts[0];
@@ -448,11 +456,7 @@ export const pokemonService = {
 
     const evolutions = (await getFullEvolutionChain(p.pokedexNumber)) || [];
 
-    const matchups = [
-      { type: "fire", multiplier: 2.0 },
-      { type: "water", multiplier: 0.5 },
-      { type: "grass", multiplier: 0.5 }
-    ];
+    const matchups = defensiveMatchups(p.types.map((t: any) => t.name));
 
     const megaEvolutions = (p.varieties || []).filter((v: any) => v.isMega).map((v: any) => ({
       id: v.id,

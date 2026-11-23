@@ -161,8 +161,6 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
     }
   };
 
-  if (!pokemonId) return null;
-
   const displayImage = isShiny ? (p?.shinyImage || p?.image) : p?.image;
 
   const primaryType = p?.types && p.types.length > 0 ? p.types[0] : 'normal';
@@ -180,6 +178,8 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
       active = false;
     };
   }, [displayImage, primaryType]);
+
+  if (!pokemonId) return null;
 
   const { primaryColor: dynamicPrimaryColor, pastelBgColor } = getExtractedColors(
     extractedRgb,
@@ -432,12 +432,12 @@ export default function PokeDetail({ pokemonId, onClose, onSelectPokemonId }: Po
                 if (m.multiplier > 1) {
                   bgColor = 'rgba(239, 68, 68, 0.15)';
                   textColor = '#ef4444';
-                } else if (m.multiplier < 1) {
-                  bgColor = 'rgba(34, 197, 94, 0.15)';
-                  textColor = '#22c55e';
                 } else if (m.multiplier === 0) {
                   bgColor = 'rgba(0, 0, 0, 0.3)';
                   textColor = '#9ca3af';
+                } else if (m.multiplier < 1) {
+                  bgColor = 'rgba(34, 197, 94, 0.15)';
+                  textColor = '#22c55e';
                 }
                 return (
                   <span

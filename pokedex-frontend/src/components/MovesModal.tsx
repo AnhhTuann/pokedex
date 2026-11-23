@@ -54,7 +54,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
     if (!pokemon) return;
     const types = pokemon.types;
     
-    let validMoves = availableMoves.filter((m: any) => m.power && m.power > 0);
+    const validMoves = availableMoves.filter((m: any) => m.power && m.power > 0);
     
     const stabMoves = validMoves.filter((m: any) => types.includes(m.type));
     const nonStabMoves = validMoves.filter((m: any) => !types.includes(m.type));

@@ -1,5 +1,7 @@
+import { GraphQLError } from 'graphql';
 import { prisma } from '../db/prisma.js';
 import { downloadAndOptimizeImage } from './image.service.js';
+import { cleanText, fetchPokeApi, idFromResourceUrl, parseGeneration } from '../lib/pokeApi.js';
 
 interface UpdateStatus {
   type: string;
@@ -8,165 +10,188 @@ interface UpdateStatus {
   hasUpdate: boolean;
 }
 
+interface NamedResource {
+  name: string;
+  url: string;
+}
+
+const LIST_LIMIT = 100000;
+const english = (entries: any[] | undefined) => entries?.find((e: any) => e.language?.name === 'en');
+
+let syncInProgress = false;
+
+async function fetchCount(resource: string): Promise<number> {
+  const data = await fetchPokeApi<{ count: number }>(`https://pokeapi.co/api/v2/${resource}?limit=1`);
+  if (!data) throw new GraphQLError(`Could not reach PokéAPI (${resource}).`);
+  return data.count;
+}
+
+async function fetchAll(resource: string): Promise<NamedResource[]> {
+  const data = await fetchPokeApi<{ results: NamedResource[] }>(`https://pokeapi.co/api/v2/${resource}?limit=${LIST_LIMIT}`);
+  if (!data) throw new GraphQLError(`Could not reach PokéAPI (${resource}).`);
+  return data.results;
+}
+
 export const updaterService = {
   async checkUpdates(): Promise<UpdateStatus[]> {
-    const statuses: UpdateStatus[] = [];
+    const [localPokemon, localItems, localAbilities, apiPokemon, apiItems, apiAbilities] = await Promise.all([
+      prisma.pokemon.count({ where: { isDefault: true } }),
+      prisma.item.count(),
+      prisma.ability.count(),
+      fetchCount('pokemon-species'),
+      fetchCount('item'),
+      fetchCount('ability'),
+    ]);
 
-    // 1. Check Pokemon
-    const localPokemonCount = await prisma.pokemon.count();
-    const pokeRes = await fetch('https://pokeapi.co/api/v2/pokemon-species?limit=1');
-    const pokeData = await pokeRes.json();
-    statuses.push({
-      type: 'pokemon',
-      localCount: localPokemonCount,
-      apiCount: pokeData.count,
-      hasUpdate: pokeData.count > localPokemonCount
-    });
-
-    // 2. Check Items
-    const localItemCount = await prisma.item.count();
-    const itemRes = await fetch('https://pokeapi.co/api/v2/item?limit=1');
-    const itemData = await itemRes.json();
-    statuses.push({
-      type: 'item',
-      localCount: localItemCount,
-      apiCount: itemData.count,
-      hasUpdate: itemData.count > localItemCount
-    });
-
-    // 3. Check Abilities
-    const localAbilityCount = await prisma.ability.count();
-    const abilityRes = await fetch('https://pokeapi.co/api/v2/ability?limit=1');
-    const abilityData = await abilityRes.json();
-    statuses.push({
-      type: 'ability',
-      localCount: localAbilityCount,
-      apiCount: abilityData.count,
-      hasUpdate: abilityData.count > localAbilityCount
-    });
-
-    return statuses;
+    return [
+      { type: 'pokemon', localCount: localPokemon, apiCount: apiPokemon, hasUpdate: apiPokemon > localPokemon },
+      { type: 'item', localCount: localItems, apiCount: apiItems, hasUpdate: apiItems > localItems },
+      { type: 'ability', localCount: localAbilities, apiCount: apiAbilities, hasUpdate: apiAbilities > localAbilities },
+    ];
   },
 
   async syncNewData(): Promise<boolean> {
-    console.log("Starting data synchronization...");
-    const statuses = await this.checkUpdates();
-
-    for (const status of statuses) {
-      if (status.hasUpdate) {
-        console.log(`Syncing ${status.type}... (${status.localCount} -> ${status.apiCount})`);
-        
-        if (status.type === 'pokemon') {
-          for (let id = status.localCount + 1; id <= status.apiCount; id++) {
-            await this.syncPokemon(id);
-          }
-        } else if (status.type === 'item') {
-          for (let id = status.localCount + 1; id <= status.apiCount; id++) {
-            await this.syncItem(id);
-          }
-        } else if (status.type === 'ability') {
-          for (let id = status.localCount + 1; id <= status.apiCount; id++) {
-            await this.syncAbility(id);
-          }
-        }
-      }
+    if (syncInProgress) {
+      throw new GraphQLError('A synchronization is already running.');
     }
-    console.log("Synchronization complete.");
-    return true;
+    syncInProgress = true;
+    try {
+      const [species, items, abilities] = await Promise.all([
+        fetchAll('pokemon-species'),
+        fetchAll('item'),
+        fetchAll('ability'),
+      ]);
+
+      const localPokemon = new Set(
+        (await prisma.pokemon.findMany({ select: { pokedexNumber: true } })).map((p) => p.pokedexNumber)
+      );
+      for (const s of species) {
+        const id = idFromResourceUrl(s.url);
+        if (!localPokemon.has(id)) await this.syncPokemon(id);
+      }
+
+      const localAbilities = new Set((await prisma.ability.findMany({ select: { name: true } })).map((a) => a.name));
+      for (const a of abilities) {
+        if (!localAbilities.has(a.name)) await this.syncAbility(a.url);
+      }
+
+      const localItems = new Set((await prisma.item.findMany({ select: { name: true } })).map((i) => i.name));
+      for (const i of items) {
+        if (!localItems.has(i.name)) await this.syncItem(i.url);
+      }
+
+      console.log('Synchronization complete.');
+      return true;
+    } finally {
+      syncInProgress = false;
+    }
   },
 
   async syncPokemon(id: number) {
+    const [data, speciesData] = await Promise.all([
+      fetchPokeApi(`https://pokeapi.co/api/v2/pokemon/${id}`),
+      fetchPokeApi(`https://pokeapi.co/api/v2/pokemon-species/${id}`),
+    ]);
+    if (!data) return;
+
     try {
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      if (!res.ok) return;
-      const data = await res.json();
+      const artwork = data.sprites?.other?.['official-artwork'] || {};
+      const imageUrl = artwork.front_default
+        ? await downloadAndOptimizeImage(artwork.front_default, `pokemon/normal/${data.name}.webp`)
+        : null;
+      const shinyImageUrl = artwork.front_shiny
+        ? await downloadAndOptimizeImage(artwork.front_shiny, `pokemon/shiny/${data.name}.webp`)
+        : null;
 
-      let localImageUrl = null;
-      let localShinyUrl = null;
+      const stat = (name: string) => data.stats.find((s: any) => s.stat.name === name)?.base_stat || 0;
+      const englishFlavors = speciesData?.flavor_text_entries?.filter((e: any) => e.language?.name === 'en') || [];
+      const types = data.types.map((t: any) => t.type.name as string);
+      const abilities = data.abilities.map((a: any) => a.ability.name as string);
 
-      if (data.sprites?.other?.['official-artwork']?.front_default) {
-        localImageUrl = await downloadAndOptimizeImage(
-          data.sprites.other['official-artwork'].front_default, 
-          `pokemon/normal/${data.name}.webp`
-        );
-      }
+      const fields = {
+        name: data.name,
+        speciesId: speciesData?.id ?? id,
+        generation: parseGeneration(speciesData?.generation?.name) ?? 1,
+        height: data.height,
+        weight: data.weight,
+        baseExperience: data.base_experience,
+        imageUrl,
+        shinyImageUrl,
+        category: english(speciesData?.genera)?.genus ?? null,
+        description: cleanText(englishFlavors[englishFlavors.length - 1]?.flavor_text),
+        hp: stat('hp'),
+        attack: stat('attack'),
+        defense: stat('defense'),
+        specialAttack: stat('special-attack'),
+        specialDefense: stat('special-defense'),
+        speed: stat('speed'),
+        isDefault: data.is_default ?? true,
+        gameVersions: (data.game_indices || []).map((gi: any) => gi.version.name),
+        regionalDexes: (speciesData?.pokedex_numbers || []).map((p: any) => p.pokedex.name),
+        types: { connectOrCreate: types.map((name: string) => ({ where: { name }, create: { name } })) },
+        abilities: { connectOrCreate: abilities.map((name: string) => ({ where: { name }, create: { name } })) },
+      };
 
-      if (data.sprites?.other?.['official-artwork']?.front_shiny) {
-        localShinyUrl = await downloadAndOptimizeImage(
-          data.sprites.other['official-artwork'].front_shiny, 
-          `pokemon/shiny/${data.name}.webp`
-        );
-      }
-
-      // Simplified insertion for new pokemons to demonstrate sync
-      // (in production, we would fetch species data, moves, types, etc.)
       await prisma.pokemon.upsert({
         where: { pokedexNumber: id },
-        update: {
-          imageUrl: localImageUrl,
-          shinyImageUrl: localShinyUrl
-        },
-        create: {
-          pokedexNumber: id,
-          name: data.name,
-          hp: data.stats.find((s:any) => s.stat.name === 'hp')?.base_stat || 0,
-          attack: data.stats.find((s:any) => s.stat.name === 'attack')?.base_stat || 0,
-          defense: data.stats.find((s:any) => s.stat.name === 'defense')?.base_stat || 0,
-          specialAttack: data.stats.find((s:any) => s.stat.name === 'special-attack')?.base_stat || 0,
-          specialDefense: data.stats.find((s:any) => s.stat.name === 'special-defense')?.base_stat || 0,
-          speed: data.stats.find((s:any) => s.stat.name === 'speed')?.base_stat || 0,
-          imageUrl: localImageUrl,
-          shinyImageUrl: localShinyUrl,
-        }
+        update: fields,
+        create: { pokedexNumber: id, ...fields },
       });
     } catch (e) {
       console.error(`Failed to sync pokemon ${id}`, e);
     }
   },
 
-  async syncItem(id: number) {
-    try {
-      const res = await fetch(`https://pokeapi.co/api/v2/item/${id}`);
-      if (!res.ok) return;
-      const data = await res.json();
+  async syncItem(url: string) {
+    const data = await fetchPokeApi(url);
+    if (!data) return;
 
-      let localSpriteUrl = null;
-      if (data.sprites?.default) {
-        localSpriteUrl = await downloadAndOptimizeImage(
-          data.sprites.default, 
-          `items/${data.name}.webp`
-        );
-      }
+    try {
+      const spriteUrl = data.sprites?.default
+        ? await downloadAndOptimizeImage(data.sprites.default, `items/${data.name}.webp`)
+        : null;
+      const englishEffect = english(data.effect_entries);
+      const fields = {
+        cost: data.cost ?? null,
+        flingPower: data.fling_power ?? null,
+        flingEffect: data.fling_effect?.name ?? null,
+        category: data.category?.name ?? null,
+        pocket: data.pocket?.name ?? null,
+        flavorText: cleanText(english(data.flavor_text_entries)?.text),
+        effect: cleanText(englishEffect?.short_effect || englishEffect?.effect),
+        spriteUrl,
+      };
 
       await prisma.item.upsert({
         where: { name: data.name },
-        update: { spriteUrl: localSpriteUrl },
-        create: {
-          name: data.name,
-          cost: data.cost,
-          spriteUrl: localSpriteUrl
-        }
+        update: fields,
+        create: { name: data.name, ...fields },
       });
     } catch (e) {
-      console.error(`Failed to sync item ${id}`, e);
+      console.error(`Failed to sync item ${url}`, e);
     }
   },
 
-  async syncAbility(id: number) {
+  async syncAbility(url: string) {
+    const data = await fetchPokeApi(url);
+    if (!data) return;
+
     try {
-      const res = await fetch(`https://pokeapi.co/api/v2/ability/${id}`);
-      if (!res.ok) return;
-      const data = await res.json();
+      const englishEffect = english(data.effect_entries);
+      const fields = {
+        generation: parseGeneration(data.generation?.name),
+        flavorText: english(data.flavor_text_entries)?.flavor_text ?? null,
+        shortEffect: englishEffect?.short_effect ?? null,
+        effect: englishEffect?.effect ?? null,
+      };
 
       await prisma.ability.upsert({
         where: { name: data.name },
-        update: {},
-        create: {
-          name: data.name
-        }
+        update: fields,
+        create: { name: data.name, ...fields },
       });
     } catch (e) {
-      console.error(`Failed to sync ability ${id}`, e);
+      console.error(`Failed to sync ability ${url}`, e);
     }
-  }
+  },
 };

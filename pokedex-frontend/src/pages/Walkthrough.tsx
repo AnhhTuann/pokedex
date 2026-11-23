@@ -53,7 +53,7 @@ export default function Walkthrough() {
   const cleanHTML = activeChapter ? DOMPurify.sanitize(activeChapter.content) : '';
   const gameColor = VERSION_COLORS[gameVersion] || '#6366f1';
 
-  let toc: { id: string; text: string; level: number }[] = [];
+  const toc: { id: string; text: string; level: number }[] = [];
   let processedHTML = cleanHTML;
   if (activeChapter) {
     let index = 0;

@@ -1,5 +1,5 @@
-@import "../variables";
-@import "../mixins";
+@use "../variables" as *;
+@use "../mixins" as *;
 
 .overlay {
   @include overlay-fixed(rgba(0, 0, 0, 0.75), 10px, 2000);

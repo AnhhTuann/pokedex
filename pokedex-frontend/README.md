@@ -1,6 +1,6 @@
-# 🎨 Elite PokéDex Frontend - Modern React & Tailwind SPA
+# 🎨 Elite PokéDex Frontend - Modern React SPA
 
-Chào mừng bạn đến với **PokéDex Frontend**! Đây là giao diện người dùng (UI/UX) của ứng dụng **Elite PokéDex Wiki**, một Single Page Application (SPA) cao cấp được xây dựng bằng **React**, **Vite**, **TypeScript**, **Apollo Client (GraphQL)**, **Material-UI (MUI)** và **Tailwind CSS v4**.
+Chào mừng bạn đến với **PokéDex Frontend**! Đây là giao diện người dùng (UI/UX) của ứng dụng **Elite PokéDex Wiki**, một Single Page Application (SPA) cao cấp được xây dựng bằng **React**, **Vite**, **TypeScript**, **Apollo Client (GraphQL)**, **Zustand** và **SCSS Modules**.
 
 Với phong cách thiết kế **Dark Mode Neon**, các hiệu ứng chuyển động mượt mà (sử dụng **Framer Motion/Motion**), ứng dụng mang lại trải nghiệm tương tác trực quan sống động hàng đầu dành cho các tín đồ Pokémon.
 
@@ -60,7 +60,7 @@ pokedex-frontend/
 │   ├── hooks/                 # Custom Hooks
 │   │   └── usePokemon.ts      # Fetch dữ liệu GraphQL
 │   ├── lib/                   # Context và Store
-│   │   ├── ThemeContext.tsx   # Quản lý giao diện (MUI)
+│   │   ├── ThemeContext.tsx   # Quản lý giao diện sáng/tối
 │   │   ├── MyPokedexContext.tsx # Quản lý yêu thích
 │   │   ├── catchStore.ts      # Store Pokémon đã bắt
 │   │   ├── teamStore.ts       # Store đội hình thi đấu
@@ -68,7 +68,7 @@ pokedex-frontend/
 │   ├── pages/                 # Trang phụ trợ
 │   │   └── UIShowcase.tsx     # Showcase UI Component
 │   ├── types.ts               # TypeScript interfaces
-│   ├── index.css              # File CSS & Tailwind
+│   ├── index.css              # Style toàn cục
 │   ├── App.tsx                # Định tuyến Layout
 │   └── main.tsx               # Entry kết nối React DOM
 ├── index.html                 # Tệp HTML gốc
@@ -131,8 +131,7 @@ Thư mục `/dist` chứa toàn bộ mã nguồn HTML/JS/CSS đã nén tối đa
 
 *   **Vite & React 19:** Nền tảng xây dựng SPA siêu tốc với cơ chế Hot Module Replacement (HMR).
 *   **Apollo Client:** Quản lý truy xuất dữ liệu GraphQL từ server và tự động lưu bộ nhớ đệm (caching) ở client để tăng tốc độ tải trang tiếp theo.
-*   **Material-UI (MUI v9) & Emotion:** Cung cấp hệ thống giao diện cao cấp (Grid, Table, Modal, Select, Slider) đáp ứng tốt mọi kích thước màn hình.
-*   **Tailwind CSS v4:** Viết các class tùy chỉnh giao diện nhanh chóng, linh hoạt.
+*   **SCSS Modules:** Style theo từng component với biến và mixin dùng chung (`src/styles`).
 *   **Zustand:** Thư viện quản lý state cực kỳ nhẹ để lưu trữ danh sách đội hình và theo dõi bắt Pokémon.
 *   **Tiptap Editor:** Bộ soạn thảo WYSIWYG chuyên nghiệp hỗ trợ gõ nội dung cẩm nang dạng Rich Text, bảng biểu và chèn hình ảnh.
 *   **Framer Motion:** Tạo ra các hiệu ứng mở Modal, Hover thẻ Pokémon và các chuyển động mượt mà như một ứng dụng native.

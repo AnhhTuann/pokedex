@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "./authStore";
 
 interface MyPokedexContextType {
   favorites: number[];
@@ -23,32 +25,35 @@ const TOGGLE_FAVORITE = gql`
 const MyPokedexContext = createContext<MyPokedexContextType | undefined>(undefined);
 
 export function MyPokedexProvider({ children }: { children: React.ReactNode }) {
+  const token = useAuthStore((state) => state.token);
+  const navigate = useNavigate();
   const [favorites, setFavorites] = useState<number[]>([]);
-  
-  // Fetch favorites from Database
+
   const { data, loading } = useQuery(GET_MY_FAVORITES, {
-    onCompleted: (data) => {
-      setFavorites(data.myFavorites);
-    }
+    skip: !token,
+    fetchPolicy: "network-only",
   });
+
+  useEffect(() => {
+    setFavorites(token && data ? data.myFavorites : []);
+  }, [token, data]);
 
   const [toggleFavoriteMutation] = useMutation(TOGGLE_FAVORITE);
 
-  const toggleFavorite = async (id: number) => {
-    // Optimistic UI update
-    setFavorites(prev => 
-      prev.includes(id) ? prev.filter(fId => fId !== id) : [...prev, id]
-    );
+  const flip = (id: number) =>
+    setFavorites((prev) => (prev.includes(id) ? prev.filter((fId) => fId !== id) : [...prev, id]));
 
+  const toggleFavorite = async (id: number) => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    flip(id);
     try {
-      // Sync with database
       await toggleFavoriteMutation({ variables: { pokemonId: id } });
     } catch (error) {
       console.error("Failed to toggle favorite in database", error);
-      // Revert if error
-      setFavorites(prev => 
-        prev.includes(id) ? prev.filter(fId => fId !== id) : [...prev, id]
-      );
+      flip(id);
     }
   };
 
