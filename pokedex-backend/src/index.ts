@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import crypto from 'node:crypto';
 import express, { Request, Response } from 'express';
 import { ApolloServer } from '@apollo/server';
 // @ts-ignore
@@ -7,57 +8,110 @@ import cors from 'cors';
 import { prisma } from './db/prisma.js';
 import { typeDefs } from './graphql/typeDefs.js';
 import { resolvers } from './graphql/resolvers.js';
-import jwt from 'jsonwebtoken';
+import { buildContext } from './graphql/context.js';
+import { ALLOWED_ORIGINS, IS_PRODUCTION, PORT } from './config/env.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key-for-dev';
+interface DownloadSession {
+  filename: string;
+  mimeType: string;
+  data: Buffer;
+}
 
-const downloadSessions = new Map<string, { filename: string; mimeType: string; data: Buffer }>();
+const downloadSessions = new Map<string, DownloadSession>();
+const MAX_DOWNLOAD_SESSIONS = 100;
+const DOWNLOAD_TTL_MS = 60_000;
+const MAX_DOWNLOAD_BYTES = 2 * 1024 * 1024;
+const ALLOWED_MIME_TYPES = new Set([
+  'application/json',
+  'application/octet-stream',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'text/csv',
+  'text/plain',
+]);
+
+const safeFilename = (value: unknown): string | null => {
+  if (typeof value !== 'string') return null;
+  const cleaned = value
+    .split(/[\\/]/)
+    .pop()
+    ?.replace(/[^a-zA-Z0-9._-]/g, '_')
+    .replace(/^\.+/, '')
+    .slice(0, 120);
+  return cleaned || null;
+};
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
 
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: !IS_PRODUCTION,
   });
 
   await apolloServer.start();
-  console.log("Apollo Server started with Refactored Architecture");
+  console.log('Apollo Server started with Refactored Architecture');
 
-  app.use(express.json({ limit: '50mb' }));
-  app.use(cors());
+  const corsOrigin = ALLOWED_ORIGINS.length
+    ? (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        if (!origin || ALLOWED_ORIGINS.includes(origin.toLowerCase())) {
+          callback(null, true);
+          return;
+        }
+        callback(new Error('Origin not allowed by CORS'));
+      }
+    : false;
+
+  app.use(cors({ origin: corsOrigin }));
+  app.use(express.json({ limit: '2mb' }));
 
   // Serve static images downloaded from PokeAPI
   app.use('/images', express.static('public/images'));
 
-  app.get('/api/ping', (req: Request, res: Response) => res.send('pong from Prisma backend!'));
+  app.get('/api/ping', (_req: Request, res: Response) =>
+    res.send('pong from Prisma backend!')
+  );
 
   app.post('/api/download-session', (req: Request, res: Response) => {
-    const { filename, mimeType, content, isBase64 } = req.body;
-    if (!filename || !mimeType || content === undefined) {
-      return res.status(400).send('Missing required fields');
+    const { filename, mimeType, content, isBase64 } = req.body ?? {};
+    const safeName = safeFilename(filename);
+    const safeMimeType = typeof mimeType === 'string' ? mimeType.toLowerCase() : '';
+
+    if (
+      !safeName ||
+      !ALLOWED_MIME_TYPES.has(safeMimeType) ||
+      typeof content !== 'string' ||
+      content.length === 0
+    ) {
+      return res.status(400).send('Invalid download payload');
     }
 
     try {
-      let data: Buffer;
-      if (isBase64) {
-        data = Buffer.from(content, 'base64');
-      } else {
-        data = Buffer.from(content, 'utf-8');
+      const data = isBase64
+        ? Buffer.from(content, 'base64')
+        : Buffer.from(content, 'utf-8');
+
+      if (data.length === 0 || data.length > MAX_DOWNLOAD_BYTES) {
+        return res.status(413).send('Download payload too large');
       }
 
-      const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      downloadSessions.set(token, { filename, mimeType, data });
+      if (downloadSessions.size >= MAX_DOWNLOAD_SESSIONS) {
+        return res.status(429).send('Too many active download sessions');
+      }
+
+      const token = crypto.randomBytes(24).toString('hex');
+      downloadSessions.set(token, { filename: safeName, mimeType: safeMimeType, data });
 
       setTimeout(() => {
         downloadSessions.delete(token);
-      }, 60000);
+      }, DOWNLOAD_TTL_MS).unref();
 
-      res.json({ token });
+      return res.json({ token });
     } catch (err) {
       console.error('Error generating download session:', err);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error');
     }
   });
 
@@ -72,28 +126,17 @@ async function startServer() {
       return res.status(410).send('Download link expired or invalid');
     }
 
-    res.setHeader('Content-Type', session.mimeType);
-    res.setHeader('Content-Disposition', `attachment; filename="${session.filename}"`);
-    res.send(session.data);
-
     downloadSessions.delete(token);
+    res.setHeader('Content-Type', session.mimeType);
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${session.filename}"`
+    );
+    return res.send(session.data);
   });
 
-  app.use('/graphql', expressMiddleware(apolloServer, {
-    context: async ({ req }) => {
-      const authHeader = req.headers.authorization || '';
-      const token = authHeader.replace('Bearer ', '');
-      let user = null;
-      if (token) {
-        try {
-          user = jwt.verify(token, JWT_SECRET);
-        } catch (err) {
-          // invalid token
-        }
-      }
-      return { user };
-    }
-  }));
+  app.use('/graphql', expressMiddleware(apolloServer, { context: buildContext }));
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Backend Server running on http://localhost:${PORT}`);
@@ -101,7 +144,7 @@ async function startServer() {
   });
 }
 
-startServer().catch(e => {
+startServer().catch((e) => {
   console.error(e);
   prisma.$disconnect();
 });
