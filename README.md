@@ -85,8 +85,7 @@ pokedex/
 │   ├── src/               # React Components, Context, Store
 │   └── package.json       # Dependencies frontend
 │
-├── README.md              # Tài liệu hướng dẫn chính
-└── server_log.txt         # Lịch sử hoạt động server
+└── README.md              # Tài liệu hướng dẫn chính
 ```
 
 ---
