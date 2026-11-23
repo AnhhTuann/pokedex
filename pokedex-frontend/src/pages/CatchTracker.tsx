@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PokemonListItem } from '../types';
 import { useTeamStore } from '../lib/teamStore';
 import { useCatchStore } from '../lib/catchStore';
-import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../App';
+import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../lib/gameVersions';
 import PokeDetail from '../components/PokeDetail';
 import { formatSpeciesId, TYPE_COLORS, cn } from '../lib/utils';
 import { useColorMode } from '../main';

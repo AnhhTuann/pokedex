@@ -1,16 +1,17 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import {
   calculateActualHP,
   calculateActualOtherStat,
   calculateDamage,
+  getKoChanceText,
   getNatureModifier,
   type CalculatorMove,
   type CalculatorPokemon,
   type FieldState,
 } from '../src/utils/damageCalc.js';
 
-const makePokemon = (overrides: Partial<CalculatorPokemon>): CalculatorPokemon => ({
+const makePokemon = (overrides: Partial<CalculatorPokemon> = {}): CalculatorPokemon => ({
   id: 1,
   name: 'test',
   types: ['normal'],
@@ -40,6 +41,8 @@ const neutralField: FieldState = {
   critical: false,
 };
 
+const rolls = (damage: number, count = 16): number[] => Array(count).fill(damage);
+
 test('stat formulas respect level, IV, EV and nature', () => {
   assert.equal(calculateActualHP(50, 31, 252, 100), 304);
   assert.equal(calculateActualOtherStat(50, 31, 252, 100, 1), 199);
@@ -49,7 +52,7 @@ test('stat formulas respect level, IV, EV and nature', () => {
 });
 
 test('status moves deal no damage', () => {
-  const pokemon = makePokemon({});
+  const pokemon = makePokemon();
   const result = calculateDamage(
     pokemon,
     pokemon,
@@ -119,4 +122,50 @@ test('immune matchup produces zero damage', () => {
   );
   assert.equal(result.effectiveness, 0);
   assert.equal(result.maxDamage, 0);
+  assert.equal(result.koChanceText, 'No damage dealt');
+});
+
+test('KO chances use exact roll damage, not rounded percentages', () => {
+  assert.equal(getKoChanceText(rolls(1999), 2000), 'guaranteed 2HKO');
+  assert.equal(getKoChanceText([1999, ...rolls(2000, 15)], 2000), '93.8% chance to OHKO');
+  assert.equal(getKoChanceText(rolls(100), 100), 'guaranteed OHKO');
+  assert.equal(getKoChanceText(rolls(60), 100), 'guaranteed 2HKO');
+  assert.equal(getKoChanceText(rolls(40), 100), 'guaranteed 3HKO');
+  assert.equal(getKoChanceText(rolls(30), 100), 'possible multi-turn KO');
+  assert.equal(getKoChanceText([50, ...rolls(40, 15)], 100), '6.3% chance to 2HKO');
+  assert.equal(getKoChanceText([35, ...rolls(33, 15)], 100), '6.3% chance to 3HKO');
+  assert.equal(getKoChanceText(rolls(0), 100), 'No damage dealt');
+});
+
+test('damage calculation keeps 16 consistent rolls and applies weather/type modifiers', () => {
+  const result = calculateDamage(
+    makePokemon({ types: ['water'], baseStats: { hp: 100, 'special-attack': 150 } }),
+    makePokemon({ name: 'target', types: ['water'], baseStats: { hp: 60, 'special-defense': 60 } }),
+    { name: 'Hydro Pump', type: 'water', power: 120, damageClass: 'special' },
+    { ...neutralField, weather: 'Rain' },
+  );
+
+  assert.equal(result.rolls.length, 16);
+  assert.equal(result.effectiveness, 0.5);
+  assert.equal(result.minDamage, result.rolls[0]);
+  assert.equal(result.maxDamage, result.rolls[15]);
+  assert.equal(result.koChanceText, getKoChanceText(result.rolls, result.defHP));
+});
+
+test('damage calculation honors the supplied type-chart generation', () => {
+  const move: CalculatorMove = { name: 'Shadow Ball', type: 'ghost', power: 80, damageClass: 'special' };
+  const psychic = makePokemon({
+    name: 'psychic',
+    types: ['psychic'],
+    baseStats: { hp: 100, 'special-defense': 60 },
+  });
+
+  const modern = calculateDamage(makePokemon(), psychic, move, neutralField);
+  const gen1 = calculateDamage(makePokemon(), { ...psychic, generation: 1 }, move, neutralField);
+
+  assert.equal(modern.effectiveness, 2);
+  assert.equal(gen1.effectiveness, 0);
+  assert.equal(gen1.minDamage, 0);
+  assert.equal(gen1.maxDamage, 0);
+  assert.equal(gen1.koChanceText, 'No damage dealt');
 });

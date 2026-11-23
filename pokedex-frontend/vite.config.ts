@@ -1,13 +1,39 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig } from 'vite';
+import {defineConfig, loadEnv} from 'vite';
+import {resolveBackendUrl} from './viteBackendUrl';
 
-export default defineConfig(() => {
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, '.', '');
+  const backendUrl = resolveBackendUrl({ ...env, ...process.env });
   return {
     plugins: [react()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
+      },
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          // Keep editor/chart libraries out of the initial shell; they are only
+          // needed by AdminWalkthrough and the compare modal respectively.
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return undefined;
+            if (
+              id.includes('@tiptap') ||
+              id.includes('prosemirror') ||
+              id.includes('dompurify') ||
+              id.includes('html2canvas')
+            ) return 'editor';
+            if (id.includes('recharts') || id.includes('/d3-')) return 'charts';
+            if (id.includes('@apollo/client') || id.includes('/graphql/')) return 'graphql';
+            if (id.includes('/motion') || id.includes('motion-dom') || id.includes('motion-utils')) {
+              return 'motion';
+            }
+            return undefined;
+          },
+        },
       },
     },
     server: {
@@ -16,15 +42,15 @@ export default defineConfig(() => {
       hmr: false,
       proxy: {
         '/graphql': {
-          target: 'http://localhost:3000',
+          target: backendUrl,
           changeOrigin: true,
         },
         '/api': {
-          target: 'http://localhost:3000',
+          target: backendUrl,
           changeOrigin: true,
         },
         '/images': {
-          target: 'http://localhost:3000',
+          target: backendUrl,
           changeOrigin: true,
         },
       },

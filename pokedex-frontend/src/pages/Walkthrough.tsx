@@ -3,7 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import DOMPurify from 'dompurify';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader, AlertCircle } from 'lucide-react';
-import { VERSION_COLORS } from '../App';
+import { VERSION_COLORS } from '../lib/gameVersions';
 import { useIsAdmin } from '../hooks/useIsAdmin';
 import styles from '../styles/pages/Walkthrough.module.scss';
 

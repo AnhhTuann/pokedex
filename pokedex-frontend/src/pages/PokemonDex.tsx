@@ -7,7 +7,7 @@ import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDia
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame, getGameGeneration } from '../App';
+import { getRegionAndGame, getGameGeneration } from '../lib/gameVersions';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
