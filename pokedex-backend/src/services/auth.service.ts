@@ -1,14 +1,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../db/prisma.js';
-import {
-  ADMIN_EMAILS,
-  ADMIN_USERNAMES,
-  JWT_EXPIRES_IN,
-  JWT_SECRET,
-} from '../config/env.js';
+import { getJwtSecret, isAdminRole } from '../lib/security.js';
 
-interface AuthInput {
+interface RegisterInput {
   username: string;
   email: string;
   password: string;
@@ -19,106 +14,101 @@ interface LoginInput {
   password: string;
 }
 
-interface PublicIdentity {
+interface PublicUser {
   id: number;
   username: string;
   email: string;
+  isAdmin: boolean;
 }
 
-const normalizeIdentifier = (value: string): string => value.trim().toLowerCase();
+const USER_FIELDS = {
+  id: true,
+  username: true,
+  email: true,
+  role: true,
+} as const;
 
-export const isAdminIdentity = (user: PublicIdentity): boolean =>
-  ADMIN_USERNAMES.has(normalizeIdentifier(user.username)) ||
-  ADMIN_EMAILS.has(normalizeIdentifier(user.email));
-
-const toPublicUser = (user: PublicIdentity) => ({
+const toPublicUser = (user: {
+  id: number;
+  username: string;
+  email: string;
+  role: unknown;
+}): PublicUser => ({
   id: user.id,
   username: user.username,
   email: user.email,
-  isAdmin: isAdminIdentity(user),
+  isAdmin: isAdminRole(user.role),
 });
 
-const signToken = (userId: number): string =>
-  jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-
-const validateRegistration = ({ username, email, password }: AuthInput): void => {
-  if (!username || username.trim().length < 3 || username.trim().length > 30) {
-    throw new Error('Username must be between 3 and 30 characters');
-  }
-  if (!/^[a-zA-Z0-9_.-]+$/.test(username.trim())) {
-    throw new Error('Username contains invalid characters');
-  }
-  if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-    throw new Error('Invalid email address');
-  }
-  if (!password || password.length < 8 || password.length > 128) {
-    throw new Error('Password must be between 8 and 128 characters');
-  }
-};
+function signToken(userId: number): string {
+  return jwt.sign({ userId }, getJwtSecret(), {
+    expiresIn: '7d',
+    algorithm: 'HS256',
+  });
+}
 
 export const authService = {
-  async register(input: AuthInput) {
-    validateRegistration(input);
+  async register({ username, email, password }: RegisterInput) {
+    const cleanUsername = typeof username === 'string' ? username.trim() : '';
+    const cleanEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
-    const username = input.username.trim();
-    const email = input.email.trim();
+    if (cleanUsername.length < 3 || cleanUsername.length > 30) {
+      throw new Error('Username must be between 3 and 30 characters');
+    }
+    if (!/^[a-zA-Z0-9_.-]+$/.test(cleanUsername)) {
+      throw new Error('Username contains invalid characters');
+    }
+    if (cleanEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      throw new Error('A valid email is required');
+    }
+    if (typeof password !== 'string' || password.length < 8 || password.length > 128) {
+      throw new Error('Password must be between 8 and 128 characters');
+    }
 
     const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { username }]
-      },
-      select: { id: true }
+      where: { OR: [{ email: cleanEmail }, { username: cleanUsername }] },
+      select: { id: true },
     });
-
     if (existingUser) {
       throw new Error('User with this email or username already exists');
     }
 
-    const passwordHash = await bcrypt.hash(input.password, 12);
-
+    const passwordHash = await bcrypt.hash(password, 12);
     const user = await prisma.user.create({
-      data: { username, email, passwordHash },
-      select: { id: true, username: true, email: true }
+      data: { username: cleanUsername, email: cleanEmail, passwordHash },
+      select: USER_FIELDS,
     });
 
-    return {
-      token: signToken(user.id),
-      user: toPublicUser(user)
-    };
+    return { token: signToken(user.id), user: toPublicUser(user) };
   },
 
   async login({ username, password }: LoginInput) {
-    if (!username || !password) {
+    const cleanUsername = typeof username === 'string' ? username.trim() : '';
+    if (!cleanUsername || typeof password !== 'string') {
       throw new Error('Invalid username or password');
     }
 
-    const user = await prisma.user.findFirst({
-      where: { username: username.trim() },
-      select: { id: true, username: true, email: true, passwordHash: true }
+    const user = await prisma.user.findUnique({
+      where: { username: cleanUsername },
+      select: { id: true, username: true, email: true, passwordHash: true, role: true },
     });
-
     if (!user) {
       throw new Error('Invalid username or password');
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);
-
     if (!valid) {
       throw new Error('Invalid username or password');
     }
 
-    return {
-      token: signToken(user.id),
-      user: toPublicUser(user)
-    };
+    return { token: signToken(user.id), user: toPublicUser(user) };
   },
 
-  async me(userId: number) {
+  async me(userId: number): Promise<PublicUser | null> {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, username: true, email: true }
+      select: USER_FIELDS,
     });
-
     return user ? toPublicUser(user) : null;
-  }
+  },
 };

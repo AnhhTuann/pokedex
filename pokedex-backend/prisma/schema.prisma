@@ -89,11 +89,17 @@ model Evolution {
 // PHASE 2 & 3: USER DATA & TEAM BUILDER
 // ==========================================
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model User {
   id           Int       @id @default(autoincrement())
   username     String    @unique
   email        String    @unique
   passwordHash String
+  role         UserRole  @default(USER)
 
   userPokemons UserPokemon[]
   team         Team?

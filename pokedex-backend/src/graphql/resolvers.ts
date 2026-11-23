@@ -10,7 +10,7 @@ import {
   requireAdmin,
   requireUser,
   type GraphQLContext,
-} from './context.js';
+} from '../lib/security.js';
 
 export const resolvers = {
   Query: {
@@ -18,7 +18,7 @@ export const resolvers = {
 
     me: async (_: any, __: any, context: GraphQLContext) => {
       if (!context.user) return null;
-      return authService.me(context.user.id);
+      return authService.me(context.user.userId);
     },
 
     getLocations: async (_: any, { version }: { version: string }) => locationService.getLocations(version),
@@ -37,7 +37,7 @@ export const resolvers = {
     pokemon: async (_: any, { id }: { id: number }) => pokemonService.pokemonDetail(id),
 
     myFavorites: async (_: any, __: any, context: GraphQLContext) => {
-      const userId = requireUser(context).id;
+      const userId = requireUser(context);
       const favorites = await prisma.userPokemon.findMany({
         where: { userId },
         select: { pokemon: { select: { pokedexNumber: true } } }
@@ -48,7 +48,7 @@ export const resolvers = {
     },
 
     myTeam: async (_: any, __: any, context: GraphQLContext) => {
-      const userId = requireUser(context).id;
+      const userId = requireUser(context);
       const team = await prisma.team.findUnique({
         where: { userId },
         include: {
@@ -94,7 +94,7 @@ export const resolvers = {
     login: async (_: any, args: any) => authService.login(args),
 
     toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }, context: GraphQLContext) => {
-      const userId = requireUser(context).id;
+      const userId = requireUser(context);
       if (!Number.isInteger(pokemonId) || pokemonId <= 0) {
         throw new Error('Invalid Pokémon identifier');
       }
@@ -137,7 +137,7 @@ export const resolvers = {
     },
 
     saveTeam: async (_: any, { pokemonIds }: { pokemonIds: number[] }, context: GraphQLContext) => {
-      const userId = requireUser(context).id;
+      const userId = requireUser(context);
       if (!Array.isArray(pokemonIds)) throw new Error('Invalid team');
       if (pokemonIds.length > 6) throw new Error("Team cannot have more than 6 members");
       if (pokemonIds.some((id) => !Number.isInteger(id) || id <= 0)) {
@@ -210,9 +210,9 @@ export const resolvers = {
       return true;
     },
 
-    syncNewData: async (_: any, __: any, context: GraphQLContext) => {
+    syncNewData: async (_: any, { dryRun = false }: { dryRun?: boolean }, context: GraphQLContext) => {
       await requireAdmin(context);
-      return updaterService.syncNewData();
+      return updaterService.syncNewData(dryRun);
     }
   },
 

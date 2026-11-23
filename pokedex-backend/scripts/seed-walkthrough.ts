@@ -9,41 +9,61 @@ const __dirname = path.dirname(__filename);
 
 const prisma = new PrismaClient();
 
+interface WalkthroughSeed {
+  gameVersion: string;
+  chapterTitle: string;
+  description: string | null;
+  coverImage: string | null;
+  content: string;
+  order: number;
+  language: string;
+}
+
 async function main() {
   console.log('🚀 Bắt đầu nạp dữ liệu Walkthrough từ file JSON...');
 
-  const seedsDir = path.join(__dirname, '../prisma/seeds');
-  const jsonPath = path.join(seedsDir, 'walkthroughs.json');
-
+  const jsonPath = path.join(__dirname, '../prisma/seeds/walkthroughs.json');
   if (!fs.existsSync(jsonPath)) {
-    console.error('❌ Không tìm thấy file walkthroughs.json tại', jsonPath);
-    process.exit(1);
+    throw new Error(`Không tìm thấy file walkthroughs.json tại ${jsonPath}`);
   }
 
-  const fileContent = fs.readFileSync(jsonPath, 'utf-8');
-  const walkthroughs = JSON.parse(fileContent);
-
+  const walkthroughs = JSON.parse(fs.readFileSync(jsonPath, 'utf-8')) as WalkthroughSeed[];
   console.log(`✅ Đã đọc được ${walkthroughs.length} bài hướng dẫn từ JSON.`);
 
-  // Xóa dữ liệu cũ nếu có
-  await prisma.walkthrough.deleteMany({});
-  console.log('🧹 Đã dọn dẹp các bản ghi Walkthrough cũ trong database.');
+  let created = 0;
+  let skipped = 0;
 
-  console.log('⏳ Đang chèn dữ liệu mới, vui lòng chờ...');
-  
-  // Dùng createMany để chèn cực nhanh
-  const result = await prisma.walkthrough.createMany({
-    data: walkthroughs,
-    skipDuplicates: true
-  });
+  // Idempotent by natural key. Existing rows (including user-edited CMS
+  // content) are never deleted or overwritten.
+  for (const seed of walkthroughs) {
+    const existing = await prisma.walkthrough.findFirst({
+      where: {
+        gameVersion: seed.gameVersion,
+        language: seed.language,
+        order: seed.order,
+        chapterTitle: seed.chapterTitle,
+      },
+      select: { id: true },
+    });
 
-  console.log(`🎉 Hoàn thành nạp dữ liệu rực rỡ! Đã chèn thành công ${result.count} bản ghi Walkthrough.`);
+    if (existing) {
+      skipped++;
+      continue;
+    }
+
+    await prisma.walkthrough.create({ data: seed });
+    created++;
+  }
+
+  console.log(
+    `🎉 Hoàn tất: thêm ${created} chương mới, giữ nguyên ${skipped} chương đã tồn tại.`
+  );
 }
 
 main()
   .catch((e) => {
     console.error('❌ Lỗi khi nạp dữ liệu walkthrough:', e);
-    process.exit(1);
+    process.exitCode = 1;
   })
   .finally(async () => {
     await prisma.$disconnect();
