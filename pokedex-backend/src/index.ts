@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'node:path';
 import express, { Request, Response } from 'express';
 import { ApolloServer } from '@apollo/server';
 // @ts-ignore
@@ -7,57 +8,53 @@ import cors from 'cors';
 import { prisma } from './db/prisma.js';
 import { typeDefs } from './graphql/typeDefs.js';
 import { resolvers } from './graphql/resolvers.js';
-import jwt from 'jsonwebtoken';
+import { DownloadSessionStore } from './lib/downloadSessions.js';
+import {
+  assertServerConfig,
+  getAllowedCorsOrigins,
+  getJwtSecret,
+  readBearerToken,
+  verifyAccessToken,
+} from './lib/security.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key-for-dev';
-
-const downloadSessions = new Map<string, { filename: string; mimeType: string; data: Buffer }>();
+const downloadSessions = new DownloadSessionStore();
 
 async function startServer() {
+  assertServerConfig();
+
   const app = express();
-  const PORT = 3000;
+  app.disable('x-powered-by');
+  const PORT = Number(process.env.PORT) || 3000;
 
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: process.env.NODE_ENV !== 'production',
   });
 
   await apolloServer.start();
-  console.log("Apollo Server started with Refactored Architecture");
+  console.log('Apollo Server started');
 
-  app.use(express.json({ limit: '50mb' }));
-  app.use(cors());
+  app.use((_req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    next();
+  });
+  app.use(express.json({ limit: '1mb' }));
+  app.use(cors({ origin: getAllowedCorsOrigins(), credentials: false }));
 
   // Serve static images downloaded from PokeAPI
-  app.use('/images', express.static('public/images'));
+  app.use('/images', express.static(path.resolve(process.cwd(), 'public/images')));
 
-  app.get('/api/ping', (req: Request, res: Response) => res.send('pong from Prisma backend!'));
+  app.get('/api/ping', (_req: Request, res: Response) =>
+    res.send('pong from Prisma backend!'),
+  );
 
   app.post('/api/download-session', (req: Request, res: Response) => {
-    const { filename, mimeType, content, isBase64 } = req.body;
-    if (!filename || !mimeType || content === undefined) {
-      return res.status(400).send('Missing required fields');
-    }
-
     try {
-      let data: Buffer;
-      if (isBase64) {
-        data = Buffer.from(content, 'base64');
-      } else {
-        data = Buffer.from(content, 'utf-8');
-      }
-
-      const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      downloadSessions.set(token, { filename, mimeType, data });
-
-      setTimeout(() => {
-        downloadSessions.delete(token);
-      }, 60000);
-
+      const token = downloadSessions.create(req.body ?? {});
       res.json({ token });
     } catch (err) {
-      console.error('Error generating download session:', err);
-      res.status(500).send('Server error');
+      res.status(400).send(err instanceof Error ? err.message : 'Invalid download session');
     }
   });
 
@@ -67,7 +64,7 @@ async function startServer() {
       return res.status(400).send('Missing download token');
     }
 
-    const session = downloadSessions.get(token);
+    const session = downloadSessions.take(token);
     if (!session) {
       return res.status(410).send('Download link expired or invalid');
     }
@@ -75,29 +72,19 @@ async function startServer() {
     res.setHeader('Content-Type', session.mimeType);
     res.setHeader('Content-Disposition', `attachment; filename="${session.filename}"`);
     res.send(session.data);
-
-    downloadSessions.delete(token);
   });
 
   app.use('/graphql', expressMiddleware(apolloServer, {
     context: async ({ req }) => {
-      const authHeader = req.headers.authorization || '';
-      const token = authHeader.replace('Bearer ', '');
-      let user = null;
-      if (token) {
-        try {
-          user = jwt.verify(token, JWT_SECRET);
-        } catch (err) {
-          // invalid token
-        }
-      }
-      return { user };
-    }
+      const token = readBearerToken(req.headers.authorization);
+      const user = token ? verifyAccessToken(token, getJwtSecret()) : null;
+      return { user, ip: req.ip };
+    },
   }));
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Backend Server running on http://localhost:${PORT}`);
-    console.log(`🚀 GraphQL endpoint: http://localhost:${PORT}/graphql`);
+    console.log(`Backend Server running on port ${PORT}`);
+    console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
   });
 }
 

@@ -13,7 +13,7 @@ import {
   Fish,
   MapPin
 } from 'lucide-react';
-import { GENERATION_VERSIONS, VERSION_COLORS } from '../App';
+import { GENERATION_VERSIONS, VERSION_COLORS } from '../lib/gameVersions';
 import { TYPE_COLORS } from '../lib/utils';
 import styles from '../styles/pages/LocationDex.module.scss';
 

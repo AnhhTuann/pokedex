@@ -6,12 +6,22 @@ import { itemService } from '../services/item.service.js';
 import { locationService } from '../services/location.service.js';
 import { updaterService } from '../services/updater.service.js';
 import { authService } from '../services/auth.service.js';
+import {
+  requireAdmin,
+  requireUser,
+  type GraphQLContext,
+} from '../lib/security.js';
+import { createRateLimiter } from '../lib/rateLimit.js';
+import { fetchWithTimeout } from '../lib/pokeApi.js';
+
+const loginLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });
+const registerLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 10 });
 
 export const resolvers = {
   Query: {
     ping: () => "pong from Prisma backend!",
 
-    me: async (_: any, __: any, context: any) => {
+    me: async (_: any, __: any, context: GraphQLContext) => {
       if (!context.user) return null;
       return authService.me(context.user.userId);
     },
@@ -31,17 +41,19 @@ export const resolvers = {
     
     pokemon: async (_: any, { id }: { id: number }) => pokemonService.pokemonDetail(id),
 
-    myFavorites: async (_: any, __: any, context: any) => {
-      const userId = context.user ? context.user.userId : 1;
+    myFavorites: async (_: any, __: any, context: GraphQLContext) => {
+      const userId = requireUser(context);
       const favorites = await prisma.userPokemon.findMany({
         where: { userId },
-        select: { pokemonId: true }
+        select: { pokemon: { select: { pokedexNumber: true } } }
       });
-      return favorites.map((f: any) => f.pokemonId);
+      return favorites
+        .map((f) => f.pokemon.pokedexNumber)
+        .filter((id): id is number => Number.isInteger(id));
     },
 
-    myTeam: async (_: any, __: any, context: any) => {
-      const userId = context.user ? context.user.userId : 1;
+    myTeam: async (_: any, __: any, context: GraphQLContext) => {
+      const userId = requireUser(context);
       const team = await prisma.team.findUnique({
         where: { userId },
         include: {
@@ -78,58 +90,109 @@ export const resolvers = {
       });
     },
 
-    checkUpdates: async () => updaterService.checkUpdates()
+    checkUpdates: async (_: any, __: any, context: GraphQLContext) => {
+      await requireAdmin(context);
+      return updaterService.checkUpdates();
+    }
   },
 
   Mutation: {
-    register: async (_: any, args: any) => authService.register(args),
-    
-    login: async (_: any, args: any) => authService.login(args),
+    register: async (_: any, args: any, context: GraphQLContext) => {
+      registerLimiter(context.ip ?? 'unknown');
+      return authService.register(args);
+    },
 
-    toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }, context: any) => {
-      const userId = context.user ? context.user.userId : 1;
-      const existing = await prisma.userPokemon.findUnique({
-        where: { userId_pokemonId: { userId, pokemonId } }
+    login: async (_: any, args: any, context: GraphQLContext) => {
+      loginLimiter(context.ip ?? 'unknown');
+      return authService.login(args);
+    },
+
+    toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }, context: GraphQLContext) => {
+      const userId = requireUser(context);
+      if (!Number.isInteger(pokemonId) || pokemonId <= 0) {
+        throw new Error('Invalid Pokémon identifier');
+      }
+
+      const pokemon = await prisma.pokemon.findUnique({
+        where: { pokedexNumber: pokemonId },
+        select: { id: true }
       });
+      if (!pokemon) throw new Error('Unknown Pokémon');
+
+      // Legacy rows used pokedexNumber as the FK to Pokemon.id. Accept both so
+      // users can clean up old favourites without losing their current list.
+      const whereCorrect = {
+        userId_pokemonId: { userId, pokemonId: pokemon.id }
+      };
+      const existing =
+        (await prisma.userPokemon.findUnique({ where: whereCorrect })) ??
+        (pokemon.id !== pokemonId
+          ? await prisma.userPokemon.findUnique({
+              where: { userId_pokemonId: { userId, pokemonId } }
+            })
+          : null);
 
       if (existing) {
         await prisma.userPokemon.delete({
-          where: { userId_pokemonId: { userId, pokemonId } }
+          where: {
+            userId_pokemonId: {
+              userId,
+              pokemonId: existing.pokemonId
+            }
+          }
         });
         return false;
-      } else {
-        await prisma.userPokemon.create({
-          data: { userId, pokemonId }
-        });
-        return true;
       }
+
+      await prisma.userPokemon.create({
+        data: { userId, pokemonId: pokemon.id }
+      });
+      return true;
     },
 
-    saveTeam: async (_: any, { pokemonIds }: { pokemonIds: number[] }, context: any) => {
-      const userId = context.user ? context.user.userId : 1;
+    saveTeam: async (_: any, { pokemonIds }: { pokemonIds: number[] }, context: GraphQLContext) => {
+      const userId = requireUser(context);
+      if (!Array.isArray(pokemonIds)) throw new Error('Invalid team');
       if (pokemonIds.length > 6) throw new Error("Team cannot have more than 6 members");
-
-      let team = await prisma.team.findUnique({ where: { userId } });
-      if (!team) {
-        team = await prisma.team.create({ data: { userId } });
+      if (pokemonIds.some((id) => !Number.isInteger(id) || id <= 0)) {
+        throw new Error('Invalid Pokémon identifier');
       }
 
-      await prisma.teamSlot.deleteMany({ where: { teamId: team.id } });
+      const ids = [...new Set(pokemonIds)];
+      const pokemons = await prisma.pokemon.findMany({
+        where: { pokedexNumber: { in: ids } },
+        select: { pokedexNumber: true }
+      });
+      if (pokemons.length !== ids.length) throw new Error('Unknown Pokémon in team');
 
-      const slots = pokemonIds.map((id, idx) => ({
-        teamId: team!.id,
+      const team = await prisma.team.upsert({
+        where: { userId },
+        update: {},
+        create: { userId }
+      });
+
+      const slots = ids.map((id, idx) => ({
+        teamId: team.id,
         pokemonId: id,
         slotOrder: idx + 1
       }));
 
-      if (slots.length > 0) {
-        await prisma.teamSlot.createMany({ data: slots });
-      }
+      await prisma.$transaction([
+        prisma.teamSlot.deleteMany({ where: { teamId: team.id } }),
+        ...(slots.length > 0
+          ? [prisma.teamSlot.createMany({ data: slots })]
+          : []),
+      ]);
 
       return true;
     },
 
-    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, description, coverImage, content, order, language }: any) => {
+    upsertWalkthrough: async (_: any, { id, gameVersion, chapterTitle, description, coverImage, content, order, language }: any, context: GraphQLContext) => {
+      await requireAdmin(context);
+      if (!gameVersion || !chapterTitle?.trim() || !content?.trim() || !Number.isInteger(order)) {
+        throw new Error('Invalid walkthrough payload');
+      }
+
       const data = {
         gameVersion: gameVersion.toLowerCase(),
         chapterTitle,
@@ -152,14 +215,19 @@ export const resolvers = {
       }
     },
 
-    deleteWalkthrough: async (_: any, { id }: { id: number }) => {
+    deleteWalkthrough: async (_: any, { id }: { id: number }, context: GraphQLContext) => {
+      await requireAdmin(context);
+      if (!Number.isInteger(id) || id <= 0) throw new Error('Invalid walkthrough id');
       await prisma.walkthrough.delete({
         where: { id }
       });
       return true;
     },
 
-    syncNewData: async () => updaterService.syncNewData()
+    syncNewData: async (_: any, { dryRun = false }: { dryRun?: boolean }, context: GraphQLContext) => {
+      await requireAdmin(context);
+      return updaterService.syncNewData(dryRun);
+    }
   },
 
   PokemonDetail: {
@@ -172,7 +240,7 @@ export const resolvers = {
       
       if (encounters.length === 0) {
         try {
-          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pId}/encounters`);
+          const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${pId}/encounters`);
           if (res.ok) {
             const data = await res.json();
             const fetchedList = [];

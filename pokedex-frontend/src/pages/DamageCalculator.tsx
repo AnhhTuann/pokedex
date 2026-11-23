@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useId } from 'react';
 import { gql, useQuery, useApolloClient } from '@apollo/client';
 import { motion } from 'motion/react';
 import {
@@ -87,16 +87,56 @@ interface AutoSuggestProps {
 function AutoSuggest({ label, value, options, onSearchChange, onSelect, placeholder }: AutoSuggestProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchVal, setSearchVal] = useState(value?.name || '');
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const inputId = useId();
+  const listId = `${inputId}-options`;
 
   useEffect(() => {
     setSearchVal(value?.name || '');
   }, [value]);
 
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [options]);
+
+  const choose = (item: any) => {
+    onSelect(item);
+    setSearchVal(item.name);
+    setIsOpen(false);
+    setActiveIndex(-1);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      setIsOpen(false);
+      setActiveIndex(-1);
+      return;
+    }
+    if (!isOpen || options.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((current) => (current + 1) % options.length);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex((current) => (current <= 0 ? options.length - 1 : current - 1));
+    } else if (event.key === 'Enter' && activeIndex >= 0) {
+      event.preventDefault();
+      choose(options[activeIndex]);
+    }
+  };
+
   return (
     <div className={styles.suggestWrapper}>
-      <label className={styles.suggestLabel}>{label}</label>
+      <label className={styles.suggestLabel} htmlFor={inputId}>{label}</label>
       <input
+        id={inputId}
         type="text"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded={isOpen && options.length > 0}
+        aria-controls={listId}
+        aria-activedescendant={activeIndex >= 0 ? `${inputId}-option-${activeIndex}` : undefined}
         className={styles.suggestInput}
         value={searchVal}
         placeholder={placeholder}
@@ -104,20 +144,23 @@ function AutoSuggest({ label, value, options, onSearchChange, onSelect, placehol
           setSearchVal(e.target.value);
           onSearchChange(e.target.value);
           setIsOpen(true);
+          setActiveIndex(-1);
         }}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setTimeout(() => setIsOpen(false), 250)}
+        onKeyDown={handleKeyDown}
       />
       {isOpen && options.length > 0 && (
-        <ul className={styles.suggestDropdown}>
-          {options.map(opt => (
+        <ul className={styles.suggestDropdown} id={listId} role="listbox">
+          {options.map((opt, index) => (
             <li
               key={opt.id}
-              className={styles.suggestItem}
-              onMouseDown={() => {
-                onSelect(opt);
-                setIsOpen(false);
-              }}
+              id={`${inputId}-option-${index}`}
+              role="option"
+              aria-selected={activeIndex === index}
+              className={`${styles.suggestItem} ${activeIndex === index ? styles.suggestItemActive || '' : ''}`}
+              onMouseEnter={() => setActiveIndex(index)}
+              onClick={() => choose(opt)}
             >
               <img src={opt.image} className={styles.suggestAvatar} alt="" />
               <span>{opt.name}</span>

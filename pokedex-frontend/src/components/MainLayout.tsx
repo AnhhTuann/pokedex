@@ -25,7 +25,7 @@ import { useAuthStore } from '../lib/authStore';
 import { useTeamStore } from '../lib/teamStore';
 import GameModal from './GameModal';
 import UpdateNotifier from './UpdateNotifier';
-import { VERSION_COLORS, GENERATION_VERSIONS, getVersionDisplayName, getVersionColorStyle } from '../App';
+import { VERSION_COLORS, GENERATION_VERSIONS, getVersionDisplayName, getVersionColorStyle } from '../lib/gameVersions';
 import styles from '../styles/components/MainLayout.module.scss';
 
 // ─── Custom Pokeball SVG Icon ─────────────────────────────

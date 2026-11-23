@@ -64,23 +64,31 @@ Bạn có thể kết nối với DB ở Local (máy cá nhân) hoặc sử dụ
 
 **Tùy chọn A: Dùng Local PostgreSQL**
 ```env
-DATABASE_URL="postgresql://postgres:tuan2525@localhost:5432/pokedex?schema=public"
+DATABASE_URL="postgresql://<local_user>:<local_password>@localhost:5432/pokedex?schema=public"
+JWT_SECRET="replace-with-a-random-secret-at-least-32-chars"
 PORT=3000
 ```
 
 **Tùy chọn B: Dùng Cloud PostgreSQL (Neon.tech)**
 ```env
 DATABASE_URL="postgresql://<neon_user>:<neon_password>@ep-xxx-xxx.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+JWT_SECRET="replace-with-a-random-secret-at-least-32-chars"
 PORT=3000
 ```
-*Thay thế `<neon_user>`, `<neon_password>` bằng thông tin kết nối Neon của bạn. Lưu ý phải có `?sslmode=require`.*
+*Thay thế các placeholder bằng thông tin kết nối của bạn. `JWT_SECRET` là bắt buộc ở mọi môi trường, tối thiểu 32 ký tự; không commit giá trị thật. URL Neon cần `?sslmode=require`.*
 
 ### 3. Hướng dẫn Deploy lên Render (Production)
 Backend này đã được tối ưu để dễ dàng Deploy lên **Render.com** (Web Service):
 1. Kết nối repo GitHub với Render.
 2. Thiết lập **Build Command**: `yarn && yarn build` (hoặc `npm install && npm run build`)
 3. Thiết lập **Start Command**: `yarn start` (hoặc `npm start`)
-4. Thêm biến môi trường `DATABASE_URL` (URL của Neon.tech) vào phần Environment Variables trên Render.
+4. Thêm các biến môi trường sau trong Render (xem `.env.example`):
+```env
+DATABASE_URL="postgresql://<neon_user>:<neon_password>@<host>/<db>?sslmode=require"
+JWT_SECRET="<random-secret-at-least-32-chars>"
+CORS_ORIGIN="https://your-frontend.example.com"
+NODE_ENV="production"
+```
 ```bash
 npm install
 ```
@@ -90,7 +98,13 @@ npm install
 ```bash
 npm run db:push
 ```
-*Lưu ý: Lệnh này sẽ tự động chạy `prisma generate` để tạo ra Prisma Client tương thích với Typescript.*
+*Lưu ý: `db:push` chỉ dành cho database mới hoặc đã sao lưu. Với database đang có dữ liệu, áp dụng `prisma/sql/2026-11-23_add_user_role.sql` sau khi backup; không chạy `db:push`, seed hay sync trên production khi chưa được cấp quyền.*
+
+Sau khi có cột `User.role`, promote **thủ công một tài khoản đã tồn tại**:
+```bash
+CONFIRM_ADMIN_GRANT=yes npm run admin:grant -- <username>
+```
+Không có account mặc định hay tự động nâng quyền. Nếu lệnh trên không được chạy, mọi mutation CMS/`syncNewData` đều bị từ chối.
 
 ### 5. Thực hiện Seeding Dữ liệu (Rất quan trọng)
 Dự án yêu cầu dữ liệu ban đầu cực kỳ phong phú. Bạn chạy tuần tự các lệnh seeding sau:
@@ -118,7 +132,17 @@ npm run seed:walkthrough
 npm run dev
 ```
 Server sẽ chạy thành công tại địa chỉ: **`http://localhost:3000`**  
-GraphQL Playground sẽ khả dụng tại: **`http://localhost:3000/graphql`**
+GraphQL Sandbox (chỉ khi `NODE_ENV !== 'production'`) tại: **`http://localhost:3000/graphql`**
+
+> **Lưu ý production:** Ảnh WebP trong `public/images` cần volume/storage bền vững; filesystem của nhiều nền tảng PaaS không giữ file sau khi deploy/restart. CORS chỉ cho phép origin khớp `CORS_ORIGIN`. Render free tier có thể sleep gây cold start; Neon free tier có giới hạn compute/connection/storage. Đây là ràng buộc hạ tầng, không phải cam kết uptime.
+
+### 7. Kiểm tra nhanh
+```bash
+npm ci
+npx prisma generate
+npm run build
+npm test   # node:test cho auth/CORS/download session/updater helpers
+```
 
 ---
 

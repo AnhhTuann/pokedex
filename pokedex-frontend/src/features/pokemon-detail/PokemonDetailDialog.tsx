@@ -49,7 +49,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
   const { mode } = useColorMode();
   const isDark = mode === 'dark';
   
-  const { pokemon: p, loading } = usePokemonDetail(id, selectedVersion);
+  const { pokemon: p, loading, error } = usePokemonDetail(id, selectedVersion);
 
   useEffect(() => {
     setShowShiny(isShinyMode);
@@ -90,6 +90,19 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
             >
               <div className={styles.loader}>
                 Loading Database...
+              </div>
+            </motion.div>
+          ) : error ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={styles.dialog}
+              onClick={(e) => e.stopPropagation()}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
+            >
+              <div className={styles.loader} role="alert">
+                Không tải được dữ liệu Pokémon. Vui lòng thử lại.
               </div>
             </motion.div>
           ) : (

@@ -9,7 +9,7 @@ import { TableCell } from '@tiptap/extension-table-cell';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { Pencil, Trash2, Save, Plus, List, Loader, CheckCircle, AlertCircle } from 'lucide-react';
 import EditorToolbar from '../components/EditorToolbar';
-import { VERSION_COLORS } from '../App';
+import { VERSION_COLORS } from '../lib/gameVersions';
 import styles from '../styles/pages/AdminWalkthrough.module.scss';
 
 const GET_WALKTHROUGHS = gql`

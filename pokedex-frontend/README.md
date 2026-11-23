@@ -99,8 +99,9 @@ VITE_GRAPHQL_API_URL=http://localhost:3000/graphql
 **Chạy Production (Kết nối tới Backend đã deploy trên Render):**
 ```env
 VITE_GRAPHQL_API_URL=https://<ten_app_cua_ban>.onrender.com/graphql
+VITE_API_BASE_URL=https://<ten_app_cua_ban>.onrender.com
 ```
-*(Ví dụ: `VITE_GRAPHQL_API_URL=https://pokedex-t9xl.onrender.com/graphql`)*
+`VITE_API_BASE_URL` chỉ cần khi ảnh/asset không cùng origin với GraphQL; nếu bỏ trống sẽ được suy từ `VITE_GRAPHQL_API_URL`. Các biến `VITE_*` được đưa vào bundle nên **không được chứa secret**. Quyền Admin do backend trả về qua `me { isAdmin }`; frontend không tự cấp quyền.
 
 ### 3. Hướng dẫn Deploy lên Vercel (Production)
 Frontend này đã sẵn sàng để triển khai trực tiếp lên **Vercel**:
@@ -118,12 +119,18 @@ npm run dev
 Giao diện PokéDex sẽ sẵn sàng tại địa chỉ: **`http://localhost:5173`**  
 Mở trình duyệt và truy cập địa chỉ trên để trải nghiệm ứng dụng!
 
-### 4. Biên dịch đóng gói sản phẩm (Build Production)
+### 5. Biên dịch đóng gói sản phẩm (Build Production)
 Để tạo ra các tệp tĩnh tối ưu hóa để triển khai thực tế (deploy):
 ```bash
 npm run build
 ```
 Thư mục `/dist` chứa toàn bộ mã nguồn HTML/JS/CSS đã nén tối đa sẽ được sinh ra.
+
+### 6. Kiểm tra nhanh
+```bash
+npm run lint   # TypeScript --noEmit
+npm test       # node:test cho type matchups & damage calculator
+```
 
 ---
 
@@ -131,11 +138,12 @@ Thư mục `/dist` chứa toàn bộ mã nguồn HTML/JS/CSS đã nén tối đa
 
 *   **Vite & React 19:** Nền tảng xây dựng SPA siêu tốc với cơ chế Hot Module Replacement (HMR).
 *   **Apollo Client:** Quản lý truy xuất dữ liệu GraphQL từ server và tự động lưu bộ nhớ đệm (caching) ở client để tăng tốc độ tải trang tiếp theo.
-*   **Material-UI (MUI v9) & Emotion:** Cung cấp hệ thống giao diện cao cấp (Grid, Table, Modal, Select, Slider) đáp ứng tốt mọi kích thước màn hình.
-*   **Tailwind CSS v4:** Viết các class tùy chỉnh giao diện nhanh chóng, linh hoạt.
-*   **Zustand:** Thư viện quản lý state cực kỳ nhẹ để lưu trữ danh sách đội hình và theo dõi bắt Pokémon.
-*   **Tiptap Editor:** Bộ soạn thảo WYSIWYG chuyên nghiệp hỗ trợ gõ nội dung cẩm nang dạng Rich Text, bảng biểu và chèn hình ảnh.
-*   **Framer Motion:** Tạo ra các hiệu ứng mở Modal, Hover thẻ Pokémon và các chuyển động mượt mà như một ứng dụng native.
+*   **SCSS Modules:** Hệ thống style theo module, dùng chung biến/mixin trong `src/styles`, không dùng MUI hay Tailwind.
+*   **React Router 7:** Điều hướng SPA, kèm route bảo vệ `RequireAdmin` theo quyền do server xác nhận.
+*   **Zustand:** Quản lý state nhẹ cho đội hình, danh sách đã bắt, auth và favorites (khách dùng localStorage).
+*   **Tiptap 3:** Soạn thảo nội dung Walkthrough dạng Rich Text, bảng biểu và hình ảnh.
+*   **motion (Motion for React):** Hiệu ứng modal/hover; tôn trọng cài đặt reduced-motion của trình duyệt.
+*   **Lucide React:** Bộ icon sử dụng trong giao diện.
 
 ---
 

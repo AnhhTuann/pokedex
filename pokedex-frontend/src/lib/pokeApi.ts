@@ -1,7 +1,5 @@
 import { PokemonListItem, Pokemon } from '../types';
-
-const GQL_ENDPOINT = 'http://localhost:3000/graphql';
-const API_BASE_URL = 'http://localhost:3000';
+import { GRAPHQL_ENDPOINT, assetUrl } from './apiConfig';
 
 const LIST_QUERY = `
   query getPokemonList($limit: Int, $offset: Int) {
@@ -55,7 +53,7 @@ const DETAIL_QUERY = `
 
 export async function fetchPokemonList(limit = 20, offset = 0): Promise<PokemonListItem[]> {
   try {
-    const response = await fetch(GQL_ENDPOINT, {
+    const response = await fetch(GRAPHQL_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -69,11 +67,11 @@ export async function fetchPokemonList(limit = 20, offset = 0): Promise<PokemonL
       console.error("GraphQL Errors:", errors);
       return [];
     }
-    
+
     return data.pokemonList.results.map((p: any) => ({
       ...p,
-      image: p.image ? `${API_BASE_URL}${p.image}` : '',
-      shinyImage: p.shinyImage ? `${API_BASE_URL}${p.shinyImage}` : '',
+      image: assetUrl(p.image),
+      shinyImage: assetUrl(p.shinyImage),
     }));
   } catch (err) {
     console.error("Failed to fetch pokemon list:", err);
@@ -82,7 +80,7 @@ export async function fetchPokemonList(limit = 20, offset = 0): Promise<PokemonL
 }
 
 export async function fetchPokemonDetail(id: number): Promise<Pokemon> {
-  const response = await fetch(GQL_ENDPOINT, {
+  const response = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -102,8 +100,8 @@ export async function fetchPokemonDetail(id: number): Promise<Pokemon> {
     id: p.id,
     name: p.name,
     types: p.types,
-    image: p.image ? `${API_BASE_URL}${p.image}` : '',
-    shinyImage: p.shinyImage ? `${API_BASE_URL}${p.shinyImage}` : '',
+    image: assetUrl(p.image),
+    shinyImage: assetUrl(p.shinyImage),
     stats: p.stats,
     abilities: p.abilities,
     description: p.description || '',

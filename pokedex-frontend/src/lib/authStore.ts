@@ -4,6 +4,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  isAdmin?: boolean;
 }
 
 interface AuthState {
@@ -15,16 +16,18 @@ interface AuthState {
 }
 
 const getInitialToken = () => localStorage.getItem('token');
-const getInitialUser = () => {
+const getInitialUser = (): User | null => {
   const userStr = localStorage.getItem('user');
-  if (userStr) {
-    try {
-      return JSON.parse(userStr);
-    } catch (e) {
+  if (!userStr) return null;
+  try {
+    const parsed = JSON.parse(userStr);
+    if (typeof parsed?.id !== 'number' || typeof parsed?.username !== 'string') {
       return null;
     }
+    return parsed as User;
+  } catch {
+    return null;
   }
-  return null;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({

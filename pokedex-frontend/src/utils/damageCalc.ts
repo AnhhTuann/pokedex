@@ -1,4 +1,4 @@
-import { TYPE_CHART } from './typeMatchups';
+import { getTypeMultiplier } from './typeMatchups';
 
 export interface NatureEffect {
   increased: string | null;
@@ -45,6 +45,7 @@ export interface CalculatorPokemon {
   ivs: Record<string, number>;
   evs: Record<string, number>;
   baseStats: Record<string, number>;
+  generation?: number | null;
 }
 
 export interface CalculatorMove {
@@ -52,6 +53,7 @@ export interface CalculatorMove {
   type: string;
   power: number | null;
   damageClass: string; // 'physical', 'special', 'status'
+  generation?: number | null;
 }
 
 export interface FieldState {
@@ -98,22 +100,43 @@ export const getNatureModifier = (natureName: string, statName: string): number 
   return 1.0;
 };
 
-// Calculates single type chart effectiveness
-const getSingleEffectiveness = (atkType: string, defType: string): number => {
-  const chart = TYPE_CHART[defType.toLowerCase()];
-  if (!chart) return 1.0;
-  const mult = chart[atkType.toLowerCase()];
-  return mult !== undefined ? mult : 1.0;
-};
-
-// Calculates final dual effectiveness
-export const getFinalEffectiveness = (atkType: string, defTypes: string[]): number => {
+/** Multiplies type effectiveness across defending types for a ruleset generation. */
+export const getFinalEffectiveness = (
+  atkType: string,
+  defTypes: string[],
+  generation = 6,
+): number => {
   let finalMult = 1.0;
-  for (const t of defTypes) {
-    finalMult *= getSingleEffectiveness(atkType, t);
+  for (const defenderType of defTypes) {
+    finalMult *= getTypeMultiplier(atkType, defenderType, generation);
   }
   return finalMult;
 };
+
+/** Chooses the KO label from exact damage rolls, never from rounded percentages. */
+export function getKoChanceText(rolls: number[], defHP: number): string {
+  if (defHP <= 0 || rolls.length === 0 || rolls.every((damage) => damage <= 0)) {
+    return 'No damage dealt';
+  }
+
+  const chance = (count: number): string =>
+    `${parseFloat(((count / rolls.length) * 100).toFixed(1))}%`;
+  const countKillsWithin = (hits: number): number =>
+    rolls.filter((damage) => damage * hits >= defHP).length;
+
+  const ohkoRolls = countKillsWithin(1);
+  if (ohkoRolls === rolls.length) return 'guaranteed OHKO';
+  if (ohkoRolls > 0) return `${chance(ohkoRolls)} chance to OHKO`;
+
+  const twoHkoRolls = countKillsWithin(2);
+  if (twoHkoRolls === rolls.length) return 'guaranteed 2HKO';
+  if (twoHkoRolls > 0) return `${chance(twoHkoRolls)} chance to 2HKO`;
+
+  const threeHkoRolls = countKillsWithin(3);
+  if (threeHkoRolls === rolls.length) return 'guaranteed 3HKO';
+  if (threeHkoRolls > 0) return `${chance(threeHkoRolls)} chance to 3HKO`;
+  return 'possible multi-turn KO';
+}
 
 // Main mathematical formula engine
 export function calculateDamage(
@@ -212,8 +235,10 @@ export function calculateDamage(
   const isStab = attacker.types.map(t => t.toLowerCase()).includes(move.type.toLowerCase());
   const stabMod = isStab ? 1.5 : 1.0;
 
-  // Type effectiveness multiplier
-  const typeMod = getFinalEffectiveness(move.type, defender.types);
+  // Type effectiveness multiplier. The battle ruleset follows the defending
+  // species when a generation is supplied; legacy callers keep modern rules.
+  const generation = defender.generation ?? attacker.generation ?? 6;
+  const typeMod = getFinalEffectiveness(move.type, defender.types, generation);
 
   // Status burn reduction (physical moves only)
   const burnMod = (attacker.status === 'Burned' && isPhysical) ? 0.5 : 1.0;
@@ -235,14 +260,9 @@ export function calculateDamage(
 
   // Standard Pokemon mechanics utilizes 16 distinct random rolls from 85% to 100%
   const rolls: number[] = [];
-  let ohkoRolls = 0;
 
   for (let r = 85; r <= 100; r++) {
-    const rollDamage = Math.floor(baseDamage * staticModifier * (r / 100));
-    rolls.push(rollDamage);
-    if (rollDamage >= defHP) {
-      ohkoRolls++;
-    }
+    rolls.push(Math.floor(baseDamage * staticModifier * (r / 100)));
   }
 
   const minDamage = rolls[0];
@@ -251,27 +271,7 @@ export function calculateDamage(
   const minPercent = parseFloat(((minDamage / defHP) * 100).toFixed(1));
   const maxPercent = parseFloat(((maxDamage / defHP) * 100).toFixed(1));
 
-  // Determine standard competitive text chances
-  let koChanceText = '';
-  if (minPercent >= 100) {
-    koChanceText = 'guaranteed OHKO';
-  } else if (maxPercent < 100) {
-    if (minPercent >= 50) {
-      koChanceText = 'guaranteed 2HKO';
-    } else if (maxPercent >= 50) {
-      const rollsTo2HKO = rolls.filter(dmg => dmg * 2 >= defHP).length;
-      const chanceTo2HKO = parseFloat(((rollsTo2HKO / 16) * 100).toFixed(1));
-      koChanceText = `${chanceTo2HKO}% chance to 2HKO`;
-    } else if (minPercent >= 33.3) {
-      koChanceText = 'guaranteed 3HKO';
-    } else {
-      koChanceText = 'possible multi-turn KO';
-    }
-  } else {
-    // Some rolls kill, some don't (OHKO percentage chance)
-    const ohkoChance = parseFloat(((ohkoRolls / 16) * 100).toFixed(1));
-    koChanceText = `${ohkoChance}% chance to OHKO`;
-  }
+  const koChanceText = getKoChanceText(rolls, defHP);
 
   return {
     minDamage,

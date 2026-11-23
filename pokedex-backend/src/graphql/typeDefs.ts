@@ -3,6 +3,7 @@ export const typeDefs = `#graphql
     id: Int!
     username: String!
     email: String!
+    isAdmin: Boolean!
   }
 
   type AuthPayload {
@@ -184,6 +185,6 @@ export const typeDefs = `#graphql
     saveTeam(pokemonIds: [Int!]!): Boolean!
     upsertWalkthrough(id: Int, gameVersion: String!, chapterTitle: String!, description: String, coverImage: String, content: String!, order: Int!, language: String): Walkthrough!
     deleteWalkthrough(id: Int!): Boolean!
-    syncNewData: Boolean!
+    syncNewData(dryRun: Boolean): Boolean!
   }
 `;

@@ -85,8 +85,7 @@ pokedex/
 │   ├── src/               # React Components, Context, Store
 │   └── package.json       # Dependencies frontend
 │
-├── README.md              # Tài liệu hướng dẫn chính
-└── server_log.txt         # Lịch sử hoạt động server
+└── README.md              # Tài liệu hướng dẫn chính
 ```
 
 ---
@@ -104,10 +103,12 @@ Mở một cửa sổ dòng lệnh (Terminal) tại thư mục `/pokedex-backend
     ```bash
     npm install
     ```
-2.  Tạo file `.env` tại thư mục này và cấu hình URL cơ sở dữ liệu PostgreSQL (Local hoặc Neon Cloud DB):
+2.  Tạo file `.env` tại thư mục này (xem `pokedex-backend/.env.example`) với các biến bắt buộc:
     ```env
     DATABASE_URL="postgresql://<user>:<pass>@<host>:5432/<db_name>?sslmode=require"
+    JWT_SECRET="<random-secret-at-least-32-chars>"
     ```
+    `JWT_SECRET` không có fallback; app sẽ từ chối khởi động nếu thiếu hoặc ngắn hơn 32 ký tự. Không commit giá trị thật.
 3.  Đồng bộ cấu hình bảng cơ sở dữ liệu (Database Schema):
     ```bash
     npm run db:push

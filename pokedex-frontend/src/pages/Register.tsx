@@ -14,6 +14,7 @@ const REGISTER_MUTATION = gql`
         id
         username
         email
+        isAdmin
       }
     }
   }
