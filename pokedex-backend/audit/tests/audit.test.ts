@@ -6,7 +6,13 @@ import { join } from 'node:path';
 import { parsePrismaSchema } from '../src/schemaAudit.js';
 import { parseRegionalDexMap, parseSupportedVersions } from '../src/sourceAudit.js';
 import { parseGenerationMap, parseSeedGenerationRanges } from '../src/referenceAudit.js';
-import { buildCoverage, buildFixPlan } from '../src/report.js';
+import {
+  buildCoverage,
+  buildFixPlan,
+  toEvidenceCsv,
+  toGameCoverageCsv,
+  toSpeciesCoverageCsv,
+} from '../src/report.js';
 import { mapWithConcurrency, PokeApiClient } from '../src/pokeApiClient.js';
 import { auditDatabase, AUDIT_CHECK_SQL, UNVERIFIED_DB_AREAS } from '../src/dbAudit.js';
 import { catalogKey, loadCheckpoint, saveCheckpoint } from '../src/checkpoint.js';
@@ -79,11 +85,14 @@ test('fix plan excludes non-actionable findings and uses safe rollback templates
     finding('SRC-WALKTHROUGH-COVERAGE', 'MISSING'),
     finding('SCHEMA-FK-INCONSISTENT', 'INCORRECT'),
     finding('DB-QUALITY-ISSUES', 'INCORRECT'),
+    finding('API-LEARNSET-VERSION-DETAIL', 'MISSING'),
     finding('DB-QUALITY-CLEAN', 'CORRECT'),
     finding('DB-UNVERIFIED-DUPLICATES', 'UNVERIFIED'),
   ]);
-  assert.ok(plan.some((p) => p.findingId === 'SCHEMA-FK-INCONSISTENT' && p.order === 1));
+  assert.ok(plan.some((p) => p.findingId === 'SCHEMA-FK-INCONSISTENT' && p.order === 2));
   assert.ok(plan.some((p) => p.findingId === 'DB-QUALITY-ISSUES' && p.order === 1));
+  assert.ok(plan.some((p) => p.findingId === 'SRC-WALKTHROUGH-COVERAGE' && p.order === 8 && p.area === 'Walkthrough'));
+  assert.ok(plan.some((p) => p.findingId === 'API-LEARNSET-VERSION-DETAIL' && p.order === 4 && p.area === 'Learnsets and generation rules'));
   assert.ok(plan.every((p) => p.findingId !== 'DB-QUALITY-CLEAN'));
   assert.ok(plan.every((p) => p.dryRunCommand.includes(p.findingId)));
   assert.ok(plan.every((p) => !p.rollbackCommand.includes('psql')));
@@ -116,6 +125,38 @@ test('coverage reports checked, unchecked and unverified counts', () => {
   assert.equal(coverage.unverified, 1);
   assert.equal(coverage.detail.supportedGames, 1);
   assert.ok(coverage.unchecked >= 15);
+  assert.equal(coverage.scopes?.database.connection, 'BLOCKED');
+  assert.equal(coverage.scopes?.sourceReference.dbRows, 'NOT_IN_SCOPE');
+});
+
+test('full audit CSVs expose per-Pokemon, per-game and evidence detail', () => {
+  const speciesCsv = toSpeciesCoverageCsv([
+    {
+      id: 1, name: 'bulbasaur', generation: 1, varieties: 1, formsChecked: 1, types: ['grass'],
+      statsComplete: true, abilities: 2, hiddenAbilities: 1, hasEvolutionChain: true,
+      evolutionConditions: ['level=16'], learnsetVersionGroups: 1, learnsetMoveSlots: 10,
+      encounterVersions: 2, gameIndexGames: 3, formGameIndexGames: 3, regionalDexCount: 4,
+      localNormalImage: true, localShinyImage: true, missingNormalImages: [], missingShinyImages: [],
+      descriptionLanguages: ['en'], hasVietnameseDescription: false,
+      referenceStatus: 'UNVERIFIED', sources: ['https://pokeapi.co/api/v2/pokemon/1'],
+    },
+  ]);
+  assert.match(speciesCsv, /^"id","name"/);
+  assert.match(speciesCsv, /"bulbasaur".*"UNVERIFIED"/);
+
+  const gameCsv = toGameCoverageCsv([
+    {
+      game: 'red', versionGroup: 'red-blue', generation: 1, regionalDex: 'kanto', dexEntryCount: 151,
+      dexVersionGroupOk: true, dexSpeciesChecked: 151, formGameIndexSpecies: 151, encounterSpecies: 50,
+      learnsetSpecies: 151, learnsetMoveSlots: 900, abilityGenerationCount: 0,
+      itemGenerationCount: 80, itemVersionGroupCount: 60, walkthrough: true, status: 'ACCURATE',
+      evidence: ['dex=kanto'], sources: ['https://pokeapi.co/api/v2/pokedex/kanto'],
+    },
+  ]);
+  assert.match(gameCsv, /"red".*"ACCURATE"/);
+
+  const evidenceCsv = toEvidenceCsv([finding('API-TEST', 'CORRECT')]);
+  assert.match(evidenceCsv, /"findingId","evidenceIndex"/);
 });
 
 test('parseArgs separates offline, schema-only, db and full modes', () => {
@@ -216,13 +257,56 @@ test('checkpoint load/save is resume-aware and key-scoped', () => {
   const key = catalogKey([1, 2, 3]);
   const state = loadCheckpoint(path, key, false);
   state.completedIds = [1];
-  state.records['1'] = {} as never;
+  state.records['1'] = {
+    id: 1,
+    name: 'bulbasaur',
+    generation: 1,
+    varieties: ['bulbasaur'],
+    hasEvolutionChain: true,
+    evolutionConditions: [],
+    flavorTextLanguages: ['en'],
+    localNormalImages: ['bulbasaur'],
+    localShinyImages: ['bulbasaur'],
+    missingNormalImages: [],
+    missingShinyImages: [],
+    height: 7,
+    weight: 69,
+    baseExperience: 64,
+    stats: { hp: 45 },
+    types: ['grass'],
+    abilities: [],
+    varietyForms: [],
+    gameIndexGames: ['red'],
+    formGameIndexGames: ['red'],
+    encounterVersions: [],
+    learnsetVersionGroups: ['red-blue'],
+    learnsetMoveSlots: 1,
+    learnsetByVersionGroup: { 'red-blue': { total: 1, levelUp: 1, machine: 0, tutor: 0, egg: 0 } },
+    errors: [],
+  } as never;
   saveCheckpoint(path, state);
   const resumed = loadCheckpoint(path, key, true);
   assert.deepEqual(resumed.completedIds, [1]);
   assert.ok(resumed.records['1']);
   assert.deepEqual(loadCheckpoint(path, catalogKey([1, 2, 4]), true).completedIds, []);
   assert.deepEqual(loadCheckpoint(path, key, false).completedIds, []);
+});
+
+test('checkpoint ignores legacy records without full-catalog fields', () => {
+  const path = '/tmp/opencode/phase8-checkpoint-legacy-test.json';
+  const key = catalogKey([9]);
+  const raw = {
+    version: 1,
+    key,
+    updatedAt: new Date().toISOString(),
+    completedIds: [9],
+    records: { '9': { id: 9, name: 'legacy' } },
+    failed: {},
+  };
+  writeFileSync(path, `${JSON.stringify(raw)}\n`);
+  const loaded = loadCheckpoint(path, key, true);
+  assert.deepEqual(loaded.completedIds, []);
+  assert.deepEqual(loaded.records, {});
 });
 
 test('DB audit without connection reports unverified areas instead of guessing', async () => {

@@ -45,6 +45,65 @@ export function parseSeedGenerationRanges(source: string): Array<{ max: number; 
   return ranges;
 }
 
+export interface SpeciesCoverageRow {
+  id: number;
+  name: string;
+  generation: number;
+  varieties: number;
+  formsChecked: number;
+  types: string[];
+  statsComplete: boolean;
+  abilities: number;
+  hiddenAbilities: number;
+  hasEvolutionChain: boolean;
+  evolutionConditions: string[];
+  learnsetVersionGroups: number;
+  learnsetMoveSlots: number;
+  encounterVersions: number;
+  gameIndexGames: number;
+  formGameIndexGames: number;
+  regionalDexCount: number;
+  localNormalImage: boolean;
+  localShinyImage: boolean;
+  missingNormalImages: string[];
+  missingShinyImages: string[];
+  descriptionLanguages: string[];
+  hasVietnameseDescription: boolean;
+  referenceStatus: 'ACCURATE' | 'MISSING' | 'UNVERIFIED';
+  sources: string[];
+}
+
+export interface GameAuditRow {
+  game: string;
+  versionGroup: string;
+  generation: number;
+  regionalDex: string;
+  dexEntryCount: number;
+  dexVersionGroupOk: boolean;
+  dexSpeciesChecked: number;
+  formGameIndexSpecies: number;
+  encounterSpecies: number;
+  learnsetSpecies: number;
+  learnsetMoveSlots: number;
+  abilityGenerationCount: number;
+  itemGenerationCount: number;
+  itemVersionGroupCount: number;
+  walkthrough: boolean;
+  status: 'ACCURATE' | 'MISSING' | 'INCORRECT' | 'UNVERIFIED';
+  evidence: string[];
+  sources: string[];
+}
+
+export interface CatalogDetailCoverage {
+  abilitiesDetailed: number;
+  abilityCountByGeneration: Record<number, number>;
+  abilityErrors: string[];
+  itemsDetailed: number;
+  itemCountByGeneration: Record<number, number>;
+  itemCountByVersionGroup: Record<string, number>;
+  itemErrors: string[];
+}
+
 export interface ReferenceSnapshot {
   totals: Record<string, number>;
   counts: {
@@ -56,6 +115,9 @@ export interface ReferenceSnapshot {
     generations: number;
     speciesAudited: number;
   };
+  speciesCoverage: SpeciesCoverageRow[];
+  gameAudit: GameAuditRow[];
+  catalogDetails: CatalogDetailCoverage;
   generations: Array<{
     generation: number;
     speciesIds: number[];
@@ -144,6 +206,35 @@ const abilitiesFrom = (data: any): Array<{ name: string; isHidden: boolean }> =>
     .map((entry) => ({ name: entry.ability?.name, isHidden: Boolean(entry.is_hidden) }))
     .filter((entry) => Boolean(entry.name));
 
+const gameIndicesFrom = (data: any): string[] =>
+  [...new Set(asArray<any>(data?.game_indices).map((entry) => entry.version?.name).filter(Boolean))].sort();
+
+const learnsetSummaryFrom = (moves: any[]): {
+  versionGroups: string[];
+  moveSlots: number;
+  byVersionGroup: CheckpointRecord['learnsetByVersionGroup'];
+} => {
+  const byVersionGroup: CheckpointRecord['learnsetByVersionGroup'] = {};
+  let moveSlots = 0;
+  for (const move of asArray<any>(moves)) {
+    for (const detail of asArray<any>(move.version_group_details)) {
+      const group = detail.version_group?.name;
+      if (!group) continue;
+      const method = detail.move_learn_method?.name ?? 'unknown';
+      const bucket = (byVersionGroup[group] ??= { total: 0, levelUp: 0, machine: 0, tutor: 0, egg: 0 });
+      bucket.total += 1;
+      moveSlots += 1;
+      if (method === 'level-up') bucket.levelUp += 1;
+      else if (method === 'machine') bucket.machine += 1;
+      else if (method === 'tutor') bucket.tutor += 1;
+      else if (method === 'egg') bucket.egg += 1;
+    }
+  }
+  return { versionGroups: Object.keys(byVersionGroup).sort(), moveSlots, byVersionGroup };
+};
+
+const REQUIRED_STATS = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
+
 function evolutionConditions(chain: any): string[] {
   const result: string[] = [];
   const visit = (node: any) => {
@@ -181,6 +272,7 @@ export async function auditReference(
 ): Promise<ReferenceAuditResult> {
   const findings: Finding[] = [];
   const apiErrors: string[] = [];
+  const detailConcurrency = Math.max(1, Math.min(12, options.concurrency ?? 6));
   const push = (f: Omit<Finding, 'id' | 'phase'> & { id: string }) =>
     findings.push({ phase: 'CROSSREF', ...f });
 
@@ -253,6 +345,66 @@ export async function auditReference(
     if (detail.data) {
       versionGroups.set(detail.data.name, generationFromUrl(detail.data.generation?.url ?? ''));
     }
+  }
+
+  // Full mode only: resolve catalog generations/version groups for abilities and items.
+  // These calls are cached by PokeApiClient and bounded by the same concurrency limit.
+  const catalogDetails: CatalogDetailCoverage = {
+    abilitiesDetailed: 0,
+    abilityCountByGeneration: {},
+    abilityErrors: [],
+    itemsDetailed: 0,
+    itemCountByGeneration: {},
+    itemCountByVersionGroup: {},
+    itemErrors: [],
+  };
+  if (options.allSpecies) {
+    const abilityIds = (catalogs.ability ?? []).map((entry) => idFromUrl(entry.url)).filter(Boolean);
+    const abilityResults = await mapWithConcurrency(abilityIds, detailConcurrency, async (id) => {
+      const result = await client.get<any>(`/ability/${id}`);
+      const generation = generationFromUrl(result.data?.generation?.url ?? '');
+      return { id, ok: Boolean(result.data), generation, error: result.error };
+    });
+    for (const result of abilityResults) {
+      if (!result.ok) {
+        catalogDetails.abilityErrors.push(`ability/${result.id}: ${result.error ?? 'unknown error'}`);
+        continue;
+      }
+      catalogDetails.abilitiesDetailed += 1;
+      if (result.generation) {
+        catalogDetails.abilityCountByGeneration[result.generation] =
+          (catalogDetails.abilityCountByGeneration[result.generation] ?? 0) + 1;
+      }
+    }
+
+    const itemIds = (catalogs.item ?? []).map((entry) => idFromUrl(entry.url)).filter(Boolean);
+    const itemResults = await mapWithConcurrency(itemIds, detailConcurrency, async (id) => {
+      const result = await client.get<any>(`/item/${id}`);
+      const generations = asArray<any>(result.data?.game_indices)
+        .map((entry) => generationFromUrl(entry.generation?.url ?? ''))
+        .filter((gen) => gen > 0);
+      const versionGroups = asArray<any>(result.data?.flavor_text_entries)
+        .map((entry) => entry.version_group?.name)
+        .filter(Boolean);
+      return { id, ok: Boolean(result.data), generations, versionGroups, error: result.error };
+    });
+    for (const result of itemResults) {
+      if (!result.ok) {
+        catalogDetails.itemErrors.push(`item/${result.id}: ${result.error ?? 'unknown error'}`);
+        continue;
+      }
+      catalogDetails.itemsDetailed += 1;
+      for (const generation of new Set(result.generations)) {
+        catalogDetails.itemCountByGeneration[generation] =
+          (catalogDetails.itemCountByGeneration[generation] ?? 0) + 1;
+      }
+      for (const group of new Set(result.versionGroups as string[])) {
+        catalogDetails.itemCountByVersionGroup[group] =
+          (catalogDetails.itemCountByVersionGroup[group] ?? 0) + 1;
+      }
+    }
+    if (catalogDetails.abilityErrors.length) apiErrors.push(...catalogDetails.abilityErrors.slice(0, 10));
+    if (catalogDetails.itemErrors.length) apiErrors.push(...catalogDetails.itemErrors.slice(0, 10));
   }
 
   const versions: ReferenceSnapshot['versions'] = [];
@@ -456,9 +608,12 @@ export async function auditReference(
     const detailResult = await client.get<any>(`/pokemon/${id}`);
     if (!detailResult.data) errors.push(`pokemon/${id}: ${detailResult.error}`);
     const detail = detailResult.data ?? {};
+    const gameIndexGames = gameIndicesFrom(detail);
+    const learnset = learnsetSummaryFrom(asArray<any>(detail.moves));
 
     const varietyNames: string[] = [];
     const varietyForms: CheckpointRecord['varietyForms'] = [];
+    const formGameIndexGames = new Set<string>();
     for (const variety of asArray<any>(species.varieties)) {
       const name = variety.pokemon?.name;
       if (!name) continue;
@@ -469,11 +624,15 @@ export async function auditReference(
         continue;
       }
       const formId = idFromUrl(variety.pokemon.url ?? '') || 0;
+      const formGames = gameIndicesFrom(formResult.data);
+      formGames.forEach((game) => formGameIndexGames.add(game));
       varietyForms.push({
         name,
         apiId: formId,
         stats: statsFrom(formResult.data),
         types: typesFrom(formResult.data),
+        gameIndexGames: formGames,
+        learnsetVersionGroups: learnsetSummaryFrom(asArray<any>(formResult.data.moves)).versionGroups,
       });
     }
     varietyNames.sort();
@@ -490,16 +649,6 @@ export async function auditReference(
       ? [...new Set(asArray<any>(encounterResult.data).map((e) => e.version?.name).filter(Boolean))].sort()
       : [];
     if (!encounterResult.data) errors.push(`pokemon/${id}/encounters: ${encounterResult.error}`);
-
-    const learnsetVersionGroups = [
-      ...new Set(
-        asArray<any>(detail.moves).flatMap((move) =>
-          asArray<any>(move.version_group_details)
-            .map((entry) => entry.version_group?.name)
-            .filter(Boolean),
-        ),
-      ),
-    ].sort();
 
     const imageNames = [...new Set([species.name, ...varietyNames])].sort();
     const normalDir = join(root, 'pokedex-backend/public/images/pokemon/normal');
@@ -532,8 +681,12 @@ export async function auditReference(
         types: typesFrom(detail),
         abilities: abilitiesFrom(detail),
         varietyForms: varietyForms.sort((a, b) => a.name.localeCompare(b.name)),
+        gameIndexGames,
+        formGameIndexGames: [...formGameIndexGames].sort(),
         encounterVersions,
-        learnsetVersionGroups,
+        learnsetVersionGroups: learnset.versionGroups,
+        learnsetMoveSlots: learnset.moveSlots,
+        learnsetByVersionGroup: learnset.byVersionGroup,
         errors: [],
       },
     };
@@ -605,6 +758,114 @@ export async function auditReference(
     versionGroupCount: record.learnsetVersionGroups.length,
   }));
 
+  const speciesCoverage: SpeciesCoverageRow[] = records.map((record) => {
+    const missing = [
+      ...record.missingNormalImages.map((name) => `${name}: normal WebP missing`),
+      ...record.missingShinyImages.map((name) => `${name}: shiny WebP missing`),
+      ...(record.varietyForms.length !== record.varieties.length
+        ? [`forms checked ${record.varietyForms.length}/${record.varieties.length}`]
+        : []),
+      ...(record.types.length === 0 ? ['types missing'] : []),
+      ...(REQUIRED_STATS.some((stat) => !record.stats[stat]) ? ['stats incomplete'] : []),
+    ];
+    // Vietnamese flavor text is not published by PokéAPI. It is tracked as an
+    // editorial gap, not as a failure of the reference data itself.
+    const referenceStatus: SpeciesCoverageRow['referenceStatus'] = missing.length
+      ? 'MISSING'
+      : !record.hasEvolutionChain
+        ? 'UNVERIFIED'
+        : 'ACCURATE';
+    return {
+      id: record.id,
+      name: record.name,
+      generation: record.generation,
+      varieties: record.varieties.length,
+      formsChecked: record.varietyForms.length,
+      types: record.types,
+      statsComplete: REQUIRED_STATS.every((stat) => Boolean(record.stats[stat])),
+      abilities: record.abilities.length,
+      hiddenAbilities: record.abilities.filter((ability) => ability.isHidden).length,
+      hasEvolutionChain: record.hasEvolutionChain,
+      evolutionConditions: record.evolutionConditions,
+      learnsetVersionGroups: record.learnsetVersionGroups.length,
+      learnsetMoveSlots: record.learnsetMoveSlots,
+      encounterVersions: record.encounterVersions.length,
+      gameIndexGames: record.gameIndexGames.length,
+      formGameIndexGames: record.formGameIndexGames.length,
+      regionalDexCount: pokedexes.filter((dex) => dex.speciesNames.includes(record.name)).length,
+      localNormalImage: record.missingNormalImages.length === 0,
+      localShinyImage: record.missingShinyImages.length === 0,
+      missingNormalImages: record.missingNormalImages,
+      missingShinyImages: record.missingShinyImages,
+      descriptionLanguages: record.flavorTextLanguages,
+      hasVietnameseDescription: record.flavorTextLanguages.includes('vi'),
+      referenceStatus,
+      sources: [
+        `https://pokeapi.co/api/v2/pokemon-species/${record.id}`,
+        `https://pokeapi.co/api/v2/pokemon/${record.id}`,
+      ],
+    };
+  });
+
+  const gameAudit: GameAuditRow[] = source.supportedVersions.map((game) => {
+    const version = versions.find((item) => item.name === game);
+    const dexName = source.regionalDexByVersion[game] ?? '';
+    const dexInfo = dexByName.get(dexName);
+    const dexSpecies = new Set(dexInfo?.speciesNames ?? []);
+    const dexSpeciesChecked = records.filter((record) => dexSpecies.has(record.name)).length;
+    const formGameIndexSpecies = records.filter(
+      (record) => record.formGameIndexGames.includes(game) || record.gameIndexGames.includes(game),
+    ).length;
+    const encounterSpecies = records.filter((record) => record.encounterVersions.includes(game)).length;
+    const learnsetSpecies = records.filter(
+      (record) => version && Boolean(record.learnsetByVersionGroup[version.versionGroup]),
+    ).length;
+    const learnsetMoveSlots = version
+      ? records.reduce((sum, record) => sum + (record.learnsetByVersionGroup[version.versionGroup]?.total ?? 0), 0)
+      : 0;
+    const walkthrough = source.walkthrough.versions.includes(game);
+    const dexVersionGroupOk = Boolean(dexInfo && version && dexInfo.versionGroups.includes(version.versionGroup));
+    let status: GameAuditRow['status'] = 'ACCURATE';
+    if (!version) status = 'UNVERIFIED';
+    else if (!dexName || !dexInfo || !dexVersionGroupOk) status = 'INCORRECT';
+    else if (!walkthrough || dexSpeciesChecked === 0) status = 'MISSING';
+    else if (learnsetSpecies === 0 || learnsetMoveSlots === 0) status = 'UNVERIFIED';
+    const evidence = [
+      version ? `version-group=${version.versionGroup}` : 'version not found in PokéAPI',
+      dexInfo ? `dex=${dexName} entries=${dexInfo.entryCount} checkedSpecies=${dexSpeciesChecked}` : `dex=${dexName || 'none'} unavailable`,
+      !dexVersionGroupOk && version ? `dex version-groups=${dexInfo?.versionGroups.join('|') || 'none'}` : '',
+      `formGameIndices=${formGameIndexSpecies} encounters=${encounterSpecies}`,
+      `learnsetSpecies=${learnsetSpecies} learnsetMoveSlots=${learnsetMoveSlots}`,
+      `abilities(gen ${version?.generation ?? '?'})=${version ? catalogDetails.abilityCountByGeneration[version.generation] ?? 0 : 0}`,
+      `items(gen ${version?.generation ?? '?'})=${version ? catalogDetails.itemCountByGeneration[version.generation] ?? 0 : 0} items(vg)=${version ? catalogDetails.itemCountByVersionGroup[version.versionGroup] ?? 0 : 0}`,
+      `walkthrough=${walkthrough ? 'yes' : 'no'}`,
+    ].filter(Boolean);
+    return {
+      game,
+      versionGroup: version?.versionGroup ?? '',
+      generation: version?.generation ?? 0,
+      regionalDex: dexName,
+      dexEntryCount: dexInfo?.entryCount ?? 0,
+      dexVersionGroupOk,
+      dexSpeciesChecked,
+      formGameIndexSpecies,
+      encounterSpecies,
+      learnsetSpecies,
+      learnsetMoveSlots,
+      abilityGenerationCount: version ? catalogDetails.abilityCountByGeneration[version.generation] ?? 0 : 0,
+      itemGenerationCount: version ? catalogDetails.itemCountByGeneration[version.generation] ?? 0 : 0,
+      itemVersionGroupCount: version ? catalogDetails.itemCountByVersionGroup[version.versionGroup] ?? 0 : 0,
+      walkthrough,
+      status,
+      evidence,
+      sources: [
+        version ? `https://pokeapi.co/api/v2/version/${game}` : 'https://pokeapi.co/api/v2/version',
+        dexName ? `https://pokeapi.co/api/v2/pokedex/${dexName}` : 'pokedex-frontend/src/lib/gameVersions.ts',
+        'pokedex-backend/prisma/seeds/walkthroughs.json',
+      ],
+    };
+  });
+
   const missingImages = formAudit.flatMap((record) => [
     ...record.missingNormalImages.map((name) => `${record.id} ${name}: normal missing`),
     ...record.missingShinyImages.map((name) => `${record.id} ${name}: shiny missing`),
@@ -666,6 +927,82 @@ export async function auditReference(
     });
   }
 
+  if (options.allSpecies) {
+    const failedIds = Object.keys(checkpoint.failed).sort();
+    const speciesComplete = records.length === allSpeciesIds.length && failedIds.length === 0;
+    push({
+      id: 'FULL-SPECIES-COVERAGE',
+      area: 'master-data',
+      entity: 'full species catalog',
+      classification: speciesComplete ? 'CORRECT' : 'MISSING',
+      severity: speciesComplete ? 'info' : 'high',
+      message: speciesComplete
+        ? 'Every PokéAPI species ID was audited with types, stats, abilities, evolution, learnsets, encounters and local image checks.'
+        : 'The full species catalog audit is incomplete; failed IDs must be retried with --resume before any correction is applied.',
+      evidence: [
+        `audited=${records.length}/${allSpeciesIds.length}`,
+        `failed=${failedIds.length}`,
+        ...failedIds.slice(0, 10).map((id) => `id ${id}: ${checkpoint.failed[id]}`),
+      ],
+      sources: ['https://pokeapi.co/api/v2/pokemon-species', 'audit/.cache/pokeapi/checkpoints'],
+      runtimeRequired: !speciesComplete,
+      recommendation: 'Re-run npm run audit -- --full --api --resume until failed=0; do not derive values for failed IDs.',
+    });
+
+    const formsChecked = records.reduce((sum, record) => sum + record.varietyForms.length, 0);
+    const expectedForms = totals.pokemon ?? 0;
+    const formsComplete = expectedForms > 0 && formsChecked === expectedForms;
+    push({
+      id: 'FULL-FORM-COVERAGE',
+      area: 'forms',
+      entity: 'full form/variety catalog',
+      classification: formsComplete ? 'CORRECT' : 'MISSING',
+      severity: formsComplete ? 'info' : 'medium',
+      message: formsComplete
+        ? 'Every PokéAPI Pokemon form/variety was checked, including per-form game indices and learnset version groups.'
+        : 'Checked form count differs from the PokéAPI Pokemon catalog; forms may be missing from the reference audit.',
+      evidence: [`formsChecked=${formsChecked}`, `pokemonCatalog=${expectedForms}`, `varieties=${records.reduce((sum, record) => sum + record.varieties.length, 0)}`],
+      sources: ['https://pokeapi.co/api/v2/pokemon', 'https://pokeapi.co/api/v2/pokemon-species'],
+      runtimeRequired: !formsComplete,
+      recommendation: 'Retry failed species with --resume and reconcile form IDs before editing form/evolution data.',
+    });
+
+    const gameIssues = gameAudit.filter((row) => row.status !== 'ACCURATE');
+    push({
+      id: 'FULL-GAME-COVERAGE',
+      area: 'game-specific',
+      entity: '38 supported games',
+      classification: gameIssues.length ? 'MISSING' : 'CORRECT',
+      severity: gameIssues.length ? 'high' : 'info',
+      message: gameIssues.length
+        ? 'Some supported games lack reference coverage or have version-group/dex inconsistencies; see game-coverage.csv.'
+        : 'All supported games have version, version-group, regional dex, learnset and walkthrough coverage in the reference audit.',
+      evidence: gameIssues.slice(0, 15).map((row) => `${row.game}: ${row.status} — ${row.evidence[0]}`),
+      sources: ['https://pokeapi.co/api/v2/version', 'https://pokeapi.co/api/v2/pokedex', 'pokedex-frontend/src/lib/gameVersions.ts'],
+      runtimeRequired: true,
+      recommendation: 'Resolve reference gaps first; then verify the same games against a read-only staging/backup DB.',
+    });
+
+    const catalogDetailErrors = catalogDetails.abilityErrors.length + catalogDetails.itemErrors.length;
+    push({
+      id: 'FULL-CATALOG-DETAILS',
+      area: 'moves',
+      entity: 'ability/item catalog details',
+      classification: catalogDetailErrors ? 'UNVERIFIED' : 'CORRECT',
+      severity: catalogDetailErrors ? 'medium' : 'info',
+      message: catalogDetailErrors
+        ? 'Some ability/item detail lookups failed; per-generation and per-version-group counts are partial.'
+        : 'Ability and item catalogs were resolved per generation, and items were resolved per version group via cached detail calls.',
+      evidence: [
+        `abilitiesDetailed=${catalogDetails.abilitiesDetailed}/${totals.ability ?? 0}`,
+        `itemsDetailed=${catalogDetails.itemsDetailed}/${totals.item ?? 0}`,
+        `itemVersionGroups=${Object.keys(catalogDetails.itemCountByVersionGroup).length}`,
+      ],
+      sources: ['https://pokeapi.co/api/v2/ability', 'https://pokeapi.co/api/v2/item'],
+      runtimeRequired: catalogDetailErrors > 0,
+    });
+  }
+
   const availabilitySample: ReferenceSnapshot['availabilitySample'] = [];
   const sampleNames = speciesSample.map((species) => species.name);
   for (const [game, dex] of Object.entries(source.regionalDexByVersion)) {
@@ -705,6 +1042,9 @@ export async function auditReference(
       generations: generations.length,
       speciesAudited: records.length,
     },
+    speciesCoverage,
+    gameAudit,
+    catalogDetails,
     generations,
     versions,
     pokedexes,

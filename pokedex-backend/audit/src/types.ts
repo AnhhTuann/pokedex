@@ -33,6 +33,10 @@ export interface Coverage {
   unverified: number;
   detail: Record<string, number>;
   byClassification: Record<string, number>;
+  scopes?: {
+    sourceReference: Record<string, number | string>;
+    database: Record<string, number | string>;
+  };
 }
 
 export interface AuditOutput {
@@ -44,6 +48,7 @@ export interface AuditOutput {
   reference?: unknown;
   schema?: unknown;
   source?: unknown;
+  sourceReliability?: Array<{ source: string; reliability: string; use: string; limit: string }>;
   db?: {
     connected: boolean;
     readOnlyEnforced: boolean;

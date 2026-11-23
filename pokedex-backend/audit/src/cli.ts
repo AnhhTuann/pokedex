@@ -8,7 +8,18 @@ import { auditSource } from './sourceAudit.js';
 import { PokeApiClient } from './pokeApiClient.js';
 import { auditReference } from './referenceAudit.js';
 import { auditDatabase, UNVERIFIED_DB_AREAS } from './dbAudit.js';
-import { buildCoverage, buildFixPlan, renderMarkdown, toCsv } from './report.js';
+import {
+  SOURCE_RELIABILITY,
+  buildCoverage,
+  buildFixPlan,
+  renderMarkdown,
+  toCsv,
+  toEvidenceCsv,
+  toGameCoverageCsv,
+  toManualReviewCsv,
+  toSpeciesCoverageCsv,
+  toUnverifiedCsv,
+} from './report.js';
 
 export interface CliArgs {
   api: boolean;
@@ -153,11 +164,18 @@ async function main() {
     },
     source,
     db: dbResult.db,
+    sourceReliability: SOURCE_RELIABILITY.map((item) => ({ ...item })),
   };
 
   const fixPlan = buildFixPlan(findings);
   writeFileSync(join(outDir, 'audit.json'), `${JSON.stringify(output, null, 2)}\n`);
+  writeFileSync(join(outDir, 'coverage.json'), `${stableStringify({ scopes: coverage.scopes, detail: coverage.detail, byClassification: coverage.byClassification })}\n`);
   writeFileSync(join(outDir, 'findings.csv'), `${toCsv(findings)}\n`);
+  writeFileSync(join(outDir, 'species-coverage.csv'), `${toSpeciesCoverageCsv(reference?.speciesCoverage ?? [])}\n`);
+  writeFileSync(join(outDir, 'game-coverage.csv'), `${toGameCoverageCsv(reference?.gameAudit ?? [])}\n`);
+  writeFileSync(join(outDir, 'evidence.csv'), `${toEvidenceCsv(findings)}\n`);
+  writeFileSync(join(outDir, 'manual-review.csv'), `${toManualReviewCsv(findings)}\n`);
+  writeFileSync(join(outDir, 'unverified.csv'), `${toUnverifiedCsv(findings)}\n`);
   writeFileSync(join(outDir, 'fix-plan.json'), `${stableStringify(fixPlan)}\n`);
   writeFileSync(join(outDir, 'report.md'), renderMarkdown(output, fixPlan));
 
@@ -167,11 +185,15 @@ async function main() {
       catalogKey: reference.checkpoint.key,
       counts: reference.counts,
       species: reference.speciesSample,
+      speciesCoverage: reference.speciesCoverage,
       forms: reference.formAudit,
       evolution: reference.evolutionSample,
       games: reference.versions,
+      gameAudit: reference.gameAudit,
+      catalogDetails: reference.catalogDetails,
       dexes: reference.pokedexes.map(({ name, entryCount, versionGroups }) => ({ name, entryCount, versionGroups })),
       findings,
+      sourceReliability: SOURCE_RELIABILITY.map((item) => ({ ...item })),
       checkpoint: reference.checkpoint,
       apiErrors: reference.apiErrors,
     };

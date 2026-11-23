@@ -25,9 +25,23 @@ export interface CheckpointRecord {
     apiId: number;
     stats: Record<string, number>;
     types: string[];
+    gameIndexGames: string[];
+    learnsetVersionGroups: string[];
   }>;
+  /** Default-form game indices from /pokemon/{id}. */
+  gameIndexGames: string[];
+  /** Union of game indices across every variety, used for form availability. */
+  formGameIndexGames: string[];
   encounterVersions: string[];
   learnsetVersionGroups: string[];
+  learnsetMoveSlots: number;
+  learnsetByVersionGroup: Record<string, {
+    total: number;
+    levelUp: number;
+    machine: number;
+    tutor: number;
+    egg: number;
+  }>;
   errors: string[];
 }
 
@@ -64,11 +78,21 @@ export function loadCheckpoint(path: string, key: string, resume: boolean): Chec
   try {
     const parsed = JSON.parse(readFileSync(path, 'utf8')) as CheckpointState;
     if (parsed.version !== 1 || parsed.key !== key) return empty(key);
+    const records = Object.fromEntries(
+      Object.entries(parsed.records ?? {}).filter(([, record]) =>
+        Array.isArray((record as CheckpointRecord).gameIndexGames) &&
+        Array.isArray((record as CheckpointRecord).formGameIndexGames) &&
+        typeof (record as CheckpointRecord).learnsetMoveSlots === 'number' &&
+        Boolean((record as CheckpointRecord).learnsetByVersionGroup),
+      ),
+    ) as Record<string, CheckpointRecord>;
     return {
       ...empty(key),
       ...parsed,
-      completedIds: [...new Set(parsed.completedIds ?? [])].sort((a, b) => a - b),
-      records: parsed.records ?? {},
+      completedIds: [...new Set(parsed.completedIds ?? [])]
+        .filter((id) => Boolean(records[String(id)]))
+        .sort((a, b) => a - b),
+      records,
       failed: parsed.failed ?? {},
     };
   } catch {
