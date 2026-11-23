@@ -1,0 +1,211 @@
+[
+  {
+    "order": 1,
+    "area": "Broken relationships",
+    "findingId": "SCHEMA-FK-INCONSISTENT",
+    "action": "Choose one stable target (prefer Pokemon.id surrogate key) and migrate all references with a verified mapping; keep pokedexNumber unique for public API identity.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": true
+  },
+  {
+    "order": 3,
+    "area": "Incorrect master data",
+    "findingId": "SRC-BACKEND-CHART-MODERN-ONLY",
+    "action": "Extend the backend chart with generation rules and expose generation in the GraphQL contract.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 3,
+    "area": "Incorrect master data",
+    "findingId": "SRC-UPDATER-COUNT-CURSOR",
+    "action": "Update detection compares local row counts to API counts; gaps in IDs and renames cannot be detected and equal counts hide drift.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "API-DEX-VERSION-MISMATCH",
+    "action": "A game maps to a regional dex whose version groups exclude that game.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "API-LEARNSET-VERSION-DETAIL",
+    "action": "Reference learnsets carry per-version-group detail, but the local PokemonMove model has no version dimension; imported learnsets cannot be validated per game.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "SCHEMA-LEARNSET-NO-VERSION",
+    "action": "Add versionGroup (and ideally learnMethod detail) with a stable FK.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "SCHEMA-MODEL-MISSING-GAMEVERSION",
+    "action": "No GameVersion model. Game-specific rules and walkthroughs use free-text version slugs.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "SCHEMA-WALKTHROUGH-UNVALIDATED-VERSION",
+    "action": "Walkthrough gameVersion is free text; unsupported or misspelled slugs cannot be rejected by DB constraints.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "SRC-ADMIN-WALKTHROUGH-VERSIONS",
+    "action": "CMS cannot create or edit walkthroughs for several supported games.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "SRC-DAMAGE-GEN-RULES",
+    "action": "Add explicit per-generation battle rule adapters before claiming Gen I–IX support.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 4,
+    "area": "Game-specific data",
+    "findingId": "SRC-NATUREDEX-STATIC",
+    "action": "Nature data is hardcoded in the frontend and absent from Prisma/GraphQL; it cannot be audited, curated or versioned as data.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 6,
+    "area": "Encounters and locations",
+    "findingId": "SCHEMA-ENCOUNTER-STRING-FK",
+    "action": "Encounters reference locations and versions by free text instead of stable FKs.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 8,
+    "area": "Walkthrough completeness",
+    "findingId": "SRC-WALKTHROUGH-COVERAGE",
+    "action": "Curated walkthrough content does not cover every supported game version.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 9,
+    "area": "Other data quality work",
+    "findingId": "SCHEMA-EVOLUTION-NO-CONDITION",
+    "action": "Evolution stores only from/to IDs; triggers, levels, held items, friendship, time and version-specific conditions cannot be represented.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 9,
+    "area": "Other data quality work",
+    "findingId": "SCHEMA-MODEL-MISSING-NATURE",
+    "action": "No Nature model. NatureDex is requested but no model exists.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 9,
+    "area": "Other data quality work",
+    "findingId": "SCHEMA-MODEL-MISSING-REGION",
+    "action": "No Region model. Regional dex membership is stored as string arrays.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 9,
+    "area": "Other data quality work",
+    "findingId": "SCHEMA-MODEL-MISSING-TYPEEFFECTIVENESS",
+    "action": "No TypeEffectiveness model. Type chart is code-only; no per-generation rules can be stored or audited in DB.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 9,
+    "area": "Other data quality work",
+    "findingId": "SCHEMA-VARIETY-NO-GIGANTAMAX",
+    "action": "Forms model has isMega/isAlternative but no Gigantamax flag or form-specific stats; form identity is incomplete.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  },
+  {
+    "order": 9,
+    "area": "Other data quality work",
+    "findingId": "SRC-GENERATION-FALLBACK-9",
+    "action": "Return null/unknown for unrecognized slugs and reject them at API/UI boundaries.",
+    "dryRunCommand": "npm run audit:dry-run -- --finding <ID> --report <REPORT_JSON>",
+    "validationCommand": "npm run audit -- --offline --schema-only && npm test && npm run build",
+    "backupCommand": "pg_dump \"$AUDIT_DATABASE_URL\" --schema-only -f backup-schema.sql && pg_dump \"$AUDIT_DATABASE_URL\" --data-only -f backup-data.sql",
+    "rollbackCommand": "psql \"$AUDIT_DATABASE_URL\" -f backup-data.sql  # operator-reviewed only",
+    "runtimeRequired": false
+  }
+]
