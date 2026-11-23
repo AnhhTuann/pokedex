@@ -69,10 +69,16 @@ export function isAdminRole(role: unknown): boolean {
  */
 export async function requireAdmin(context?: GraphQLContext | null): Promise<number> {
   const userId = requireUser(context);
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { role: true },
-  });
+  let user: { role: unknown } | null;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+  } catch {
+    // Fail closed with a uniform error (e.g. if the role migration is missing).
+    throw new Error('Admin access required');
+  }
   if (!user || !isAdminRole(user.role)) {
     throw new Error('Admin access required');
   }

@@ -20,15 +20,25 @@ export function sanitizeDownloadFilename(input: unknown): string {
   return safe;
 }
 
+const SAFE_MIME_TYPES = new Set([
+  'application/json',
+  'application/octet-stream',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'text/csv',
+  'text/plain',
+]);
+
 export function validateMimeType(input: unknown): string {
   if (
     typeof input !== 'string' ||
     input.length > 100 ||
-    !/^[A-Za-z0-9!#$&^_.+-]+\/[A-Za-z0-9!#$&^_.+-]+$/.test(input)
+    !SAFE_MIME_TYPES.has(input.toLowerCase())
   ) {
     throw new Error('Invalid mime type');
   }
-  return input;
+  return input.toLowerCase();
 }
 
 export function decodeDownloadContent(content: unknown, isBase64?: unknown): Buffer {

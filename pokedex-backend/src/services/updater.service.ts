@@ -34,7 +34,7 @@ async function fetchJson<T>(url: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-const idFromUrl = (url: string): number | null => {
+export const idFromUrl = (url: string): number | null => {
   const parts = url.split('/').filter(Boolean);
   const id = Number.parseInt(parts[parts.length - 1] ?? '', 10);
   return Number.isInteger(id) && id > 0 ? id : null;
@@ -103,6 +103,16 @@ async function localNames(model: 'item' | 'ability'): Promise<Set<string>> {
   return new Set(rows.map((row) => row.name));
 }
 
+export function selectMissing<T extends CatalogEntry>(
+  remote: T[],
+  localIds: Set<number>,
+  localNames?: Set<string>
+): T[] {
+  return remote.filter(
+    (entry) => !localIds.has(entry.id) && !(localNames && localNames.has(entry.name))
+  );
+}
+
 async function findMissing(): Promise<{
   pokemon: CatalogEntry[];
   items: CatalogEntry[];
@@ -121,13 +131,13 @@ async function findMissing(): Promise<{
     ]);
 
   return {
-    pokemon: species.filter((entry) => !localPokemon.has(entry.id)),
-    items: items.filter((entry) => !localItems.has(entry.name)),
-    abilities: abilities.filter((entry) => !localAbilities.has(entry.name)),
+    pokemon: selectMissing(species, localPokemon),
+    items: selectMissing(items, new Set<number>(), localItems),
+    abilities: selectMissing(abilities, new Set<number>(), localAbilities),
   };
 }
 
-function generationFromSpecies(species: any): number {
+export function generationFromSpecies(species: any): number {
   const name = species?.generation?.name ?? '';
   const match = name.match(/generation-([ivx]+)/);
   const romanToNumber: Record<string, number> = {
@@ -136,7 +146,7 @@ function generationFromSpecies(species: any): number {
   return (match && romanToNumber[match[1]]) || 1;
 }
 
-function baseStatsFromApi(stats: { stat: { name: string }; base_stat: number }[]) {
+export function baseStatsFromApi(stats: { stat: { name: string }; base_stat: number }[]) {
   const find = (name: string) =>
     stats.find((stat) => stat.stat.name === name)?.base_stat ?? 0;
   return {
