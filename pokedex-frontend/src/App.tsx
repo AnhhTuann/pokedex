@@ -1,6 +1,7 @@
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
+import { useIsAdmin } from './hooks/useIsAdmin';
 import MainLayout from './components/MainLayout';
 import PokemonDex from './pages/PokemonDex';
 import LocationDex from './pages/LocationDex';
@@ -308,6 +309,16 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
   </motion.div>
 );
 
+const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
+  const { isAdmin, loading } = useIsAdmin();
+
+  if (loading) {
+    return <div style={{ padding: '2rem', textAlign: 'center' }}>Đang kiểm tra quyền truy cập...</div>;
+  }
+  if (!isAdmin) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
+
 export default function App() {
   const location = useLocation();
   return (
@@ -325,7 +336,7 @@ export default function App() {
           <Route path="/tracker" element={<PageWrapper><CatchTracker /></PageWrapper>} />
           <Route path="/calculator" element={<PageWrapper><DamageCalculator /></PageWrapper>} />
           <Route path="/walkthrough" element={<PageWrapper><Walkthrough /></PageWrapper>} />
-          <Route path="/admin/walkthrough" element={<PageWrapper><AdminWalkthrough /></PageWrapper>} />
+          <Route path="/admin/walkthrough" element={<PageWrapper><RequireAdmin><AdminWalkthrough /></RequireAdmin></PageWrapper>} />
           <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
           <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
           <Route path="/dashboard" element={<PageWrapper><UserDashboard /></PageWrapper>} />

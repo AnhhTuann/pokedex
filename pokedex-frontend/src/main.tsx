@@ -10,13 +10,14 @@ import { createRoot } from "react-dom/client";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { MyPokedexProvider } from "./lib/MyPokedexContext";
+import { GRAPHQL_ENDPOINT } from "./lib/apiConfig";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 
 // ─── Apollo Client ────────────────────────────────────────
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
+  uri: GRAPHQL_ENDPOINT,
 });
 
 const authLink = setContext((_, { headers }) => {

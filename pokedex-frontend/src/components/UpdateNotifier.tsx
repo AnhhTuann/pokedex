@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
 import { Database, DownloadCloud, AlertCircle, CheckCircle2, Loader2, X } from 'lucide-react';
+import { useIsAdmin } from '../hooks/useIsAdmin';
 
 const CHECK_UPDATES = gql`
   query CheckUpdates {
@@ -21,6 +22,7 @@ const SYNC_NEW_DATA = gql`
 `;
 
 export default function UpdateNotifier() {
+  const { isAdmin } = useIsAdmin();
   const { data, loading, error, refetch } = useQuery(CHECK_UPDATES, {
     fetchPolicy: 'network-only' // always check API
   });
@@ -35,7 +37,7 @@ export default function UpdateNotifier() {
   const [isOpen, setIsOpen] = useState(true);
   const [syncComplete, setSyncComplete] = useState(false);
 
-  if (loading || error || !data) return null;
+  if (!isAdmin || loading || error || !data) return null;
 
   const updates = data.checkUpdates.filter((u: any) => u.hasUpdate);
   const hasUpdates = updates.length > 0;

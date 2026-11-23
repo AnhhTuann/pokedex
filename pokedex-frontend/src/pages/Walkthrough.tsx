@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader } from 'lucide-react';
 import { VERSION_COLORS } from '../App';
+import { useIsAdmin } from '../hooks/useIsAdmin';
 import styles from '../styles/pages/Walkthrough.module.scss';
 
 const GET_WALKTHROUGHS = gql`
@@ -37,6 +38,7 @@ const GAME_OPTIONS = [
 
 export default function Walkthrough() {
   const navigate = useNavigate();
+  const { isAdmin } = useIsAdmin();
   const [gameVersion, setGameVersion] = useState('emerald');
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [selectedChapterId, setSelectedChapterId] = useState<number | null>(null);
@@ -90,9 +92,11 @@ export default function Walkthrough() {
               </button>
             ))}
           </div>
-          <button onClick={() => navigate('/admin/walkthrough')} className={styles.cmsBtn}>
-            <Settings size={15}/> CMS Editor 🛠️
-          </button>
+          {isAdmin && (
+            <button onClick={() => navigate('/admin/walkthrough')} className={styles.cmsBtn}>
+              <Settings size={15}/> CMS Editor 🛠️
+            </button>
+          )}
         </div>
       </div>
 
