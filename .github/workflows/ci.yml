@@ -22,6 +22,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - run: npm run audit:typecheck
+      - run: npm run test:audit
+      - run: npm run audit -- --offline
 
   frontend:
     runs-on: ubuntu-latest
