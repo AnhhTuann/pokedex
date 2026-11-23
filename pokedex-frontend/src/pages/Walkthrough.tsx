@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import DOMPurify from 'dompurify';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader, AlertCircle } from 'lucide-react';
 import { VERSION_COLORS } from '../App';
 import { useIsAdmin } from '../hooks/useIsAdmin';
 import styles from '../styles/pages/Walkthrough.module.scss';
@@ -43,7 +43,7 @@ export default function Walkthrough() {
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [selectedChapterId, setSelectedChapterId] = useState<number | null>(null);
 
-  const { data, loading } = useQuery(GET_WALKTHROUGHS, { variables: { gameVersion, language } });
+  const { data, loading, error } = useQuery(GET_WALKTHROUGHS, { variables: { gameVersion, language } });
   const chapters = data?.getWalkthroughs || [];
 
   useEffect(() => {
@@ -70,7 +70,13 @@ export default function Walkthrough() {
   const prevChapter = activeIndex > 0 ? chapters[activeIndex - 1] : null;
   const nextChapter = activeIndex >= 0 && activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
 
-  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' });
+  const scrollTo = (id: string) => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById(id)?.scrollIntoView({
+      behavior: reduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -123,6 +129,12 @@ export default function Walkthrough() {
             <div style={{ padding:'40px 20px',display:'flex',justifyContent:'center' }}>
               <Loader size={28} color={gameColor} style={{ animation:'spin 0.8s linear infinite' }}/>
             </div>
+          ) : error ? (
+            <div role="alert" style={{ padding:'40px 20px',textAlign:'center' }}>
+              <AlertCircle size={36} style={{ marginBottom:8,color:'var(--error, #ef4444)' }}/>
+              <p style={{ fontSize:13,fontWeight:700,color:'var(--text-secondary)',margin:0 }}>Không tải được danh sách chương.</p>
+              <p style={{ fontSize:11,color:'var(--text-muted)',marginTop:4 }}>Vui lòng thử lại sau.</p>
+            </div>
           ) : chapters.length === 0 ? (
             <div style={{ padding:'40px 20px',textAlign:'center',opacity:0.5 }}>
               <BookOpen size={36} style={{ marginBottom:8,opacity:0.5,color:'var(--text-secondary)' }}/>
@@ -159,7 +171,12 @@ export default function Walkthrough() {
                 {/* Cover Image */}
                 {activeChapter.coverImage && (
                   <div className={styles.coverImageWrapper}>
-                    <img src={activeChapter.coverImage} className={styles.coverImage}/>
+                    <img
+                      src={activeChapter.coverImage}
+                      alt={`Ảnh bìa chương ${activeChapter.chapterTitle}`}
+                      loading="lazy"
+                      className={styles.coverImage}
+                    />
                     <div className={styles.coverGradient}/>
                   </div>
                 )}
@@ -184,12 +201,13 @@ export default function Walkthrough() {
                     <span className={styles.tocTitle} style={{ color:gameColor }}>Nội dung chính</span>
                     <div className={styles.tocList}>
                       {toc.map(item => (
-                        <div key={item.id} onClick={() => scrollTo(item.id)}
+                        <button key={item.id} type="button" onClick={() => scrollTo(item.id)}
                           className={`${styles.tocItem} ${item.level === 3 ? styles.level3 : ''}`}
-                          onMouseEnter={e => { (e.target as HTMLElement).style.color=gameColor; }}
-                          onMouseLeave={e => { (e.target as HTMLElement).style.color='var(--text-secondary)'; }}>
+                          style={{ color: 'var(--text-secondary)' }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color=gameColor; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color='var(--text-secondary)'; }}>
                           • {item.text}
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>

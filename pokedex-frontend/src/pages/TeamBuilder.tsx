@@ -208,7 +208,10 @@ export default function TeamBuilder() {
     setTimeout(()=>setToast(null),3000);
   };
 
-  const { data: listData } = useQuery(GET_POKEMON_FOR_TEAM, { variables:{search:searchQuery} });
+  const { data: listData, loading: listLoading, error: listError } = useQuery(
+    GET_POKEMON_FOR_TEAM,
+    { variables: { search: searchQuery } }
+  );
   const available = listData?.pokemonList?.results || [];
 
   const handleAdd = (p:any) => {
@@ -412,7 +415,13 @@ export default function TeamBuilder() {
                     </div>
                   </div>
                 ))}
-                {!available.length && (
+                {listLoading && (
+                  <div className={styles.modalEmpty}><p className={styles.emptyText}>Đang tải Pokémon…</p></div>
+                )}
+                {!listLoading && listError && (
+                  <div className={styles.modalEmpty} role="alert"><AlertTriangle size={28} style={{opacity:0.6}}/><p className={styles.emptyText}>Không tải được danh sách Pokémon.</p></div>
+                )}
+                {!listLoading && !listError && !available.length && (
                   <div className={styles.modalEmpty}><HelpCircle size={32} style={{opacity:0.4}}/><p className={styles.emptyText}>No Pokémon found</p></div>
                 )}
               </div>
