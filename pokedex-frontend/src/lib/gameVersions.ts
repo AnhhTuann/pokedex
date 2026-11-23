@@ -122,6 +122,11 @@ export const GENERATION_VERSIONS: GenerationGroup[] = [
   }
 ];
 
+/** Single source of truth for selectable games (walkthrough public page and CMS). */
+export const GAME_VERSION_OPTIONS: Array<{ value: string; label: string }> = GENERATION_VERSIONS.flatMap(
+  (group) => group.rows.flatMap((row) => row.games.map((game) => ({ value: game.name, label: game.label }))),
+);
+
 export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   red: 'kanto',
   blue: 'kanto',
@@ -145,6 +150,8 @@ export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   'white-2': 'updated-unova',
   x: 'kalos-central',
   y: 'kalos-central',
+  // PokeAPI uses updated-hoenn for ORAS. Legacy DB rows may still use hoenn;
+  // keep the old slug until a reviewed backfill adds gameVersions for updated-hoenn.
   'omega-ruby': 'hoenn',
   'alpha-sapphire': 'hoenn',
   sun: 'original-alola',
@@ -160,26 +167,33 @@ export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   'legends-arceus': 'hisui',
   scarlet: 'paldea',
   violet: 'paldea',
+  // Legacy compatibility: existing DB/custom entries still use kalos-central.
+  // PokemonDex overrides the query to lumiose-city/hyperspace for this game.
   'legends-za': 'kalos-central',
 };
 
-export function getGameGeneration(versionName: string): number {
+export const GAME_TO_GENERATION: Record<string, number> = {
+  red: 1, blue: 1, yellow: 1,
+  gold: 2, silver: 2, crystal: 2,
+  ruby: 3, sapphire: 3, emerald: 3, firered: 3, leafgreen: 3,
+  diamond: 4, pearl: 4, platinum: 4, heartgold: 4, soulsilver: 4,
+  black: 5, white: 5, 'black-2': 5, 'white-2': 5,
+  x: 6, y: 6, 'omega-ruby': 6, 'alpha-sapphire': 6,
+  sun: 7, moon: 7, 'ultra-sun': 7, 'ultra-moon': 7, 'lets-go-pikachu': 7, 'lets-go-eevee': 7,
+  sword: 8, shield: 8, 'brilliant-diamond': 8, 'shining-pearl': 8, 'legends-arceus': 8,
+  scarlet: 9, violet: 9, 'legends-za': 9,
+};
+
+/** `all` intentionally means modern rules; unknown slugs must not silently become Gen IX. */
+export function getGameGenerationStrict(versionName: string): number | null {
   const nameLower = versionName.toLowerCase();
   if (nameLower === 'all') return 9;
-  
-  const genMap: Record<string, number> = {
-    red: 1, blue: 1, yellow: 1,
-    gold: 2, silver: 2, crystal: 2,
-    ruby: 3, sapphire: 3, emerald: 3, firered: 3, leafgreen: 3,
-    diamond: 4, pearl: 4, platinum: 4, heartgold: 4, soulsilver: 4,
-    black: 5, white: 5, 'black-2': 5, 'white-2': 5,
-    x: 6, y: 6, 'omega-ruby': 6, 'alpha-sapphire': 6,
-    sun: 7, moon: 7, 'ultra-sun': 7, 'ultra-moon': 7, 'lets-go-pikachu': 7, 'lets-go-eevee': 7,
-    sword: 8, shield: 8, 'brilliant-diamond': 8, 'shining-pearl': 8, 'legends-arceus': 8,
-    scarlet: 9, violet: 9, 'legends-za': 9
-  };
-  
-  return genMap[nameLower] || 9;
+  return GAME_TO_GENERATION[nameLower] ?? null;
+}
+
+/** @deprecated Use getGameGenerationStrict and handle unsupported slugs explicitly. */
+export function getGameGeneration(versionName: string): number {
+  return getGameGenerationStrict(versionName) ?? 9;
 }
 
 export function getRegionAndGame(versionName: string) {

@@ -1,5 +1,10 @@
 import { getTypeMultiplier } from './typeMatchups';
 
+/** Gen I-III split physical/special by move type, not by modern damageClass. */
+const LEGACY_SPECIAL_TYPES = new Set([
+  'fire', 'water', 'electric', 'grass', 'ice', 'psychic', 'dragon', 'dark',
+]);
+
 export interface NatureEffect {
   increased: string | null;
   decreased: string | null;
@@ -146,6 +151,11 @@ export function calculateDamage(
   fieldState: FieldState
 ): DamageResult {
   const movePower = move.power || 0;
+
+  // Legacy callers omit generation and keep modern rules. When supplied, the
+  // battling generation comes from the Pokémon/version, not the move's debut gen.
+  const generation = defender.generation ?? attacker.generation ?? 6;
+  const usesLegacyTypeSplit = generation <= 3;
   
   const defHP = calculateActualHP(
     defender.baseStats['hp'] || 50,
@@ -169,8 +179,11 @@ export function calculateDamage(
     };
   }
 
-  // Choose Attack & Defense parameters
-  const isPhysical = move.damageClass === 'physical';
+  // Choose Attack & Defense parameters. For Gen I-III, PokeAPI's modern
+  // damageClass must not decide which stat is used.
+  const isPhysical = usesLegacyTypeSplit
+    ? !LEGACY_SPECIAL_TYPES.has(move.type.toLowerCase())
+    : move.damageClass === 'physical';
   const atkStatName = isPhysical ? 'attack' : 'special-attack';
   const defStatName = isPhysical ? 'defense' : 'special-defense';
 
@@ -235,9 +248,7 @@ export function calculateDamage(
   const isStab = attacker.types.map(t => t.toLowerCase()).includes(move.type.toLowerCase());
   const stabMod = isStab ? 1.5 : 1.0;
 
-  // Type effectiveness multiplier. The battle ruleset follows the defending
-  // species when a generation is supplied; legacy callers keep modern rules.
-  const generation = defender.generation ?? attacker.generation ?? 6;
+  // Type effectiveness multiplier follows the same ruleset generation.
   const typeMod = getFinalEffectiveness(move.type, defender.types, generation);
 
   // Status burn reduction (physical moves only)

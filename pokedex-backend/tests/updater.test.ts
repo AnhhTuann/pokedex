@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   baseStatsFromApi,
   generationFromSpecies,
@@ -46,4 +47,14 @@ test('selectMissing detects gaps and reruns without duplicating rows', () => {
     [{ id: 2, name: 'two', url: 'u2' }]
   );
   assert.deepEqual(selectMissing(remote, new Set([1, 2, 4])), []);
+});
+
+test('update detection keys off stable IDs/names, not catalog counts', () => {
+  const source = readFileSync(new URL('../src/services/updater.service.ts', import.meta.url), 'utf8');
+  const start = source.indexOf('async checkUpdates()');
+  const block = source.slice(start, source.indexOf('async syncNewData()', start));
+  assert.match(block, /missing\.pokemon\.length/);
+  assert.match(block, /missing\.items\.length/);
+  assert.match(block, /missing\.abilities\.length/);
+  assert.doesNotMatch(block, /localCount\s*[!=]==?\s*apiCount/);
 });

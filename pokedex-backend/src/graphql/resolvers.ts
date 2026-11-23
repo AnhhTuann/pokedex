@@ -13,6 +13,7 @@ import {
 } from '../lib/security.js';
 import { createRateLimiter } from '../lib/rateLimit.js';
 import { fetchWithTimeout } from '../lib/pokeApi.js';
+import { defensiveMatchups } from '../lib/typeMatchups.js';
 
 const loginLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });
 const registerLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 10 });
@@ -231,6 +232,13 @@ export const resolvers = {
   },
 
   PokemonDetail: {
+    // Existing clients omit `generation` and keep receiving the modern chart.
+    matchups: (parent: any, { generation }: { generation?: number | null }) => {
+      if (generation == null || !Array.isArray(parent.types) || parent.types.length === 0) {
+        return parent.matchups ?? [];
+      }
+      return defensiveMatchups(parent.types, generation);
+    },
     locations: async (parent: any, { version }: { version?: string }) => {
       const pId = parent.id;
       

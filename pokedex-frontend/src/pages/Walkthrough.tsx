@@ -3,7 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import DOMPurify from 'dompurify';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader, AlertCircle } from 'lucide-react';
-import { VERSION_COLORS } from '../lib/gameVersions';
+import { GAME_VERSION_OPTIONS, VERSION_COLORS } from '../lib/gameVersions';
 import { useIsAdmin } from '../hooks/useIsAdmin';
 import styles from '../styles/pages/Walkthrough.module.scss';
 
@@ -14,27 +14,6 @@ const GET_WALKTHROUGHS = gql`
     }
   }
 `;
-
-const GAME_OPTIONS = [
-  { value:'red',label:'Red' },{ value:'blue',label:'Blue' },{ value:'yellow',label:'Yellow' },
-  { value:'gold',label:'Gold' },{ value:'silver',label:'Silver' },{ value:'crystal',label:'Crystal' },
-  { value:'ruby',label:'Ruby' },{ value:'sapphire',label:'Sapphire' },{ value:'emerald',label:'Emerald' },
-  { value:'firered',label:'FireRed' },{ value:'leafgreen',label:'LeafGreen' },
-  { value:'diamond',label:'Diamond' },{ value:'pearl',label:'Pearl' },{ value:'platinum',label:'Platinum' },
-  { value:'heartgold',label:'HeartGold' },{ value:'soulsilver',label:'SoulSilver' },
-  { value:'black',label:'Black' },{ value:'white',label:'White' },
-  { value:'black-2',label:'Black 2' },{ value:'white-2',label:'White 2' },
-  { value:'x',label:'X' },{ value:'y',label:'Y' },
-  { value:'omega-ruby',label:'Omega Ruby' },{ value:'alpha-sapphire',label:'Alpha Sapphire' },
-  { value:'sun',label:'Sun' },{ value:'moon',label:'Moon' },
-  { value:'ultra-sun',label:'Ultra Sun' },{ value:'ultra-moon',label:'Ultra Moon' },
-  { value:'lets-go-pikachu',label:"Let's Go Pikachu" },{ value:'lets-go-eevee',label:"Let's Go Eevee" },
-  { value:'sword',label:'Sword' },{ value:'shield',label:'Shield' },
-  { value:'brilliant-diamond',label:'Brilliant Diamond' },{ value:'shining-pearl',label:'Shining Pearl' },
-  { value:'legends-arceus',label:'Legends: Arceus' },
-  { value:'scarlet',label:'Scarlet' },{ value:'violet',label:'Violet' },
-  { value:'legends-za',label:'Legends: Z-A' },
-];
 
 export default function Walkthrough() {
   const navigate = useNavigate();
@@ -114,7 +93,7 @@ export default function Walkthrough() {
             <div className={styles.selectWrapper}>
               <span className={styles.selectColorBadge} style={{ background:gameColor, boxShadow:`0 0 10px ${gameColor}` }}/>
               <select value={gameVersion} onChange={e => setGameVersion(e.target.value)} className={styles.selectField}>
-                {GAME_OPTIONS.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
+                {GAME_VERSION_OPTIONS.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
               </select>
             </div>
           </div>

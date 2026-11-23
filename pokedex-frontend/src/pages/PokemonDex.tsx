@@ -7,7 +7,7 @@ import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDia
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame, getGameGeneration } from '../lib/gameVersions';
+import { getRegionAndGame, getGameGenerationStrict } from '../lib/gameVersions';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
@@ -47,14 +47,16 @@ export default function PokemonDex() {
   };
 
   const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
-  const gameGen = getGameGeneration(selectedVersion);
-  const isGen2OrHigher = gameGen >= 2;
+  const gameGen = getGameGenerationStrict(selectedVersion);
 
   let queryRegion: string | undefined = undefined;
   let queryGame: string | undefined = undefined;
   let queryMaxGen: number | undefined = undefined;
 
-  if (isGen2OrHigher && dexMode === 'national') {
+  if (gameGen === null) {
+    // Unsupported slug: do not apply a Gen IX max-gen filter by accident.
+    queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+  } else if (gameGen >= 2 && dexMode === 'national') {
     queryMaxGen = gameGen;
   } else {
     queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
@@ -134,7 +136,7 @@ export default function PokemonDex() {
       </div>
 
       {/* Regional vs National Dex Switcher */}
-      {isGen2OrHigher && selectedVersion !== 'ALL' && (
+      {gameGen !== null && gameGen >= 2 && selectedVersion !== 'ALL' && (
         <div className={styles.dexTabWrapper}>
           <div className={styles.dexToggle}>
             <button

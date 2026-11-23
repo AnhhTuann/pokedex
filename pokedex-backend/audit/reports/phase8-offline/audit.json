@@ -1,0 +1,764 @@
+{
+  "generatedAt": "2026-11-23T14:19:03.679Z",
+  "baseRef": "audit/phase8-validation@1e106ec",
+  "modes": [
+    "schema",
+    "source",
+    "db:offline"
+  ],
+  "findings": [
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-FK-INCONSISTENT",
+      "area": "relations",
+      "entity": "Pokemon foreign keys",
+      "classification": "INCORRECT",
+      "severity": "high",
+      "message": "Relations to Pokemon reference different target fields. Mixing Pokemon.id and Pokemon.pokedexNumber is an ID-contract hazard for writes and joins.",
+      "evidence": [
+        "references pokedexNumber: Evolution.fromPokemon, Evolution.toPokemon, TeamSlot.pokemon, PokemonMove.pokemon, PokemonVariety.pokemon, Encounter.pokemon",
+        "references id: UserPokemon.pokemon, DexEntry.pokemon"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Choose one stable target (prefer Pokemon.id surrogate key) and migrate all references with a verified mapping; keep pokedexNumber unique for public API identity."
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-MODEL-MISSING-NATURE",
+      "area": "models",
+      "entity": "Nature",
+      "classification": "MISSING",
+      "severity": "medium",
+      "message": "No Nature model. NatureDex is requested but no model exists.",
+      "evidence": [
+        "models present: Pokemon, Type, Ability, Evolution, User, UserPokemon, Team, TeamSlot, Move, PokemonMove, PokemonVariety, Encounter, DexEntry, Item, Walkthrough"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-MODEL-MISSING-GAMEVERSION",
+      "area": "models",
+      "entity": "GameVersion",
+      "classification": "MISSING",
+      "severity": "medium",
+      "message": "No GameVersion model. Game-specific rules and walkthroughs use free-text version slugs.",
+      "evidence": [
+        "models present: Pokemon, Type, Ability, Evolution, User, UserPokemon, Team, TeamSlot, Move, PokemonMove, PokemonVariety, Encounter, DexEntry, Item, Walkthrough"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-MODEL-MISSING-REGION",
+      "area": "models",
+      "entity": "Region",
+      "classification": "MISSING",
+      "severity": "low",
+      "message": "No Region model. Regional dex membership is stored as string arrays.",
+      "evidence": [
+        "models present: Pokemon, Type, Ability, Evolution, User, UserPokemon, Team, TeamSlot, Move, PokemonMove, PokemonVariety, Encounter, DexEntry, Item, Walkthrough"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-MODEL-MISSING-TYPEEFFECTIVENESS",
+      "area": "models",
+      "entity": "TypeEffectiveness",
+      "classification": "MISSING",
+      "severity": "low",
+      "message": "No TypeEffectiveness model. Type chart is code-only; no per-generation rules can be stored or audited in DB.",
+      "evidence": [
+        "models present: Pokemon, Type, Ability, Evolution, User, UserPokemon, Team, TeamSlot, Move, PokemonMove, PokemonVariety, Encounter, DexEntry, Item, Walkthrough"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-LEARNSET-NO-VERSION",
+      "area": "game-specific",
+      "entity": "PokemonMove",
+      "classification": "MISSING",
+      "severity": "high",
+      "message": "Learnsets have no version/version-group dimension; the same move cannot be distinguished between games where it is or is not learnable.",
+      "evidence": [
+        "PokemonMove fields: pokemonId, moveId, learnMethod, levelLearnedAt, pokemon, move"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "recommendation": "Add versionGroup (and ideally learnMethod detail) with a stable FK."
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-EVOLUTION-NO-CONDITION",
+      "area": "evolution",
+      "entity": "Evolution",
+      "classification": "MISSING",
+      "severity": "medium",
+      "message": "Evolution stores only from/to IDs; triggers, levels, held items, friendship, time and version-specific conditions cannot be represented.",
+      "evidence": [
+        "Evolution fields: id, fromPokemonId, toPokemonId, fromPokemon, toPokemon"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-VARIETY-NO-GIGANTAMAX",
+      "area": "forms",
+      "entity": "PokemonVariety",
+      "classification": "MISSING",
+      "severity": "medium",
+      "message": "Forms model has isMega/isAlternative but no Gigantamax flag or form-specific stats; form identity is incomplete.",
+      "evidence": [
+        "PokemonVariety fields: id, pokemonId, name, imageUrl, shinyImageUrl, isMega, isAlternative, types, pokemon"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-ENCOUNTER-STRING-FK",
+      "area": "encounters",
+      "entity": "Encounter",
+      "classification": "INCORRECT",
+      "severity": "medium",
+      "message": "Encounters reference locations and versions by free text instead of stable FKs.",
+      "evidence": [
+        "string fields: locationName, versionName"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-WALKTHROUGH-UNVALIDATED-VERSION",
+      "area": "walkthrough",
+      "entity": "Walkthrough.gameVersion",
+      "classification": "INCORRECT",
+      "severity": "low",
+      "message": "Walkthrough gameVersion is free text; unsupported or misspelled slugs cannot be rejected by DB constraints.",
+      "evidence": [
+        "gameVersion String (no FK / enum)"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ]
+    },
+    {
+      "phase": "INVENTORY",
+      "id": "SCHEMA-ITEM-ISOLATED",
+      "area": "items",
+      "entity": "Item",
+      "classification": "UNVERIFIED",
+      "severity": "low",
+      "message": "Item has no relations to Pokemon, moves, encounters or game versions; item usage/availability cannot be modeled.",
+      "evidence": [
+        "no @relation referencing Item"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": false
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-SEED-HARDCODED-COUNT",
+      "area": "master-data",
+      "entity": "seed.ts POKEMON_COUNT",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "Seed uses a hardcoded species count as its sync range. Counts are not stable identifiers and become stale when new species are added.",
+      "evidence": [
+        "POKEMON_COUNT = 1025"
+      ],
+      "sources": [
+        "pokedex-backend/scripts/seed.ts"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Derive IDs from PokéAPI pagination/next URLs or a maintained explicit ID list."
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-UPDATER-COUNT-CURSOR",
+      "area": "sync",
+      "entity": "updaterService.checkUpdates",
+      "classification": "INCORRECT",
+      "severity": "medium",
+      "message": "Update detection compares local row counts to API counts; gaps in IDs and renames cannot be detected and equal counts hide drift.",
+      "evidence": [
+        "Promise.all([prisma.pokemon.count(), prisma.item.count(), prisma.ability.count()])"
+      ],
+      "sources": [
+        "pokedex-backend/src/services/updater.service.ts"
+      ]
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-DAMAGE-GEN-RULES",
+      "area": "game-specific",
+      "entity": "damage calculator",
+      "classification": "UNSUPPORTED",
+      "severity": "high",
+      "message": "Damage calculation uses move.damageClass unconditionally and has no Gen I special-stat or pre-Gen IV physical/special-by-type rules.",
+      "evidence": [
+        "const isPhysical = move.damageClass === \"physical\"",
+        "no special-case branch for generation <= 3 in damageCalc.ts"
+      ],
+      "sources": [
+        "pokedex-frontend/src/utils/damageCalc.ts"
+      ],
+      "recommendation": "Add explicit per-generation battle rule adapters before claiming Gen I–IX support."
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-WALKTHROUGH-COVERAGE",
+      "area": "walkthrough",
+      "entity": "walkthroughs.json",
+      "classification": "MISSING",
+      "severity": "medium",
+      "message": "Curated walkthrough content does not cover every supported game version.",
+      "evidence": [
+        "missing versions: ultra-sun, ultra-moon, sword, shield, scarlet, violet"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/seeds/walkthroughs.json",
+        "pokedex-frontend/src/lib/gameVersions.ts"
+      ]
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-ADMIN-WALKTHROUGH-VERSIONS",
+      "area": "walkthrough",
+      "entity": "AdminWalkthrough GAME_OPTIONS",
+      "classification": "MISSING",
+      "severity": "medium",
+      "message": "CMS cannot create or edit walkthroughs for several supported games.",
+      "evidence": [
+        "missing from admin options: red, blue, yellow, gold, silver, crystal, ruby, sapphire, emerald, firered, leafgreen, diamond, pearl, platinum, heartgold, soulsilver, black, white, black-2, white-2, x, y, omega-ruby, alpha-sapphire, sun, moon, ultra-sun, ultra-moon, lets-go-pikachu, lets-go-eevee, sword, shield, brilliant-diamond, shining-pearl, legends-arceus, scarlet, violet, legends-za"
+      ],
+      "sources": [
+        "pokedex-frontend/src/pages/AdminWalkthrough.tsx",
+        "pokedex-frontend/src/lib/gameVersions.ts"
+      ]
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-NATUREDEX-STATIC",
+      "area": "natures",
+      "entity": "NatureDex",
+      "classification": "UNSUPPORTED",
+      "severity": "medium",
+      "message": "Nature data is hardcoded in the frontend and absent from Prisma/GraphQL; it cannot be audited, curated or versioned as data.",
+      "evidence": [
+        "hardcoded natures: 25"
+      ],
+      "sources": [
+        "pokedex-frontend/src/pages/NatureDex.tsx",
+        "pokedex-backend/prisma/schema.prisma",
+        "pokedex-backend/src/graphql/typeDefs.ts"
+      ]
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-SAVE-TEAM-UNUSED",
+      "area": "user data",
+      "entity": "saveTeam mutation",
+      "classification": "UNVERIFIED",
+      "severity": "low",
+      "message": "The server-side saveTeam mutation has no frontend caller; team builder state appears local-only, so DB team rows cannot be assumed complete.",
+      "evidence": [
+        "no saveTeam reference in TeamBuilder/teamStore/MyPokedexContext"
+      ],
+      "sources": [
+        "pokedex-backend/src/graphql/typeDefs.ts",
+        "pokedex-frontend/src/lib/teamStore.ts"
+      ],
+      "runtimeRequired": true
+    },
+    {
+      "phase": "MASTER",
+      "id": "SRC-SEED-REMOTE-IMAGE-URLS",
+      "area": "images",
+      "entity": "seed.ts imageUrl",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "Seed writes remote PokéAPI artwork URLs into DB image fields while local WebP assets are produced by the updater. Actual DB image URLs require runtime verification.",
+      "evidence": [
+        "imageUrl: data.sprites?.other?.[\"official-artwork\"]?.front_default || null"
+      ],
+      "sources": [
+        "pokedex-backend/scripts/seed.ts",
+        "pokedex-backend/src/services/image.service.ts"
+      ],
+      "runtimeRequired": true
+    },
+    {
+      "id": "DB-UNVERIFIED-RECORD-COUNTS",
+      "phase": "INVENTORY",
+      "area": "record counts",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; record counts cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    },
+    {
+      "id": "DB-UNVERIFIED-DUPLICATES",
+      "phase": "INVENTORY",
+      "area": "duplicates",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; duplicates cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    },
+    {
+      "id": "DB-UNVERIFIED-MISSING-FIELDS",
+      "phase": "INVENTORY",
+      "area": "missing fields",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; missing fields cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    },
+    {
+      "id": "DB-UNVERIFIED-ORPHAN-RELATIONS",
+      "phase": "INVENTORY",
+      "area": "orphan relations",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; orphan relations cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    },
+    {
+      "id": "DB-UNVERIFIED-ID-CONSISTENCY",
+      "phase": "INVENTORY",
+      "area": "ID consistency",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; ID consistency cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    },
+    {
+      "id": "DB-UNVERIFIED-GAME-VERSION-COVERAGE",
+      "phase": "INVENTORY",
+      "area": "game version coverage",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; game version coverage cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    },
+    {
+      "id": "DB-UNVERIFIED-WALKTHROUGH-COVERAGE",
+      "phase": "INVENTORY",
+      "area": "walkthrough coverage",
+      "entity": "database rows",
+      "classification": "UNVERIFIED",
+      "severity": "medium",
+      "message": "No read-only database connection was provided; walkthrough coverage cannot be confirmed from real rows. Code and schema are not evidence of database contents.",
+      "evidence": [
+        "AUDIT_DATABASE_URL not available in this run"
+      ],
+      "sources": [
+        "pokedex-backend/prisma/schema.prisma"
+      ],
+      "runtimeRequired": true,
+      "recommendation": "Re-run with --db and a read-only staging or restored backup connection string."
+    }
+  ],
+  "coverage": {
+    "checked": 9,
+    "unchecked": 53,
+    "unverified": 11,
+    "detail": {
+      "findingsTotal": 26,
+      "supportedGames": 38,
+      "gamesCheckedAgainstApi": 0,
+      "regionalDexesChecked": 0,
+      "speciesSampled": 0,
+      "speciesCatalogTotal": 0,
+      "pokemonFormCatalogTotal": 0,
+      "varietyRecordsChecked": 0,
+      "varietyFormsChecked": 0,
+      "evolutionChainsAudited": 0,
+      "resumedSpecies": 0,
+      "failedSpecies": 0,
+      "moveCatalogTotal": 0,
+      "abilityCatalogTotal": 0,
+      "itemCatalogTotal": 0,
+      "locationCatalogTotal": 0,
+      "natureCatalogTotal": 0,
+      "typeCatalogTotal": 0,
+      "encounterSpeciesSampled": 0,
+      "learnsetSpeciesSampled": 0,
+      "masterRecordsCompared": 0,
+      "availabilityGamesSampled": 0,
+      "dbTablesChecked": 0,
+      "assetFilesChecked": 3765,
+      "walkthroughRecordsParsed": 795,
+      "walkthroughGamesCovered": 32
+    },
+    "byClassification": {
+      "INCORRECT": 4,
+      "MISSING": 9,
+      "UNVERIFIED": 11,
+      "UNSUPPORTED": 2
+    }
+  },
+  "schema": {
+    "models": [
+      "Pokemon",
+      "Type",
+      "Ability",
+      "Evolution",
+      "User",
+      "UserPokemon",
+      "Team",
+      "TeamSlot",
+      "Move",
+      "PokemonMove",
+      "PokemonVariety",
+      "Encounter",
+      "DexEntry",
+      "Item",
+      "Walkthrough"
+    ],
+    "relations": [
+      {
+        "model": "Pokemon",
+        "field": "evolvesTo",
+        "target": "Evolution",
+        "references": [],
+        "line": 49
+      },
+      {
+        "model": "Pokemon",
+        "field": "evolvesFrom",
+        "target": "Evolution",
+        "references": [],
+        "line": 50
+      },
+      {
+        "model": "Evolution",
+        "field": "fromPokemon",
+        "target": "Pokemon",
+        "references": [
+          "pokedexNumber"
+        ],
+        "line": 83
+      },
+      {
+        "model": "Evolution",
+        "field": "toPokemon",
+        "target": "Pokemon",
+        "references": [
+          "pokedexNumber"
+        ],
+        "line": 84
+      },
+      {
+        "model": "UserPokemon",
+        "field": "user",
+        "target": "User",
+        "references": [
+          "id"
+        ],
+        "line": 112
+      },
+      {
+        "model": "UserPokemon",
+        "field": "pokemon",
+        "target": "Pokemon",
+        "references": [
+          "id"
+        ],
+        "line": 113
+      },
+      {
+        "model": "Team",
+        "field": "user",
+        "target": "User",
+        "references": [
+          "id"
+        ],
+        "line": 121
+      },
+      {
+        "model": "TeamSlot",
+        "field": "team",
+        "target": "Team",
+        "references": [
+          "id"
+        ],
+        "line": 130
+      },
+      {
+        "model": "TeamSlot",
+        "field": "pokemon",
+        "target": "Pokemon",
+        "references": [
+          "pokedexNumber"
+        ],
+        "line": 131
+      },
+      {
+        "model": "PokemonMove",
+        "field": "pokemon",
+        "target": "Pokemon",
+        "references": [
+          "pokedexNumber"
+        ],
+        "line": 161
+      },
+      {
+        "model": "PokemonMove",
+        "field": "move",
+        "target": "Move",
+        "references": [
+          "id"
+        ],
+        "line": 162
+      },
+      {
+        "model": "PokemonVariety",
+        "field": "pokemon",
+        "target": "Pokemon",
+        "references": [
+          "pokedexNumber"
+        ],
+        "line": 177
+      },
+      {
+        "model": "Encounter",
+        "field": "pokemon",
+        "target": "Pokemon",
+        "references": [
+          "pokedexNumber"
+        ],
+        "line": 190
+      },
+      {
+        "model": "DexEntry",
+        "field": "pokemon",
+        "target": "Pokemon",
+        "references": [
+          "id"
+        ],
+        "line": 201
+      }
+    ]
+  },
+  "source": {
+    "supportedVersions": [
+      "red",
+      "blue",
+      "yellow",
+      "gold",
+      "silver",
+      "crystal",
+      "ruby",
+      "sapphire",
+      "emerald",
+      "firered",
+      "leafgreen",
+      "diamond",
+      "pearl",
+      "platinum",
+      "heartgold",
+      "soulsilver",
+      "black",
+      "white",
+      "black-2",
+      "white-2",
+      "x",
+      "y",
+      "omega-ruby",
+      "alpha-sapphire",
+      "sun",
+      "moon",
+      "ultra-sun",
+      "ultra-moon",
+      "lets-go-pikachu",
+      "lets-go-eevee",
+      "sword",
+      "shield",
+      "brilliant-diamond",
+      "shining-pearl",
+      "legends-arceus",
+      "scarlet",
+      "violet",
+      "legends-za"
+    ],
+    "regionalDexByVersion": {
+      "red": "kanto",
+      "blue": "kanto",
+      "yellow": "kanto",
+      "gold": "original-johto",
+      "silver": "original-johto",
+      "crystal": "original-johto",
+      "ruby": "hoenn",
+      "sapphire": "hoenn",
+      "emerald": "hoenn",
+      "firered": "kanto",
+      "leafgreen": "kanto",
+      "diamond": "original-sinnoh",
+      "pearl": "original-sinnoh",
+      "platinum": "extended-sinnoh",
+      "heartgold": "updated-johto",
+      "soulsilver": "updated-johto",
+      "black": "original-unova",
+      "white": "original-unova",
+      "black-2": "updated-unova",
+      "white-2": "updated-unova",
+      "x": "kalos-central",
+      "y": "kalos-central",
+      "omega-ruby": "hoenn",
+      "alpha-sapphire": "hoenn",
+      "sun": "original-alola",
+      "moon": "original-alola",
+      "ultra-sun": "updated-alola",
+      "ultra-moon": "updated-alola",
+      "lets-go-pikachu": "letsgo-kanto",
+      "lets-go-eevee": "letsgo-kanto",
+      "sword": "galar",
+      "shield": "galar",
+      "brilliant-diamond": "original-sinnoh",
+      "shining-pearl": "original-sinnoh",
+      "legends-arceus": "hisui",
+      "scarlet": "paldea",
+      "violet": "paldea",
+      "legends-za": "kalos-central"
+    },
+    "walkthrough": {
+      "records": 795,
+      "versions": [
+        "alpha-sapphire",
+        "black",
+        "black-2",
+        "blue",
+        "brilliant-diamond",
+        "crystal",
+        "diamond",
+        "emerald",
+        "firered",
+        "gold",
+        "heartgold",
+        "leafgreen",
+        "legends-arceus",
+        "legends-za",
+        "lets-go-eevee",
+        "lets-go-pikachu",
+        "moon",
+        "omega-ruby",
+        "pearl",
+        "platinum",
+        "red",
+        "ruby",
+        "sapphire",
+        "shining-pearl",
+        "silver",
+        "soulsilver",
+        "sun",
+        "white",
+        "white-2",
+        "x",
+        "y",
+        "yellow"
+      ],
+      "languages": [
+        "en",
+        "vi"
+      ],
+      "duplicates": 763
+    },
+    "images": {
+      "total": 3765,
+      "zeroByte": 0,
+      "byDir": {
+        "items": 1085,
+        "pokemon": 2680
+      }
+    },
+    "sourcePaths": [
+      "pokedex-frontend/src/lib/gameVersions.ts",
+      "pokedex-backend/prisma/seeds/walkthroughs.json",
+      "pokedex-backend/scripts/seed.ts",
+      "pokedex-backend/src/services/updater.service.ts",
+      "pokedex-backend/src/lib/typeMatchups.ts",
+      "pokedex-frontend/src/utils/damageCalc.ts",
+      "pokedex-frontend/src/pages/AdminWalkthrough.tsx",
+      "pokedex-frontend/src/pages/NatureDex.tsx"
+    ]
+  },
+  "db": {
+    "connected": false,
+    "readOnlyEnforced": false,
+    "statementTimeoutMs": 30000,
+    "tableCounts": {},
+    "checks": {},
+    "notes": []
+  }
+}
