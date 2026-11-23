@@ -169,3 +169,43 @@ test('damage calculation honors the supplied type-chart generation', () => {
   assert.equal(gen1.maxDamage, 0);
   assert.equal(gen1.koChanceText, 'No damage dealt');
 });
+
+test('Gen I-III physical/special split uses move type, not modern damageClass', () => {
+  const flamethrower: CalculatorMove = {
+    name: 'Flamethrower',
+    type: 'fire',
+    power: 80,
+    // PokeAPI reports the modern category even for legacy battles.
+    damageClass: 'physical',
+  };
+  const attacker = makePokemon({
+    name: 'legacy-attacker',
+    baseStats: { hp: 50, attack: 140, 'special-attack': 20, defense: 50, 'special-defense': 50, speed: 50 },
+    generation: 3,
+  });
+  const defender = makePokemon({
+    name: 'legacy-defender',
+    baseStats: { hp: 100, attack: 50, 'special-attack': 50, defense: 200, 'special-defense': 20, speed: 50 },
+    generation: 3,
+  });
+
+  const legacy = calculateDamage(attacker, defender, flamethrower, neutralField);
+  const modern = calculateDamage(
+    { ...attacker, generation: 4 },
+    { ...defender, generation: 4 },
+    flamethrower,
+    neutralField,
+  );
+
+  assert.ok(legacy.maxDamage > modern.maxDamage);
+  assert.equal(modern.maxDamage > 0, true);
+
+  // Callers that do not supply a generation still use modern rules.
+  const legacyCaller = calculateDamage(
+    { ...attacker, generation: undefined },
+    { ...defender, generation: undefined },
+    flamethrower,
+    neutralField,
+  );
+  assert.equal(legacyCaller.maxDamage, modern.maxDamage);
+});

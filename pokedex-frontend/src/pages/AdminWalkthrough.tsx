@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -9,7 +9,7 @@ import { TableCell } from '@tiptap/extension-table-cell';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { Pencil, Trash2, Save, Plus, List, Loader, CheckCircle, AlertCircle } from 'lucide-react';
 import EditorToolbar from '../components/EditorToolbar';
-import { VERSION_COLORS } from '../lib/gameVersions';
+import { GAME_VERSION_OPTIONS, VERSION_COLORS } from '../lib/gameVersions';
 import styles from '../styles/pages/AdminWalkthrough.module.scss';
 
 const GET_WALKTHROUGHS = gql`
@@ -28,19 +28,6 @@ const UPSERT_WALKTHROUGH = gql`
 `;
 const DELETE_WALKTHROUGH = gql`mutation DeleteWalkthrough($id: Int!) { deleteWalkthrough(id: $id) }`;
 
-const GAME_OPTIONS = [
-  {value:'red',label:'Red'},{value:'blue',label:'Blue'},{value:'yellow',label:'Yellow'},
-  {value:'gold',label:'Gold'},{value:'silver',label:'Silver'},{value:'crystal',label:'Crystal'},
-  {value:'ruby',label:'Ruby'},{value:'sapphire',label:'Sapphire'},{value:'emerald',label:'Emerald'},
-  {value:'firered',label:'FireRed'},{value:'leafgreen',label:'LeafGreen'},
-  {value:'diamond',label:'Diamond'},{value:'pearl',label:'Pearl'},{value:'platinum',label:'Platinum'},
-  {value:'heartgold',label:'HeartGold'},{value:'soulsilver',label:'SoulSilver'},
-  {value:'black',label:'Black'},{value:'white',label:'White'},{value:'black-2',label:'Black 2'},{value:'white-2',label:'White 2'},
-  {value:'x',label:'X'},{value:'y',label:'Y'},{value:'omega-ruby',label:'Omega Ruby'},{value:'alpha-sapphire',label:'Alpha Sapphire'},
-  {value:'sun',label:'Sun'},{value:'moon',label:'Moon'},{value:'ultra-sun',label:'Ultra Sun'},{value:'ultra-moon',label:'Ultra Moon'},
-  {value:'sword',label:'Sword'},{value:'shield',label:'Shield'},
-  {value:'scarlet',label:'Scarlet'},{value:'violet',label:'Violet'},
-];
 
 export default function AdminWalkthrough() {
   const [gameVersion, setGameVersion] = useState('emerald');
@@ -51,6 +38,14 @@ export default function AdminWalkthrough() {
   const [order, setOrder] = useState<number>(1);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [toast, setToast] = useState<{msg:string;type:'success'|'error'}|null>(null);
+
+  const gameOptions = useMemo(() => {
+    const options = [...GAME_VERSION_OPTIONS];
+    if (gameVersion && !options.some((option) => option.value === gameVersion)) {
+      options.unshift({ value: gameVersion, label: `${gameVersion} (legacy)` });
+    }
+    return options;
+  }, [gameVersion]);
 
   const showToast = (msg: string, type: 'success'|'error') => {
     setToast({msg,type});
@@ -147,7 +142,7 @@ export default function AdminWalkthrough() {
             <div className={styles.formGroup}>
               <label className={styles.label}>Game Version</label>
               <select value={gameVersion} onChange={e => { setGameVersion(e.target.value); handleResetForm(); }} className={styles.selectField}>
-                {GAME_OPTIONS.map(g => (
+                {gameOptions.map(g => (
                   <option key={g.value} value={g.value}>{g.label}</option>
                 ))}
               </select>
