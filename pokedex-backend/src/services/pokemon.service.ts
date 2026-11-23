@@ -1,5 +1,6 @@
 import { prisma } from '../db/prisma.js';
 import { defensiveMatchups } from '../lib/typeMatchups.js';
+import { fetchWithTimeout } from '../lib/pokeApi.js';
 import { BoundedCache } from '../lib/boundedCache.js';
 import { MAX_POKEMON_PAGE_SIZE, clampLimit, clampOffset } from '../lib/pagination.js';
 
@@ -12,13 +13,13 @@ async function getFullEvolutionChain(pokemonId: number) {
   }
 
   try {
-    const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    const speciesRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
     if (!speciesRes.ok) return null;
     const speciesData = await speciesRes.json();
     const chainUrl = speciesData.evolution_chain?.url;
     if (!chainUrl) return null;
 
-    const chainRes = await fetch(chainUrl);
+    const chainRes = await fetchWithTimeout(chainUrl);
     if (!chainRes.ok) return null;
     const chainData = await chainRes.json();
 
@@ -57,7 +58,7 @@ async function getFullEvolutionChain(pokemonId: number) {
         });
       } else {
         try {
-          const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${item.name.toLowerCase()}`);
+          const pokeRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${item.name.toLowerCase()}`);
           if (pokeRes.ok) {
             const pokeData = await pokeRes.json();
             result.push({
@@ -93,7 +94,7 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
   }
 
   try {
-    const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    const speciesRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
     if (!speciesRes.ok) return [];
     const speciesData = await speciesRes.json();
     const varieties = speciesData.varieties || [];
@@ -102,7 +103,7 @@ async function getAlternativeForms(pokemonId: number): Promise<any[]> {
     const forms = [];
     for (const v of nonDefault) {
       try {
-        const detailRes = await fetch(v.pokemon.url);
+        const detailRes = await fetchWithTimeout(v.pokemon.url);
         if (!detailRes.ok) continue;
         const d = await detailRes.json();
 
@@ -308,7 +309,7 @@ export const pokemonService = {
 
     if (!p) {
       try {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${id}`);
         if (!res.ok) return null;
         const d = await res.json();
 
@@ -324,7 +325,7 @@ export const pokemonService = {
         let alternativeForms: any[] = [];
 
         try {
-          const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
+          const speciesRes = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon-species/${speciesId}`);
           if (speciesRes.ok) {
             const speciesData = await speciesRes.json();
             const genusObj = speciesData.genera?.find((g: any) => g.language?.name === "en");
@@ -346,7 +347,7 @@ export const pokemonService = {
 
             for (const v of nonDefault) {
               try {
-                const detailRes = await fetch(v.pokemon.url);
+                const detailRes = await fetchWithTimeout(v.pokemon.url);
                 if (!detailRes.ok) continue;
                 const dVar = await detailRes.json();
 

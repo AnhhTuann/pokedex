@@ -12,6 +12,7 @@ import {
   type GraphQLContext,
 } from '../lib/security.js';
 import { createRateLimiter } from '../lib/rateLimit.js';
+import { fetchWithTimeout } from '../lib/pokeApi.js';
 
 const loginLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });
 const registerLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 10 });
@@ -239,7 +240,7 @@ export const resolvers = {
       
       if (encounters.length === 0) {
         try {
-          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pId}/encounters`);
+          const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${pId}/encounters`);
           if (res.ok) {
             const data = await res.json();
             const fetchedList = [];

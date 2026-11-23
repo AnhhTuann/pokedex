@@ -32,3 +32,19 @@ test('rate limiter blocks attempts beyond the configured maximum', () => {
   limiter('5.6.7.8');
   assert.throws(() => limiter('1.2.3.4'), /Too many requests/);
 });
+
+test('fetchWithTimeout always supplies an abort signal', async () => {
+  const { fetchWithTimeout } = await import('../src/lib/pokeApi.js');
+  const originalFetch = globalThis.fetch;
+  let signal: AbortSignal | undefined;
+  globalThis.fetch = (async (_url: string | URL | Request, init?: RequestInit) => {
+    signal = init?.signal as AbortSignal | undefined;
+    return new Response('{}', { status: 200 });
+  }) as typeof fetch;
+  try {
+    await fetchWithTimeout('https://pokeapi.co/api/v2/pokemon/25');
+    assert.ok(signal instanceof AbortSignal);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
