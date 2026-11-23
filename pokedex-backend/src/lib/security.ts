@@ -9,6 +9,7 @@ export interface AuthenticatedUser {
 
 export interface GraphQLContext {
   user?: AuthenticatedUser | null;
+  ip?: string;
 }
 
 /** Requires an explicitly configured signing secret; no predictable fallback. */

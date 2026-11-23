@@ -11,6 +11,10 @@ import {
   requireUser,
   type GraphQLContext,
 } from '../lib/security.js';
+import { createRateLimiter } from '../lib/rateLimit.js';
+
+const loginLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });
+const registerLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 10 });
 
 export const resolvers = {
   Query: {
@@ -92,9 +96,15 @@ export const resolvers = {
   },
 
   Mutation: {
-    register: async (_: any, args: any) => authService.register(args),
-    
-    login: async (_: any, args: any) => authService.login(args),
+    register: async (_: any, args: any, context: GraphQLContext) => {
+      registerLimiter(context.ip ?? 'unknown');
+      return authService.register(args);
+    },
+
+    login: async (_: any, args: any, context: GraphQLContext) => {
+      loginLimiter(context.ip ?? 'unknown');
+      return authService.login(args);
+    },
 
     toggleFavorite: async (_: any, { pokemonId }: { pokemonId: number }, context: GraphQLContext) => {
       const userId = requireUser(context);

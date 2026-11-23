@@ -1,11 +1,14 @@
 import { prisma } from '../db/prisma.js';
 import { defensiveMatchups } from '../lib/typeMatchups.js';
+import { BoundedCache } from '../lib/boundedCache.js';
+import { MAX_POKEMON_PAGE_SIZE, clampLimit, clampOffset } from '../lib/pagination.js';
 
-const evolutionChainCache = new Map<number, any>();
+const evolutionChainCache = new BoundedCache<number, any>(500);
 
 async function getFullEvolutionChain(pokemonId: number) {
-  if (evolutionChainCache.has(pokemonId)) {
-    return evolutionChainCache.get(pokemonId);
+  const cached = evolutionChainCache.get(pokemonId);
+  if (cached !== undefined) {
+    return cached;
   }
 
   try {
@@ -81,11 +84,12 @@ async function getFullEvolutionChain(pokemonId: number) {
   }
 }
 
-const alternativeFormsCache = new Map<number, any[]>();
+const alternativeFormsCache = new BoundedCache<number, any[]>(500);
 
 async function getAlternativeForms(pokemonId: number): Promise<any[]> {
-  if (alternativeFormsCache.has(pokemonId)) {
-    return alternativeFormsCache.get(pokemonId) || [];
+  const cached = alternativeFormsCache.get(pokemonId);
+  if (cached !== undefined) {
+    return cached;
   }
 
   try {
@@ -274,7 +278,8 @@ export const pokemonService = {
       results.map(r => r.regionalNumber !== null && r.regionalNumber !== undefined ? `R-${r.regionalNumber}` : `N-${r.speciesId}`)
     );
     const totalCount = uniqueKeys.size;
-    const paginatedResults = results.slice(offset, offset + limit);
+    const start = clampOffset(offset);
+    const paginatedResults = results.slice(start, start + clampLimit(limit, 20, MAX_POKEMON_PAGE_SIZE));
 
     return {
       results: paginatedResults,

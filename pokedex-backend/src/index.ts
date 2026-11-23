@@ -23,6 +23,7 @@ async function startServer() {
   assertServerConfig();
 
   const app = express();
+  app.disable('x-powered-by');
   const PORT = Number(process.env.PORT) || 3000;
 
   const apolloServer = new ApolloServer({
@@ -77,7 +78,7 @@ async function startServer() {
     context: async ({ req }) => {
       const token = readBearerToken(req.headers.authorization);
       const user = token ? verifyAccessToken(token, getJwtSecret()) : null;
-      return { user };
+      return { user, ip: req.ip };
     },
   }));
 
