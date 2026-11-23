@@ -429,15 +429,20 @@ async function main() {
           "lets-go-eevee",
         ],
         "original-johto": ["gold", "silver", "crystal"],
+        // Keep legacy ORAS alias for existing DB rows and add the PokeAPI dex.
         hoenn: ["ruby", "sapphire", "emerald", "omega-ruby", "alpha-sapphire"],
+        "updated-hoenn": ["omega-ruby", "alpha-sapphire"],
         "original-sinnoh": ["diamond", "pearl"],
         "extended-sinnoh": ["platinum"],
         "updated-johto": ["heartgold", "soulsilver"],
         "original-unova": ["black", "white"],
         "updated-unova": ["black-2", "white-2"],
-        "kalos-central": ["x", "y", "legends-za"],
-        "kalos-coastal": ["x", "y", "legends-za"],
-        "kalos-mountain": ["x", "y", "legends-za"],
+        "kalos-central": ["x", "y"],
+        "kalos-coastal": ["x", "y"],
+        "kalos-mountain": ["x", "y"],
+        "lumiose-city": ["legends-za"],
+        "hyperspace": ["legends-za"],
+        "legends-za": ["legends-za"],
         "original-alola": ["sun", "moon"],
         "updated-alola": ["ultra-sun", "ultra-moon"],
         galar: ["sword", "shield"],
@@ -959,7 +964,7 @@ async function main() {
         name: m.name,
         category: m.category,
         description: m.description,
-        regionalDexes: ["kalos-central"],
+        regionalDexes: ["legends-za"],
         altFormAvailableIn: ["legends-za"],
         imageUrl: m.sprite,
         shinyImageUrl: m.shinySprite,
@@ -984,7 +989,7 @@ async function main() {
         name: m.name,
         category: m.category,
         description: m.description,
-        regionalDexes: ["kalos-central"],
+        regionalDexes: ["legends-za"],
         altFormAvailableIn: ["legends-za"],
         imageUrl: m.sprite,
         shinyImageUrl: m.shinySprite,
@@ -1027,8 +1032,9 @@ async function main() {
     });
   }
 
-  // Step 5: Seed custom DexEntry mappings for Legends: Z-A (kalos-central)
-  console.log("Seeding custom Kalos Central Dex entries for Legends: Z-A...");
+  // Step 5: Seed custom DexEntry mappings for Legends: Z-A under its own slug.
+  // Do not upsert into kalos-central: its entry numbers belong to X/Y.
+  console.log("Seeding custom Legends: Z-A Dex entries...");
   const zaRegionalIndexes: Record<number, number> = {
     152: 1, // Chikorita
     153: 2, // Bayleef
@@ -1063,12 +1069,12 @@ async function main() {
     });
 
     if (dbPoke) {
-      // Add 'legends-za' to gameVersions and 'kalos-central' to regionalDexes if not already present
+      // Add the Z-A markers without disturbing X/Y Kalos entries.
       const updatedGameVersions = Array.from(
         new Set([...dbPoke.gameVersions, "legends-za"]),
       );
       const updatedRegionalDexes = Array.from(
-        new Set([...dbPoke.regionalDexes, "kalos-central"]),
+        new Set([...dbPoke.regionalDexes, "legends-za"]),
       );
 
       await prisma.pokemon.update({
@@ -1084,7 +1090,7 @@ async function main() {
         where: {
           pokemonId_regionName: {
             pokemonId: dbPoke.id,
-            regionName: "kalos-central",
+            regionName: "legends-za",
           },
         },
         update: {
@@ -1092,7 +1098,7 @@ async function main() {
         },
         create: {
           pokemonId: dbPoke.id,
-          regionName: "kalos-central",
+          regionName: "legends-za",
           entryNumber: entryNumber,
         },
       });

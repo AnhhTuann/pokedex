@@ -89,7 +89,7 @@ export const typeDefs = `#graphql
     flavorTexts: [FlavorText!]
     gameVersions: [String!]
     evolutions: [PokemonListItem!]
-    matchups: [TypeMatchup!]
+    matchups(generation: Int): [TypeMatchup!]
     cry: String
     moves: [Move!]
     megaEvolutions: [PokemonVariety!]
