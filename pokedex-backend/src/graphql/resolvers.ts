@@ -85,7 +85,10 @@ export const resolvers = {
       });
     },
 
-    checkUpdates: async () => updaterService.checkUpdates()
+    checkUpdates: async (_: any, __: any, context: GraphQLContext) => {
+      await requireAdmin(context);
+      return updaterService.checkUpdates();
+    }
   },
 
   Mutation: {

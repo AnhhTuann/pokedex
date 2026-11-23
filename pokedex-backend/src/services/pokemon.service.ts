@@ -1,4 +1,5 @@
 import { prisma } from '../db/prisma.js';
+import { defensiveMatchups } from '../lib/typeMatchups.js';
 
 const evolutionChainCache = new Map<number, any>();
 
@@ -391,11 +392,7 @@ export const pokemonService = {
 
         const evolutions = (await getFullEvolutionChain(id)) || [];
 
-        const matchups = [
-          { type: "fire", multiplier: 2.0 },
-          { type: "water", multiplier: 0.5 },
-          { type: "grass", multiplier: 0.5 }
-        ];
+        const matchups = defensiveMatchups(d.types.map((t: any) => t.type.name));
 
         let parts = d.name.split('-');
         let baseName = parts[0];
@@ -448,11 +445,7 @@ export const pokemonService = {
 
     const evolutions = (await getFullEvolutionChain(p.pokedexNumber)) || [];
 
-    const matchups = [
-      { type: "fire", multiplier: 2.0 },
-      { type: "water", multiplier: 0.5 },
-      { type: "grass", multiplier: 0.5 }
-    ];
+    const matchups = defensiveMatchups(p.types.map((t: any) => t.name));
 
     const megaEvolutions = (p.varieties || []).filter((v: any) => v.isMega).map((v: any) => ({
       id: v.id,
