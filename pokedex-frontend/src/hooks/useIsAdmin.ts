@@ -12,22 +12,24 @@ export const ME_QUERY = gql`
   }
 `;
 
-/**
- * Privilege is always decided by the backend. The stored flag is only a
- * fallback while the fresh `me` query is in flight.
- */
-export function useIsAdmin() {
-  const token = useAuthStore((state) => state.token);
-  const storedIsAdmin = useAuthStore((state) => state.user?.isAdmin ?? false);
-
-  const { data, loading, error } = useQuery(ME_QUERY, {
+/** Route access requires a fresh server decision for the active token. */
+export function useVerifiedSession() {
+  const token = useAuthStore(state => state.token);
+  const { data, loading, error } = useQuery<{ me: import('../lib/authStore').User | null }>(ME_QUERY, {
     skip: !token,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'no-cache',
+    context: { token },
   });
 
   return {
-    isAdmin: data?.me?.isAdmin ?? storedIsAdmin,
+    user: token && !loading && !error ? data?.me ?? null : null,
     loading: Boolean(token) && loading,
     error,
+    expired: Boolean(token) && !loading && !error && data?.me === null,
   };
+}
+
+export function useIsAdmin() {
+  const { user, loading, error } = useVerifiedSession();
+  return { isAdmin: user?.isAdmin === true, loading, error };
 }

@@ -110,7 +110,7 @@
   border: 1px solid var(--border-main);
   border-radius: var(--radius-xl);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-  z-index: var(--z-dropdown);
+  z-index: 20;
   overflow: hidden;
 
   .dropdownItem {

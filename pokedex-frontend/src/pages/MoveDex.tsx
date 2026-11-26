@@ -90,7 +90,8 @@ export default function MoveDex() {
 
   // Pagination limit
   const limit = 30;
-  const [offset, setOffset] = useState(0);
+  const pendingPages = useRef(new Set<string>());
+  const [failedScopes, setFailedScopes] = useState(() => new Set<string>());
 
   // Parse filters for GQL Variables
   const queryGen = genFilter === 'ALL' ? null : Number(genFilter);
@@ -108,9 +109,6 @@ export default function MoveDex() {
       limit,
       offset: 0,
       search: debouncedSearch
-    },
-    onCompleted: () => {
-      setOffset(0);
     }
   });
 
@@ -119,21 +117,35 @@ export default function MoveDex() {
   const hasMore = movesList.length > 0 && movesList.length < totalCount;
 
   // Infinite Scroll or Manual Trigger
-  const loadMore = () => {
-    const nextOffset = movesList.length;
-    setOffset(nextOffset);
-    fetchMore({
-      variables: { offset: nextOffset },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return {
-          getAllMoves: {
-            ...prev.getAllMoves,
-            results: [...prev.getAllMoves.results, ...fetchMoreResult.getAllMoves.results]
-          }
-        };
-      }
+  const scope = JSON.stringify([queryGen, queryType, queryCat, debouncedSearch]);
+  const pageFailed = failedScopes.has(scope);
+  const loadMore = async () => {
+    if (!hasMore || loading || pendingPages.current.has(scope)) return;
+    pendingPages.current.add(scope);
+    if (pageFailed) setFailedScopes(current => {
+      const next = new Set(current);
+      next.delete(scope);
+      return next;
     });
+    const nextOffset = movesList.length;
+    try {
+      await fetchMore({
+        variables: { offset: nextOffset },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult || prev.getAllMoves.results.length !== nextOffset) return prev;
+          return {
+            getAllMoves: {
+              ...fetchMoreResult.getAllMoves,
+              results: [...prev.getAllMoves.results, ...fetchMoreResult.getAllMoves.results],
+            },
+          };
+        },
+      });
+    } catch {
+      setFailedScopes(current => new Set(current).add(scope));
+    } finally {
+      pendingPages.current.delete(scope);
+    }
   };
 
   // Scroll listener to automatically load more moves when near bottom
@@ -143,7 +155,7 @@ export default function MoveDex() {
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 300
       ) {
-        if (hasMore && !loading) {
+        if (hasMore && !loading && !pageFailed) {
           loadMore();
         }
       }
@@ -151,7 +163,7 @@ export default function MoveDex() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore, loading, movesList.length]);
+  }, [hasMore, loading, movesList.length, scope, pageFailed]);
 
   const handleOpenDetail = (move: Move) => {
     setSelectedMove(move);
@@ -489,7 +501,7 @@ export default function MoveDex() {
             <AnimatePresence mode="popLayout">
               {movesList.map((move: Move, index: number) => {
                 const moveTypeColor = TYPE_COLORS[move.type.toLowerCase()] || '#9ca3af';
-                const moveCatColor = DAMAGE_CLASS_COLORS[move.damageClass.toLowerCase()] || '#6b7280';
+                const moveCatColor = DAMAGE_CLASS_COLORS[(move.damageClass ?? '').toLowerCase()] || '#6b7280';
 
                 return (
                   <motion.div
@@ -517,19 +529,19 @@ export default function MoveDex() {
                         <div className={styles.statItem}>
                           <span className={styles.statLabel}>PWR</span>
                           <span className={`${styles.statValue} ${move.power ? styles.active : ''}`}>
-                            {move.power || '-'}
+                            {move.power ?? 'Unknown'}
                           </span>
                         </div>
                         <div className={styles.statItem}>
                           <span className={styles.statLabel}>ACC</span>
                           <span className={`${styles.statValue} ${move.accuracy ? styles.active : ''}`}>
-                            {move.accuracy ? `${move.accuracy}%` : '-'}
+                            {move.accuracy == null ? 'Unknown' : `${move.accuracy}%`}
                           </span>
                         </div>
                         <div className={styles.statItem}>
                           <span className={styles.statLabel}>PP</span>
                           <span className={`${styles.statValue} ${move.pp ? styles.active : ''}`}>
-                            {move.pp || '-'}
+                            {move.pp ?? 'Unknown'}
                           </span>
                         </div>
                       </div>
@@ -547,7 +559,7 @@ export default function MoveDex() {
                         className={styles.badge}
                         style={{ backgroundColor: moveCatColor }}
                       >
-                        {move.damageClass.charAt(0).toUpperCase() + move.damageClass.slice(1)}
+                        {move.damageClass ? capitalizeSlug(move.damageClass) : 'Unknown'}
                       </span>
                     </div>
                   </motion.div>
@@ -567,6 +579,7 @@ export default function MoveDex() {
           {/* Load More Button */}
           {hasMore && (
             <div className={styles.loadMoreContainer}>
+              {pageFailed && <span role="status">Unable to load more moves. Try again.</span>}
               <button className={styles.loadMoreBtn} onClick={loadMore}>
                 Load More Moves
               </button>
@@ -624,11 +637,11 @@ export default function MoveDex() {
                   <span
                     className={styles.drawerBadge}
                     style={{
-                      backgroundColor: DAMAGE_CLASS_COLORS[selectedMove.damageClass.toLowerCase()] || '#6b7280',
+                      backgroundColor: DAMAGE_CLASS_COLORS[(selectedMove.damageClass ?? '').toLowerCase()] || '#6b7280',
                       boxShadow: `0 4px 12px rgba(0,0,0,0.15)`
                     }}
                   >
-                    {selectedMove.damageClass.charAt(0).toUpperCase() + selectedMove.damageClass.slice(1)}
+                    {selectedMove.damageClass ? capitalizeSlug(selectedMove.damageClass) : 'Unknown'}
                   </span>
                 </div>
 
@@ -636,21 +649,21 @@ export default function MoveDex() {
                 <div className={styles.statsGrid}>
                   <div className={styles.statCol}>
                     <span className={`${styles.statNum} ${!selectedMove.power ? styles.disabled : ''}`}>
-                      {selectedMove.power || '-'}
+                      {selectedMove.power ?? 'Unknown'}
                     </span>
                     <span className={styles.statName}>Power</span>
                   </div>
                   <div className={styles.statDivider} />
                   <div className={styles.statCol}>
                     <span className={`${styles.statNum} ${!selectedMove.accuracy ? styles.disabled : ''}`}>
-                      {selectedMove.accuracy ? `${selectedMove.accuracy}%` : '-'}
+                      {selectedMove.accuracy == null ? 'Unknown' : `${selectedMove.accuracy}%`}
                     </span>
                     <span className={styles.statName}>Accuracy</span>
                   </div>
                   <div className={styles.statDivider} />
                   <div className={styles.statCol}>
                     <span className={`${styles.statNum} ${!selectedMove.pp ? styles.disabled : ''}`}>
-                      {selectedMove.pp || '-'}
+                      {selectedMove.pp ?? 'Unknown'}
                     </span>
                     <span className={styles.statName}>PP</span>
                   </div>

@@ -1,0 +1,2 @@
+> pokedex-backend@1.0.0 build
+> tsc

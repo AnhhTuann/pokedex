@@ -1,0 +1,183 @@
+> pokedex-backend@1.0.0 test
+> node --import tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: sanitizeDownloadFilename strips directories and dangerous characters
+ok 1 - sanitizeDownloadFilename strips directories and dangerous characters
+  ---
+  duration_ms: 3.755141
+  ...
+# Subtest: validateMimeType blocks active and unknown content types
+ok 2 - validateMimeType blocks active and unknown content types
+  ---
+  duration_ms: 0.50726
+  ...
+# Subtest: decodeDownloadContent enforces a size limit
+ok 3 - decodeDownloadContent enforces a size limit
+  ---
+  duration_ms: 6.187883
+  ...
+# Subtest: download tokens are single-use, expiring and bounded
+ok 4 - download tokens are single-use, expiring and bounded
+  ---
+  duration_ms: 0.843961
+  ...
+# Subtest: checkUpdates requires an authenticated DB-role admin
+ok 5 - checkUpdates requires an authenticated DB-role admin
+  ---
+  duration_ms: 3.144168
+  ...
+# Subtest: BoundedCache evicts least recently used entries
+ok 6 - BoundedCache evicts least recently used entries
+  ---
+  duration_ms: 4.008059
+  ...
+# Subtest: pagination clamps attacker-controlled limits and offsets
+ok 7 - pagination clamps attacker-controlled limits and offsets
+  ---
+  duration_ms: 0.717116
+  ...
+# Subtest: rate limiter blocks attempts beyond the configured maximum
+ok 8 - rate limiter blocks attempts beyond the configured maximum
+  ---
+  duration_ms: 2.644512
+  ...
+# Subtest: fetchWithTimeout always supplies an abort signal
+ok 9 - fetchWithTimeout always supplies an abort signal
+  ---
+  duration_ms: 72.247183
+  ...
+# Subtest: regional zero survives filtering, sorting and pagination; missing entries stay absent
+ok 10 - regional zero survives filtering, sorting and pagination; missing entries stay absent
+  ---
+  duration_ms: 171.066949
+  ...
+# Subtest: the executable schema serves all 35 Dex references and 38 games
+ok 11 - the executable schema serves all 35 Dex references and 38 games
+  ---
+  duration_ms: 633.900736
+  ...
+# Subtest: reference numbers preserve Victini zero, ORAS scopes and both ZA Dexes
+ok 12 - reference numbers preserve Victini zero, ORAS scopes and both ZA Dexes
+  ---
+  duration_ms: 12.462805
+  ...
+# Subtest: game evidence does not imply wild or form-level evidence
+ok 13 - game evidence does not imply wild or form-level evidence
+  ---
+  duration_ms: 33.238686
+  ...
+# Subtest: form pagination returns every row exactly once; missing artwork remains absent
+ok 14 - form pagination returns every row exactly once; missing artwork remains absent
+  ---
+  duration_ms: 36.532378
+  ...
+# Subtest: learnsets preserve slots per version group and evolution conditions exclude the disputed edge
+ok 15 - learnsets preserve slots per version group and evolution conditions exclude the disputed edge
+  ---
+  duration_ms: 12.493529
+  ...
+# Subtest: invalid game, generation and unscoped evidence return BAD_USER_INPUT
+ok 16 - invalid game, generation and unscoped evidence return BAD_USER_INPUT
+  ---
+  duration_ms: 25.644163
+  ...
+# Subtest: Move Dex passes one filtered scope to count and sorted pagination
+ok 17 - Move Dex passes one filtered scope to count and sorted pagination
+  ---
+  duration_ms: 4.144062
+  ...
+# Subtest: CMS writes require a server-side admin and never reach storage for denied users
+ok 18 - CMS writes require a server-side admin and never reach storage for denied users
+  ---
+  duration_ms: 2.281714
+  ...
+# Subtest: team retrieval is scoped to server identity and preserves database form IDs and order
+ok 19 - team retrieval is scoped to server identity and preserves database form IDs and order
+  ---
+  duration_ms: 2.174191
+  ...
+# Subtest: readBearerToken only accepts the Bearer scheme
+ok 20 - readBearerToken only accepts the Bearer scheme
+  ---
+  duration_ms: 3.009172
+  ...
+# Subtest: verifyAccessToken rejects forged, expired and malformed tokens
+ok 21 - verifyAccessToken rejects forged, expired and malformed tokens
+  ---
+  duration_ms: 19.388538
+  ...
+# Subtest: requireUser fails closed for anonymous callers
+ok 22 - requireUser fails closed for anonymous callers
+  ---
+  duration_ms: 1.25153
+  ...
+# Subtest: getAllowedCorsOrigins defaults to local dev and deduplicates configured origins
+ok 23 - getAllowedCorsOrigins defaults to local dev and deduplicates configured origins
+  ---
+  duration_ms: 1.008271
+  ...
+# Subtest: seed keeps ORAS legacy alias and adds updated-hoenn
+ok 24 - seed keeps ORAS legacy alias and adds updated-hoenn
+  ---
+  duration_ms: 3.302136
+  ...
+# Subtest: seed Z-A Dex entries use a dedicated region and do not overwrite kalos-central
+ok 25 - seed Z-A Dex entries use a dedicated region and do not overwrite kalos-central
+  ---
+  duration_ms: 0.858311
+  ...
+# Subtest: defensive matchups are computed from defending types, not hardcoded
+ok 26 - defensive matchups are computed from defending types, not hardcoded
+  ---
+  duration_ms: 2.642901
+  ...
+# Subtest: matchups omit neutral entries and de-duplicate types
+ok 27 - matchups omit neutral entries and de-duplicate types
+  ---
+  duration_ms: 1.808123
+  ...
+# Subtest: generation argument selects historical charts without changing the default
+ok 28 - generation argument selects historical charts without changing the default
+  ---
+  duration_ms: 8.195581
+  ...
+# Subtest: backend and frontend type charts are numerically identical for every generation
+ok 29 - backend and frontend type charts are numerically identical for every generation
+  ---
+  duration_ms: 1.823964
+  ...
+# Subtest: idFromUrl reads stable PokeAPI resource ids
+ok 30 - idFromUrl reads stable PokeAPI resource ids
+  ---
+  duration_ms: 2.097513
+  ...
+# Subtest: generationFromSpecies uses the API generation field
+ok 31 - generationFromSpecies uses the API generation field
+  ---
+  duration_ms: 0.601997
+  ...
+# Subtest: baseStatsFromApi maps hyphenated stat names
+ok 32 - baseStatsFromApi maps hyphenated stat names
+  ---
+  duration_ms: 1.681468
+  ...
+# Subtest: selectMissing detects gaps and reruns without duplicating rows
+ok 33 - selectMissing detects gaps and reruns without duplicating rows
+  ---
+  duration_ms: 0.538964
+  ...
+# Subtest: update detection keys off stable IDs/names, not catalog counts
+ok 34 - update detection keys off stable IDs/names, not catalog counts
+  ---
+  duration_ms: 0.937153
+  ...
+1..34
+# tests 34
+# suites 0
+# pass 34
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2203.359504

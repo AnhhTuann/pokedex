@@ -1,0 +1,168 @@
+> pokedex-backend@1.0.0 test:audit
+> node --import tsx --test audit/tests/*.test.ts
+
+TAP version 13
+# Subtest: schema parser captures mixed Pokemon FK targets without calling them invalid
+ok 1 - schema parser captures mixed Pokemon FK targets without calling them invalid
+  ---
+  duration_ms: 2.913354
+  ...
+# Subtest: source parsers extract versions, dex map and generation map
+ok 2 - source parsers extract versions, dex map and generation map
+  ---
+  duration_ms: 1.847632
+  ...
+# Subtest: seed generation ranges parse from guard clauses
+ok 3 - seed generation ranges parse from guard clauses
+  ---
+  duration_ms: 0.626528
+  ...
+# Subtest: fix plan excludes non-actionable findings and uses safe rollback templates
+ok 4 - fix plan excludes non-actionable findings and uses safe rollback templates
+  ---
+  duration_ms: 1.50374
+  ...
+# Subtest: coverage reports checked, unchecked and unverified counts
+ok 5 - coverage reports checked, unchecked and unverified counts
+  ---
+  duration_ms: 0.938349
+  ...
+# Subtest: full audit CSVs expose per-Pokemon, per-game and evidence detail
+ok 6 - full audit CSVs expose per-Pokemon, per-game and evidence detail
+  ---
+  duration_ms: 0.873903
+  ...
+# Subtest: parseArgs separates offline, schema-only, db and full modes
+ok 7 - parseArgs separates offline, schema-only, db and full modes
+  ---
+  duration_ms: 0.4255
+  ...
+# Subtest: DB URL resolver never connects without --db and never falls back to DATABASE_URL
+ok 8 - DB URL resolver never connects without --db and never falls back to DATABASE_URL
+  ---
+  duration_ms: 0.698256
+  ...
+# Subtest: secret redaction removes DB URLs and env assignments
+ok 9 - secret redaction removes DB URLs and env assignments
+  ---
+  duration_ms: 0.676162
+  ...
+# Subtest: disabled API client reads cache but never calls fetch
+ok 10 - disabled API client reads cache but never calls fetch
+  ---
+  duration_ms: 1.618193
+  ...
+# Subtest: mapWithConcurrency respects the limit and preserves order
+ok 11 - mapWithConcurrency respects the limit and preserves order
+  ---
+  duration_ms: 0.504911
+  ...
+# Subtest: checkpoint load/save is resume-aware and key-scoped
+ok 12 - checkpoint load/save is resume-aware and key-scoped
+  ---
+  duration_ms: 1.511942
+  ...
+# Subtest: checkpoint ignores legacy records without full-catalog fields
+ok 13 - checkpoint ignores legacy records without full-catalog fields
+  ---
+  duration_ms: 0.411618
+  ...
+# Subtest: DB audit without connection reports unverified areas instead of guessing
+ok 14 - DB audit without connection reports unverified areas instead of guessing
+  ---
+  duration_ms: 1.051874
+  ...
+# Subtest: all DB aggregate SQL is SELECT-only and bounded where rows are returned
+ok 15 - all DB aggregate SQL is SELECT-only and bounded where rows are returned
+  ---
+  duration_ms: 0.802795
+  ...
+# Subtest: pinned coverage partitions every National Dex species into the nine generations
+ok 16 - pinned coverage partitions every National Dex species into the nine generations
+  ---
+  duration_ms: 7.490748
+  ...
+# Subtest: all 38 games keep positive evidence distinct from Dex membership and wild methods
+ok 17 - all 38 games keep positive evidence distinct from Dex membership and wild methods
+  ---
+  duration_ms: 0.489035
+  ...
+# Subtest: alternate forms inherit origin generation and retain only their own game evidence
+ok 18 - alternate forms inherit origin generation and retain only their own game evidence
+  ---
+  duration_ms: 1.371429
+  ...
+# Subtest: local Normal and Shiny inventories track missing files independently
+ok 19 - local Normal and Shiny inventories track missing files independently
+  ---
+  duration_ms: 2.634783
+  ...
+# Subtest: auditSchema validates explicit Pokemon FK targets and keeps design gaps separate
+ok 20 - auditSchema validates explicit Pokemon FK targets and keeps design gaps separate
+  ---
+  duration_ms: 10.98308
+  ...
+# Subtest: auditSource ignores updater counts and recognizes generation-aware damage and CMS options
+ok 21 - auditSource ignores updater counts and recognizes generation-aware damage and CMS options
+  ---
+  duration_ms: 116.682615
+  ...
+# Subtest: CMS selector resolves the 38 shared values and supports local literals
+ok 22 - CMS selector resolves the 38 shared values and supports local literals
+  ---
+  duration_ms: 1.112559
+  ...
+# Subtest: reference audit compares effective Z-A dexes and preserves the ORAS compatibility exception
+ok 23 - reference audit compares effective Z-A dexes and preserves the ORAS compatibility exception
+  ---
+  duration_ms: 75.419952
+  ...
+# Subtest: CLI leaves DB disconnected without explicit opt-in and rejects the application URL fallback
+ok 24 - CLI leaves DB disconnected without explicit opt-in and rejects the application URL fallback
+  ---
+  duration_ms: 734.081077
+  ...
+# Subtest: all 35 Dex references and 38 games match the pinned evidence catalog
+ok 25 - all 35 Dex references and 38 games match the pinned evidence catalog
+  ---
+  duration_ms: 190.951696
+  ...
+# Subtest: form and learnset queues retain the same per-record keys as Phase 9B-3
+ok 26 - form and learnset queues retain the same per-record keys as Phase 9B-3
+  ---
+  duration_ms: 8.103246
+  ...
+# Subtest: all 540 trees retain the same edges and conditions as the flattened inventory
+ok 27 - all 540 trees retain the same edges and conditions as the flattened inventory
+  ---
+  duration_ms: 20.780189
+  ...
+# Subtest: all 245 exact unresolved varieties have a disposition without inheriting game proof
+ok 28 - all 245 exact unresolved varieties have a disposition without inheriting game proof
+  ---
+  duration_ms: 61.054722
+  ...
+# Subtest: learnsets remain separated by version group and possible gaps stay unverified
+ok 29 - learnsets remain separated by version group and possible gaps stay unverified
+  ---
+  duration_ms: 3.267857
+  ...
+# Subtest: evolution audit preserves branches, item conditions and version-group details
+ok 30 - evolution audit preserves branches, item conditions and version-group details
+  ---
+  duration_ms: 7.757817
+  ...
+# Subtest: asset hashes and database unknowns are not reported as verified discrepancies
+ok 31 - asset hashes and database unknowns are not reported as verified discrepancies
+  ---
+  duration_ms: 0.960431
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1341.648185

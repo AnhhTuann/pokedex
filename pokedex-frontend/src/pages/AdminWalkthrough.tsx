@@ -52,7 +52,7 @@ export default function AdminWalkthrough() {
     setTimeout(() => setToast(null), 4000);
   };
 
-  const { data, loading, refetch } = useQuery(GET_WALKTHROUGHS, { variables:{ gameVersion, language } });
+  const { data, loading, error: listError, refetch } = useQuery(GET_WALKTHROUGHS, { variables:{ gameVersion, language } });
   const [upsertWalkthrough, { loading: saving }] = useMutation(UPSERT_WALKTHROUGH);
   const [deleteWalkthrough] = useMutation(DELETE_WALKTHROUGH);
 
@@ -76,12 +76,14 @@ export default function AdminWalkthrough() {
 
   const handleSave = async () => {
     if (!chapterTitle.trim()) { showToast('Please enter a chapter title!','error'); return; }
+    if (!Number.isInteger(order) || order < 1) { showToast('Enter a positive chapter order.','error'); return; }
     const htmlContent = editor?.getHTML() || '';
     if (!htmlContent.trim() || htmlContent === '<p></p>') { showToast('Please enter some guide content!','error'); return; }
     try {
       await upsertWalkthrough({ variables:{ id:editingId, gameVersion, chapterTitle, description, coverImage, content:htmlContent, order:Number(order), language } });
       showToast('Chapter saved successfully! 🚀','success');
-      refetch(); handleResetForm();
+      void refetch().catch(() => {});
+      handleResetForm();
     } catch (err: any) { showToast(`Error saving: ${err.message}`,'error'); }
   };
 
@@ -96,7 +98,7 @@ export default function AdminWalkthrough() {
       try {
         await deleteWalkthrough({ variables:{ id } });
         showToast('Chapter deleted!','success');
-        refetch();
+        void refetch().catch(() => {});
         if (editingId === id) handleResetForm();
       } catch (err: any) { showToast(`Error: ${err.message}`,'error'); }
     }
@@ -200,6 +202,8 @@ export default function AdminWalkthrough() {
 
             {loading ? (
               <div style={{ display:'flex',justifyContent:'center',padding:24 }}><Loader size={20} style={{ animation:'spin 0.8s linear infinite' }}/></div>
+            ) : listError ? (
+              <p role="alert">Unable to load chapters. <button type="button" onClick={() => void refetch().catch(() => {})}>Retry</button></p>
             ) : walkthroughs.length === 0 ? (
               <div style={{ textAlign:'center',padding:'32px 0',opacity:0.5 }}>
                 <p style={{ fontSize:13,fontWeight:700,color:'var(--text-secondary)' }}>No chapters found</p>

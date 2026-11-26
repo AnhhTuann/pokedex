@@ -54,7 +54,7 @@ export interface Move {
   generation?: number | null;
   description?: string | null;
   effect?: string | null;
-  damageClass: string;
+  damageClass: string | null;
 }
 
 export interface Ability {

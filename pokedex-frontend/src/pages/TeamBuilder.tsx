@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, X, Zap, Shield, Brain, Star, Upload, Download, Copy, HelpCircle, AlertTriangle, CheckCircle, ChevronDown } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import { parseTeamImport } from '../lib/teamImport';
 import { useTeamStore, TeamMember } from '../lib/teamStore';
 import { TYPE_LIST, calculateDamageTaken } from '../utils/typeMatchups';
 import { PokemonArtwork } from '../components/PokemonArtwork';
@@ -93,10 +94,12 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
   const { data } = useQuery(GET_POKEMON_BUILDER_DETAILS, {
     variables: { id: member.id },
     skip: !!member.allMoves,
-    onCompleted: (res) => {
-      if (res?.pokemon) updateMemberDetails(member.id, { allAbilities: res.pokemon.abilities, allMoves: res.pokemon.moves, stats: res.pokemon.stats });
-    }
   });
+  useEffect(() => {
+    const details = data?.pokemon;
+    if (details?.id !== member.id) return;
+    updateMemberDetails(member.id, { allAbilities: details.abilities, allMoves: details.moves, stats: details.stats });
+  }, [data, member.id, updateMemberDetails]);
   const allAbilities: string[] = member.allAbilities || data?.pokemon?.abilities || [];
   const allMoves: any[] = member.allMoves || data?.pokemon?.moves || [];
   const typeColor = TYPE_COLORS[member.types[0]] || '#6366f1';
@@ -135,7 +138,7 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
         {/* Ability */}
         <div className={styles.formRow}>
           <Star size={16} className={styles.formIcon}/>
-          <select className={styles.selectField} value={member.selectedAbility||''} onChange={e=>setAbility(member.id,e.target.value||null)}>
+          <select className={styles.selectField} aria-label={`Ability for ${member.name}`} value={member.selectedAbility||''} onChange={e=>setAbility(member.id,e.target.value||null)}>
             <option value="">— Ability —</option>
             {recAbilities.length>0&&<optgroup label="⭐ Recommended">{recAbilities.map((a:string)=><option key={a} value={a}>{a.replace(/-/g,' ')}</option>)}</optgroup>}
             <optgroup label="All Abilities">{allAbilities.filter((a:string)=>!recAbilities.includes(a)).map((a:string)=><option key={a} value={a}>{a.replace(/-/g,' ')}</option>)}</optgroup>
@@ -145,7 +148,7 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
         {/* Item */}
         <div className={styles.formRow}>
           <Star size={16} className={styles.formIcon}/>
-          <select className={styles.selectField} value={member.selectedItem||''} onChange={e=>setItem(member.id,e.target.value||null)}>
+          <select className={styles.selectField} aria-label={`Held item for ${member.name}`} value={member.selectedItem||''} onChange={e=>setItem(member.id,e.target.value||null)}>
             <option value="">— Held Item —</option>
             {recItems.length>0&&<optgroup label="⭐ Recommended">{recItems.map(i=><option key={i} value={i}>{i}</option>)}</optgroup>}
             <optgroup label="All Items">{COMPETITIVE_ITEMS.filter(i=>!recItems.includes(i)).map(i=><option key={i} value={i}>{i}</option>)}</optgroup>
@@ -155,7 +158,7 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
         {/* Nature */}
         <div className={styles.formRow}>
           <Star size={16} className={styles.formIcon}/>
-          <select className={styles.selectField} value={member.selectedNature||''} onChange={e=>setNature(member.id,e.target.value||null)}>
+          <select className={styles.selectField} aria-label={`Nature for ${member.name}`} value={member.selectedNature||''} onChange={e=>setNature(member.id,e.target.value||null)}>
             <option value="">— Nature —</option>
             {recNatures.length>0&&<optgroup label="⭐ Recommended">{recNatures.map(n=><option key={n} value={n}>{n}</option>)}</optgroup>}
             <optgroup label="All Natures">{NATURE_NAMES.filter(n=>!recNatures.includes(n)).map(n=><option key={n} value={n}>{n}</option>)}</optgroup>
@@ -170,13 +173,14 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
               const sel = member.moves[mi];
               return (
                 <select key={mi} className={styles.selectField}
-                  value={sel?.name||''}
+                  aria-label={`Move ${mi + 1} for ${member.name}`} value={sel?.name||''}
                   onChange={e=>{
                     const mv = allMoves.find((m:any)=>m.name===e.target.value);
                     if (mv) { const cur=[...member.moves]; cur[mi]=mv; setMoves(member.id,cur.filter(Boolean)); }
                     else if (!e.target.value) { const cur=[...member.moves]; cur.splice(mi,1); setMoves(member.id,cur.filter(Boolean)); }
                   }}>
                   <option value="">None</option>
+                  {sel && !allMoves.some(move => move.name === sel.name) && <option value={sel.name}>{sel.name}</option>}
                   {allMoves.map((m:any)=><option key={m.name} value={m.name}>{m.name.replace(/-/g,' ')}</option>)}
                 </select>
               );
@@ -242,8 +246,14 @@ export default function TeamBuilder() {
     if (!team.length) { showToast('Team is empty!','error'); return; }
     const blob = new Blob([JSON.stringify(team,null,2)],{type:'application/json'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='my-pokemon-team.json'; a.click();
-    URL.revokeObjectURL(url);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'my-pokemon-team.json';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    // Allow the browser to start consuming the object URL before releasing it.
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     showToast('Saved as JSON!','success');
   };
 
@@ -252,14 +262,14 @@ export default function TeamBuilder() {
     const reader = new FileReader();
     reader.onload = ev => {
       try {
-        const data = JSON.parse(ev.target?.result as string);
-        if (Array.isArray(data)) {
-          const { setTeam } = useTeamStore.getState();
-          setTeam(data.slice(0,6));
-          showToast('Team imported!','success');
-        } else showToast('Invalid JSON format','error');
-      } catch { showToast('Failed to parse file','error'); }
+        const imported = parseTeamImport(String(ev.target?.result ?? ''));
+        useTeamStore.getState().setTeam(imported);
+        showToast('Team imported!', 'success');
+      } catch (error) {
+        showToast(error instanceof SyntaxError ? 'Invalid JSON format' : 'Invalid or duplicate Pokémon in the team file.', 'error');
+      }
     };
+    reader.onerror = () => showToast('Unable to read the team file.', 'error');
     reader.readAsText(file);
     e.target.value='';
   };

@@ -1,0 +1,265 @@
+{
+  "compare-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 1049,
+    "changedPercent": 0.0809,
+    "bbox": [
+      611,
+      359,
+      829,
+      509
+    ]
+  },
+  "compare-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "compare-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 3,
+    "changedPercent": 0.0004,
+    "bbox": [
+      442,
+      512,
+      474,
+      612
+    ]
+  },
+  "game-selector-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "game-selector-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "game-selector-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "moves-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "moves-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "moves-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokedex-desktop-dark.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokedex-desktop-light.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokedex-mobile-dark.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokedex-mobile-light.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokedex-tablet-dark.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokedex-tablet-light.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokemon-detail-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokemon-detail-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "pokemon-detail-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 1680,
+    "changedPercent": 0.2136,
+    "bbox": [
+      37,
+      765,
+      731,
+      830
+    ]
+  },
+  "teambuilder-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "teambuilder-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "teambuilder-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "tracker-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "tracker-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "tracker-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "types-desktop.png": {
+    "dimensions": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "types-mobile.png": {
+    "dimensions": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "changedPercent": 0.0,
+    "bbox": null
+  },
+  "types-tablet.png": {
+    "dimensions": [
+      768,
+      1024
+    ],
+    "changedPixels": 6,
+    "changedPercent": 0.0008,
+    "bbox": [
+      657,
+      271,
+      659,
+      274
+    ]
+  }
+}

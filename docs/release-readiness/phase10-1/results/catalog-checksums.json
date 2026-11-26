@@ -1,0 +1,132 @@
+{
+  "snapshot": "508fd7c3a7d54ac175e00afe420b11a5af983bd6",
+  "sourceRevision": "2cdfabc00894a05f0ce99071464e620898b986d3",
+  "files": {
+    "asset-remediation.json": true,
+    "catalog.json": true,
+    "detail.json": true,
+    "learnsets-black-2-white-2.json.gz": true,
+    "learnsets-black-white.json.gz": true,
+    "learnsets-blue-japan.json.gz": true,
+    "learnsets-brilliant-diamond-shining-pearl.json.gz": true,
+    "learnsets-champions.json.gz": true,
+    "learnsets-colosseum.json.gz": true,
+    "learnsets-crystal.json.gz": true,
+    "learnsets-diamond-pearl.json.gz": true,
+    "learnsets-emerald.json.gz": true,
+    "learnsets-firered-leafgreen.json.gz": true,
+    "learnsets-gold-silver.json.gz": true,
+    "learnsets-heartgold-soulsilver.json.gz": true,
+    "learnsets-legends-arceus.json.gz": true,
+    "learnsets-legends-za.json.gz": true,
+    "learnsets-lets-go-pikachu-lets-go-eevee.json.gz": true,
+    "learnsets-omega-ruby-alpha-sapphire.json.gz": true,
+    "learnsets-platinum.json.gz": true,
+    "learnsets-red-blue.json.gz": true,
+    "learnsets-red-green-japan.json.gz": true,
+    "learnsets-ruby-sapphire.json.gz": true,
+    "learnsets-scarlet-violet.json.gz": true,
+    "learnsets-sun-moon.json.gz": true,
+    "learnsets-sword-shield.json.gz": true,
+    "learnsets-ultra-sun-ultra-moon.json.gz": true,
+    "learnsets-x-y.json.gz": true,
+    "learnsets-xd.json.gz": true,
+    "learnsets-yellow.json.gz": true
+  },
+  "availableInputs": {
+    "docs/data-readiness/phase9b4/catalog-contract.json": true,
+    "docs/data-readiness/phase9b4/learnset-backlog.csv": true,
+    "pokedex-backend/audit/reports/phase9b-coverage/assets.csv": true,
+    "pokedex-backend/audit/reports/phase9b-coverage/evolution-chains.json": true,
+    "pokedex-backend/audit/reports/phase9b-coverage/regional-entries.csv": true,
+    "pokedex-backend/audit/reports/phase9b-coverage/species.json": true,
+    "pokedex-backend/audit/reports/phase9b-coverage/varieties.json": true,
+    "pokedex-backend/audit/reports/phase9b3/alternate-form-evidence.csv": true,
+    "pokedex-backend/audit/reports/phase9b3/duplicate-assets.json": true,
+    "pokedex-backend/audit/reports/phase9b3/learnset-groups.csv": true,
+    "pokedex-backend/audit/reports/phase9b3/missing-assets.csv": true
+  },
+  "nonMaterializedInputs": [
+    "pinned-pokemon-moves"
+  ],
+  "catalogCounts": {
+    "dexEntries": 35,
+    "dexes": 35,
+    "forms": 1351,
+    "games": 38,
+    "species": 1025,
+    "trees": 540,
+    "versionGroups": 32
+  },
+  "games": [
+    "red",
+    "blue",
+    "yellow",
+    "gold",
+    "silver",
+    "crystal",
+    "ruby",
+    "sapphire",
+    "emerald",
+    "firered",
+    "leafgreen",
+    "diamond",
+    "pearl",
+    "platinum",
+    "heartgold",
+    "soulsilver",
+    "black",
+    "white",
+    "black-2",
+    "white-2",
+    "x",
+    "y",
+    "omega-ruby",
+    "alpha-sapphire",
+    "sun",
+    "moon",
+    "ultra-sun",
+    "ultra-moon",
+    "lets-go-pikachu",
+    "lets-go-eevee",
+    "sword",
+    "shield",
+    "brilliant-diamond",
+    "shining-pearl",
+    "legends-arceus",
+    "scarlet",
+    "violet",
+    "legends-za"
+  ],
+  "formGenerations": {
+    "1": 238,
+    "2": 115,
+    "3": 167,
+    "4": 129,
+    "5": 185,
+    "6": 104,
+    "7": 131,
+    "8": 133,
+    "9": 149
+  },
+  "artwork": {
+    "normal": {
+      "mappedPaths": 1258,
+      "missingPaths": 93,
+      "statuses": {
+        "LOCAL_UNREVIEWED": 1258,
+        "SHARED_UNVERIFIED": 51,
+        "MISSING": 42
+      }
+    },
+    "shiny": {
+      "mappedPaths": 1264,
+      "missingPaths": 87,
+      "statuses": {
+        "LOCAL_UNREVIEWED": 1264,
+        "SHARED_UNVERIFIED": 41,
+        "MISSING": 46
+      }
+    }
+  }
+}

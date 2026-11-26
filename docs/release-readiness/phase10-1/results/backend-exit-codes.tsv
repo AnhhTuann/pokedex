@@ -1,0 +1,7 @@
+backend-tests	0
+backend-audit-tests	0
+backend-audit-typecheck	0
+backend-typecheck	0
+backend-build	0
+prisma-validate	0
+prisma-generate	0

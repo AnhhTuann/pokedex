@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gql, useApolloClient, useQuery } from '@apollo/client';
 import { useAuthStore } from '../lib/authStore';
 import styles from '../styles/pages/PokemonDex.module.scss';
 import cardStyles from '../styles/components/common/Card.module.scss';
 import buttonStyles from '../styles/components/common/Button.module.scss';
+import { useVerifiedSession } from '../hooks/useIsAdmin';
+import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDialog';
 import PokeCard from '../components/PokeCard';
 
 const GET_DASHBOARD_DATA = gql`
@@ -20,22 +22,28 @@ const GET_DASHBOARD_DATA = gql`
 `;
 
 export default function UserDashboard() {
-  const { user, logout } = useAuthStore();
+  const logout = useAuthStore(state => state.logout);
+  const { user, loading: checking, expired, error: sessionError } = useVerifiedSession();
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const navigate = useNavigate();
   const loggingOut = useRef(false);
   const client = useApolloClient();
 
   useEffect(() => {
-    if (!user && !loggingOut.current) {
-      navigate('/login');
+    if (expired) {
+      logout();
+      void client.clearStore();
     }
-  }, [user, navigate]);
+    if (!user && !checking && !sessionError && !loggingOut.current) navigate('/login', { replace: true });
+  }, [user, checking, expired, sessionError, logout, client, navigate]);
 
   const { data, loading, error } = useQuery(GET_DASHBOARD_DATA, {
     skip: !user,
     fetchPolicy: 'cache-and-network'
   });
 
+  if (checking) return <p role="status">Checking session…</p>;
+  if (sessionError) return <p role="alert">Unable to verify your session. Reload to try again.</p>;
   if (!user) return null;
 
   return (
@@ -68,12 +76,12 @@ export default function UserDashboard() {
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>My Team</h2>
             {data?.myTeam?.length > 0 ? (
               <div className={styles.pokemonGrid} style={{ marginTop: '1rem' }}>
-                {data.myTeam.map((p: any, idx: number) => (
+                {data.myTeam.map((p: any) => (
                   <PokeCard 
                     key={p.id} 
                     pokemon={p} 
 
-                    onClick={() => navigate(`/pokemon/${p.id}`)}
+                    onClick={() => setSelectedId(p.id)}
                   />
                 ))}
               </div>
@@ -90,6 +98,7 @@ export default function UserDashboard() {
           </section>
         </div>
       )}
+      <PokemonDetailDialog id={selectedId} onClose={() => setSelectedId(null)} onSelect={setSelectedId} />
     </div>
   );
 }
