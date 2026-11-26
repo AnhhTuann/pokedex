@@ -47,204 +47,91 @@ const GENERATIONS = [
   { value: 9, label: "Gen 9 · Paldea" },
 ];
 
+type FilterOption = { value: string; label: string };
+
+function FilterDropdown({ label, options, value, open, onToggle, onSelect }: {
+  label: string;
+  options: FilterOption[];
+  value: string;
+  open: boolean;
+  onToggle: () => void;
+  onSelect: (value: string) => void;
+}) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuId = React.useId();
+  const selected = options.find(option => option.value === value) ?? options[0];
+
+  const choose = (next: string) => {
+    onSelect(next);
+    triggerRef.current?.focus();
+  };
+
+  return (
+    <div className={styles.dropdownWrapper} onKeyDown={event => {
+      if (event.key === 'Escape' && open) {
+        event.stopPropagation();
+        onToggle();
+        triggerRef.current?.focus();
+      }
+    }}>
+      <button ref={triggerRef} type="button" className={styles.customSelectTrigger}
+        aria-label={`Filter by ${label}`} aria-expanded={open} aria-controls={open ? menuId : undefined}
+        data-has-value={!!value} onClick={onToggle}>
+        <span className={styles.triggerText}>{selected.label}</span>
+        <ChevronDown size={16} className={cn(styles.arrowIcon, open && styles.rotated)} />
+      </button>
+      {value && <button type="button" className={styles.clearButton} onClick={() => choose('')}
+        aria-label={`Clear ${label} Filter`}><X size={14} /></button>}
+      {open && (
+        <div className={styles.customDropdown} id={menuId} role="group" aria-label={`${label} options`}>
+          {options.map(option => (
+            <button type="button" key={option.value} onClick={() => choose(option.value)}
+              aria-pressed={option.value === value}
+              className={cn(styles.dropdownOption, option.value === value && styles.selectedOption)}>
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const typeOptions = [{ value: '', label: 'All Types' },
+  ...POKEMON_TYPES.map(label => ({ value: label.toLowerCase(), label }))];
+const generationOptions = GENERATIONS.map(option => ({
+  value: option.value === 'all' ? '' : String(option.value), label: option.label,
+}));
+
 export default function SearchBar({
-  value,
-  onChange,
-  typeValue,
-  onTypeChange,
-  genValue,
-  onGenChange,
+  value, onChange, typeValue, onTypeChange, genValue, onGenChange,
 }: SearchBarProps) {
-  const [isTypeOpen, setIsTypeOpen] = useState(false);
-  const [isGenOpen, setIsGenOpen] = useState(false);
-  
-  const typeRef = useRef<HTMLDivElement>(null);
-  const genRef = useRef<HTMLDivElement>(null);
+  const [openFilter, setOpenFilter] = useState<'type' | 'generation' | null>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (typeRef.current && !typeRef.current.contains(event.target as Node)) {
-        setIsTypeOpen(false);
-      }
-      if (genRef.current && !genRef.current.contains(event.target as Node)) {
-        setIsGenOpen(false);
-      }
+      if (!filtersRef.current?.contains(event.target as Node)) setOpenFilter(null);
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.inputWrapper}>
-        <InputField
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Search by name or #..."
-          icon={<Search size={18} />}
-        />
+        <InputField value={value} onChange={event => onChange(event.target.value)}
+          placeholder="Search by name or #..." aria-label="Search Pokémon by name or National Dex number"
+          icon={<Search size={18} />} />
       </div>
-
-      <div className={styles.dropdownGroup}>
-        {/* Custom Type Filter */}
-        <div className={styles.dropdownWrapper} ref={typeRef}>
-          <div className={styles.customSelectContainer}>
-            <button
-              type="button"
-              className={cn(
-                styles.customSelectTrigger, 
-                isTypeOpen && styles.active,
-                !typeValue && styles.isPlaceholder
-              )}
-              onClick={() => {
-                setIsTypeOpen(!isTypeOpen);
-                setIsGenOpen(false);
-              }}
-              aria-label="Filter by Type"
-            >
-              <span className={styles.triggerText}>
-                {typeValue
-                  ? typeValue.charAt(0).toUpperCase() + typeValue.slice(1)
-                  : "All Types"}
-              </span>
-              <div className={styles.triggerActions}>
-                {typeValue && (
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    className={styles.clearButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onTypeChange("");
-                      setIsTypeOpen(false);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.stopPropagation();
-                        onTypeChange("");
-                        setIsTypeOpen(false);
-                      }
-                    }}
-                    aria-label="Clear Type Filter"
-                  >
-                    <X size={14} />
-                  </span>
-                )}
-                <ChevronDown
-                  size={16}
-                  className={cn(styles.arrowIcon, isTypeOpen && styles.rotated)}
-                />
-              </div>
-            </button>
-            
-            {isTypeOpen && (
-              <div className={styles.customDropdown}>
-                <div
-                  className={cn(
-                    styles.dropdownOption,
-                    !typeValue && styles.selectedOption
-                  )}
-                  onClick={() => {
-                    onTypeChange("");
-                    setIsTypeOpen(false);
-                  }}
-                >
-                  All Types
-                </div>
-                {POKEMON_TYPES.map((t) => (
-                  <div
-                    key={t}
-                    className={cn(
-                      styles.dropdownOption,
-                      typeValue === t.toLowerCase() && styles.selectedOption
-                    )}
-                    onClick={() => {
-                      onTypeChange(t.toLowerCase());
-                      setIsTypeOpen(false);
-                    }}
-                  >
-                    {t}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Custom Gen Filter */}
-        <div className={styles.dropdownWrapper} ref={genRef}>
-          <div className={styles.customSelectContainer}>
-            <button
-              type="button"
-              className={cn(
-                styles.customSelectTrigger, 
-                isGenOpen && styles.active,
-                (genValue === null || genValue === undefined) && styles.isPlaceholder
-              )}
-              onClick={() => {
-                setIsGenOpen(!isGenOpen);
-                setIsTypeOpen(false);
-              }}
-              aria-label="Filter by Generation"
-            >
-              <span className={styles.triggerText}>
-                {genValue !== null && genValue !== undefined
-                  ? GENERATIONS.find((g) => g.value === genValue)?.label
-                  : "All Gens"}
-              </span>
-              <div className={styles.triggerActions}>
-                {genValue !== null && genValue !== undefined && (
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    className={styles.clearButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onGenChange?.(null);
-                      setIsGenOpen(false);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.stopPropagation();
-                        onGenChange?.(null);
-                        setIsGenOpen(false);
-                      }
-                    }}
-                    aria-label="Clear Generation Filter"
-                  >
-                    <X size={14} />
-                  </span>
-                )}
-                <ChevronDown
-                  size={16}
-                  className={cn(styles.arrowIcon, isGenOpen && styles.rotated)}
-                />
-              </div>
-            </button>
-            
-            {isGenOpen && (
-              <div className={styles.customDropdown}>
-                {GENERATIONS.map((g) => (
-                  <div
-                    key={g.value}
-                    className={cn(
-                      styles.dropdownOption,
-                      ((genValue === g.value) || (genValue === null && g.value === "all")) && styles.selectedOption
-                    )}
-                    onClick={() => {
-                      onGenChange?.(g.value === "all" ? null : Number(g.value));
-                      setIsGenOpen(false);
-                    }}
-                  >
-                    {g.label}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+      <div className={styles.dropdownGroup} ref={filtersRef}>
+        <FilterDropdown label="Type" value={typeValue} options={typeOptions} open={openFilter === 'type'}
+          onToggle={() => setOpenFilter(current => current === 'type' ? null : 'type')}
+          onSelect={next => { onTypeChange(next); setOpenFilter(null); }} />
+        <FilterDropdown label="Generation" value={genValue == null ? '' : String(genValue)}
+          options={generationOptions} open={openFilter === 'generation'}
+          onToggle={() => setOpenFilter(current => current === 'generation' ? null : 'generation')}
+          onSelect={next => { onGenChange?.(next ? Number(next) : null); setOpenFilter(null); }} />
       </div>
     </div>
   );

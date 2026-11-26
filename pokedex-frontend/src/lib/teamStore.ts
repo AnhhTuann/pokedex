@@ -4,6 +4,7 @@ export interface TeamMember {
   id: number;
   name: string;
   image: string;
+  shinyImage?: string;
   types: string[];
   selectedAbility?: string | null;
   selectedItem?: string | null;

@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react';
 import {
   StrictMode,
   useState,
@@ -95,7 +96,7 @@ function Root() {
       <ApolloProvider client={client}>
         <MyPokedexProvider>
           <BrowserRouter>
-            <App />
+            <MotionConfig reducedMotion="user"><App /></MotionConfig>
           </BrowserRouter>
         </MyPokedexProvider>
       </ApolloProvider>

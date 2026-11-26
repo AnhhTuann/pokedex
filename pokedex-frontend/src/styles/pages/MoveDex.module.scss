@@ -87,7 +87,6 @@
   background-color: var(--bg-paper-glow);
   padding: 20px;
   margin-bottom: 32px;
-  backdrop-filter: blur(10px);
 }
 
 .filterRow {
@@ -535,8 +534,6 @@
   margin-top: 8px;
   border-radius: var(--radius-lg, 12px);
   background-color: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   z-index: 100;
@@ -583,3 +580,5 @@
     color: var(--primary) !important;
   }
 }
+
+.filterCard, .moveCard { background: var(--bg-paper); box-shadow: var(--shadow-sm); }

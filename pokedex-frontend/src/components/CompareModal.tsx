@@ -1,124 +1,109 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { X } from 'lucide-react';
-import { useQuery } from '@apollo/client';
-import { GET_POKEMON_DETAIL } from './PokeDetail';
-import { AnimatePresence, motion } from 'motion/react';
 import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   ResponsiveContainer, Legend, Tooltip,
 } from 'recharts';
+import { useReferenceDetail } from '../hooks/useReferencePokemon';
+import { useTeamStore } from '../lib/teamStore';
+import { TYPE_COLORS } from '../lib/utils';
+import { PokemonArtwork } from './PokemonArtwork';
 import styles from '../styles/components/CompareModal.module.scss';
 
 interface CompareModalProps { ids: number[]; onClose: () => void; }
 
+const STAT_LABELS: Record<string, string> = {
+  hp: 'HP', attack: 'ATK', defense: 'DEF', 'special-attack': 'Sp. Atk', 'special-defense': 'Sp. Def', speed: 'SPE',
+};
+const COMPARE_COLORS = ['var(--brand)', 'var(--secondary)'];
+
 export default function CompareModal({ ids, onClose }: CompareModalProps) {
-  const { data: d1 } = useQuery(GET_POKEMON_DETAIL, { variables: { id: ids[0] }, skip: !ids[0] });
-  const { data: d2 } = useQuery(GET_POKEMON_DETAIL, { variables: { id: ids[1] }, skip: !ids[1] });
+  const isOpen = ids.length === 2;
+  const shiny = useTeamStore(state => state.isShinyMode);
+  const { pokemon: first, loading: loadingFirst } = useReferenceDetail(isOpen ? ids[0] : null);
+  const { pokemon: second, loading: loadingSecond } = useReferenceDetail(isOpen ? ids[1] : null);
 
-  if (ids.length < 2) return null;
-  const p1 = d1?.pokemon;
-  const p2 = d2?.pokemon;
-  if (!p1 || !p2) return null;
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [isOpen, onClose]);
 
-  const chartData = p1.stats.map((s: any, i: number) => ({
-    stat: s.name.replace('-', ' ').toUpperCase(),
-    [p1.name]: s.value,
-    [p2.name]: p2.stats[i]?.value || 0,
-    fullMark: 255,
+  if (!isOpen) return null;
+  const chartData = first?.stats.map(stat => ({
+    stat: STAT_LABELS[stat.name] ?? stat.name,
+    first: stat.value,
+    second: second?.stats.find(other => stat.name === other.name)?.value,
   }));
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        onClick={onClose}
-        className={styles.overlay}
-      >
-        <motion.div
-          initial={{ scale: 0.92, opacity: 0, y: 24 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.92, opacity: 0 }}
-          transition={{ type: 'spring', damping: 24, stiffness: 200 }}
-          onClick={e => e.stopPropagation()}
-          className={styles.modalCard}
-        >
-          {/* Header */}
-          <div className={styles.header}>
-            <span className={styles.title}>⚔️ Head-to-Head Comparison</span>
-            <button onClick={onClose} className={styles.closeBtn}>
-              <X size={16}/>
-            </button>
-          </div>
-
-          {/* Body */}
+    <div onClick={onClose} className={styles.overlay}>
+      <section onClick={event => event.stopPropagation()} className={styles.modalCard}
+        role="dialog" aria-modal="true" aria-labelledby="comparison-heading">
+        <header className={styles.header}>
+          <h2 className={styles.title} id="comparison-heading">Head-to-head comparison</h2>
+          <button type="button" onClick={onClose} className={styles.closeBtn} aria-label="Close comparison" autoFocus>
+            <X size={18} />
+          </button>
+        </header>
+        {first && second ? (
           <div className={styles.body}>
-            {/* P1 */}
-            <div className={styles.pokemonColumn}>
-              <div className={`${styles.avatarCircle} ${styles.p1}`}>
-                <img src={p1.image} alt={p1.name} className={styles.pokemonImage} style={{ filter: 'drop-shadow(0 6px 20px rgba(99,102,241,0.4))' }}/>
-              </div>
-              <span className={`${styles.pokemonName} ${styles.p1}`}>{p1.name}</span>
-              <div className={styles.typesRow}>
-                {p1.types.map((t: string) => (
-                  <span key={t} className={`${styles.typeBadge} ${styles.p1}`}>{t}</span>
-                ))}
-              </div>
-              {/* Stats */}
-              <div className={styles.statsRow}>
-                {p1.stats.map((s: any, i: number) => {
-                  const p2val = p2.stats[i]?.value || 0;
-                  const wins = s.value > p2val;
-                  return (
-                    <div key={s.name} className={`${styles.statItem} ${wins ? styles.win : styles.lose}`}>
-                      <span className={styles.statLabel}>{s.name.replace('-', ' ')}</span>
-                      <span>{s.value}{wins ? ' ✓' : ''}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Radar Chart */}
-            <div className={styles.chartContainer}>
+            {[first, second].map((pokemon, index) => {
+              const opponent = index === 0 ? second : first;
+              return (
+                <div className={styles.pokemonColumn} key={pokemon.id}>
+                  <div className={styles.avatarCircle} style={{ backgroundColor: `${TYPE_COLORS[pokemon.types[0]]}25` }}>
+                    <PokemonArtwork src={shiny ? pokemon.shinyImage : pokemon.image} shiny={shiny}
+                      name={pokemon.name} className={styles.pokemonImage} />
+                  </div>
+                  <h3 className={styles.pokemonName} style={{ color: COMPARE_COLORS[index] }}>
+                    {pokemon.name.replaceAll('-', ' ')}
+                  </h3>
+                  <div className={styles.typesRow}>
+                    {pokemon.types.map(type => (
+                      <span key={type} className={styles.typeBadge} style={{
+                        background: `color-mix(in srgb, ${TYPE_COLORS[type]} 76%, white)`,
+                      }}>{type}</span>
+                    ))}
+                  </div>
+                  <dl className={styles.statsRow}>
+                    {pokemon.stats.map(stat => {
+                      const opponentValue = opponent.stats.find(other => other.name === stat.name)?.value;
+                      const wins = opponentValue != null && stat.value > opponentValue;
+                      return (
+                        <div key={stat.name} className={`${styles.statItem} ${wins ? styles.win : ''}`}>
+                          <dt>{STAT_LABELS[stat.name] ?? stat.name}</dt>
+                          <dd>{stat.value}{wins && <span aria-label="Winning stat"> ✓</span>}</dd>
+                        </div>
+                      );
+                    })}
+                  </dl>
+                </div>
+              );
+            })}
+            <div className={styles.chartContainer} aria-label="Base stats radar chart">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={chartData}>
-                  <PolarGrid strokeOpacity={0.2}/>
-                  <PolarAngleAxis dataKey="stat" tick={{ fill: 'var(--text-secondary)', fontSize: 10, fontWeight: 800 }}/>
-                  <PolarRadiusAxis angle={30} domain={[0, 255]} tick={false} axisLine={false}/>
-                  <Radar name={p1.name} dataKey={p1.name} stroke="#6366f1" fill="#6366f1" fillOpacity={0.45}/>
-                  <Radar name={p2.name} dataKey={p2.name} stroke="#ec4899" fill="#ec4899" fillOpacity={0.45}/>
-                  <Tooltip contentStyle={{ borderRadius: 12, border: 'none', background: 'var(--bg-paper)', color: 'var(--text-primary)', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}/>
-                  <Legend wrapperStyle={{ fontSize: 12, fontWeight: 800, textTransform: 'uppercase', marginTop: 10 }}/>
+                  <PolarGrid stroke="var(--border-hover)" />
+                  <PolarAngleAxis dataKey="stat" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 255]} tick={false} axisLine={false} />
+                  <Radar name={first.name} dataKey="first" stroke={COMPARE_COLORS[0]} fill={COMPARE_COLORS[0]} fillOpacity={0.24} />
+                  <Radar name={second.name} dataKey="second" stroke={COMPARE_COLORS[1]} fill={COMPARE_COLORS[1]} fillOpacity={0.24} />
+                  <Tooltip contentStyle={{ borderRadius: 8, background: 'var(--bg-paper)', color: 'var(--text-primary)' }} />
+                  <Legend wrapperStyle={{ fontSize: 12, textTransform: 'capitalize' }} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
-
-            {/* P2 */}
-            <div className={styles.pokemonColumn}>
-              <div className={`${styles.avatarCircle} ${styles.p2}`}>
-                <img src={p2.image} alt={p2.name} className={styles.pokemonImage} style={{ filter: 'drop-shadow(0 6px 20px rgba(236,72,153,0.4))' }}/>
-              </div>
-              <span className={`${styles.pokemonName} ${styles.p2}`}>{p2.name}</span>
-              <div className={styles.typesRow}>
-                {p2.types.map((t: string) => (
-                  <span key={t} className={`${styles.typeBadge} ${styles.p2}`}>{t}</span>
-                ))}
-              </div>
-              {/* Stats */}
-              <div className={styles.statsRow}>
-                {p2.stats.map((s: any, i: number) => {
-                  const p1val = p1.stats[i]?.value || 0;
-                  const wins = s.value > p1val;
-                  return (
-                    <div key={s.name} className={`${styles.statItem} ${wins ? styles.win : styles.lose}`}>
-                      <span className={styles.statLabel}>{s.name.replace('-', ' ')}</span>
-                      <span>{s.value}{wins ? ' ✓' : ''}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
           </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+        ) : <p className={styles.status} role="status">{loadingFirst || loadingSecond
+          ? 'Loading Pokémon…' : 'Unable to load the selected Pokémon.'}</p>}
+      </section>
+    </div>
   );
 }

@@ -1,215 +1,92 @@
-@import "../variables";
-@import "../mixins";
-
 .overlay {
-  @include overlay-fixed(rgba(0, 0, 0, 0.75), 10px, 2000);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  background: #191519b8;
+  padding: 12px;
 }
-
 .modalCard {
-  background: var(--bg-paper);
+  width: min(100%, 920px);
+  max-height: 92dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
   border: 1px solid var(--border-main);
   border-radius: var(--radius-xl);
-  width: 100%;
-  max-width: 900px;
-  overflow: hidden;
+  background: var(--bg-paper);
   box-shadow: var(--shadow-lg);
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: slideUp var(--transition-normal);
-
-  @include custom-scrollbar($thumb-color: var(--border-main));
 }
-
 .header {
-  padding: 20px 32px;
-  border-bottom: 1px solid var(--border-main);
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  .title {
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--text-primary);
-  }
-
-  .closeBtn {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border-main);
-    border-radius: var(--radius-full);
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition-fast);
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--text-primary);
-    }
-  }
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-paper);
+  border-bottom: 1px solid var(--border-main);
 }
-
+.title { font-size: clamp(1rem, 3vw, 1.4rem); letter-spacing: -.035em; }
+.closeBtn {
+  flex: 0 0 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-full);
+  background: var(--bg-default);
+  color: var(--text-primary);
+  cursor: pointer;
+}
 .body {
-  padding: 24px 32px;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 1.6fr) minmax(0, 1fr);
   align-items: center;
-  gap: 40px;
-  justify-content: center;
-
-  @media (max-width: $breakpoint-md) {
-    flex-direction: column;
-    padding: 20px 16px;
-    gap: 24px;
-  }
+  gap: var(--space-4);
+  padding: var(--space-4);
 }
-
-.pokemonColumn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  min-width: 180px;
-  flex: 1;
-
-  @media (max-width: $breakpoint-md) {
-    width: 100%;
-  }
-
-  .avatarCircle {
-    width: 160px;
-    height: 160px;
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-main);
-    transition: var(--transition-normal);
-
-    &.p1 {
-      background: rgba(var(--primary-rgb), 0.1);
-      &:hover {
-        background: rgba(var(--primary-rgb), 0.15);
-      }
-    }
-
-    &.p2 {
-      background: rgba(var(--secondary-rgb), 0.1);
-      &:hover {
-        background: rgba(var(--secondary-rgb), 0.15);
-      }
-    }
-  }
-
-  .pokemonImage {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    transition: var(--transition-normal);
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  .pokemonName {
-    font-size: 20px;
-    font-weight: 950;
-    text-transform: capitalize;
-    letter-spacing: -0.5px;
-    
-    &.p1 { color: var(--primary); }
-    &.p2 { color: var(--secondary); }
-  }
+.pokemonColumn { display: grid; justify-items: center; min-width: 0; gap: 8px; }
+.pokemonColumn:nth-child(2) { grid-column: 3; grid-row: 1; }
+.avatarCircle {
+  width: min(100%, 128px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-main);
+  border-radius: 50%;
 }
-
-.typesRow {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
+.pokemonImage { width: 85%; height: 85%; object-fit: contain; }
+.pokemonName { text-transform: capitalize; text-align: center; overflow-wrap: anywhere; }
+.typesRow { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .typeBadge {
-  font-size: 11px;
-  font-weight: 800;
+  font-size: .66rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 5px;
   text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: var(--radius-sm);
-  letter-spacing: 0.05em;
-
-  &.p1 {
-    background: rgba(var(--primary-rgb), 0.12);
-    color: var(--primary);
-  }
-
-  &.p2 {
-    background: rgba(var(--secondary-rgb), 0.12);
-    color: var(--secondary);
-  }
+  color: #211b20;
 }
-
-.statsRow {
-  width: 100%;
-  margin-top: 8px;
-}
-
+.statsRow { display: grid; gap: 4px; width: 100%; }
 .statItem {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  padding: 6px 10px;
+  padding: 6px 8px;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.01);
   border: 1px solid var(--border-main);
-  transition: var(--transition-fast);
-
-  &.win {
-    color: #22c55e;
-    background: rgba(34, 197, 94, 0.04);
-    border-color: rgba(34, 197, 94, 0.15);
-  }
-
-  &.lose {
-    color: var(--text-secondary);
-  }
-
-  .statLabel {
-    text-transform: capitalize;
-  }
+  background: var(--bg-default);
+  color: var(--text-secondary);
+  font-size: .76rem;
+  font-weight: 650;
 }
-
-.chartContainer {
-  flex: 1.5;
-  height: 380px;
-  min-width: 280px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @media (max-width: $breakpoint-md) {
-    height: 300px;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.win { color: var(--accent-green); }
+.chartContainer { min-width: 0; height: 340px; grid-column: 2; grid-row: 1; }
+.status { padding: var(--space-6); color: var(--text-secondary); }
+@media (max-width: 640px) {
+  .body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pokemonColumn:nth-child(2) { grid-column: 2; }
+  .chartContainer { grid-column: 1 / -1; grid-row: 2; height: 265px; }
+  .avatarCircle { width: min(100%, 94px); }
 }

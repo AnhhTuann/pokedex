@@ -22,10 +22,10 @@ export function resolveReferenceArtwork<T extends { image: string; shinyImage?: 
   return { ...row, image: assetUrl(row.image), shinyImage: assetUrl(row.shinyImage) || undefined };
 }
 
-export function useReferenceList(filters: ReferenceFilters) {
+export function useReferenceList(filters: ReferenceFilters, { skip = false } = {}) {
   const { data, loading, error, fetchMore } = useQuery<{ referencePokemonList: {
     results: PokemonListItem[]; totalCount: number;
-  } }>(REFERENCE_LIST, { variables: { filters }, notifyOnNetworkStatusChange: true });
+  } }>(REFERENCE_LIST, { variables: { filters }, notifyOnNetworkStatusChange: true, skip });
   const page = data?.referencePokemonList;
   return {
     pokemonList: page?.results.map(resolveReferenceArtwork) ?? [],
@@ -58,8 +58,8 @@ interface ReferenceDetail extends Omit<PokemonListItem, 'shinyImage'> {
   learnset: { state: string; entries: {
     moveId: number; name: string; method: string; level: number; enhancementLevel: number | null; versionGroup: string;
   }[] } | null;
-  evolution: { fromSpeciesId: number; toSpeciesId: number; trigger: string; versionGroup: string; conditionsJson: string }[];
-  forms: { id: number; name: string; category: string; image: string }[];
+  evolution: { fromSpeciesId: number; toSpeciesId: number; trigger: string | null; versionGroup: string | null; conditionsJson: string; source: string }[];
+  forms: { id: number; name: string; category: string; image: string; shinyImage: string | null }[];
 }
 
 export function useReferenceDetail(id: number | null, game?: string, generation?: number) {

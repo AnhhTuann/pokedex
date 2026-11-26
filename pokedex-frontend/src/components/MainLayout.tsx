@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import {
@@ -114,6 +114,17 @@ export default function MainLayout() {
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
 
+  useEffect(() => {
+    if (!mobileOpen && !versionDialogOpen) return;
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setVersionDialogOpen(false);
+      setMobileOpen(false);
+    };
+    window.addEventListener('keydown', onEscape);
+    return () => window.removeEventListener('keydown', onEscape);
+  }, [mobileOpen, versionDialogOpen]);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -153,7 +164,7 @@ export default function MainLayout() {
         <div className={styles.brandLogo}>
           <PokeballIcon size={28} />
         </div>
-        <span className={styles.brandText}>Pokédex Wiki</span>
+        <span className={styles.brandText}>Elite Pokédex</span>
       </div>
       
       <div className={styles.divider} />
@@ -167,7 +178,7 @@ export default function MainLayout() {
 
           return (
             <button
-              key={item.text}
+              key={item.text} aria-current={isActive ? 'page' : undefined}
               onClick={() => {
                 navigate(item.path);
                 setMobileOpen(false);
@@ -185,16 +196,12 @@ export default function MainLayout() {
                 className={styles.navIcon}
                 style={{
                   color: isActive ? itemColor : `rgba(${itemRgb}, 0.55)`,
-                  filter: isActive ? `drop-shadow(0 0 6px rgba(${itemRgb}, 0.4))` : 'none'
                 }}
               >
                 {item.icon}
               </span>
               <span 
                 className={styles.navText}
-                style={{
-                  color: isActive ? itemColor : undefined
-                }}
               >
                 {item.text}
               </span>
@@ -205,10 +212,7 @@ export default function MainLayout() {
 
       <div className={styles.divider} />
 
-      {/* Footer Signature */}
-      <div className={styles.footerSignature}>
-        Console v3.2
-      </div>
+
     </>
   );
 
@@ -223,11 +227,8 @@ export default function MainLayout() {
     <div 
       className={styles.appContainer}
       style={{
-        '--primary': activeColor,
-        '--primary-rgb': activeRgb,
-        '--glow-primary': isDark 
-          ? `0 0 25px rgba(${activeRgb}, 0.55), 0 0 10px rgba(189, 0, 255, 0.35)`
-          : `0 0 18px rgba(${activeRgb}, 0.35)`
+        '--route-accent': activeColor,
+        '--route-accent-rgb': activeRgb
       } as React.CSSProperties}
     >
       <UpdateNotifier />
@@ -258,7 +259,7 @@ export default function MainLayout() {
           <button 
             className={cn(styles.menuToggle, styles.mobileToggle)}
             onClick={handleDrawerToggle}
-            title="Menu"
+            title="Menu" aria-expanded={mobileOpen}
           >
             <MenuIcon size={20} />
           </button>
@@ -267,7 +268,7 @@ export default function MainLayout() {
           <button 
             className={cn(styles.menuToggle, styles.desktopToggle)}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            title="Toggle Sidebar"
+            title="Toggle Sidebar" aria-expanded={isSidebarOpen}
           >
             <MenuIcon size={20} />
           </button>
@@ -287,6 +288,9 @@ export default function MainLayout() {
                 const styleInfo = getVersionColorStyle(selectedVersion);
                 const isPair = styleInfo.bg.toLowerCase().includes('gradient');
                 const displayName = getVersionDisplayName(selectedVersion);
+                const pairedGames = GENERATION_VERSIONS.flatMap(group => group.rows)
+                  .find(row => row.games.some(game => game.name === selectedVersion))?.games;
+                const activeGameLabel = pairedGames?.find(game => game.name === selectedVersion)?.label ?? displayName;
                 const [game1Label, game2Label] = isPair ? displayName.split(' / ') : ['', ''];
 
                 // Light Mode header color override helper
@@ -322,16 +326,16 @@ export default function MainLayout() {
 
                 return (
                   <button
-                    id="game-version-selector-btn"
+                    id="game-version-selector-btn" aria-label={`Change game version: ${activeGameLabel}`} aria-haspopup="dialog" aria-expanded={versionDialogOpen}
                     className={styles.versionBtn}
                     onClick={() => setVersionDialogOpen(true)}
                     style={{
                       background: isPair ? 'transparent' : resolvedBg,
                       '--v-bg': isPair ? 'transparent' : resolvedBg,
                       '--v-text': getContrastColor(resolvedBg),
-                      '--v-box-shadow': isDark ? `0 0 12px ${styleInfo.shadow}` : '0 4px 10px rgba(0, 0, 0, 0.15)',
-                      '--v-box-shadow-hover': isDark ? `0 0 20px ${styleInfo.shadow}` : '0 6px 14px rgba(0, 0, 0, 0.2)',
-                      borderRadius: '19px',
+                      '--v-box-shadow': 'var(--shadow-sm)',
+                      '--v-box-shadow-hover': 'var(--shadow-md)',
+                      borderRadius: 'var(--radius-sm)',
                       overflow: 'hidden',
                       isolation: 'isolate',
                       padding: isPair ? 0 : '0 18px',
@@ -339,7 +343,7 @@ export default function MainLayout() {
                     } as React.CSSProperties}
                   >
                     {isPair ? (
-                      <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', minWidth: '280px', position: 'relative' }}>
+                      <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', position: 'relative' }}>
                         {/* Left Half */}
                         <div style={{
                           width: '50%',
@@ -348,6 +352,7 @@ export default function MainLayout() {
                           alignItems: 'center',
                           height: '100%',
                           background: resolvedC1,
+                          textDecoration: selectedVersion === pairedGames?.[0]?.name ? 'underline' : undefined,
                           padding: '0 8px',
                           color: getContrastColor(resolvedC1)
                         }}>
@@ -361,6 +366,7 @@ export default function MainLayout() {
                           alignItems: 'center',
                           height: '100%',
                           background: resolvedC2,
+                          textDecoration: selectedVersion === pairedGames?.[1]?.name ? 'underline' : undefined,
                           padding: '0 8px',
                           color: getContrastColor(resolvedC2)
                         }}>
@@ -390,6 +396,8 @@ export default function MainLayout() {
                 );
               })()}
 
+            </>
+          )}
               {/* Shiny Mode switch */}
               <label id="global-shiny-toggle" className={styles.switchLabel}>
                 <span className={cn(styles.switchText, isShinyMode && styles.active)}>
@@ -397,15 +405,13 @@ export default function MainLayout() {
                 </span>
                 <span className={styles.switch}>
                   <input
-                    type="checkbox"
+                    type="checkbox" aria-label="Shiny mode"
                     checked={isShinyMode}
                     onChange={toggleShinyMode}
                   />
                   <span className={styles.slider} />
                 </span>
               </label>
-            </>
-          )}
 
           {/* Minigame Button */}
           <button
@@ -450,14 +456,14 @@ export default function MainLayout() {
       {/* ── Game Version Dialog Overlay (Custom Modal) ── */}
       {versionDialogOpen && (
         <div className={styles.modalOverlay} onClick={() => setVersionDialogOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} role="dialog" aria-modal="true" aria-label="Game version selector" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
                 <Gamepad2 size={26} />
                 <span>SELECT GAME VERSION</span>
               </h2>
-              <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)}>
+              <button className={styles.modalCloseBtn} aria-label="Close game selector" autoFocus onClick={() => setVersionDialogOpen(false)}>
                 <X size={22} />
               </button>
             </div>
@@ -506,7 +512,7 @@ export default function MainLayout() {
                               
                               return (
                                 <button
-                                  key={game.name}
+                                  key={game.name} aria-pressed={isActive}
                                   onClick={() => {
                                     setSelectedVersion(game.name);
                                     setVersionDialogOpen(false);
@@ -520,7 +526,7 @@ export default function MainLayout() {
                                       background: isActive 
                                         ? vColor 
                                         : isDark 
-                                          ? '#13171F' 
+                                          ? 'var(--bg-default)'
                                           : `rgba(${hexToRgb(vColor)}, 0.08)`,
                                       borderColor: isActive 
                                         ? vColor 
@@ -530,13 +536,9 @@ export default function MainLayout() {
                                       color: isActive 
                                         ? contrastColor 
                                         : isDark 
-                                          ? '#F1F5F9' 
+                                          ? 'var(--text-primary)'
                                           : getLightModeInactiveColor(game.name, vColor),
-                                      boxShadow: isActive 
-                                        ? isDark 
-                                          ? `0 0 16px rgba(${hexToRgb(vColor)}, 0.45)`
-                                          : `0 8px 24px rgba(${hexToRgb(vColor)}, 0.35)`
-                                        : 'none',
+                                      boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
                                     } as React.CSSProperties
                                   }
                                 >
@@ -545,9 +547,6 @@ export default function MainLayout() {
                                     style={
                                       {
                                         backgroundColor: isActive ? contrastColor : vColor,
-                                        boxShadow: isDark 
-                                          ? `0 0 10px ${vColor}, 0 0 20px ${vColor}`
-                                          : `0 0 8px ${vColor}`,
                                       } as React.CSSProperties
                                     }
                                   />

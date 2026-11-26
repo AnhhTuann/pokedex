@@ -66,7 +66,8 @@ export default function TypeDex() {
   // Grouping Defensive Multipliers
   const defensiveGroups = {
     weak: [...damageTaken.x4.map(t => ({ type: t, mult: 4 })), ...damageTaken.x2.map(t => ({ type: t, mult: 2 }))],
-    resistant: [...damageTaken.x05.map(t => ({ type: t, mult: 0.5 })), ...damageTaken.x025.map(t => ({ type: t, mult: 0.25 })), ...damageTaken.x0.map(t => ({ type: t, mult: 0 }))],
+    resistant: [...damageTaken.x05.map(t => ({ type: t, mult: 0.5 })), ...damageTaken.x025.map(t => ({ type: t, mult: 0.25 }))],
+    immune: damageTaken.x0,
     normal: damageTaken.x1.map(t => ({ type: t, mult: 1 }))
   };
 
@@ -105,6 +106,7 @@ export default function TypeDex() {
             <span className={styles.label}>Primary Type</span>
             <div className={styles.selectWrapper}>
               <select
+                aria-label="Primary Type"
                 value={primaryType}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -130,6 +132,7 @@ export default function TypeDex() {
             <span className={styles.label}>Secondary Type</span>
             <div className={styles.selectWrapper}>
               <select
+                aria-label="Secondary Type"
                 value={secondaryType}
                 onChange={(e) => setSecondaryType(e.target.value)}
                 style={secondaryType !== 'none' ? {
@@ -185,7 +188,7 @@ export default function TypeDex() {
               {/* Resistant Against */}
               <div className={styles.sectionBlock}>
                 <span className={`${styles.sectionTitle} ${styles.green}`}>
-                  Resistant against... (Takes halved/no damage)
+                  Resistant against... (Takes half or quarter damage)
                 </span>
                 <div className={styles.chipsGrid}>
                   {defensiveGroups.resistant.length > 0 ? (
@@ -200,6 +203,16 @@ export default function TypeDex() {
                 </div>
               </div>
 
+              <hr className={styles.divider} />
+
+              <div className={styles.sectionBlock}>
+                <span className={styles.sectionTitle}>Immune to</span>
+                <div className={styles.chipsGrid}>
+                  {defensiveGroups.immune.length ? defensiveGroups.immune.map(type =>
+                    <TypeMultiplierChip key={type} type={type} multiplier={0} />
+                  ) : <span className={styles.noCoverage}>No immunities.</span>}
+                </div>
+              </div>
               <hr className={styles.divider} />
 
               {/* Normal Damage */}

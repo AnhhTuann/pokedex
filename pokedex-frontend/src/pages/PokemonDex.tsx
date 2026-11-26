@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'motion/react';
 import { Sparkles, Heart, Scale } from 'lucide-react';
 import PokeCard from '../components/PokeCard';
 import SearchBar from '../components/SearchBar';
@@ -75,6 +74,7 @@ export default function PokemonDex() {
   return (
     <div className={styles.container}>
       
+      <h2 className={styles.heading}>Pokédex</h2>
       {/* Search & Filter Section */}
       <div className={styles.searchWrapper}>
         <SearchBar
@@ -82,28 +82,27 @@ export default function PokemonDex() {
           typeValue={typeFilter} onTypeChange={setTypeFilter}
           genValue={genFilter}   onGenChange={setGenFilter}
         />
-      </div>
-
-      <div className={styles.searchWrapper}>
-        <label>Region <select aria-label="Region" value={broadRegion} onChange={event => setBroadRegion(event.target.value)}>
-          <option value="">All regions</option>
-          {[...new Set(catalog?.dexes.flatMap(dex => dex.region ? [dex.region] : []))].sort().map(region =>
-            <option key={region} value={region}>{region}</option>)}
-        </select></label>
-        <label>Exact Dex <select aria-label="Exact Dex" value={exactDex} onChange={event => setExactDex(event.target.value)}>
-          <option value="">Use game scope</option>
-          {catalog?.dexes.map(dex => <option key={dex.slug} value={dex.slug}>{dex.slug}</option>)}
-        </select></label>
-        <label>Form <select aria-label="Form" value={formCategory} onChange={event => setFormCategory(event.target.value)}>
-          <option value="">All forms</option>
-          {['DEFAULT', 'ALTERNATE', 'REGIONAL', 'MEGA', 'GIGANTAMAX', 'BATTLE', 'COSMETIC', 'OTHER', 'UNKNOWN'].map(category =>
-            <option key={category} value={category}>{category.toLowerCase()}</option>)}
-        </select></label>
-        {game && <label>Game evidence <select aria-label="Game evidence" value={evidence} onChange={event => setEvidence(event.target.value)}>
-          <option value="">Use game scope</option>
-          {['REGIONAL_DEX_MEMBER', 'GAME_PRESENCE_EVIDENCE', 'OBTAINABLE', 'WILD_CATCHABLE', 'TRANSFER_AVAILABLE', 'EVENT_AVAILABLE', 'UNKNOWN'].map(facet =>
-            <option key={facet} value={facet}>{facet.toLowerCase().replaceAll('_', ' ')}</option>)}
-        </select></label>}
+        <div className={styles.filterGrid}>
+          <label>Region <select aria-label="Region" value={broadRegion} onChange={event => setBroadRegion(event.target.value)}>
+            <option value="">All regions</option>
+            {[...new Set(catalog?.dexes.flatMap(dex => dex.region ? [dex.region] : []))].sort().map(region =>
+              <option key={region} value={region}>{region}</option>)}
+          </select></label>
+          <label>Exact Dex <select aria-label="Exact Dex" value={exactDex} onChange={event => setExactDex(event.target.value)}>
+            <option value="">Use game scope</option>
+            {catalog?.dexes.map(dex => <option key={dex.slug} value={dex.slug}>{dex.slug}</option>)}
+          </select></label>
+          <label>Form <select aria-label="Form" value={formCategory} onChange={event => setFormCategory(event.target.value)}>
+            <option value="">All forms</option>
+            {['DEFAULT', 'ALTERNATE', 'REGIONAL', 'MEGA', 'GIGANTAMAX', 'BATTLE', 'COSMETIC', 'OTHER', 'UNKNOWN'].map(category =>
+              <option key={category} value={category}>{category.toLowerCase()}</option>)}
+          </select></label>
+          {game && <label>Game evidence <select aria-label="Game evidence" value={evidence} onChange={event => setEvidence(event.target.value)}>
+            <option value="">Use game scope</option>
+            {['REGIONAL_DEX_MEMBER', 'GAME_PRESENCE_EVIDENCE', 'OBTAINABLE', 'WILD_CATCHABLE', 'TRANSFER_AVAILABLE', 'EVENT_AVAILABLE', 'UNKNOWN'].map(facet =>
+              <option key={facet} value={facet}>{facet.toLowerCase().replaceAll('_', ' ')}</option>)}
+          </select></label>}
+        </div>
       </div>
 
       {/* View Mode Toggle */}
@@ -111,6 +110,7 @@ export default function PokemonDex() {
         <div className={styles.modeToggle}>
           <button
             onClick={() => { setViewMode('all'); setCompareIds([]); }}
+            aria-pressed={viewMode === 'all'}
             className={cn(
               styles.modeBtn,
               viewMode === 'all' && styles.activeBtnAll
@@ -122,17 +122,19 @@ export default function PokemonDex() {
           
           <button
             onClick={() => { setViewMode('favorites'); setCompareIds([]); }}
+            aria-pressed={viewMode === 'favorites'}
             className={cn(
               styles.modeBtn,
               viewMode === 'favorites' && styles.activeBtnFav
             )}
           >
             <Heart size={16} />
-            <span>Favs ({favorites.length})</span>
+            <span>Favorites ({favorites.length})</span>
           </button>
           
           <button
             onClick={() => setViewMode('compare')}
+            aria-pressed={viewMode === 'compare'}
             className={cn(
               styles.modeBtn,
               viewMode === 'compare' && styles.activeBtnComp
@@ -219,7 +221,7 @@ export default function PokemonDex() {
         <div className={styles.compareBanner}>
           {compareIds.length === 0 && 'Select 2 Pokémon to compare.'}
           {compareIds.length === 1 && 'Select 1 more Pokémon.'}
-          {compareIds.length === 2 && 'Ready! Click a card to compare.'}
+          {compareIds.length === 2 && 'Comparing the selected Pokémon.'}
         </div>
       )}
 
@@ -236,18 +238,15 @@ export default function PokemonDex() {
         </div>
       ) : (
         <div className={styles.pokemonGrid}>
-          <AnimatePresence mode="wait">
-            {pokemonList.map((p: any, idx: number) => (
+            {pokemonList.map(p => (
               <PokeCard
                 key={p.id}
                 pokemon={p}
-                index={idx % 12}
                 onClick={() => handleCardClick(p.id)}
                 isCompareMode={isCompareMode}
                 isSelectedForCompare={compareIds.includes(p.id)}
               />
             ))}
-          </AnimatePresence>
         </div>
       )}
 

@@ -735,3 +735,69 @@
     }
   }
 }
+
+.header {
+  box-shadow: var(--shadow-sm);
+  border-top: 3px solid var(--brand);
+}
+
+.sidebar { box-shadow: none; }
+
+.brandHeader {
+  background: var(--primary-gradient);
+  min-height: 70px;
+}
+
+.brandLogo, .brandText {
+  color: #fff;
+  filter: none;
+  text-shadow: none;
+}
+
+.brandText { letter-spacing: -.04em; text-transform: none; }
+.navMenu { gap: 3px; padding: 14px 12px; }
+.navButton {
+  padding: 11px 14px;
+  &:hover { transform: none; }
+  &:hover .navIcon { transform: none; filter: none; }
+}
+.navButtonActive {
+  color: var(--text-primary);
+  background: rgba(var(--route-accent-rgb), .11);
+  border-color: transparent;
+  box-shadow: none;
+  &::before { background: var(--route-accent); box-shadow: none; }
+  .navIcon { filter: none; }
+}
+
+.mainContent { min-width: 0; }
+.title { text-transform: none; font-size: 1rem; }
+.rightGroup { gap: 10px; }
+.slider { background: var(--bg-paper-glow); }
+.switch input:focus-visible + .slider { outline: 2px solid var(--brand); }
+.switch input:checked + .slider::before { box-shadow: none; }
+.modalContent { background: var(--bg-paper); }
+.modalOverlay { backdrop-filter: none; }
+
+@media (max-width: 640px) {
+  .header { height: auto; min-height: 70px; gap: 8px; padding-inline: 12px; }
+  .header:has(.versionBtn) {
+    height: 108px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) repeat(3, 32px);
+    align-content: center;
+  }
+  .header:has(.versionBtn) .rightGroup { display: contents; }
+  .header:has(.versionBtn) .leftGroup { grid-area: 1 / 1; }
+  .header:has(.versionBtn) .versionBtn { grid-area: 2 / 1; justify-content: center; }
+  .header:has(.versionBtn) .switchLabel { grid-area: 2 / 2 / auto / -1; justify-self: end; }
+  .header:has(.versionBtn) ~ .mainContent { padding-top: 124px; }
+  .switchLabel { display: flex !important; }
+  .switchText { font-size: 9px; }
+  .actionIconBtn, .themeBtn { width: 32px; height: 32px; }
+  .leftGroup { gap: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navButton:hover, .versionBtn:hover { transform: none; }
+}

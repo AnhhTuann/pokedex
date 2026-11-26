@@ -33,19 +33,7 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   
-  // Immersive Background effect
-  &::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 60%),
-                radial-gradient(circle at 80% 20%, rgba(var(--secondary-rgb), 0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-  }
+
 }
 
 // Global Custom Scrollbar on all scrollable elements
@@ -72,8 +60,8 @@ html.dark {
   }
   
   select option {
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: var(--bg-paper);
+    color: var(--text-primary);
   }
 }
 
@@ -153,4 +141,21 @@ a {
 
 .glow-secondary {
   box-shadow: $glow-secondary;
+}
+
+
+button, input, select, textarea { font-family: inherit; }
+
+
+.artwork-unavailable {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 4px;
+  color: var(--text-secondary);
+  font-size: .69rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }

@@ -1,265 +1,183 @@
-@import "../variables";
-@import "../mixins";
-
 .cardWrapper {
   height: 100%;
+  min-width: 0;
 }
 
 .pokeCard {
   position: relative;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  padding: 24px 16px 16px 16px;
+  height: 100%;
+  min-height: 240px;
+  isolation: isolate;
   overflow: hidden;
-  border-radius: $radius-lg;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, var(--border-main));
+  border-radius: var(--radius-lg);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
 
-  @include glass;
-  @include holographic-sheen;
-
-  background: var(--card-bg, rgba(20, 20, 30, 0.6)) !important;
-  backdrop-filter: blur(12px) !important;
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  border-width: 2px;
-  border-style: solid;
-  position: relative;
-
-  &::before {
+  &::after {
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: $radius-lg;
-    padding: 2px;
-    background: linear-gradient(
-      135deg,
-      var(--primary-color, #9ca3af) 40,
-      transparent
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.35s ease;
     pointer-events: none;
-  }
-
-  &:hover {
-    transform: translateY(-16px) scale(1.05);
-    border-color: var(--primary-color, rgba(255, 255, 255, 0.4));
-    box-shadow:
-      0 0 40px var(--primary-color-glow, rgba(0, 0, 0, 0.3)),
-      0 30px 60px rgba(0, 0, 0, 0.4),
-      inset 0 2px 4px rgba(255, 255, 255, 0.2);
-
-    &::before {
-      opacity: 1;
-    }
-    
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.3) 25%, transparent 30%);
-      background-size: 200% 200%;
-      animation: shine 1s ease-out forwards;
-      pointer-events: none;
-      z-index: 20;
-    }
+    background: linear-gradient(115deg, transparent 25%, #ffffff30 50%, transparent 75%);
+    transform: translateX(-100%);
   }
 }
 
-// ─── Compare & Mega Card Modifiers ────────────────────────
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pokeCard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+
+    &::after { animation: shine 700ms ease-out; }
+    .pokemonImage { animation: floatGentle 2.8s ease-in-out infinite; }
+  }
+}
+
+@keyframes shine {
+  to { transform: translateX(100%); }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0) scale(1.035); }
+  50% { transform: translateY(-4px) scale(1.05); }
+}
+
 .selectedCompare {
-  box-shadow:
-    var(--glow-primary),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
-  border-color: var(--primary) !important;
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
 }
-
 
 .faded {
-  opacity: 0.45;
-  filter: grayscale(40%);
-
-  &:hover {
-    opacity: 1;
-    filter: grayscale(0%);
-  }
+  opacity: .62;
+  &:hover, &:focus-within { opacity: 1; }
 }
 
-// ─── Favorite Button ──────────────────────────────────────
+.openCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  padding: 15px 12px 16px;
+  border: none;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus-visible { outline-offset: -4px; }
+}
+
 .favoriteBtn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 12;
-  padding: 8px;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-main);
+  background: var(--bg-paper);
+  color: var(--text-secondary);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
-  &:active {
-    transform: scale(0.8);
-  }
+  &:hover { color: var(--brand); }
 }
 
-.isFavorite {
-  color: #ff3355;
-  background-color: rgba(255, 46, 85, 0.18);
-  border-color: rgba(255, 46, 85, 0.3);
-
-  &:hover {
-    background-color: rgba(255, 46, 85, 0.25);
-    transform: scale(1.08);
-  }
-}
-
-.isNotFavorite {
-  color: var(--text-muted);
-  background-color: rgba(0, 0, 0, 0.2);
-
-  :global(.dark) & {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  &:hover {
-    color: #ff3355;
-    background-color: rgba(255, 46, 85, 0.1);
-    border-color: rgba(255, 46, 85, 0.2);
-    transform: scale(1.08);
-  }
-}
-
-// ─── Image Frame Slot ─────────────────────────────────────
-@keyframes floatGentle {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-8px) scale(1);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
-}
+.isFavorite { color: var(--brand); }
 
 .imageContainer {
+  width: min(100%, 170px);
+  height: 136px;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
   position: relative;
-  width: 116px;
-  height: 116px;
-  border-radius: 50%;
-  @include flex-center;
-  margin-bottom: 16px;
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    inset 0 2px 8px rgba(0, 0, 0, 0.3),
-    0 0 16px rgba(0, 0, 0, 0.2);
-
-  .pokeCard:hover & {
-    transform: scale(1.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow:
-      inset 0 2px 12px rgba(0, 0, 0, 0.4),
-      0 0 24px var(--primary-color-glow, rgba(255, 255, 255, 0.2));
-  }
+  margin: 12px 0;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--bg-paper) 78%, transparent), transparent 72%);
 }
 
 .pokemonImage {
-  width: 98px;
-  height: 98px;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  filter: drop-shadow(0 8px 7px #24212326);
+}
 
-  .pokeCard:hover & {
-    transform: scale(1.15);
-    animation: floatGentle 2s ease-in-out infinite;
-    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.5));
-  }
+.idText {
+  align-self: flex-start;
+  padding-right: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font: 650 .71rem var(--font-mono);
+  color: var(--text-secondary);
 }
 
 .megaBadge {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
-  background: linear-gradient(135deg, #f43f5e 0%, #a855f7 100%);
-  color: #000000;
-  font-size: 9px;
-  font-weight: 900;
-  padding: 3px 9px;
-  border-radius: 6px;
+  bottom: 0;
+  right: 0;
+  border-radius: var(--radius-sm);
+  background: var(--brand-deep);
+  color: white;
+  padding: 4px 8px;
+  font-size: .61rem;
+  font-weight: 750;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow:
-    0 0 16px rgba(244, 63, 94, 0.7),
-    inset 0 1px 2px rgba(255, 255, 255, 0.4);
-  z-index: 10;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-// ─── Detail Info Tags ─────────────────────────────────────
 .info {
   width: 100%;
   text-align: center;
   margin-top: auto;
 }
 
-.idText {
-  font-size: 11px;
-  font-weight: 800;
-  color: #a0afc8;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
 .nameText {
-  font-size: 18px;
-  font-weight: 900;
+  font-size: clamp(.9rem, 1.6vw, 1.24rem);
+  font-weight: 750;
   text-transform: capitalize;
-  margin: 4px 0;
-  color: #ffffff;
-  letter-spacing: -0.5px;
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
 }
 
 .categoryText {
-  font-size: 13px;
-  font-style: italic;
-  color: #c0c8d8;
-  margin-bottom: 8px;
+  display: block;
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: .72rem;
+  text-transform: capitalize;
 }
 
 .typeGroup {
   display: flex;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
   margin-top: 8px;
 }
 
 .typeBadge {
-  font-size: 10px;
-  font-weight: 800;
-  color: white;
+  font-size: .63rem;
+  font-weight: 750;
+  color: #211b20;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 2px 10px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--type-color) 76%, white);
 }
 
-@keyframes shine {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@media (max-width: 480px) {
+  .pokeCard { min-height: 210px; }
+  .openCard { padding-inline: 9px; }
+  .imageContainer { height: 106px; }
 }

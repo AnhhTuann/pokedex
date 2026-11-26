@@ -39,7 +39,7 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
           {(['level', 'machine', 'tutor', 'other'] as const).map((t) => (
             <button
               key={t}
-              onClick={() => setTab(t)}
+              onClick={() => setTab(t)} aria-pressed={tab === t}
               className={`${styles.tabBtn} ${tab === t ? styles.tabActive : ''}`}
             >
               {t}
@@ -90,15 +90,16 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
                     </span>
                   </td>
                   <td>
+                    {!move.damageClass && <span aria-label="Unknown damage class">–</span>}
                     {move.damageClass === 'physical' && <Swords size={14} className="text-red-400" />}
                     {move.damageClass === 'special' && <Sparkles size={14} className="text-blue-400" />}
                     {move.damageClass === 'status' && <ShieldAlert size={14} className="text-slate-400" />}
                   </td>
                   <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
-                    {move.power || '--'}
+                    {move.power ?? '–'}
                   </td>
                   <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
-                    {move.accuracy || '--'}
+                    {move.accuracy ?? '–'}
                   </td>
                 </motion.tr>
               ))}

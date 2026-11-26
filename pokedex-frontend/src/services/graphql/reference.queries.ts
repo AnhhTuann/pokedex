@@ -28,8 +28,8 @@ export const REFERENCE_DETAIL = gql`
       matchups(generation: $generation) { type multiplier }
       availability { facet state }
       learnset { state entries { moveId name method level enhancementLevel versionGroup } }
-      evolution { fromSpeciesId toSpeciesId trigger versionGroup conditionsJson }
-      forms { id name category image }
+      evolution { fromSpeciesId toSpeciesId trigger versionGroup conditionsJson source }
+      forms { id name category image shinyImage }
     }
   }
 `;

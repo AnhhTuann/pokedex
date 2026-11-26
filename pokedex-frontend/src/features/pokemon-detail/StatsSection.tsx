@@ -23,6 +23,10 @@ const STAT_LABELS: Record<string, string> = {
 
 export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
   const total = stats.reduce((acc, s) => acc + s.value, 0);
+  const orderedStats = Object.keys(STAT_LABELS).map((name, index) => ({
+    stat: stats.find(entry => entry.name === name),
+    color: STAT_COLORS[index],
+  }));
 
   return (
     <div className={styles.statsContainer}>
@@ -37,9 +41,9 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
       </div>
 
       <div className={styles.statsList}>
-        {stats.map((stat, i) => {
+        {orderedStats.map(({ stat, color }, i) => {
+          if (!stat) return null;
           const percentage = Math.min(100, (stat.value / 255) * 100);
-          const color = STAT_COLORS[i % STAT_COLORS.length];
           const label = STAT_LABELS[stat.name] || stat.name;
 
           return (
@@ -56,7 +60,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
                   animate={{ width: `${percentage}%` }}
                   transition={{ duration: 0.8, delay: i * 0.1, ease: 'easeOut' }}
                   className={styles.statBarFill}
-                  style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}44` }}
+                  style={{ backgroundColor: color }}
                 />
               </div>
             </div>

@@ -48,7 +48,6 @@ export function extractDominantColor(imageUrl: string, primaryType?: string): Pr
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = 'Anonymous';
-    img.src = imageUrl;
     img.onload = () => {
       try {
         const canvas = document.createElement('canvas');
@@ -145,6 +144,7 @@ export function extractDominantColor(imageUrl: string, primaryType?: string): Pr
     img.onerror = () => {
       resolve(null);
     };
+    img.src = imageUrl;
   });
 }
 
@@ -217,9 +217,9 @@ export function getExtractedColors(
   const { h, s, l } = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
   if (isDark) {
-    // Bright neon-cyber color for Dark Mode
-    const activeS = Math.max(s, 75); // make it highly saturated for glow
-    const activeL = Math.max(35, Math.min(l, 55)); // maintain brightness but keep details visible
+    // Keep the artwork hue on a muted graphite surface.
+    const activeS = Math.min(s, 52);
+    const activeL = Math.max(46, Math.min(l, 68)); // maintain brightness but keep details visible
     const primary = `hsl(${h}, ${activeS}%, ${activeL}%)`;
     // Softer dark pastel color for background tint:
     // Saturation around 25%, Lightness around 14% to make it dark and premium.
@@ -236,7 +236,7 @@ export function getExtractedColors(
     const primary = `hsl(${h}, ${activeS}%, ${activeL}%)`;
     
     // Smooth pastel color for background
-    const pastel = `hsl(${h}, ${Math.min(s, 40)}%, 90%)`;
+    const pastel = `hsl(${h}, ${Math.min(s, 45)}%, 88%)`;
     return {
       primaryColor: primary,
       primaryColorGlow: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.15)`,

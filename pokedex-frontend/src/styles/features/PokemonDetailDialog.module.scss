@@ -546,13 +546,13 @@
 
     &.weak {
       background-color: rgba(239, 68, 68, 0.08);
-      color: #f87171;
+      color: var(--brand);
       border-color: rgba(239, 68, 68, 0.18);
     }
 
     &.strong {
       background-color: rgba(16, 185, 129, 0.08);
-      color: #34d399;
+      color: var(--accent-green);
       border-color: rgba(16, 185, 129, 0.18);
     }
   }
@@ -866,4 +866,63 @@
 @keyframes pulseGlow {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+.overlay {
+  background: #191519b8;
+  backdrop-filter: none;
+}
+.dialog { border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); }
+.rightPanel {
+  min-width: 0;
+  gap: var(--space-6);
+  background: var(--bg-paper);
+  backdrop-filter: none;
+  overscroll-behavior: contain;
+  :global(html:not(.dark)) & { background: var(--bg-paper); }
+}
+.imageWrapper {
+  .megaRing { opacity: .55; }
+  .pokemonImage { filter: drop-shadow(0 12px 18px #18141945); }
+  .pokemonImage:hover { transform: scale(1.03); }
+}
+.evidenceSection {
+  padding: var(--space-4);
+  background: var(--bg-default);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-md);
+  line-height: 1.5;
+  font-size: .85rem;
+  overflow-wrap: anywhere;
+
+  details + details { border-top: 1px solid var(--border-main); }
+  summary { cursor: pointer; padding-block: var(--space-2); font-family: var(--font-mono); }
+  dl { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin: 4px 0 10px; }
+  dd { color: var(--text-secondary); }
+  small { color: var(--text-muted); }
+  li { list-style: none; padding: 3px 0; }
+}
+.evolutionPath {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-md);
+  background: var(--bg-default);
+}
+.evolutionStep { display: inline-flex; align-items: center; }
+.evolutionChainSection .evoNode {
+  padding: 6px;
+  min-width: 0;
+  &:hover .evoImageBg { transform: scale(1.04); }
+}
+.formsSection .formCard[aria-current="true"] { border-color: var(--brand); }
+@media (max-width: 480px) {
+  .leftPanel, .rightPanel { padding: 16px; }
+  .rightPanel { gap: var(--space-4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .imageWrapper .pokemonImage:hover, .evolutionChainSection .evoNode:hover .evoImageBg { transform: none; }
 }

@@ -1,20 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, X, Zap, Shield, Brain, Star, Upload, Download, Copy, HelpCircle, AlertTriangle, CheckCircle, ChevronDown } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useTeamStore, TeamMember } from '../lib/teamStore';
 import { TYPE_LIST, calculateDamageTaken } from '../utils/typeMatchups';
+import { PokemonArtwork } from '../components/PokemonArtwork';
+import { useReferenceList } from '../hooks/useReferencePokemon';
+import type { PokemonListItem } from '../types';
 import { TYPE_COLORS } from '../lib/utils';
 import styles from '../styles/pages/TeamBuilder.module.scss';
-
-const GET_POKEMON_FOR_TEAM = gql`
-  query GetPokemonForTeam($search: String) {
-    pokemonList(limit: 50, search: $search) {
-      results { id name types image shinyImage }
-    }
-  }
-`;
 
 const GET_POKEMON_BUILDER_DETAILS = gql`
   query GetPokemonBuilderDetails($id: Int!) {
@@ -93,6 +88,7 @@ function getRecommendedNatures(member: TeamMember): string[] {
 }
 
 function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
+  const shiny = useTeamStore(state => state.isShinyMode);
   const { removeMember, setMoves, setAbility, setItem, setNature, updateMemberDetails } = useTeamStore();
   const { data } = useQuery(GET_POKEMON_BUILDER_DETAILS, {
     variables: { id: member.id },
@@ -119,10 +115,10 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
 
   return (
     <div className={styles.memberCard}>
-      <button className={styles.removeBtn} onClick={() => removeMember(member.id)}><X size={12}/></button>
+      <button aria-label={`Remove ${member.name} from team`} className={styles.removeBtn} onClick={() => removeMember(member.id)}><X size={12}/></button>
       <div className={styles.memberHeader}>
         <div className={styles.avatarWrap} style={{ background: `${typeColor}22` }}>
-          <img src={member.image} alt={member.name}/>
+          <PokemonArtwork src={shiny ? member.shinyImage : member.image} name={member.name} shiny={shiny} className={styles.memberArtwork} />
         </div>
         <div className={styles.memberMeta}>
           <span className={styles.slotNum}>SLOT #{index+1}</span>
@@ -197,7 +193,7 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
 }
 
 export default function TeamBuilder() {
-  const { team, addMember } = useTeamStore();
+  const { team, addMember, isShinyMode } = useTeamStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
@@ -208,14 +204,20 @@ export default function TeamBuilder() {
     setTimeout(()=>setToast(null),3000);
   };
 
-  const { data: listData, loading: listLoading, error: listError } = useQuery(
-    GET_POKEMON_FOR_TEAM,
-    { variables: { search: searchQuery } }
-  );
-  const available = listData?.pokemonList?.results || [];
+  const { pokemonList: available, loading: listLoading, error: listError } =
+    useReferenceList({ search: searchQuery, limit: 50 }, { skip: !modalOpen });
 
-  const handleAdd = (p:any) => {
-    addMember({ id:p.id, name:p.name, types:p.types, image:p.image });
+  useEffect(() => {
+    if (!modalOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setModalOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [modalOpen]);
+
+  const handleAdd = ({ id, name, types, image, shinyImage }: PokemonListItem) => {
+    addMember({ id, name, types, image, shinyImage });
     setModalOpen(false);
   };
 
@@ -335,10 +337,10 @@ export default function TeamBuilder() {
                 </motion.div>
               ) : (
                 <motion.div key="empty" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-                  <div className={styles.emptySlot} onClick={()=>setModalOpen(true)}>
-                    <div className={styles.addIconWrap}><Plus size={24} className={styles.addIcon}/></div>
+                  <button type="button" className={styles.emptySlot} onClick={()=>setModalOpen(true)}>
+                    <span className={styles.addIconWrap}><Plus size={24} className={styles.addIcon}/></span>
                     <span className={styles.addLabel}>Add Pokémon #{idx+1}</span>
-                  </div>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -393,33 +395,33 @@ export default function TeamBuilder() {
       <AnimatePresence>
         {modalOpen && (
           <motion.div className={styles.modalOverlay} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setModalOpen(false)}>
-            <motion.div className={styles.modalCard} initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} exit={{y:20,opacity:0}} onClick={e=>e.stopPropagation()}>
+            <motion.div className={styles.modalCard} role="dialog" aria-modal="true" aria-label="Select Pokémon" initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} exit={{y:20,opacity:0}} onClick={e=>e.stopPropagation()}>
               <div className={styles.modalHeader}>
                 <span className={styles.modalTitle}>Select Pokémon</span>
-                <button className={styles.modalClose} onClick={()=>setModalOpen(false)}><X size={14}/></button>
+                <button aria-label="Close Pokémon picker" className={styles.modalClose} onClick={()=>setModalOpen(false)}><X size={14}/></button>
               </div>
               <div className={styles.modalSearch}>
-                <input placeholder="Search Pokémon..." value={searchQuery} onChange={e=>setSearchQuery(e.target.value)}/>
+                <input autoFocus aria-label="Search Pokémon for team" placeholder="Search Pokémon..." value={searchQuery} onChange={e=>setSearchQuery(e.target.value)}/>
               </div>
               <div className={styles.modalList}>
-                {available.map((p:any)=>(
-                  <div key={p.id} className={styles.pokemonRow} onClick={()=>handleAdd(p)}>
-                    <img src={p.image} alt={p.name}/>
-                    <div className={styles.rowMeta}>
-                      <div className={styles.rowName}>{p.name}</div>
-                      <div className={styles.rowTypes}>
+                {available.map(p=>(
+                  <button type="button" key={p.id} className={styles.pokemonRow} onClick={()=>handleAdd(p)}>
+                    <PokemonArtwork src={isShinyMode ? p.shinyImage : p.image} name={p.name} shiny={isShinyMode} className={styles.rowArtwork} />
+                    <span className={styles.rowMeta}>
+                      <span className={styles.rowName}>{p.name}</span>
+                      <span className={styles.rowTypes}>
                         {p.types.map((t:string)=>(
                           <span key={t} className={styles.rowType} style={{background:TYPE_COLORS[t]||'#6b7280'}}>{t}</span>
                         ))}
-                      </div>
-                    </div>
-                  </div>
+                      </span>
+                    </span>
+                  </button>
                 ))}
                 {listLoading && (
-                  <div className={styles.modalEmpty}><p className={styles.emptyText}>Đang tải Pokémon…</p></div>
+                  <div className={styles.modalEmpty}><p className={styles.emptyText}>Loading Pokémon…</p></div>
                 )}
                 {!listLoading && listError && (
-                  <div className={styles.modalEmpty} role="alert"><AlertTriangle size={28} style={{opacity:0.6}}/><p className={styles.emptyText}>Không tải được danh sách Pokémon.</p></div>
+                  <div className={styles.modalEmpty} role="alert"><AlertTriangle size={28} style={{opacity:0.6}}/><p className={styles.emptyText}>Unable to load Pokémon.</p></div>
                 )}
                 {!listLoading && !listError && !available.length && (
                   <div className={styles.modalEmpty}><HelpCircle size={32} style={{opacity:0.4}}/><p className={styles.emptyText}>No Pokémon found</p></div>

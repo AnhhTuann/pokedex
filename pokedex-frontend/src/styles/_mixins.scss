@@ -32,10 +32,8 @@
 // ─── Visual Effects Mixins ────────────────────────────────
 @mixin glass {
   background: var(--bg-paper);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-main);
-  box-shadow: var(--shadow-md), inset 0 1px 1px var(--inset-glow);
+  box-shadow: var(--shadow-sm);
 }
 
 @mixin holographic-sheen {
@@ -53,8 +51,8 @@
       135deg,
       rgba(255, 255, 255, 0) 30%,
       rgba(255, 255, 255, 0.03) 40%,
-      rgba(0, 229, 255, 0.12) 48%,
-      rgba(255, 46, 85, 0.12) 52%,
+      rgba(255, 255, 255, 0.05) 48%,
+      rgba(255, 255, 255, 0.08) 52%,
       rgba(255, 255, 255, 0.03) 60%,
       rgba(255, 255, 255, 0) 70%
     );

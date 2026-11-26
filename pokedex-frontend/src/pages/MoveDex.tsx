@@ -452,7 +452,7 @@ export default function MoveDex() {
 
       {/* Content Area */}
       {error ? (
-        <div style={{
+        <div role="alert" style={{
           padding: 20,
           borderRadius: 12,
           backgroundColor: 'rgba(239, 68, 68, 0.08)',
@@ -464,7 +464,7 @@ export default function MoveDex() {
           fontWeight: 700
         }}>
           <ShieldAlert />
-          Backend offline — start the server on port 3000 to fetch real Moves.
+          Unable to load moves.
         </div>
       ) : loading && movesList.length === 0 ? (
         /* Loading skeletons */

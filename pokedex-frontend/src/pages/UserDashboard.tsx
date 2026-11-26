@@ -72,7 +72,7 @@ export default function UserDashboard() {
                   <PokeCard 
                     key={p.id} 
                     pokemon={p} 
-                    index={idx}
+
                     onClick={() => navigate(`/pokemon/${p.id}`)}
                   />
                 ))}

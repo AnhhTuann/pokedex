@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { X, Heart, Zap, Sparkles, Scale, Ruler } from 'lucide-react';
 import { useReferenceDetail } from '../../hooks/useReferencePokemon';
 import { getGameGenerationStrict } from '../../lib/gameVersions';
@@ -7,6 +7,8 @@ import { PokemonArtwork } from '../../components/PokemonArtwork';
 import { assetUrl } from '../../lib/apiConfig';
 import { useTeamStore } from '../../lib/teamStore';
 import { formatSpeciesId, TYPE_COLORS, cn } from '../../lib/utils';
+import { EvolutionChain } from './EvolutionChain';
+import { getExtractedColors } from '../../lib/colorExtractor';
 import { PokedexVoice } from './PokedexVoice';
 import { StatsSection } from './StatsSection';
 import { MoveList } from './MoveList';
@@ -20,36 +22,12 @@ interface PokemonDetailDialogProps {
   onSelect?: (id: number) => void;
 }
 
-function getBackgroundColor(type: string | undefined): string {
-  const typeLower = (type || "normal").toLowerCase();
-  switch (typeLower) {
-    case "grass": return "#c3deb0";
-    case "fire": return "#f2ad7c";
-    case "water": return "#6cbce5";
-    case "bug": return "#d2e59b";
-    case "normal": return "#e2e2df";
-    case "poison": return "#dbb5e7";
-    case "electric": return "#fdf0a6";
-    case "ground": return "#ecd0a1";
-    case "fairy": return "#f6c4d7";
-    case "fighting": return "#dfa1a1";
-    case "psychic": return "#f8b8cc";
-    case "rock": return "#dcd3bd";
-    case "steel": return "#cfd8dc";
-    case "ice": return "#b2ebf2";
-    case "ghost": return "#c2b7e0";
-    case "dragon": return "#9fa8da";
-    case "dark": return "#bcaaa4";
-    case "flying": return "#c5cae9";
-    default: return "#f5f5f7";
-  }
-}
-
 export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, onClose, onSelect }) => {
   const { selectedVersion, team, addMember, removeMember, isShinyMode } = useTeamStore();
   const [showShiny, setShowShiny] = useState(isShinyMode);
   const { mode } = useColorMode();
   const isDark = mode === 'dark';
+  const reduceMotion = useReducedMotion();
   
   const game = selectedVersion.toLowerCase() === 'all' ? undefined : selectedVersion;
   const { pokemon: p, loading, error } = useReferenceDetail(id, game,
@@ -71,18 +49,25 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!id) return;
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [id, onClose]);
+
   if (!id) return null;
 
   const inTeam = team.some(m => m.id === id);
   const accentColor = p ? (TYPE_COLORS[p.types[0]] || '#6366f1') : '#6366f1';
   const primaryType = p?.types?.[0] || "normal";
-  const detailBgColor = getBackgroundColor(primaryType);
+  const detailBgColor = getExtractedColors(null, primaryType, false).pastelBgColor;
   const isMega = p?.category === 'MEGA';
 
   return (
     <AnimatePresence>
       {id && (
-        <div className={styles.overlay} onClick={onClose}>
+        <div className={styles.overlay} onClick={onClose} role="dialog" aria-label="Pokémon details" aria-modal="true">
           {loading ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -124,16 +109,10 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                   className={styles.leftPanel}
                   style={{ 
                     background: isDark 
-                      ? `radial-gradient(circle at 50% 45%, ${accentColor}3d 0%, rgba(15, 23, 42, 0.35) 60%, rgba(8, 9, 15, 0.95) 100%)` 
-                      : `linear-gradient(135deg, ${detailBgColor} 0%, ${detailBgColor}dd 100%)`
+                      ? `radial-gradient(circle at 50% 45%, ${accentColor}30 0%, var(--bg-paper) 74%)`
+                      : `linear-gradient(135deg, ${detailBgColor} 0%, var(--bg-paper) 115%)`
                   }}
                 >
-                  {/* Decorative background circle */}
-                  <div 
-                    className={styles.bgCircle}
-                    style={{ backgroundColor: `${accentColor}${isDark ? '20' : '30'}` }}
-                  />
-
                   <div className={styles.headerActions}>
                     <span className={styles.speciesId} style={!isDark ? { color: '#5c6c94' } : undefined}>
                       {formatSpeciesId(p.speciesId || id)}
@@ -142,7 +121,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                       <button 
                         onClick={() => setShowShiny(!showShiny)}
                         className={`${styles.actionBtn} ${showShiny ? styles.shinyActive : ''}`}
-                        title="Toggle Shiny View"
+                        title="Toggle Shiny View" aria-pressed={showShiny}
                         style={!isDark ? { color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' } : undefined}
                       >
                         <Sparkles size={16} />
@@ -150,7 +129,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                       <button 
                         onClick={onClose} 
                         className={styles.actionBtn} 
-                        title="Close Dialog"
+                        title="Close Dialog" autoFocus
                         style={!isDark ? { color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' } : undefined}
                       >
                         <X size={20} />
@@ -168,8 +147,8 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                     >
                       {isMega && (
                         <motion.div 
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                          animate={{ rotate: reduceMotion ? 0 : 360 }}
+                          transition={{ duration: 26, repeat: reduceMotion ? 0 : Infinity, ease: "linear" }}
                           className={styles.megaRing}
                           style={{ borderColor: accentColor }}
                         />
@@ -187,7 +166,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                           <span 
                             key={t}
                             className={styles.typeBadge}
-                            style={{ backgroundColor: TYPE_COLORS[t] }}
+                            style={{ backgroundColor: `color-mix(in srgb, ${TYPE_COLORS[t]} 76%, white)`, color: '#211b20' }}
                           >
                             {t}
                           </span>
@@ -206,7 +185,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                       className="w-full rounded-2xl py-6 font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 group"
                       variant={inTeam ? 'outline' : 'primary'}
                       onClick={() => inTeam ? removeMember(id) : addMember({ ...p, allAbilities: p.abilities })}
-                      style={!inTeam ? { backgroundColor: accentColor, boxShadow: `0 8px 24px ${accentColor}33` } : {}}
+                      style={{ gap: 8 }}
                     >
                       <Heart size={16} className={cn(inTeam ? "fill-red-500 text-red-500" : "group-hover:scale-125 transition-transform")} />
                       {inTeam ? 'Remove from Team' : 'Add to Team'}
@@ -218,20 +197,21 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                 <div className={styles.rightPanel}>
                   {/* Physical Traits */}
                   <div className={styles.traitsGrid}>
-                    {p.height != null && <div className={styles.traitCard}>
+                    <div className={styles.traitCard}>
                       <Ruler size={16} className={`${styles.traitIcon} ${styles.heightIcon}`} />
                       <span className={styles.traitLabel}>Height</span>
-                      <span className={styles.traitValue}>{(p.height / 10).toFixed(1)} m</span>
-                    </div>}
-                    {p.weight != null && <div className={styles.traitCard}>
+                      <span className={styles.traitValue}>{p.height == null ? 'Unknown' : `${(p.height / 10).toFixed(1)} m`}</span>
+                    </div>
+                    <div className={styles.traitCard}>
                       <Scale size={16} className={`${styles.traitIcon} ${styles.weightIcon}`} />
                       <span className={styles.traitLabel}>Weight</span>
-                      <span className={styles.traitValue}>{(p.weight / 10).toFixed(1)} kg</span>
-                    </div>}
+                      <span className={styles.traitValue}>{p.weight == null ? 'Unknown' : `${(p.weight / 10).toFixed(1)} kg`}</span>
+                    </div>
                     <div className={styles.traitCard}>
                       <Zap size={16} className={`${styles.traitIcon} ${styles.abilityIcon}`} />
                       <span className={styles.traitLabel}>Abilities</span>
                       <div className={styles.abilitiesList}>
+                        {p.abilitySlots.length === 0 && <span>Unknown</span>}
                         {p.abilitySlots.map(a => (
                           <span key={a.name} className={styles.abilityText}>
                             {a.name.replaceAll('-', ' ')}{a.hidden ? ' (Hidden)' : ''}
@@ -241,7 +221,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                     </div>
                   </div>
 
-                  {(p.description || p.cry) && <PokedexVoice description={p.description ?? ''}
+                  {(p.description || p.cry) && <PokedexVoice key={p.id} description={p.description ?? ''}
                     accentColor={accentColor} cry={p.cry ?? undefined} />}
 
                   {/* Base Stats */}
@@ -265,11 +245,13 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                   </div>
                   
                   {/* Evolution Chain */}
-                  <section>
+                  <EvolutionChain edges={p.evolution} currentSpeciesId={p.speciesId ?? p.id}
+                    shiny={showShiny} onSelect={onSelect} />
+                  <section className={styles.evidenceSection}>
                     <h4 className={styles.sectionTitle}>Evolution conditions</h4>
                     {p.evolution.length ? p.evolution.map((edge, index) => (
                       <details key={index}>
-                        <summary>#{edge.fromSpeciesId} → #{edge.toSpeciesId} · {edge.trigger} · {edge.versionGroup}</summary>
+                        <summary>#{edge.fromSpeciesId} → #{edge.toSpeciesId} · {edge.trigger ?? 'Unknown trigger'} · {edge.versionGroup ?? 'Unknown version group'}</summary>
                         <dl>{Object.entries(JSON.parse(edge.conditionsJson) as Record<string, unknown>)
                           .filter(([, value]) => value !== null && value !== false && value !== '')
                           .map(([name, value]) => <React.Fragment key={name}>
@@ -277,11 +259,11 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                             <dd>{typeof value === 'object' && value !== null && 'name' in value
                               ? String(value.name) : typeof value === 'object' ? JSON.stringify(value) : String(value)}</dd>
                           </React.Fragment>)}</dl>
-                        <button type="button" onClick={() => onSelect?.(edge.toSpeciesId)}>View Pokémon #{edge.toSpeciesId}</button>
+                        <small>Source: {edge.source}</small>
                       </details>
                     )) : <p>No verified evolution conditions for this selection.</p>}
                   </section>
-                  {p.availability.length > 0 && <section>
+                  {p.availability.length > 0 && <section className={styles.evidenceSection}>
                     <h4 className={styles.sectionTitle}>Game evidence</h4>
                     <ul>{p.availability.map(item => <li key={item.facet}>
                       {item.facet.toLowerCase().replaceAll('_', ' ')} · {item.state.toLowerCase()}
@@ -289,26 +271,27 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                   </section>}
 
                   {/* Varieties (Mega/Form) */}
-                  {p.forms.some(form => form.id !== p.id) && (
+                  {p.forms.length > 0 && (
                     <div className={styles.formsSection}>
                       <h4 className={styles.sectionTitle}>
                         Forms & Megas
                       </h4>
                       <div className={styles.formsGrid}>
-                        {p.forms.filter(form => form.id !== p.id).map(form => (
+                        {p.forms.map(form => (
                           <motion.button
                             key={form.id}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => onSelect?.(form.id)}
+                            disabled={!onSelect || form.id === p.id} aria-current={form.id === p.id ? 'true' : undefined}
                             className={styles.formCard}
                           >
                             <div className={styles.formIconBg}>
-                              <PokemonArtwork src={assetUrl(form.image)} name={form.name} className={styles.formIcon} />
+                              <PokemonArtwork src={assetUrl(showShiny ? form.shinyImage : form.image)} name={form.name} shiny={showShiny} className={styles.formIcon} />
                             </div>
                             <div>
                               <p className={styles.formLabel}>
-                                {form.category.toLowerCase()}
+                                {form.category.toLowerCase()} · #{form.id}
                               </p>
                               <p className={styles.formName}>
                                 {form.name.replace('-', ' ')}

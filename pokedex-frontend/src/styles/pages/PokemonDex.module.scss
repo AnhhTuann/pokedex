@@ -1,271 +1,111 @@
-@import "../variables";
-@import "../mixins";
-
 .container {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 32px 24px;
-  
-  @include respond-to(sm) {
-    padding: 24px 16px;
-  }
+  margin-inline: auto;
+  padding: 16px clamp(0px, 1.5vw, 24px) 32px;
 }
-
-// ─── Search Bar Frame ─────────────────────────────────────
+.heading {
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: 1.08;
+  letter-spacing: -.065em;
+  margin-bottom: var(--space-6);
+  color: var(--text-primary);
+}
 .searchWrapper {
   position: relative;
   z-index: 10;
-  margin-bottom: 32px;
-  border-radius: $radius-lg;
-  padding: 16px 24px;
-  transition: all $transition-normal;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  
-  :global(.dark) & {
-    background: rgba(1, 4, 9, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
-  }
-  
-  &:focus-within {
-    border-color: rgba(var(--primary-rgb), 0.35);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 0 15px rgba(var(--primary-rgb), 0.1);
-    
-    :global(.dark) & {
-      border-color: rgba(var(--primary-rgb), 0.4);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--primary-rgb), 0.15);
-    }
-  }
-}
-
-// ───// Tab Switchers ────────────────────────────────────────
-.modeToggleWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 32px;
-}
-
-.modeToggle {
-  display: inline-flex;
-  border-radius: $radius-md;
-  padding: 5px;
-  background-color: rgba(255, 255, 255, 0.02);
+  background: var(--bg-paper);
   border: 1px solid var(--border-main);
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
 }
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(132px, 100%), 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-3);
 
-.modeBtn {
+  label {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+    font-size: .74rem;
+    font-weight: 650;
+    color: var(--text-secondary);
+  }
+  select {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 8px;
+    border: 1px solid var(--border-main);
+    border-radius: var(--radius-sm);
+    background: var(--bg-default);
+    color: var(--text-primary);
+  }
+}
+.modeToggleWrapper, .dexTabWrapper, .zaTabWrapper { margin-bottom: var(--space-3); }
+.modeToggle, .dexToggle, .zaToggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 3px;
+  border-radius: var(--radius-md);
+  background: var(--bg-paper);
+  border: 1px solid var(--border-main);
+}
+.modeBtn, .dexTab, .zaTab {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  border-radius: $radius-sm;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all $transition-fast;
-  
-  &:hover {
-    color: var(--text-primary);
-    background-color: rgba(255, 255, 255, 0.03);
-  }
-  
-  @include respond-to(xs) {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-}
-
-.activeBtnAll {
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.25) 0%, rgba(var(--primary-rgb), 0.05) 100%) !important;
-  color: var(--primary) !important;
-  border-color: rgba(var(--primary-rgb), 0.4) !important;
-  box-shadow: var(--glow-primary);
-}
-
-.activeBtnFav {
-  background: linear-gradient(135deg, rgba(var(--secondary-rgb), 0.25) 0%, rgba(var(--secondary-rgb), 0.05) 100%) !important;
-  color: var(--secondary) !important;
-  border-color: rgba(var(--secondary-rgb), 0.4) !important;
-  box-shadow: var(--glow-secondary);
-}
-
-.activeBtnComp {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.05) 100%) !important;
-  color: #c084fc !important;
-  border-color: rgba(168, 85, 247, 0.4) !important;
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
-}
-
-// ─── Legends: Z-A Regional Tabs ───────────────────────────
-.zaTabWrapper {
-  display: flex;
   justify-content: center;
-  margin-bottom: 24px;
-}
-
-.zaToggle {
-  display: inline-flex;
-  border-radius: $radius-md;
-  padding: 4px;
-  background-color: rgba(var(--primary-rgb), 0.04);
-  border: 1px solid $border-main;
-}
-
-.zaTab {
-  padding: 8px 20px;
-  border-radius: $radius-sm;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: none;
+  gap: 6px;
+  min-height: 36px;
+  padding: 5px clamp(7px, 1.2vw, 16px);
+  color: var(--text-secondary);
+  border: 0;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: $text-secondary;
   cursor: pointer;
-  transition: all $transition-fast;
-  
-  &:hover {
-    color: $text-primary;
-  }
+  font-size: .8rem;
+  font-weight: 650;
+  &:hover { background: var(--bg-paper-glow); }
 }
-
-.activeZaTab {
-  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+.activeBtnAll, .activeBtnFav, .activeBtnComp, .activeDexTab, .activeZaTab {
+  color: white;
+  background: var(--primary-gradient);
+  &:hover { background: var(--brand-deep); }
 }
-
-// ─── Text Informative Labels ──────────────────────────────
 .infoText {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  color: $text-muted;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 24px;
+  margin: 14px 0 10px;
+  color: var(--text-secondary);
+  font-size: .81rem;
+  font-weight: 600;
 }
-
-.compareBanner {
-  margin-bottom: 24px;
-  padding: 16px;
-  border-radius: $radius-md;
-  background-color: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.2);
-  color: $primary;
-  font-weight: 700;
-  text-align: center;
-  animation: pulseGlow 3s ease-in-out infinite;
-}
-
-// ─── Layout Fluid Grid ────────────────────────────────────
 .pokemonGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  
-  @include respond-to(lg) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  @include respond-to(md) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-  
-  @include respond-to(xs) {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--space-4);
+  align-items: stretch;
 }
-
-// ─── Loading Skeletons ─────────────────────────────────────
+@media (max-width: 560px) {
+  .pokemonGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .searchWrapper { padding: var(--space-3); }
+}
 .skeletonCard {
-  height: 288px;
-  background-color: var(--border-main);
-  border: 1px solid $border-main;
-  border-radius: $radius-lg;
-  animation: pulsePulse 1.5s ease-in-out infinite;
+  min-height: 240px;
+  background: var(--bg-paper-glow);
+  border-radius: var(--radius-lg);
+  animation: pulse 1.5s ease-in-out infinite alternate;
 }
-
-@keyframes pulsePulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-
-// ─── Error Notification Frame ──────────────────────────────
-.offlineBanner {
-  padding: 16px;
-  border-radius: $radius-md;
-  background-color: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  font-weight: 700;
-  text-align: center;
-}
-
-.emptyText {
-  text-align: center;
-  padding: 80px 0;
-  color: $text-muted;
-  font-weight: 800;
-  font-size: 18px;
-}
-
-.loadMoreContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 48px;
-  margin-bottom: 80px;
-}
-
-.dexTabWrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.dexToggle {
-  display: inline-flex;
-  border-radius: $radius-md;
-  padding: 5px;
-  background-color: rgba(255, 255, 255, 0.02);
+@keyframes pulse { from { opacity: .55; } to { opacity: 1; } }
+.compareBanner, .offlineBanner, .emptyText {
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
   border: 1px solid var(--border-main);
-  backdrop-filter: blur(10px);
-}
-
-.dexTab {
-  padding: 10px 24px;
-  border-radius: $radius-sm;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border: 1px solid transparent;
-  background: transparent;
+  border-radius: var(--radius-md);
+  background: var(--bg-paper);
   color: var(--text-secondary);
-  cursor: pointer;
-  transition: all $transition-fast;
-  
-  &:hover {
-    color: var(--text-primary);
-  }
 }
-
-.activeDexTab {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
-  color: white !important;
-  box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.45);
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
+.offlineBanner { border-color: var(--brand); }
+.loadMoreContainer { display: flex; justify-content: center; margin-top: var(--space-6); }

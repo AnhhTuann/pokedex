@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, RefreshCw, Trophy, Frown } from 'lucide-react';
-import { useQuery } from '@apollo/client';
-import { GET_POKEMON_DETAIL } from './PokeDetail';
+import { useReferenceDetail } from '../hooks/useReferencePokemon';
+import { PokemonArtwork } from './PokemonArtwork';
 import styles from '../styles/components/GameModal.module.scss';
 
 interface GameModalProps { onClose: () => void; }
 
 export default function GameModal({ onClose }: GameModalProps) {
-  const [targetId, setTargetId] = useState<number | null>(null);
+  const [targetId, setTargetId] = useState(() => Math.floor(Math.random() * 151) + 1);
   const [guess, setGuess] = useState('');
   const [revealed, setRevealed] = useState(false);
   const [status, setStatus] = useState<'playing' | 'won' | 'lost'>('playing');
   const [wrongAnim, setWrongAnim] = useState(false);
 
-  const { data, loading } = useQuery(GET_POKEMON_DETAIL, { variables: { id: targetId }, skip: !targetId });
-  const pokemon = data?.pokemon;
+  const { pokemon, loading } = useReferenceDetail(targetId);
 
   const newRound = () => {
     setTargetId(Math.floor(Math.random() * 151) + 1);
     setGuess(''); setRevealed(false); setStatus('playing');
   };
 
-  useEffect(() => { newRound(); }, []);
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [onClose]);
 
   const handleGuess = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,11 +55,12 @@ export default function GameModal({ onClose }: GameModalProps) {
           transition={{ type: 'spring', damping: 24, stiffness: 200 }}
           onClick={e => e.stopPropagation()}
           className={styles.modalCard}
+          role="dialog" aria-modal="true" aria-label="Who's That Pokémon?"
         >
           {/* Header */}
           <div className={styles.header}>
-            <span className={styles.title}>🎮 Who's That Pokémon?</span>
-            <button onClick={onClose} className={styles.closeBtn}>
+            <span className={styles.title}>Who's That Pokémon?</span>
+            <button onClick={onClose} className={styles.closeBtn} aria-label="Close mini-game">
               <X size={16}/>
             </button>
           </div>
@@ -65,14 +69,12 @@ export default function GameModal({ onClose }: GameModalProps) {
           <div className={styles.body}>
             {/* Silhouette Circle */}
             <div className={styles.silhouetteCircle}>
-              {loading || !pokemon ? (
-                <div style={{ width: 40, height: 40, border: '3px solid #6366f1', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}/>
-              ) : (
-                <img src={pokemon.image} alt="???"
+              {loading ? <span role="status">Loading Pokémon…</span> : pokemon ? (
+                <PokemonArtwork src={pokemon.image} name={revealed ? pokemon.name : 'Pokémon silhouette'}
                   className={styles.pokemonImage}
-                  style={{ filter: revealed ? 'drop-shadow(0 8px 24px rgba(99,102,241,0.4))' : 'brightness(0)' }}
-                />
-              )}
+                  style={{ filter: revealed ? 'drop-shadow(0 6px 12px #24212335)' : undefined }}
+                  data-silhouette={!revealed || undefined} />
+              ) : <span role="status">Unable to load Pokémon.</span>}
               {revealed && pokemon && (
                 <motion.div initial={{ scale: 0, rotate: -15 }} animate={{ scale: 1, rotate: 10 }}
                   className={styles.revealedTag}>
@@ -82,7 +84,9 @@ export default function GameModal({ onClose }: GameModalProps) {
             </div>
 
             {/* Input / Result */}
-            {!revealed ? (
+            {!loading && !pokemon ? (
+              <button type="button" className={styles.playAgainBtn} onClick={newRound}>Try another Pokémon</button>
+            ) : !revealed ? (
               <form onSubmit={handleGuess} className={styles.form}>
                 <motion.input
                   animate={wrongAnim ? { x: [-6, 6, -4, 4, 0] } : { x: 0 }}
@@ -96,10 +100,10 @@ export default function GameModal({ onClose }: GameModalProps) {
                 />
                 {status === 'lost' && <span className={styles.errorText}>Wrong! Try again.</span>}
                 <div className={styles.btnRow}>
-                  <button type="submit" className={styles.submitBtn}>
+                  <button type="submit" className={styles.submitBtn} disabled={!pokemon}>
                     Guess!
                   </button>
-                  <button type="button" onClick={() => { setRevealed(true); setStatus('lost'); }}
+                  <button type="button" disabled={!pokemon} onClick={() => { setRevealed(true); setStatus('lost'); }}
                     className={styles.giveUpBtn}>
                     Give Up
                   </button>

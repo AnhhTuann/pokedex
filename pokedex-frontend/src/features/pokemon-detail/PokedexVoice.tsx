@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Play, Pause, Square, AudioLines, Volume2 } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 import styles from '../../styles/features/PokemonDetailDialog.module.scss';
@@ -11,6 +11,8 @@ interface PokedexVoiceProps {
 }
 
 export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentColor, cry }) => {
+  const reduceMotion = useReducedMotion();
+  const speechSupported = typeof window.speechSynthesis !== 'undefined';
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -23,17 +25,18 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
     };
     loadVoices();
     if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+      window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
     }
     return () => {
       if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
         window.speechSynthesis.cancel();
       }
     };
   }, []);
 
   const handleSpeak = () => {
-    if (!description) return;
+    if (!description || !speechSupported) return;
 
     if (isSpeaking) {
       if (isPaused) {
@@ -89,8 +92,8 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
             {[0, 1, 2, 3, 4].map((i) => (
               <motion.div
                 key={i}
-                animate={{ height: [4, 20, 8, 24, 6] }}
-                transition={{ duration: 1, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+                animate={{ height: reduceMotion ? 8 : [4, 20, 8, 24, 6] }}
+                transition={{ duration: 1, repeat: reduceMotion ? 0 : Infinity, delay: i * 0.1, ease: "easeInOut" }}
                 className={styles.soundwaveBar}
                 style={{ backgroundColor: accentColor }}
               />
@@ -112,10 +115,12 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
         <Button
           size="sm"
           onClick={handleSpeak}
+          disabled={!description || !speechSupported}
           className={styles.speakBtn}
           style={{ 
-            backgroundColor: isSpeaking && !isPaused ? '#f59e0b' : accentColor,
-            boxShadow: `0 8px 16px ${isSpeaking && !isPaused ? '#f59e0b44' : accentColor + '44'}`
+            background: isSpeaking && !isPaused ? '#f0bd67' : `color-mix(in srgb, ${accentColor} 27%, var(--bg-paper))`,
+            color: isSpeaking && !isPaused ? '#242123' : 'var(--text-primary)',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           {isSpeaking && !isPaused ? <Pause size={14} /> : <Play size={14} />}
@@ -124,7 +129,7 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
 
         {isSpeaking && (
           <button
-            onClick={handleStop}
+            onClick={handleStop} aria-label="Stop reading"
             className={styles.stopBtn}
           >
             <Square size={14} className="fill-current" />
@@ -135,8 +140,9 @@ export const PokedexVoice: React.FC<PokedexVoiceProps> = ({ description, accentC
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={playCry}
+            onClick={playCry} aria-label="Play Pokémon cry"
             className={styles.cryBtn}
+            style={{ backgroundColor: `color-mix(in srgb, ${accentColor} 16%, var(--bg-paper))` }}
           >
             <Volume2 size={20} />
           </motion.button>

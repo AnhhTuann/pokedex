@@ -1,78 +1,72 @@
-// ─── Theme CSS Variables ──────────────────────────────────
 :root {
-  --font-sans: "Inter", "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-display: "Plus Jakarta Sans", "Be Vietnam Pro", sans-serif;
-
-  // Colors Light Theme - Premium Glass
-  --bg-default: #F8FAFC;
-  --bg-paper: rgba(255, 255, 255, 0.65);
-  --bg-paper-glow: rgba(255, 255, 255, 0.95);
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --border-main: rgba(255, 255, 255, 0.5);
-  --border-hover: rgba(255, 255, 255, 0.9);
-  --inset-glow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
-  
-  --primary: #3B82F6;
-  --primary-rgb: 59, 130, 246;
-  --secondary: #8B5CF6;
-  --secondary-rgb: 139, 92, 246;
-  --accent-green: #10B981;
-  --accent-yellow: #F59E0B;
-  --accent-orange: #EF4444;
-  
-  --primary-gradient: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
-  --accent-orange-gradient: linear-gradient(135deg, #EF4444 0%, #F59E0B 100%);
-  
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
-  --glow-primary: 0 0 24px rgba(59, 130, 246, 0.35);
-  --glow-secondary: 0 0 24px rgba(139, 92, 246, 0.35);
-  
-  --radius-sm: 12px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --radius-2xl: 40px;
-  --radius-3xl: 48px;
+  color-scheme: light;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-display: "Inter", system-ui, sans-serif;
+  --brand: #ad2435;
+  --brand-deep: #791526;
+  --primary: var(--brand);
+  --primary-rgb: 173, 36, 53;
+  --secondary: #506b73;
+  --secondary-rgb: 80, 107, 115;
+  --bg-default: #f5f2ee;
+  --bg-paper: #fffdfb;
+  --bg-paper-glow: #f1ebe6;
+  --text-primary: #242123;
+  --text-secondary: #554b4f;
+  --text-muted: #6d6266;
+  --border-main: #e2d9d6;
+  --border-hover: #c9b8b4;
+  --inset-glow: transparent;
+  --accent-green: #2d7650;
+  --accent-yellow: #9a6416;
+  --accent-orange: #b24535;
+  --primary-gradient: linear-gradient(145deg, #ba2b3e, var(--brand-deep));
+  --accent-orange-gradient: linear-gradient(145deg, #b24535, #903121);
+  --shadow-sm: 0 2px 5px #3222260d;
+  --shadow-md: 0 8px 24px #32222612;
+  --shadow-lg: 0 20px 55px #3222262b;
+  --glow-primary: var(--shadow-sm);
+  --glow-secondary: var(--shadow-sm);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-3xl: 32px;
   --radius-full: 9999px;
-  
-  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --glass-blur: blur(24px);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --transition-fast: 160ms ease;
+  --transition-normal: 240ms ease;
+  --glass-blur: none;
+  --z-modal: 1200;
 }
 
 html.dark {
-  // Colors Dark Theme - Cyberpunk / Bioluminescent Modern
-  --bg-default: #020617;
-  --bg-paper: rgba(15, 23, 42, 0.4);
-  --bg-paper-glow: rgba(30, 41, 59, 0.6);
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #64748B;
-  --border-main: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.2);
-  --inset-glow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  
-  --primary: #38BDF8;
-  --primary-rgb: 56, 189, 248;
-  --secondary: #A78BFA;
-  --secondary-rgb: 167, 139, 250;
-  --accent-green: #34D399;
-  --accent-yellow: #FBBF24;
-  --accent-orange: #FB7185;
-  
-  --primary-gradient: linear-gradient(135deg, #38BDF8 0%, #C084FC 100%);
-  --accent-orange-gradient: linear-gradient(135deg, #FB7185 0%, #FBBF24 100%);
-  
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.8);
-  --glow-primary: 0 0 32px rgba(56, 189, 248, 0.3), 0 0 16px rgba(167, 139, 250, 0.2);
-  --glow-secondary: 0 0 32px rgba(167, 139, 250, 0.4);
+  color-scheme: dark;
+  --brand: #f18793;
+  --brand-deep: #801d2c;
+  --primary-rgb: 241, 135, 147;
+  --secondary: #9abdc3;
+  --secondary-rgb: 154, 189, 195;
+  --bg-default: #191719;
+  --bg-paper: #232124;
+  --bg-paper-glow: #302c30;
+  --text-primary: #f8f1ef;
+  --text-secondary: #d4c8cb;
+  --text-muted: #b7a9ae;
+  --border-main: #413a3e;
+  --border-hover: #65565d;
+  --accent-green: #87c9a4;
+  --accent-yellow: #e5b969;
+  --accent-orange: #ed9683;
+  --shadow-sm: 0 2px 6px #0003;
+  --shadow-md: 0 8px 24px #0004;
+  --shadow-lg: 0 20px 55px #0008;
 }
 
 // ─── Sass Variables ───────────────────────────────────────
