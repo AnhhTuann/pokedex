@@ -1,3 +1,4 @@
+import { getReferenceCatalog } from './catalog/graphql.js';
 import 'dotenv/config';
 import path from 'node:path';
 import express, { Request, Response } from 'express';
@@ -21,6 +22,7 @@ const downloadSessions = new DownloadSessionStore();
 
 async function startServer() {
   assertServerConfig();
+  getReferenceCatalog();
 
   const app = express();
   app.disable('x-powered-by');

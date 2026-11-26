@@ -1,3 +1,4 @@
+import { PokemonArtwork } from './PokemonArtwork';
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Heart } from "lucide-react";
@@ -37,9 +38,7 @@ export default function PokeCard({
   
   const [extractedRgb, setExtractedRgb] = useState<{ r: number; g: number; b: number } | null>(null);
 
-  const imageUrl = isShinyMode && pokemon.shinyImage
-    ? pokemon.shinyImage
-    : pokemon.image;
+  const imageUrl = (isShinyMode ? pokemon.shinyImage : pokemon.image) ?? '';
 
   useEffect(() => {
     let active = true;
@@ -142,19 +141,8 @@ export default function PokeCard({
                 : undefined,
           }}
         >
-          <img
-            src={
-              isShinyMode && pokemon.shinyImage
-                ? pokemon.shinyImage
-                : pokemon.image
-            }
-            alt={pokemon.name}
-            loading="lazy"
-            className={styles.pokemonImage}
-            onError={(e) => {
-               (e.target as HTMLImageElement).src = '/images/placeholder.png';
-            }}
-          />
+          <PokemonArtwork src={imageUrl} name={pokemon.name} shiny={isShinyMode}
+            loading="lazy" className={styles.pokemonImage} />
           {isMega && <div className={styles.megaBadge}>Mega</div>}
         </div>
 

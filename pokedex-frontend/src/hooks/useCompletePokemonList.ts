@@ -1,7 +1,8 @@
 import { useApolloClient } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { collectPokemonPages, type PokemonPage } from '../lib/collectPokemonPages';
-import { GET_POKEMON_LIST } from '../services/graphql/pokemon.queries';
+import { REFERENCE_LIST } from '../services/graphql/reference.queries';
+import { resolveReferenceArtwork } from './useReferencePokemon';
 import type { PokemonListItem } from '../types';
 
 interface TrackerFilters {
@@ -26,12 +27,13 @@ export function useCompletePokemonList({ search, type, region, game }: TrackerFi
     let active = true;
     void collectPokemonPages(async offset => {
       if (!active) throw new Error('Pokémon filters changed.');
-      const { data } = await client.query<{ pokemonList: PokemonPage<PokemonListItem> }>({
-        query: GET_POKEMON_LIST,
-        variables: { search, type, region, game, offset, limit: 250 },
+      const { data } = await client.query<{ referencePokemonList: PokemonPage<PokemonListItem> }>({
+        query: REFERENCE_LIST,
+        variables: { filters: { search, type, dex: region, game, offset, limit: 250,
+          availability: game && region ? 'REGIONAL_DEX_MEMBER' : undefined } },
         fetchPolicy: 'no-cache',
       });
-      return data.pokemonList;
+      return { ...data.referencePokemonList, results: data.referencePokemonList.results.map(resolveReferenceArtwork) };
     }).then(
       rows => { if (active) setSettled({ key, rows }); },
       error => { if (active) setSettled({ key, error }); },

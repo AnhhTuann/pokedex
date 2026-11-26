@@ -34,8 +34,21 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
+      ReferencePokemon: { keyFields: false },
       Query: {
         fields: {
+          referencePokemonList: {
+            keyArgs(args) {
+              const { offset, limit, ...filters } = args?.filters ?? {};
+              return JSON.stringify(filters);
+            },
+            merge(existing, incoming, { args }) {
+              const offset = args?.filters?.offset ?? 0;
+              return { ...incoming, results: offset
+                ? [...(existing?.results ?? []).slice(0, offset), ...incoming.results]
+                : incoming.results };
+            },
+          },
           pokemonList: {
             keyArgs: ["search", "type", "gen", "ids", "region", "game", "maxGen", "form", "broadRegion"],
             merge(existing, incoming, { args }) {

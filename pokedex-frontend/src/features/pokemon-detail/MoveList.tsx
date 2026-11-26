@@ -6,11 +6,11 @@ import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
 interface Move {
   name: string;
-  type: string;
+  type?: string;
   power?: number | null;
   accuracy?: number | null;
   pp?: number | null;
-  damageClass: string;
+  damageClass?: string;
   learnMethod: string;
   levelLearnedAt: number;
 }
@@ -20,12 +20,13 @@ interface MoveListProps {
 }
 
 export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
-  const [tab, setTab] = useState<'level' | 'machine' | 'tutor'>('level');
+  const [tab, setTab] = useState<'level' | 'machine' | 'tutor' | 'other'>('level');
 
   const filteredMoves = moves.filter(m => {
     if (tab === 'level') return m.learnMethod === 'level-up';
     if (tab === 'machine') return m.learnMethod === 'machine';
-    return m.learnMethod === 'tutor' || m.learnMethod === 'egg';
+    if (tab === 'tutor') return m.learnMethod === 'tutor' || m.learnMethod === 'egg';
+    return !['level-up', 'machine', 'tutor', 'egg'].includes(m.learnMethod);
   }).sort((a, b) => a.levelLearnedAt - b.levelLearnedAt);
 
   return (
@@ -35,7 +36,7 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
           Move Sets
         </h4>
         <div className={styles.tabSelector}>
-          {(['level', 'machine', 'tutor'] as const).map((t) => (
+          {(['level', 'machine', 'tutor', 'other'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -62,7 +63,7 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
             <AnimatePresence mode="popLayout">
               {filteredMoves.map((move, i) => (
                 <motion.tr
-                  key={move.name}
+                  key={`${move.name}/${move.learnMethod}/${move.levelLearnedAt}/${i}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -20 }}
@@ -73,9 +74,9 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
                       <span className={styles.moveName}>
                         {move.name.replace('-', ' ')}
                       </span>
-                      {tab === 'level' && (
+                      {tab !== 'machine' && (
                         <span className={styles.moveMeta}>
-                          Level {move.levelLearnedAt}
+                          {tab === 'level' ? `Level ${move.levelLearnedAt}` : move.learnMethod}
                         </span>
                       )}
                     </div>
@@ -83,9 +84,9 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
                   <td>
                     <span 
                       className={styles.moveTypeBadge}
-                      style={{ backgroundColor: TYPE_COLORS[move.type] }}
+                      style={{ backgroundColor: move.type ? TYPE_COLORS[move.type] : undefined }}
                     >
-                      {move.type}
+                      {move.type ?? '–'}
                     </span>
                   </td>
                   <td>

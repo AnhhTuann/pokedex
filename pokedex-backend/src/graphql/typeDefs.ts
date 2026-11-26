@@ -1,4 +1,7 @@
+import { referenceTypeDefs } from '../catalog/graphql.js';
+
 export const typeDefs = `#graphql
+  ${referenceTypeDefs}
   type User {
     id: Int!
     username: String!

@@ -1,3 +1,5 @@
+import { createPortal } from 'react-dom';
+import { PokemonArtwork } from '../components/PokemonArtwork';
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useCompletePokemonList } from '../hooks/useCompletePokemonList';
 import {
@@ -18,7 +20,8 @@ import { PokemonListItem } from '../types';
 import { useTeamStore } from '../lib/teamStore';
 import { useCatchStore } from '../lib/catchStore';
 import { VERSION_COLORS, GENERATION_VERSIONS, getRegionalPokemonListFilters } from '../lib/gameVersions';
-import PokeDetail from '../components/PokeDetail';
+import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDialog';
+import { useReferenceCatalog } from '../hooks/useReferencePokemon';
 import { formatSpeciesId, TYPE_COLORS, cn } from '../lib/utils';
 import { useColorMode } from '../main';
 import { extractDominantColor, getExtractedColors, addOpacityToColor } from '../lib/colorExtractor';
@@ -53,7 +56,8 @@ const TrackerCard = React.memo<TrackerCardProps>(({
 
   const [extractedRgb, setExtractedRgb] = useState<{ r: number; g: number; b: number } | null>(null);
 
-  const imageUrl = (isShinyMode || isShiny) && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image;
+  const shinyArtwork = isShinyMode || isShiny;
+  const imageUrl = (shinyArtwork ? pokemon.shinyImage : pokemon.image) ?? '';
 
   useEffect(() => {
     let active = true;
@@ -128,9 +132,10 @@ const TrackerCard = React.memo<TrackerCardProps>(({
 
       {/* Pokémon Circle container */}
       <div className={`${styles.spriteCircle} ${isShiny ? styles.shiny : isCaught ? styles.caught : ''}`}>
-        <img
-          src={(isShinyMode || isShiny) && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image}
-          alt={pokemon.name}
+        <PokemonArtwork
+          src={imageUrl}
+          name={pokemon.name}
+          shiny={shinyArtwork}
           loading="lazy"
           decoding="async"
           className={`${styles.sprite} ${isMarked ? styles.active : ''}`}
@@ -256,13 +261,15 @@ export default function CatchTracker() {
   const caughtSet = useMemo(() => new Set(caughtPokemonIds), [caughtPokemonIds]);
   const shinySet = useMemo(() => new Set(shinyPokemonIds), [shinyPokemonIds]);
 
-  const { region: queryRegion, game: queryGame } = getRegionalPokemonListFilters(selectedVersion);
+  const { game: queryGame } = getRegionalPokemonListFilters(selectedVersion);
+  const catalog = useReferenceCatalog();
+  const queryRegion = catalog?.games.find(game => game.slug === queryGame)?.referenceDexes[0];
 
   const national = useCompletePokemonList({});
   const hasFilters = Boolean(search || typeFilter || queryRegion || queryGame);
   const scoped = useCompletePokemonList({
     search: search || undefined, type: typeFilter || undefined, region: queryRegion, game: queryGame,
-  }, hasFilters);
+  }, hasFilters && (!queryGame || Boolean(catalog)));
   const { rows, loading, error, retry } = hasFilters ? scoped : national;
   const pokemonList = rows ?? EMPTY_LIST;
   const totalCount = pokemonList.length;
@@ -756,9 +763,9 @@ export default function CatchTracker() {
       )}
 
       {/* Confirm Mark All Dialog Backdrop Overlay */}
-      {confirmMarkAllOpen && (
+      {confirmMarkAllOpen && createPortal(
         <div className={styles.modalOverlay} onClick={() => setConfirmMarkAllOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
             <h2 className={styles.modalTitle}>
               <CheckSquare style={{ color: 'var(--primary)' }} />
               Mark All as Caught?
@@ -775,13 +782,13 @@ export default function CatchTracker() {
               </button>
             </div>
           </div>
-        </div>
+        </div>, document.body
       )}
 
       {/* Confirm Reset Dialog Backdrop Overlay */}
-      {confirmResetOpen && (
+      {confirmResetOpen && createPortal(
         <div className={styles.modalOverlay} onClick={() => setConfirmResetOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
             <h2 className={styles.modalTitle}>
               <RotateCcw style={{ color: '#ef4444' }} />
               Reset All Catching Progress?
@@ -798,15 +805,15 @@ export default function CatchTracker() {
               </button>
             </div>
           </div>
-        </div>
+        </div>, document.body
       )}
 
       {/* Stats Detail Modal drawer */}
       {selectedId !== null && (
-        <PokeDetail
-          pokemonId={selectedId}
+        <PokemonDetailDialog
+          id={selectedId}
           onClose={() => setSelectedId(null)}
-          onSelectPokemonId={setSelectedId}
+          onSelect={setSelectedId}
         />
       )}
     </div>

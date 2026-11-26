@@ -1,3 +1,6 @@
+import { MAX_POKEMON_PAGE_SIZE } from '../lib/pagination.js';
+import { GraphQLError } from 'graphql';
+import { getReferenceCatalog, referencePokemonFields, referenceQueries } from '../catalog/graphql.js';
 import { prisma } from '../db/prisma.js';
 import { pokemonService } from '../services/pokemon.service.js';
 import { moveService } from '../services/move.service.js';
@@ -19,7 +22,9 @@ const loginLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });
 const registerLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 10 });
 
 export const resolvers = {
+  ReferencePokemon: referencePokemonFields,
   Query: {
+    ...referenceQueries,
     ping: () => "pong from Prisma backend!",
 
     me: async (_: any, __: any, context: GraphQLContext) => {
@@ -38,7 +43,19 @@ export const resolvers = {
 
     getAllItems: async (_: any, args: any) => itemService.getAllItems(args),
     
-    pokemonList: async (_: any, args: any) => pokemonService.pokemonList(args),
+    pokemonList: async (_: any, args: any) => {
+      if (args.game && args.game.toLowerCase() !== 'all') {
+        const reference = getReferenceCatalog();
+        if (!reference.metadata.games.some(game => game.slug === args.game.toLowerCase())) {
+          throw new GraphQLError('Unknown supported game.', { extensions: { code: 'BAD_USER_INPUT' } });
+        }
+        if (!args.region || args.region.toLowerCase() === 'all') {
+          // Preserve the explicit-generation precedence of the legacy list.
+          return reference.list({ ...args, limit: args.limit ?? 20, category: args.form }, MAX_POKEMON_PAGE_SIZE);
+        }
+      }
+      return pokemonService.pokemonList(args);
+    },
     
     pokemon: async (_: any, { id }: { id: number }) => pokemonService.pokemonDetail(id),
 

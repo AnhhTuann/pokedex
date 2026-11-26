@@ -8,7 +8,7 @@ import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
 import { getGameGenerationStrict, getRegionalPokemonListFilters } from '../lib/gameVersions';
-import { usePokemonList } from '../hooks/usePokemon';
+import { useReferenceCatalog, useReferenceList } from '../hooks/useReferencePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
 import styles from '../styles/pages/PokemonDex.module.scss';
@@ -49,38 +49,28 @@ export default function PokemonDex() {
   const regionalFilters = getRegionalPokemonListFilters(selectedVersion, zaTab);
   const gameGen = getGameGenerationStrict(selectedVersion);
 
-  let queryRegion: string | undefined = undefined;
-  let queryGame: string | undefined = undefined;
-  let queryMaxGen: number | undefined = undefined;
-
-  if (gameGen === null) {
-    // Unsupported slug: do not apply a Gen IX max-gen filter by accident.
-    queryGame = regionalFilters.game;
-  } else if (gameGen >= 2 && dexMode === 'national') {
-    queryMaxGen = gameGen;
-  } else {
-    queryRegion = regionalFilters.region;
-    queryGame = regionalFilters.game;
-  }
-
-  const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({
-    limit: 24, 
-    offset: 0, 
-    search, 
-    type: typeFilter, 
-    gen: genFilter, 
-    ids: showFavorites ? favorites : null,
-    region: queryRegion,
-    game: queryGame,
-    maxGen: queryMaxGen
+  const [exactDex, setExactDex] = useState('');
+  const [broadRegion, setBroadRegion] = useState('');
+  const [formCategory, setFormCategory] = useState('');
+  const [evidence, setEvidence] = useState('');
+  const catalog = useReferenceCatalog();
+  const activeGame = catalog?.games.find(game => game.slug === selectedVersion);
+  const preferredDex = selectedVersion === 'legends-za'
+    ? regionalFilters.region
+    : activeGame?.referenceDexes[0];
+  const queryDex = exactDex || (dexMode === 'regional' ? preferredDex : undefined);
+  const game = regionalFilters.game;
+  const { pokemonList, totalCount, loading, error, loadMore } = useReferenceList({
+    limit: 24, offset: 0, search, type: typeFilter, gen: genFilter,
+    ids: showFavorites ? favorites : null, dex: queryDex, game,
+    broadRegion: broadRegion || undefined, category: formCategory || undefined,
+    availability: game ? (evidence === 'UNKNOWN' ? 'GAME_PRESENCE_EVIDENCE'
+      : evidence || (queryDex ? 'REGIONAL_DEX_MEMBER' : 'GAME_PRESENCE_EVIDENCE')) : undefined,
+    availabilityState: game && evidence === 'UNKNOWN' ? 'UNKNOWN' : undefined,
   });
 
   const hasMore = pokemonList.length > 0 && pokemonList.length < totalCount;
   const isInitialLoad = loading && pokemonList.length === 0;
-
-  const loadMore = () => {
-    fetchMore({ variables: { offset: pokemonList.length } });
-  };
 
   return (
     <div className={styles.container}>
@@ -92,6 +82,28 @@ export default function PokemonDex() {
           typeValue={typeFilter} onTypeChange={setTypeFilter}
           genValue={genFilter}   onGenChange={setGenFilter}
         />
+      </div>
+
+      <div className={styles.searchWrapper}>
+        <label>Region <select aria-label="Region" value={broadRegion} onChange={event => setBroadRegion(event.target.value)}>
+          <option value="">All regions</option>
+          {[...new Set(catalog?.dexes.flatMap(dex => dex.region ? [dex.region] : []))].sort().map(region =>
+            <option key={region} value={region}>{region}</option>)}
+        </select></label>
+        <label>Exact Dex <select aria-label="Exact Dex" value={exactDex} onChange={event => setExactDex(event.target.value)}>
+          <option value="">Use game scope</option>
+          {catalog?.dexes.map(dex => <option key={dex.slug} value={dex.slug}>{dex.slug}</option>)}
+        </select></label>
+        <label>Form <select aria-label="Form" value={formCategory} onChange={event => setFormCategory(event.target.value)}>
+          <option value="">All forms</option>
+          {['DEFAULT', 'ALTERNATE', 'REGIONAL', 'MEGA', 'GIGANTAMAX', 'BATTLE', 'COSMETIC', 'OTHER', 'UNKNOWN'].map(category =>
+            <option key={category} value={category}>{category.toLowerCase()}</option>)}
+        </select></label>
+        {game && <label>Game evidence <select aria-label="Game evidence" value={evidence} onChange={event => setEvidence(event.target.value)}>
+          <option value="">Use game scope</option>
+          {['REGIONAL_DEX_MEMBER', 'GAME_PRESENCE_EVIDENCE', 'OBTAINABLE', 'WILD_CATCHABLE', 'TRANSFER_AVAILABLE', 'EVENT_AVAILABLE', 'UNKNOWN'].map(facet =>
+            <option key={facet} value={facet}>{facet.toLowerCase().replaceAll('_', ' ')}</option>)}
+        </select></label>}
       </div>
 
       {/* View Mode Toggle */}
@@ -133,19 +145,19 @@ export default function PokemonDex() {
       </div>
 
       {/* Regional vs National Dex Switcher */}
-      {gameGen !== null && gameGen >= 2 && selectedVersion !== 'ALL' && (
+      {gameGen !== null && selectedVersion !== 'ALL' && (
         <div className={styles.dexTabWrapper}>
           <div className={styles.dexToggle}>
             <button
-              onClick={() => setDexMode('regional')}
+              onClick={() => { setExactDex(''); setDexMode('regional'); }}
               className={cn(
                 styles.dexTab,
                 dexMode === 'regional' && styles.activeDexTab
               )}
             >
               {(() => {
-                if (!regionalFilters.region) return 'Regional Dex';
-                const parts = regionalFilters.region.split('-');
+                if (!preferredDex) return 'Regional Dex';
+                const parts = preferredDex.split('-');
                 const capitalized = parts
                   .map(p => {
                     if (p === 'original' || p === 'extended' || p === 'updated' || p === 'letsgo') return '';
@@ -157,7 +169,7 @@ export default function PokemonDex() {
               })()}
             </button>
             <button
-              onClick={() => setDexMode('national')}
+              onClick={() => { setExactDex(''); setDexMode('national'); }}
               className={cn(
                 styles.dexTab,
                 dexMode === 'national' && styles.activeDexTab
@@ -174,7 +186,7 @@ export default function PokemonDex() {
         <div className={styles.zaTabWrapper}>
           <div className={styles.zaToggle}>
             <button
-              onClick={() => setZaTab('lumiose')}
+              onClick={() => { setExactDex(''); setZaTab('lumiose'); }}
               className={cn(
                 styles.zaTab,
                 zaTab === 'lumiose' && styles.activeZaTab
@@ -183,7 +195,7 @@ export default function PokemonDex() {
               Lumiose City Dex
             </button>
             <button
-              onClick={() => setZaTab('hyperspace')}
+              onClick={() => { setExactDex(''); setZaTab('hyperspace'); }}
               className={cn(
                 styles.zaTab,
                 zaTab === 'hyperspace' && styles.activeZaTab
@@ -220,7 +232,7 @@ export default function PokemonDex() {
         </div>
       ) : error ? (
         <div className={styles.offlineBanner}>
-          Backend offline — start the server on port 3000.
+          Unable to load Pokémon for these filters.
         </div>
       ) : (
         <div className={styles.pokemonGrid}>
@@ -247,7 +259,7 @@ export default function PokemonDex() {
 
       {hasMore && (
         <div className={styles.loadMoreContainer}>
-          <Button variant="outline" size="lg" onClick={loadMore} isLoading={loading} className="rounded-full px-8">
+          <Button variant="outline" size="lg" onClick={() => { if (!loading) void loadMore(); }} isLoading={loading} className="rounded-full px-8">
             {loading ? 'Loading...' : 'Load More'}
           </Button>
         </div>

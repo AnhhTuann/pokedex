@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "test": "node --import tsx --test tests/*.test.ts"
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:browser": "node tests/browser/reference.e2e.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
@@ -41,6 +42,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.0.4",
+    "playwright": "1.65.1",
     "sass": "^1.99.0",
     "tsx": "^4.23.15",
     "typescript": "~5.8.2",
