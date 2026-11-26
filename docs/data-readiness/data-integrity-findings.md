@@ -51,3 +51,16 @@ sử không thể kiểm bằng phép so sánh này.
 - Seed walkthrough còn thiếu sáu game từ audit trước. Mô tả tiếng Việt cần
   nội dung biên tập. Item flavor text và hidden ability cần rà soát riêng khi
   áp dụng vào dữ liệu ứng dụng.
+
+## Phase 9B-2
+
+Đã bổ sung [ma trận độc lập](data-readiness-final-report.md) từ cùng snapshot.
+Lỗi Victini #0 đã sửa ở service và kiểm bằng fixture. Audit gặp thêm lỗi
+trích encounter của báo cáo lịch sử: phiên bản nằm trong mảng
+`version_details` của từng bản ghi location. Phase 9B-2 đọc đúng cấu trúc
+và tách method. Artifact và checkpoint lịch sử vẫn giữ nguyên.
+
+Hiện diện theo bản game, obtainability, phân trang theo đơn vị species/form,
+mapping ORAS trong DB, asset còn thiếu và xác nhận đúng artwork vẫn là
+các mục mở. Không có phát hiện mới về duplicate species hoặc dex entry trong
+bộ tham chiếu đã xác minh.

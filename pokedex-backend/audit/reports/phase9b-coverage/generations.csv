@@ -1,0 +1,10 @@
+generation,expected_count,actual_count,missing_count,unverified_count,duplicate_count,invalid_count,snapshot_commit,source_revision,evidence_type,verification_status,source_file
+1,151,151,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/1/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+2,100,100,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/2/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+3,135,135,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/3/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+4,107,107,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/4/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+5,156,156,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/5/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+6,72,72,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/6/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+7,88,88,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/7/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+8,96,96,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/8/index.json"",""data/api/v2/pokemon-species/*/index.json""]"
+9,120,120,0,0,0,0,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f2d151cc12c866e2daee0ed7113e22b025a1c049,GENERATION_MEMBERSHIP,VERIFIED,"[""data/api/v2/generation/9/index.json"",""data/api/v2/pokemon-species/*/index.json""]"

@@ -228,7 +228,7 @@ export const pokemonService = {
           if (basePoke) baseDbId = basePoke.id;
         }
 
-        const regNum = entryMap.get(baseDbId) || null;
+        const regNum = entryMap.get(baseDbId) ?? null;
 
         results.push({
           id: p.pokedexNumber,
