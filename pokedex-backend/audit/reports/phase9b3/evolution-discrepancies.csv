@@ -1,0 +1,2 @@
+chain_id,to_species_id,issue,snapshot,source_revision,source_record,database_evidence,verification_status,expected_value,actual_value,recommended_action
+250,490,CONDITIONS_NOT_PROVIDED,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f5afc5af9f3b5414620425506a45e365b1a2d4a2,data/api/v2/evolution-chain/250/index.json,,SOURCE_NOT_PROVIDED,Conditions if documented,[],Keep edge and investigate the missing condition source

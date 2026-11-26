@@ -1,0 +1,3 @@
+scope,identifier,snapshot,source_revision,source_record,database_evidence,verification_status,expected_value,actual_value,recommended_action
+victini,original-unova/494,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f5afc5af9f3b5414620425506a45e365b1a2d4a2,data/api/v2/pokedex/8/index.json,,UNVERIFIED,"{""number"":0,""species"":""victini""}",,Run approved SELECT against staging or restored backup and compare by key
+victini,updated-unova/494,508fd7c3a7d54ac175e00afe420b11a5af983bd6,f5afc5af9f3b5414620425506a45e365b1a2d4a2,data/api/v2/pokedex/9/index.json,,UNVERIFIED,"{""number"":0,""species"":""victini""}",,Run approved SELECT against staging or restored backup and compare by key

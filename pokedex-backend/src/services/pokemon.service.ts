@@ -275,10 +275,8 @@ export const pokemonService = {
       });
     }
 
-    const uniqueKeys = new Set(
-      results.map(r => r.regionalNumber !== null && r.regionalNumber !== undefined ? `R-${r.regionalNumber}` : `N-${r.speciesId}`)
-    );
-    const totalCount = uniqueKeys.size;
+    // The list returns one row per unique Pokemon.pokedexNumber (including forms).
+    const totalCount = results.length;
     const start = clampOffset(offset);
     const paginatedResults = results.slice(start, start + clampLimit(limit, 20, MAX_POKEMON_PAGE_SIZE));
 
