@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_POKEMON_LIST = gql`
-  query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $region: String, $game: String, $maxGen: Int) {
-    pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids, region: $region, game: $game, maxGen: $maxGen) {
+  query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $region: String, $game: String, $maxGen: Int, $form: PokemonFormFilter, $broadRegion: String) {
+    pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids, region: $region, game: $game, maxGen: $maxGen, form: $form, broadRegion: $broadRegion) {
       results {
         id
         name

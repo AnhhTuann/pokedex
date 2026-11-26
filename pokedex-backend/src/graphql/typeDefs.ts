@@ -161,10 +161,12 @@ export const typeDefs = `#graphql
     hasUpdate: Boolean!
   }
 
+  enum PokemonFormFilter { ALL DEFAULT ALTERNATE }
+
   type Query {
     ping: String
     me: User
-    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String, maxGen: Int): PokemonListResponse
+    pokemonList(limit: Int, offset: Int, search: String, type: String, gen: Int, ids: [Int!], region: String, game: String, maxGen: Int, form: PokemonFormFilter, broadRegion: String): PokemonListResponse
     pokemon(id: Int!): PokemonDetail
     myFavorites: [Int!]!
     myTeam: [PokemonListItem!]!

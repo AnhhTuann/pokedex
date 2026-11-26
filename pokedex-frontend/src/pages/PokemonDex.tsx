@@ -7,7 +7,7 @@ import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDia
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame, getGameGenerationStrict, getRegionalDexForQuery } from '../lib/gameVersions';
+import { getGameGenerationStrict, getRegionalPokemonListFilters } from '../lib/gameVersions';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
@@ -46,7 +46,7 @@ export default function PokemonDex() {
     }
   };
 
-  const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
+  const regionalFilters = getRegionalPokemonListFilters(selectedVersion, zaTab);
   const gameGen = getGameGenerationStrict(selectedVersion);
 
   let queryRegion: string | undefined = undefined;
@@ -55,13 +55,12 @@ export default function PokemonDex() {
 
   if (gameGen === null) {
     // Unsupported slug: do not apply a Gen IX max-gen filter by accident.
-    queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+    queryGame = regionalFilters.game;
   } else if (gameGen >= 2 && dexMode === 'national') {
     queryMaxGen = gameGen;
   } else {
-    const region = getRegionalDexForQuery(selectedVersion, zaTab);
-    queryRegion = region !== 'ALL' ? region : undefined;
-    queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+    queryRegion = regionalFilters.region;
+    queryGame = regionalFilters.game;
   }
 
   const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({
@@ -145,8 +144,8 @@ export default function PokemonDex() {
               )}
             >
               {(() => {
-                if (!rawRegion) return 'Regional Dex';
-                const parts = rawRegion.split('-');
+                if (!regionalFilters.region) return 'Regional Dex';
+                const parts = regionalFilters.region.split('-');
                 const capitalized = parts
                   .map(p => {
                     if (p === 'original' || p === 'extended' || p === 'updated' || p === 'letsgo') return '';

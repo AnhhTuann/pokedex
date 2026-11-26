@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useCompletePokemonList } from '../hooks/useCompletePokemonList';
 import {
   Sparkles,
   CheckCircle2,
@@ -17,24 +17,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PokemonListItem } from '../types';
 import { useTeamStore } from '../lib/teamStore';
 import { useCatchStore } from '../lib/catchStore';
-import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../lib/gameVersions';
+import { VERSION_COLORS, GENERATION_VERSIONS, getRegionalPokemonListFilters } from '../lib/gameVersions';
 import PokeDetail from '../components/PokeDetail';
 import { formatSpeciesId, TYPE_COLORS, cn } from '../lib/utils';
 import { useColorMode } from '../main';
 import { extractDominantColor, getExtractedColors, addOpacityToColor } from '../lib/colorExtractor';
 import styles from '../styles/pages/CatchTracker.module.scss';
 
-const GET_POKEMON_LIST = gql`
-  query GetPokemonList($limit: Int, $offset: Int, $search: String, $type: String, $gen: Int, $ids: [Int!], $region: String, $game: String) {
-    pokemonList(limit: $limit, offset: $offset, search: $search, type: $type, gen: $gen, ids: $ids, region: $region, game: $game) {
-      results { id name types image shinyImage category regionalNumber speciesId }
-      totalCount
-    }
-  }
-`;
-
-
-
+const EMPTY_LIST: PokemonListItem[] = [];
 
 // ── OPTIMIZED CHILD CARD COMPONENT (React.memo) ──
 interface TrackerCardProps {
@@ -190,7 +180,8 @@ const TrackerCard = React.memo<TrackerCardProps>(({
     </div>
   );
 }, (prev, next) => {
-  return prev.isCaught === next.isCaught &&
+  return prev.pokemon === next.pokemon &&
+         prev.isCaught === next.isCaught &&
          prev.isShiny === next.isShiny &&
          prev.isShinyMode === next.isShinyMode;
 });
@@ -265,26 +256,16 @@ export default function CatchTracker() {
   const caughtSet = useMemo(() => new Set(caughtPokemonIds), [caughtPokemonIds]);
   const shinySet = useMemo(() => new Set(shinyPokemonIds), [shinyPokemonIds]);
 
-  const { region: rawRegion, game: rawGame } = getRegionAndGame(selectedVersion);
-  const queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
-  const queryGame = rawGame !== 'ALL' ? rawGame : undefined;
+  const { region: queryRegion, game: queryGame } = getRegionalPokemonListFilters(selectedVersion);
 
-  // GraphQL query fetching listing data (cached in apollo for efficiency)
-  const { data, loading, error } = useQuery<{
-    pokemonList: { results: PokemonListItem[]; totalCount: number };
-  }>(GET_POKEMON_LIST, {
-    variables: {
-      limit: 1025,
-      offset: 0,
-      search,
-      type: typeFilter,
-      region: queryRegion,
-      game: queryGame
-    },
-  });
-
-  const pokemonList = data?.pokemonList?.results || [];
-  const totalCount = data?.pokemonList?.totalCount || 0;
+  const national = useCompletePokemonList({});
+  const hasFilters = Boolean(search || typeFilter || queryRegion || queryGame);
+  const scoped = useCompletePokemonList({
+    search: search || undefined, type: typeFilter || undefined, region: queryRegion, game: queryGame,
+  }, hasFilters);
+  const { rows, loading, error, retry } = hasFilters ? scoped : national;
+  const pokemonList = rows ?? EMPTY_LIST;
+  const totalCount = pokemonList.length;
 
   // Reset rendering limit when filter options change
   useEffect(() => {
@@ -331,9 +312,11 @@ export default function CatchTracker() {
   }, [filteredList, visibleLimit]);
 
   // Progress Calculations
-  const totalPokemon = 1025;
-  const nationalProgress = Math.min(100, Math.round((caughtPokemonIds.length / totalPokemon) * 100)) || 0;
-  const nationalShinyProgress = Math.min(100, Math.round((shinyPokemonIds.length / totalPokemon) * 100)) || 0;
+  const totalPokemon = national.rows?.length ?? 0;
+  const nationalCaught = national.rows?.filter(row => caughtSet.has(row.id)).length ?? 0;
+  const nationalShiny = national.rows?.filter(row => shinySet.has(row.id)).length ?? 0;
+  const nationalProgress = totalPokemon ? Math.round(nationalCaught / totalPokemon * 100) : 0;
+  const nationalShinyProgress = totalPokemon ? Math.round(nationalShiny / totalPokemon * 100) : 0;
 
   const visiblePokemonIds = useMemo(() => pokemonList.map(p => p.id), [pokemonList]);
   
@@ -345,12 +328,12 @@ export default function CatchTracker() {
     return visiblePokemonIds.filter(id => shinySet.has(id)).length;
   }, [visiblePokemonIds, shinySet]);
 
-  const localTotal = totalCount || 1;
-  const localProgress = Math.min(100, Math.round((caughtInActiveFilter / localTotal) * 100)) || 0;
-  const localShinyProgress = Math.min(100, Math.round((shinyInActiveFilter / localTotal) * 100)) || 0;
+  const localTotal = totalCount;
+  const localProgress = Math.min(100, Math.round((caughtInActiveFilter / (localTotal || 1)) * 100)) || 0;
+  const localShinyProgress = Math.min(100, Math.round((shinyInActiveFilter / (localTotal || 1)) * 100)) || 0;
 
   const handleMarkAllConfirm = () => {
-    markAllCaught(visiblePokemonIds);
+    if (!loading && !error) markAllCaught(visiblePokemonIds);
     setConfirmMarkAllOpen(false);
   };
 
@@ -411,7 +394,7 @@ export default function CatchTracker() {
                   Regular Dex Progress
                 </span>
                 <span className={styles.value} style={{ color: 'var(--primary)' }}>
-                  Caught: {caughtPokemonIds.length} / {totalPokemon} ({nationalProgress}%)
+                  {national.rows ? `Caught: ${nationalCaught} / ${totalPokemon} (${nationalProgress}%)` : 'Caught progress unavailable'}
                 </span>
               </div>
               <div className={styles.barBg}>
@@ -427,7 +410,7 @@ export default function CatchTracker() {
                   Shiny Dex Progress
                 </span>
                 <span className={styles.value} style={{ color: '#d97706' }}>
-                  Shiny: {shinyPokemonIds.length} / {totalPokemon} ({nationalShinyProgress}%)
+                  {national.rows ? `Shiny: ${nationalShiny} / ${totalPokemon} (${nationalShinyProgress}%)` : 'Shiny progress unavailable'}
                 </span>
               </div>
               <div className={styles.barBg}>
@@ -687,7 +670,7 @@ export default function CatchTracker() {
       {/* Results Count Info Label */}
       {!loading && !error && (
         <span className={styles.infoLabel}>
-          Showing {filteredList.length} of {totalCount} Pokémon matching filters
+          Showing {visibleList.length} of {totalCount} Pokémon matching filters
         </span>
       )}
 
@@ -720,7 +703,7 @@ export default function CatchTracker() {
           fontWeight: 700
         }}>
           <AlertTriangle />
-          Backend offline — please start the server on port 3000.
+          Unable to load the complete Pokémon list. <button type="button" onClick={retry}>Retry</button>
         </div>
       ) : (
         <>

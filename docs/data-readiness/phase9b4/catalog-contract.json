@@ -1,0 +1,710 @@
+{
+  "snapshot": "508fd7c3a7d54ac175e00afe420b11a5af983bd6",
+  "database_status": "UNVERIFIED",
+  "verification_status": "REFERENCE_ONLY",
+  "evidence_type": "PINNED_DERIVED_AUDIT_REPORTS",
+  "limitation": "Reference assertions do not establish database row presence or obtainability.",
+  "generation_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "dexes": [
+    {
+      "id": 1,
+      "slug": "national",
+      "region": null
+    },
+    {
+      "id": 2,
+      "slug": "kanto",
+      "region": "kanto"
+    },
+    {
+      "id": 3,
+      "slug": "original-johto",
+      "region": "johto"
+    },
+    {
+      "id": 4,
+      "slug": "hoenn",
+      "region": "hoenn"
+    },
+    {
+      "id": 5,
+      "slug": "original-sinnoh",
+      "region": "sinnoh"
+    },
+    {
+      "id": 6,
+      "slug": "extended-sinnoh",
+      "region": "sinnoh"
+    },
+    {
+      "id": 7,
+      "slug": "updated-johto",
+      "region": "johto"
+    },
+    {
+      "id": 8,
+      "slug": "original-unova",
+      "region": "unova"
+    },
+    {
+      "id": 9,
+      "slug": "updated-unova",
+      "region": "unova"
+    },
+    {
+      "id": 11,
+      "slug": "conquest-gallery",
+      "region": null
+    },
+    {
+      "id": 12,
+      "slug": "kalos-central",
+      "region": "kalos"
+    },
+    {
+      "id": 13,
+      "slug": "kalos-coastal",
+      "region": "kalos"
+    },
+    {
+      "id": 14,
+      "slug": "kalos-mountain",
+      "region": "kalos"
+    },
+    {
+      "id": 15,
+      "slug": "updated-hoenn",
+      "region": "hoenn"
+    },
+    {
+      "id": 16,
+      "slug": "original-alola",
+      "region": "alola"
+    },
+    {
+      "id": 17,
+      "slug": "original-melemele",
+      "region": "alola"
+    },
+    {
+      "id": 18,
+      "slug": "original-akala",
+      "region": "alola"
+    },
+    {
+      "id": 19,
+      "slug": "original-ulaula",
+      "region": "alola"
+    },
+    {
+      "id": 20,
+      "slug": "original-poni",
+      "region": "alola"
+    },
+    {
+      "id": 21,
+      "slug": "updated-alola",
+      "region": "alola"
+    },
+    {
+      "id": 22,
+      "slug": "updated-melemele",
+      "region": "alola"
+    },
+    {
+      "id": 23,
+      "slug": "updated-akala",
+      "region": "alola"
+    },
+    {
+      "id": 24,
+      "slug": "updated-ulaula",
+      "region": "alola"
+    },
+    {
+      "id": 25,
+      "slug": "updated-poni",
+      "region": "alola"
+    },
+    {
+      "id": 26,
+      "slug": "letsgo-kanto",
+      "region": "kanto"
+    },
+    {
+      "id": 27,
+      "slug": "galar",
+      "region": "galar"
+    },
+    {
+      "id": 28,
+      "slug": "isle-of-armor",
+      "region": "galar"
+    },
+    {
+      "id": 29,
+      "slug": "crown-tundra",
+      "region": "galar"
+    },
+    {
+      "id": 30,
+      "slug": "hisui",
+      "region": "hisui"
+    },
+    {
+      "id": 31,
+      "slug": "paldea",
+      "region": "paldea"
+    },
+    {
+      "id": 32,
+      "slug": "kitakami",
+      "region": "paldea"
+    },
+    {
+      "id": 33,
+      "slug": "blueberry",
+      "region": "paldea"
+    },
+    {
+      "id": 34,
+      "slug": "lumiose-city",
+      "region": "kalos"
+    },
+    {
+      "id": 35,
+      "slug": "hyperspace",
+      "region": "kalos"
+    },
+    {
+      "id": 36,
+      "slug": "champions",
+      "region": null
+    }
+  ],
+  "games": [
+    {
+      "slug": "red",
+      "display_name": "Red",
+      "generation": 1,
+      "version_group": "red-blue",
+      "reference_dexes": [
+        "kanto"
+      ],
+      "legacy_query_dexes": [
+        "kanto"
+      ]
+    },
+    {
+      "slug": "blue",
+      "display_name": "Blue",
+      "generation": 1,
+      "version_group": "red-blue",
+      "reference_dexes": [
+        "kanto"
+      ],
+      "legacy_query_dexes": [
+        "kanto"
+      ]
+    },
+    {
+      "slug": "yellow",
+      "display_name": "Yellow",
+      "generation": 1,
+      "version_group": "yellow",
+      "reference_dexes": [
+        "kanto"
+      ],
+      "legacy_query_dexes": [
+        "kanto"
+      ]
+    },
+    {
+      "slug": "gold",
+      "display_name": "Gold",
+      "generation": 2,
+      "version_group": "gold-silver",
+      "reference_dexes": [
+        "original-johto"
+      ],
+      "legacy_query_dexes": [
+        "original-johto"
+      ]
+    },
+    {
+      "slug": "silver",
+      "display_name": "Silver",
+      "generation": 2,
+      "version_group": "gold-silver",
+      "reference_dexes": [
+        "original-johto"
+      ],
+      "legacy_query_dexes": [
+        "original-johto"
+      ]
+    },
+    {
+      "slug": "crystal",
+      "display_name": "Crystal",
+      "generation": 2,
+      "version_group": "crystal",
+      "reference_dexes": [
+        "original-johto"
+      ],
+      "legacy_query_dexes": [
+        "original-johto"
+      ]
+    },
+    {
+      "slug": "ruby",
+      "display_name": "Ruby",
+      "generation": 3,
+      "version_group": "ruby-sapphire",
+      "reference_dexes": [
+        "hoenn"
+      ],
+      "legacy_query_dexes": [
+        "hoenn"
+      ]
+    },
+    {
+      "slug": "sapphire",
+      "display_name": "Sapphire",
+      "generation": 3,
+      "version_group": "ruby-sapphire",
+      "reference_dexes": [
+        "hoenn"
+      ],
+      "legacy_query_dexes": [
+        "hoenn"
+      ]
+    },
+    {
+      "slug": "emerald",
+      "display_name": "Emerald",
+      "generation": 3,
+      "version_group": "emerald",
+      "reference_dexes": [
+        "hoenn"
+      ],
+      "legacy_query_dexes": [
+        "hoenn"
+      ]
+    },
+    {
+      "slug": "firered",
+      "display_name": "FireRed",
+      "generation": 3,
+      "version_group": "firered-leafgreen",
+      "reference_dexes": [
+        "kanto"
+      ],
+      "legacy_query_dexes": [
+        "kanto"
+      ]
+    },
+    {
+      "slug": "leafgreen",
+      "display_name": "LeafGreen",
+      "generation": 3,
+      "version_group": "firered-leafgreen",
+      "reference_dexes": [
+        "kanto"
+      ],
+      "legacy_query_dexes": [
+        "kanto"
+      ]
+    },
+    {
+      "slug": "diamond",
+      "display_name": "Diamond",
+      "generation": 4,
+      "version_group": "diamond-pearl",
+      "reference_dexes": [
+        "original-sinnoh"
+      ],
+      "legacy_query_dexes": [
+        "original-sinnoh"
+      ]
+    },
+    {
+      "slug": "pearl",
+      "display_name": "Pearl",
+      "generation": 4,
+      "version_group": "diamond-pearl",
+      "reference_dexes": [
+        "original-sinnoh"
+      ],
+      "legacy_query_dexes": [
+        "original-sinnoh"
+      ]
+    },
+    {
+      "slug": "platinum",
+      "display_name": "Platinum",
+      "generation": 4,
+      "version_group": "platinum",
+      "reference_dexes": [
+        "extended-sinnoh"
+      ],
+      "legacy_query_dexes": [
+        "extended-sinnoh"
+      ]
+    },
+    {
+      "slug": "heartgold",
+      "display_name": "HeartGold",
+      "generation": 4,
+      "version_group": "heartgold-soulsilver",
+      "reference_dexes": [
+        "updated-johto"
+      ],
+      "legacy_query_dexes": [
+        "updated-johto"
+      ]
+    },
+    {
+      "slug": "soulsilver",
+      "display_name": "SoulSilver",
+      "generation": 4,
+      "version_group": "heartgold-soulsilver",
+      "reference_dexes": [
+        "updated-johto"
+      ],
+      "legacy_query_dexes": [
+        "updated-johto"
+      ]
+    },
+    {
+      "slug": "black",
+      "display_name": "Black",
+      "generation": 5,
+      "version_group": "black-white",
+      "reference_dexes": [
+        "original-unova"
+      ],
+      "legacy_query_dexes": [
+        "original-unova"
+      ]
+    },
+    {
+      "slug": "white",
+      "display_name": "White",
+      "generation": 5,
+      "version_group": "black-white",
+      "reference_dexes": [
+        "original-unova"
+      ],
+      "legacy_query_dexes": [
+        "original-unova"
+      ]
+    },
+    {
+      "slug": "black-2",
+      "display_name": "Black 2",
+      "generation": 5,
+      "version_group": "black-2-white-2",
+      "reference_dexes": [
+        "updated-unova"
+      ],
+      "legacy_query_dexes": [
+        "updated-unova"
+      ]
+    },
+    {
+      "slug": "white-2",
+      "display_name": "White 2",
+      "generation": 5,
+      "version_group": "black-2-white-2",
+      "reference_dexes": [
+        "updated-unova"
+      ],
+      "legacy_query_dexes": [
+        "updated-unova"
+      ]
+    },
+    {
+      "slug": "x",
+      "display_name": "X",
+      "generation": 6,
+      "version_group": "x-y",
+      "reference_dexes": [
+        "kalos-central",
+        "kalos-coastal",
+        "kalos-mountain"
+      ],
+      "legacy_query_dexes": [
+        "kalos-central"
+      ]
+    },
+    {
+      "slug": "y",
+      "display_name": "Y",
+      "generation": 6,
+      "version_group": "x-y",
+      "reference_dexes": [
+        "kalos-central",
+        "kalos-coastal",
+        "kalos-mountain"
+      ],
+      "legacy_query_dexes": [
+        "kalos-central"
+      ]
+    },
+    {
+      "slug": "omega-ruby",
+      "display_name": "Omega Ruby",
+      "generation": 6,
+      "version_group": "omega-ruby-alpha-sapphire",
+      "reference_dexes": [
+        "updated-hoenn"
+      ],
+      "legacy_query_dexes": [
+        "hoenn"
+      ]
+    },
+    {
+      "slug": "alpha-sapphire",
+      "display_name": "Alpha Sapphire",
+      "generation": 6,
+      "version_group": "omega-ruby-alpha-sapphire",
+      "reference_dexes": [
+        "updated-hoenn"
+      ],
+      "legacy_query_dexes": [
+        "hoenn"
+      ]
+    },
+    {
+      "slug": "sun",
+      "display_name": "Sun",
+      "generation": 7,
+      "version_group": "sun-moon",
+      "reference_dexes": [
+        "original-alola",
+        "original-melemele",
+        "original-akala",
+        "original-ulaula",
+        "original-poni"
+      ],
+      "legacy_query_dexes": [
+        "original-alola"
+      ]
+    },
+    {
+      "slug": "moon",
+      "display_name": "Moon",
+      "generation": 7,
+      "version_group": "sun-moon",
+      "reference_dexes": [
+        "original-alola",
+        "original-melemele",
+        "original-akala",
+        "original-ulaula",
+        "original-poni"
+      ],
+      "legacy_query_dexes": [
+        "original-alola"
+      ]
+    },
+    {
+      "slug": "ultra-sun",
+      "display_name": "Ultra Sun",
+      "generation": 7,
+      "version_group": "ultra-sun-ultra-moon",
+      "reference_dexes": [
+        "updated-alola",
+        "updated-melemele",
+        "updated-akala",
+        "updated-ulaula",
+        "updated-poni"
+      ],
+      "legacy_query_dexes": [
+        "updated-alola"
+      ]
+    },
+    {
+      "slug": "ultra-moon",
+      "display_name": "Ultra Moon",
+      "generation": 7,
+      "version_group": "ultra-sun-ultra-moon",
+      "reference_dexes": [
+        "updated-alola",
+        "updated-melemele",
+        "updated-akala",
+        "updated-ulaula",
+        "updated-poni"
+      ],
+      "legacy_query_dexes": [
+        "updated-alola"
+      ]
+    },
+    {
+      "slug": "lets-go-pikachu",
+      "display_name": "Let's Go Pikachu",
+      "generation": 7,
+      "version_group": "lets-go-pikachu-lets-go-eevee",
+      "reference_dexes": [
+        "letsgo-kanto"
+      ],
+      "legacy_query_dexes": [
+        "letsgo-kanto"
+      ]
+    },
+    {
+      "slug": "lets-go-eevee",
+      "display_name": "Let's Go Eevee",
+      "generation": 7,
+      "version_group": "lets-go-pikachu-lets-go-eevee",
+      "reference_dexes": [
+        "letsgo-kanto"
+      ],
+      "legacy_query_dexes": [
+        "letsgo-kanto"
+      ]
+    },
+    {
+      "slug": "sword",
+      "display_name": "Sword",
+      "generation": 8,
+      "version_group": "sword-shield",
+      "reference_dexes": [
+        "galar",
+        "isle-of-armor",
+        "crown-tundra"
+      ],
+      "legacy_query_dexes": [
+        "galar"
+      ]
+    },
+    {
+      "slug": "shield",
+      "display_name": "Shield",
+      "generation": 8,
+      "version_group": "sword-shield",
+      "reference_dexes": [
+        "galar",
+        "isle-of-armor",
+        "crown-tundra"
+      ],
+      "legacy_query_dexes": [
+        "galar"
+      ]
+    },
+    {
+      "slug": "brilliant-diamond",
+      "display_name": "Brilliant Diamond",
+      "generation": 8,
+      "version_group": "brilliant-diamond-shining-pearl",
+      "reference_dexes": [
+        "original-sinnoh"
+      ],
+      "legacy_query_dexes": [
+        "original-sinnoh"
+      ]
+    },
+    {
+      "slug": "shining-pearl",
+      "display_name": "Shining Pearl",
+      "generation": 8,
+      "version_group": "brilliant-diamond-shining-pearl",
+      "reference_dexes": [
+        "original-sinnoh"
+      ],
+      "legacy_query_dexes": [
+        "original-sinnoh"
+      ]
+    },
+    {
+      "slug": "legends-arceus",
+      "display_name": "Legends: Arceus",
+      "generation": 8,
+      "version_group": "legends-arceus",
+      "reference_dexes": [
+        "hisui"
+      ],
+      "legacy_query_dexes": [
+        "hisui"
+      ]
+    },
+    {
+      "slug": "scarlet",
+      "display_name": "Scarlet",
+      "generation": 9,
+      "version_group": "scarlet-violet",
+      "reference_dexes": [
+        "paldea",
+        "kitakami",
+        "blueberry"
+      ],
+      "legacy_query_dexes": [
+        "paldea"
+      ]
+    },
+    {
+      "slug": "violet",
+      "display_name": "Violet",
+      "generation": 9,
+      "version_group": "scarlet-violet",
+      "reference_dexes": [
+        "paldea",
+        "kitakami",
+        "blueberry"
+      ],
+      "legacy_query_dexes": [
+        "paldea"
+      ]
+    },
+    {
+      "slug": "legends-za",
+      "display_name": "Legends: Z-A",
+      "generation": 9,
+      "version_group": "legends-za",
+      "reference_dexes": [
+        "lumiose-city",
+        "hyperspace"
+      ],
+      "legacy_query_dexes": [
+        "lumiose-city",
+        "hyperspace"
+      ]
+    }
+  ],
+  "availability_facets": [
+    "REGIONAL_DEX_MEMBER",
+    "GAME_PRESENCE_EVIDENCE",
+    "OBTAINABLE",
+    "WILD_CATCHABLE",
+    "TRANSFER_AVAILABLE",
+    "EVENT_AVAILABLE",
+    "UNVERIFIED"
+  ],
+  "runtime": {
+    "pagination_unit": "Pokemon.pokedexNumber",
+    "form_filter": [
+      "ALL",
+      "DEFAULT",
+      "ALTERNATE"
+    ],
+    "exact_form_filter": "ids",
+    "legacy_game_scope": "exact_dex_with_legacy_alternate_marker"
+  },
+  "backlogs": {
+    "forms": 245,
+    "learnsets": {
+      "CHECK_SCOPE_AND_GROUP_MAPPING": 1974,
+      "REVIEW_INHERITANCE": 23,
+      "CHECK_SOURCE_GAP_WITH_DEX_CONTEXT": 13
+    }
+  }
+}

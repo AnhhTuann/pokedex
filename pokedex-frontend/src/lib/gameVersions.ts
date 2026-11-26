@@ -211,6 +211,12 @@ export function getRegionalDexForQuery(version: string, zaTab: keyof typeof LEGE
   return version === 'legends-za' ? LEGENDS_ZA_DEX[zaTab] : getRegionAndGame(version).region;
 }
 
+export function getRegionalPokemonListFilters(version: string, zaTab?: keyof typeof LEGENDS_ZA_DEX) {
+  const { game } = getRegionAndGame(version);
+  const region = getRegionalDexForQuery(game, zaTab);
+  return { region: region === 'ALL' ? undefined : region, game: game === 'ALL' ? undefined : game };
+}
+
 function hexToRgb(hex: string): string {
   let c = hex.substring(1);
   if (c.length === 3) {

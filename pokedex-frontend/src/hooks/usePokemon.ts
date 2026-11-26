@@ -8,8 +8,10 @@ export interface PokemonListParams {
   type?: string;
   gen?: number | null;
   ids?: number[] | null;
+  broadRegion?: string | null;
   region?: string | null;
   game?: string | null;
+  form?: 'ALL' | 'DEFAULT' | 'ALTERNATE' | null;
   maxGen?: number | null;
 }
 

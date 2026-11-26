@@ -1,3 +1,5 @@
+import { broadRegionDexes } from '../lib/regionalDexes.js';
+import { GraphQLError } from 'graphql';
 import { prisma } from '../db/prisma.js';
 import { defensiveMatchups } from '../lib/typeMatchups.js';
 import { fetchWithTimeout } from '../lib/pokeApi.js';
@@ -157,16 +159,22 @@ export const pokemonService = {
   getFullEvolutionChain,
   getAlternativeForms,
   
-  pokemonList: async ({ limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, region = null, game = null, maxGen = null }: any) => {
+  pokemonList: async ({ limit = 20, offset = 0, search = '', type = '', gen = null, ids = null, region = null, game = null, maxGen = null, form = null, broadRegion = null }: any) => {
+    for (const generation of [gen, maxGen]) {
+      if (generation !== null && (!Number.isInteger(generation) || generation < 1 || generation > 9)) {
+        throw new GraphQLError('Generation must be an integer from 1 to 9.', {
+          extensions: { code: 'BAD_USER_INPUT' }
+        });
+      }
+    }
     if (ids && Array.isArray(ids) && ids.length === 0) {
       return { results: [], totalCount: 0 };
     }
 
     const where: any = {};
 
-    if (region && region !== 'ALL' && game && game !== 'ALL') {
+    if (region && region.toLowerCase() !== 'all' && game && game.toLowerCase() !== 'all') {
       where.AND = [
-        { regionalDexes: { has: region.toLowerCase() } },
         {
           OR: [
             { isDefault: true },
@@ -176,10 +184,22 @@ export const pokemonService = {
       ];
     }
 
-    if (gen !== null) {
-      where.generation = gen;
-    } else if (maxGen !== null) {
-      where.generation = { lte: maxGen };
+    if (form === 'DEFAULT') where.isDefault = true;
+    if (form === 'ALTERNATE') where.isDefault = false;
+
+    if (gen !== null || maxGen !== null) {
+      const generation = gen ?? { lte: maxGen };
+      const species = await prisma.pokemon.findMany({
+        where: { isDefault: true, generation },
+        select: { pokedexNumber: true }
+      });
+      where.AND ??= [];
+      where.AND.push({
+        OR: [
+          { isDefault: true, generation },
+          { isDefault: false, speciesId: { in: species.map(row => row.pokedexNumber) } }
+        ]
+      });
     }
     if (ids && Array.isArray(ids) && ids.length > 0) {
       where.pokedexNumber = { in: ids };
@@ -200,80 +220,55 @@ export const pokemonService = {
       where.types = { some: { name: type.toLowerCase() } };
     }
 
+    const broadDexes = broadRegion ? broadRegionDexes.get(broadRegion.toLowerCase()) : undefined;
+    if (broadRegion && !broadDexes) {
+      throw new GraphQLError('Unknown broad Pokémon region.', {
+        extensions: { code: 'BAD_USER_INPUT' }
+      });
+    }
+
     const pokemons = await prisma.pokemon.findMany({
       where,
       include: { types: true }
     });
 
-    let results: any[] = [];
-
-    if (region && region !== 'ALL') {
-      const regionName = region.toLowerCase();
-
+    const exactDex = region && region.toLowerCase() !== 'all' ? region.toLowerCase() : null;
+    const entryMap = new Map<number, number>();
+    if (exactDex && exactDex !== 'national') {
       const dexEntries = await prisma.dexEntry.findMany({
-        where: { regionName }
+        where: { regionName: exactDex },
+        select: { entryNumber: true, pokemon: { select: { pokedexNumber: true } } }
       });
-      const entryMap = new Map<number, number>();
       for (const entry of dexEntries) {
-        entryMap.set(entry.pokemonId, entry.entryNumber);
+        entryMap.set(entry.pokemon.pokedexNumber, entry.entryNumber);
       }
-
-      for (const p of pokemons) {
-        let baseDbId = p.id;
-        if (!p.isDefault && p.speciesId) {
-          const basePoke = await prisma.pokemon.findUnique({
-            where: { pokedexNumber: p.speciesId },
-            select: { id: true }
-          });
-          if (basePoke) baseDbId = basePoke.id;
-        }
-
-        const regNum = entryMap.get(baseDbId) ?? null;
-
-        results.push({
-          id: p.pokedexNumber,
-          name: p.name,
-          types: p.types.map((t: any) => t.name),
-          image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
-          shinyImage: p.shinyImageUrl,
-          category: p.category,
-          regionalNumber: regNum,
-          speciesId: p.speciesId || p.pokedexNumber
-        });
-      }
-
-      results = results.filter(r => r.regionalNumber !== null);
-
-      results.sort((a, b) => {
-        if (a.regionalNumber !== b.regionalNumber) {
-          return (a.regionalNumber || 0) - (b.regionalNumber || 0);
-        }
-        return a.id - b.id;
-      });
-
-    } else {
-      for (const p of pokemons) {
-        results.push({
-          id: p.pokedexNumber,
-          name: p.name,
-          types: p.types.map((t: any) => t.name),
-          image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
-          shinyImage: p.shinyImageUrl,
-          category: p.category,
-          regionalNumber: null,
-          speciesId: p.speciesId || p.pokedexNumber
-        });
-      }
-
-      results.sort((a, b) => {
-        const aBase = a.speciesId || a.id;
-        const bBase = b.speciesId || b.id;
-        if (aBase !== bBase) {
-          return aBase - bBase;
-        }
-        return a.id - b.id;
-      });
     }
+
+    const broadMembers = broadDexes && new Set((await prisma.dexEntry.findMany({
+      where: { regionName: { in: [...broadDexes] } },
+      select: { pokemon: { select: { pokedexNumber: true } } }
+    })).map(entry => entry.pokemon.pokedexNumber));
+
+    const results = pokemons.flatMap(p => {
+      const speciesId = p.speciesId ?? p.pokedexNumber;
+      const regionalNumber = exactDex === 'national' ? speciesId : entryMap.get(speciesId) ?? null;
+      if ((exactDex && regionalNumber === null) || (broadMembers && !broadMembers.has(speciesId))) return [];
+      return [{
+        id: p.pokedexNumber,
+        name: p.name,
+        types: p.types.map(t => t.name),
+        image: p.imageUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.pokedexNumber}.png`,
+        shinyImage: p.shinyImageUrl,
+        category: p.category,
+        regionalNumber,
+        speciesId
+      }];
+    });
+
+    results.sort((a, b) =>
+      (exactDex ? (a.regionalNumber ?? 0) - (b.regionalNumber ?? 0) : a.speciesId - b.speciesId)
+      || a.id - b.id
+    );
 
     // The list returns one row per unique Pokemon.pokedexNumber (including forms).
     const totalCount = results.length;
