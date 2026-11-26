@@ -7,7 +7,7 @@ import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDia
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame, getGameGenerationStrict } from '../lib/gameVersions';
+import { getRegionAndGame, getGameGenerationStrict, getRegionalDexForQuery } from '../lib/gameVersions';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
@@ -59,11 +59,9 @@ export default function PokemonDex() {
   } else if (gameGen >= 2 && dexMode === 'national') {
     queryMaxGen = gameGen;
   } else {
-    queryRegion = rawRegion !== 'ALL' ? rawRegion : undefined;
+    const region = getRegionalDexForQuery(selectedVersion, zaTab);
+    queryRegion = region !== 'ALL' ? region : undefined;
     queryGame = rawGame !== 'ALL' ? rawGame : undefined;
-    if (selectedVersion === 'legends-za') {
-      queryRegion = zaTab === 'lumiose' ? 'lumiose-city' : 'hyperspace';
-    }
   }
 
   const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({

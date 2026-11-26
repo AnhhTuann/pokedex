@@ -168,7 +168,7 @@ export const GAME_TO_REGIONAL_DEX: Record<string, string> = {
   scarlet: 'paldea',
   violet: 'paldea',
   // Legacy compatibility: existing DB/custom entries still use kalos-central.
-  // PokemonDex overrides the query to lumiose-city/hyperspace for this game.
+  // PokemonDex uses getRegionalDexForQuery for this game.
   'legends-za': 'kalos-central',
 };
 
@@ -203,6 +203,12 @@ export function getRegionAndGame(versionName: string) {
   }
   const region = GAME_TO_REGIONAL_DEX[game] || game;
   return { region, game };
+}
+
+export const LEGENDS_ZA_DEX = { lumiose: 'lumiose-city', hyperspace: 'hyperspace' } as const;
+
+export function getRegionalDexForQuery(version: string, zaTab: keyof typeof LEGENDS_ZA_DEX = 'lumiose'): string {
+  return version === 'legends-za' ? LEGENDS_ZA_DEX[zaTab] : getRegionAndGame(version).region;
 }
 
 function hexToRgb(hex: string): string {

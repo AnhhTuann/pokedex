@@ -83,17 +83,23 @@ const finding = (id: string, classification: Finding['classification']): Finding
 test('fix plan excludes non-actionable findings and uses safe rollback templates', () => {
   const plan = buildFixPlan([
     finding('SRC-WALKTHROUGH-COVERAGE', 'MISSING'),
-    finding('SCHEMA-FK-INCONSISTENT', 'INCORRECT'),
+    finding('SCHEMA-FK-INVALID-TARGET', 'INCORRECT'),
+    finding('SCHEMA-FK-INCONSISTENT', 'ACCEPTABLE_DESIGN'),
+    finding('SCHEMA-LEARNSET-NO-VERSION', 'DESIGN_GAP'),
+    finding('DAMAGE-UNSUPPORTED', 'UNSUPPORTED'),
+    { ...finding('RUNTIME-GAP', 'MISSING'), runtimeRequired: true },
     finding('DB-QUALITY-ISSUES', 'INCORRECT'),
     finding('API-LEARNSET-VERSION-DETAIL', 'MISSING'),
     finding('DB-QUALITY-CLEAN', 'CORRECT'),
     finding('DB-UNVERIFIED-DUPLICATES', 'UNVERIFIED'),
   ]);
-  assert.ok(plan.some((p) => p.findingId === 'SCHEMA-FK-INCONSISTENT' && p.order === 2));
+  assert.ok(plan.some((p) => p.findingId === 'SCHEMA-FK-INVALID-TARGET' && p.order === 2));
   assert.ok(plan.some((p) => p.findingId === 'DB-QUALITY-ISSUES' && p.order === 1));
   assert.ok(plan.some((p) => p.findingId === 'SRC-WALKTHROUGH-COVERAGE' && p.order === 8 && p.area === 'Walkthrough'));
   assert.ok(plan.some((p) => p.findingId === 'API-LEARNSET-VERSION-DETAIL' && p.order === 4 && p.area === 'Learnsets and generation rules'));
-  assert.ok(plan.every((p) => p.findingId !== 'DB-QUALITY-CLEAN'));
+  assert.deepEqual(plan.map((p) => p.findingId), [
+    'DB-QUALITY-ISSUES', 'SCHEMA-FK-INVALID-TARGET', 'API-LEARNSET-VERSION-DETAIL', 'SRC-WALKTHROUGH-COVERAGE',
+  ]);
   assert.ok(plan.every((p) => p.dryRunCommand.includes(p.findingId)));
   assert.ok(plan.every((p) => !p.rollbackCommand.includes('psql')));
   assert.ok(plan.every((p) => p.rollbackCommand.includes('KHÔNG replay data-only') || p.rollbackCommand.includes('git revert')));
@@ -104,11 +110,13 @@ test('fix plan excludes non-actionable findings and uses safe rollback templates
 
 test('coverage reports checked, unchecked and unverified counts', () => {
   const coverage = buildCoverage(
-    [finding('A', 'UNVERIFIED'), finding('B', 'CORRECT')],
+    [finding('A', 'UNVERIFIED'), finding('B', 'CORRECT'),
+      finding('C', 'DESIGN_GAP'), finding('D', 'ACCEPTABLE_DESIGN')],
     undefined,
     {
       supportedVersions: ['red'],
       regionalDexByVersion: {},
+      effectiveRegionalDexesByVersion: {},
       walkthrough: { records: 1, versions: [], languages: [], duplicates: 0 },
       images: { total: 2, zeroByte: 0, byDir: {} },
       sourcePaths: [],
@@ -123,6 +131,8 @@ test('coverage reports checked, unchecked and unverified counts', () => {
     },
   );
   assert.equal(coverage.unverified, 1);
+  assert.equal(coverage.byClassification.DESIGN_GAP, 1);
+  assert.equal(coverage.byClassification.ACCEPTABLE_DESIGN, 1);
   assert.equal(coverage.detail.supportedGames, 1);
   assert.ok(coverage.unchecked >= 15);
   assert.equal(coverage.scopes?.database.connection, 'BLOCKED');
@@ -313,6 +323,7 @@ test('DB audit without connection reports unverified areas instead of guessing',
   const { findings, db } = await auditDatabase(undefined, {
     supportedVersions: [],
     regionalDexByVersion: {},
+    effectiveRegionalDexesByVersion: {},
     walkthrough: { records: 0, versions: [], languages: [], duplicates: 0 },
     images: { total: 0, zeroByte: 0, byDir: {} },
     sourcePaths: [],

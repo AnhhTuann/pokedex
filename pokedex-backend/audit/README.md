@@ -26,19 +26,19 @@ Arguments:
 
 | Flag | Meaning |
 |---|---|
-| `--offline` | Skip PokéAPI. |
+| `--offline` | Skip PokéAPI network access. With `--full`, uses the local PokéAPI cache only. |
 | `--schema-only` | Only parse `prisma/schema.prisma`. |
 | `--api` | Enable PokéAPI cross-reference (default unless `--offline`). |
-| `--db` | Allow read-only DB checks using `AUDIT_DATABASE_URL` (falls back to `DATABASE_URL` only with this flag). |
+| `--db` | Allow read-only DB checks. Requires explicit `AUDIT_DATABASE_URL`; incompatible with `--offline` and `--schema-only`. |
 | `--sample N` | Number of species to inspect in detail (default 38). |
-| `--out DIR` | Output directory relative to `pokedex-backend/` (default `audit/reports`). |
+| `--out DIR` | Output directory relative to `pokedex-backend/` (default `audit/reports/current`). |
 
 ## Outputs
 
-- `audit/reports/report.md` — Vietnamese-ready Markdown report with coverage.
-- `audit/reports/audit.json` — full findings, schema map, source snapshot, reference snapshot.
-- `audit/reports/findings.csv` — spreadsheet-friendly findings.
-- `audit/reports/fix-plan.json` — ordered remediation steps with dry-run/backup/rollback templates.
+- `audit/reports/current/report.md` — Vietnamese-ready Markdown report with coverage.
+- `audit/reports/current/audit.json` — full findings, schema map, source snapshot, reference snapshot.
+- `audit/reports/current/findings.csv` — spreadsheet-friendly findings.
+- `audit/reports/current/fix-plan.json` — ordered remediation steps with dry-run/backup/rollback templates.
 - `audit/.cache/pokeapi/` — HTTP cache (gitignored); delete to force a fresh reference read.
 
 ## Safety rules
@@ -53,5 +53,21 @@ Arguments:
 
 ## Classification
 
-`CORRECT`, `MISSING`, `INCORRECT`, `DUPLICATE`, `UNSUPPORTED`, `UNVERIFIED`.
+| Classification | Meaning |
+|---|---|
+| `CORRECT` | Verified correct |
+| `INCORRECT` | Proven functional or reference mismatch |
+| `MISSING` | Required data or content is absent |
+| `DUPLICATE` | Verified duplicate records |
+| `DESIGN_GAP` | A required capability exceeds the current representation |
+| `ACCEPTABLE_DESIGN` | Intentional design choice |
+| `UNVERIFIED` | Evidence is insufficient |
+| `UNSUPPORTED` | Explicitly outside current support |
+
+The fix plan and dry-run list confirmed defects, missing data and duplicates when
+the finding has sufficient evidence for an actionable proposal. Design gaps
+appear in the design review section.
+
+See the [Phase 9A implementation report](reports/phase9-audit-integrity/README.md)
+for the offline verification results and full-audit prerequisites.
 Every finding carries `evidence` and `sources`.

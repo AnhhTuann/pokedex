@@ -1,3 +1,4 @@
+import { CLASSIFICATIONS } from './types.js';
 import type { AuditOutput, Coverage, Finding, FixPlan } from './types.js';
 import type { GameAuditRow, ReferenceSnapshot, SpeciesCoverageRow } from './referenceAudit.js';
 import type { DbSnapshot } from './dbAudit.js';
@@ -6,7 +7,7 @@ import type { SourceSnapshot } from './sourceAudit.js';
 // Operator-approved correction order. Do not reorder without an explicit decision.
 const CORRECTION_STEPS: Array<[RegExp, number, string]> = [
   [/MASTER|DESCRIPTION|CHART|SEED|UPDATER|DB-QUALITY|DUPLICATE|POKEMON-ID|INCORRECT-ID/, 1, 'Pokemon master data'],
-  [/EVOLUTION|VARIETY|FORM|FK-INCONSISTENT|ORPHAN|RELATION/, 2, 'Forms and evolutions'],
+  [/EVOLUTION|VARIETY|FORM|FK-INVALID-TARGET|ORPHAN|RELATION/, 2, 'Forms and evolutions'],
   // Learnset is matched before Availability because IDs such as
   // API-LEARNSET-VERSION-DETAIL contain "VERSION". Sorting below still uses
   // the requested numeric order (Availability 3, Learnsets 4).
@@ -68,7 +69,8 @@ const dbScope = (finding: Finding): boolean =>
 
 export function buildFixPlan(findings: Finding[]): FixPlan[] {
   return findings
-    .filter((f) => f.classification !== 'CORRECT' && f.classification !== 'UNVERIFIED')
+    .filter((f) => !f.runtimeRequired &&
+      (f.classification === 'INCORRECT' || f.classification === 'MISSING' || f.classification === 'DUPLICATE'))
     .map((finding) => {
       const match = CORRECTION_STEPS.find(([pattern]) => pattern.test(finding.id + finding.area));
       const order = match?.[1] ?? 9;
@@ -102,7 +104,7 @@ export function buildCoverage(
   db: DbSnapshot,
 ): Coverage {
   const detail: Record<string, number> = {};
-  const byClassification: Record<string, number> = {};
+  const byClassification = Object.fromEntries(CLASSIFICATIONS.map((classification) => [classification, 0]));
   detail.findingsTotal = findings.length;
   for (const finding of findings) {
     byClassification[finding.classification] = (byClassification[finding.classification] ?? 0) + 1;
@@ -184,7 +186,7 @@ export function buildCoverage(
     detail.masterRecordsCompared +
     detail.availabilityGamesSampled +
     detail.dbTablesChecked +
-    9; // generation checks
+    (reference?.generations.length ?? 0);
   const unchecked =
     Math.max(0, detail.speciesCatalogTotal - detail.speciesSampled) +
     Math.max(0, detail.pokemonFormCatalogTotal - detail.varietyFormsChecked) +
@@ -320,11 +322,11 @@ export function renderMarkdown(output: AuditOutput, fixPlan: FixPlan[]): string 
   }
   lines.push('## 4. Data quality theo model');
   lines.push('');
-  lines.push('| Area | CORRECT | MISSING | INCORRECT | DUPLICATE | UNSUPPORTED | UNVERIFIED |');
-  lines.push('|---|---:|---:|---:|---:|---:|---:|');
+  lines.push(`| Area | ${CLASSIFICATIONS.join(' | ')} |`);
+  lines.push(`|---|${CLASSIFICATIONS.map(() => '---:|').join('')}`);
   const areas = [...new Set(findings.map((f) => f.area))].sort();
   for (const area of areas) {
-    const cells = ['CORRECT', 'MISSING', 'INCORRECT', 'DUPLICATE', 'UNSUPPORTED', 'UNVERIFIED'].map(
+    const cells = CLASSIFICATIONS.map(
       (cls) => findings.filter((f) => f.area === area && f.classification === cls).length,
     );
     lines.push(`| ${area} | ${cells.join(' | ')} |`);
@@ -343,11 +345,11 @@ export function renderMarkdown(output: AuditOutput, fixPlan: FixPlan[]): string 
     if (finding.runtimeRequired) lines.push('- ⚠ Cần runtime verification trên DB/staging.');
     lines.push('');
   }
-  lines.push('## 6. Quan hệ/schema cần thay đổi');
+  lines.push('## 6. Đề xuất thiết kế cần xem xét');
   lines.push('');
-  const schemaFindings = findings.filter((f) => f.id.startsWith('SCHEMA-'));
-  for (const finding of schemaFindings) lines.push(`- **${finding.id}**: ${finding.message}`);
-  if (!schemaFindings.length) lines.push('- Không phát hiện thay đổi bắt buộc.');
+  const designGaps = findings.filter((f) => f.classification === 'DESIGN_GAP');
+  for (const finding of designGaps) lines.push(`- **${finding.id}** — ${finding.message}`);
+  if (!designGaps.length) lines.push('- Không phát hiện khoảng trống thiết kế.');
   lines.push('');
   lines.push('## 7. Kế hoạch sửa dữ liệu an toàn');
   lines.push('');

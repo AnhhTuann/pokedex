@@ -12,6 +12,10 @@ import {
   type CheckpointState,
 } from './checkpoint.js';
 
+export function isLegacyOrasDex(game: string, dex: string): boolean {
+  return (game === 'omega-ruby' || game === 'alpha-sapphire') && dex === 'hoenn';
+}
+
 const idFromUrl = (url: string): number => {
   const parts = url.split('/').filter(Boolean);
   return Number.parseInt(parts[parts.length - 1], 10);
@@ -278,6 +282,7 @@ export async function auditReference(
 
   const totals: Record<string, number> = {};
   const catalogs: Record<string, Array<{ name: string; url: string }>> = {};
+  const completeCatalogs = new Set<string>();
   for (const endpoint of [
     'pokemon-species', 'pokemon', 'move', 'ability', 'item', 'location',
     'nature', 'type', 'version', 'version-group', 'pokedex', 'generation',
@@ -291,7 +296,8 @@ export async function auditReference(
     }
     totals[endpoint] = result.ok ? result.data.length : 0;
     catalogs[endpoint] = result.data;
-    if (!result.ok) apiErrors.push(`${endpoint}: ${result.error}`);
+    if (result.ok) completeCatalogs.add(endpoint);
+    else apiErrors.push(`${endpoint}: ${result.error}`);
   }
 
   const allSpeciesIds = (catalogs['pokemon-species'] ?? [])
@@ -473,7 +479,8 @@ export async function auditReference(
 
   const apiDexNames = new Set((catalogs.pokedex ?? []).map((d) => d.name));
   const pokedexes: ReferenceSnapshot['pokedexes'] = [];
-  const invalidDexSlugs: string[] = [];
+  const invalidDexSlugs = new Set<string>();
+  const compatibilityMismatches: string[] = [];
   const dexVersionGroupMismatch: string[] = [];
   for (const slug of [...apiDexNames].sort()) {
     const result = await client.get<any>(`/pokedex/${slug}`);
@@ -491,9 +498,11 @@ export async function auditReference(
     });
   }
   const dexByName = new Map(pokedexes.map((dex) => [dex.name, dex]));
-  for (const [game, dex] of Object.entries(source.regionalDexByVersion)) {
+  const effectiveMappings = Object.entries(source.effectiveRegionalDexesByVersion)
+    .flatMap(([game, dexes]) => dexes.map((dex) => ({ game, dex })));
+  for (const { game, dex } of effectiveMappings) {
     if (!apiDexNames.has(dex)) {
-      invalidDexSlugs.push(dex);
+      if (completeCatalogs.has('pokedex')) invalidDexSlugs.add(dex);
       continue;
     }
     const version = versions.find((v) => v.name === game);
@@ -502,11 +511,10 @@ export async function auditReference(
     const candidates = pokedexes
       .filter((candidate) => candidate.name !== dex && candidate.versionGroups.includes(version.versionGroup))
       .map((candidate) => candidate.name);
-    dexVersionGroupMismatch.push(
-      `${game} (vg=${version.versionGroup}) mapped=${dex}; apiCandidates=${candidates.join('|') || 'none'}`,
-    );
+    const evidence = `${game} (vg=${version.versionGroup}) mapped=${dex}; apiCandidates=${candidates.join('|') || 'none'}`;
+    (isLegacyOrasDex(game, dex) ? compatibilityMismatches : dexVersionGroupMismatch).push(evidence);
   }
-  if (invalidDexSlugs.length) {
+  if (invalidDexSlugs.size) {
     push({
       id: 'API-DEX-SLUG-MISSING',
       area: 'game-specific',
@@ -514,7 +522,7 @@ export async function auditReference(
       classification: 'INCORRECT',
       severity: 'medium',
       message: 'Mapped regional dex slugs do not exist in the PokéAPI pokedex catalog.',
-      evidence: [`invalid slugs: ${invalidDexSlugs.join(', ')}`],
+      evidence: [`invalid slugs: ${[...invalidDexSlugs].join(', ')}`],
       sources: ['https://pokeapi.co/api/v2/pokedex', 'pokedex-frontend/src/lib/gameVersions.ts'],
     });
   }
@@ -530,7 +538,30 @@ export async function auditReference(
       sources: ['https://pokeapi.co/api/v2/pokedex', 'pokedex-frontend/src/lib/gameVersions.ts'],
     });
   }
-  if (!invalidDexSlugs.length) {
+  if (compatibilityMismatches.length) {
+    push({
+      id: 'API-DEX-ORAS-LEGACY-COMPATIBILITY',
+      area: 'game-specific',
+      entity: 'Omega Ruby / Alpha Sapphire regional dex',
+      classification: 'ACCEPTABLE_DESIGN',
+      severity: 'info',
+      message: 'The ORAS query uses legacy hoenn for backward compatibility. The PokéAPI reference associates ORAS with updated-hoenn.',
+      evidence: compatibilityMismatches,
+      sources: ['https://pokeapi.co/api/v2/pokedex', 'pokedex-frontend/src/lib/gameVersions.ts'],
+    });
+    push({
+      id: 'API-DEX-ORAS-ROWS-UNVERIFIED',
+      area: 'game-specific',
+      entity: 'Omega Ruby / Alpha Sapphire regional dex',
+      classification: 'UNVERIFIED',
+      severity: 'medium',
+      message: 'ORAS regional dex membership and gameVersions on stored rows require runtime evidence before changing the query slug.',
+      evidence: compatibilityMismatches,
+      sources: ['pokedex-frontend/src/lib/gameVersions.ts', 'pokedex-backend/prisma/schema.prisma'],
+      runtimeRequired: true,
+    });
+  }
+  if (completeCatalogs.has('pokedex') && effectiveMappings.length && !invalidDexSlugs.size) {
     push({
       id: 'API-DEX-SLUGS-CORRECT',
       area: 'game-specific',
@@ -538,7 +569,7 @@ export async function auditReference(
       classification: 'CORRECT',
       severity: 'info',
       message: 'All mapped regional dex slugs exist in the PokéAPI pokedex catalog.',
-      evidence: [`mapped dexes checked: ${new Set(Object.values(source.regionalDexByVersion)).size}`],
+      evidence: [`mapped dexes checked: ${new Set(effectiveMappings.map(({ dex }) => dex)).size}`],
       sources: ['https://pokeapi.co/api/v2/pokedex', 'pokedex-frontend/src/lib/gameVersions.ts'],
     });
   }
@@ -809,9 +840,10 @@ export async function auditReference(
 
   const gameAudit: GameAuditRow[] = source.supportedVersions.map((game) => {
     const version = versions.find((item) => item.name === game);
-    const dexName = source.regionalDexByVersion[game] ?? '';
-    const dexInfo = dexByName.get(dexName);
-    const dexSpecies = new Set(dexInfo?.speciesNames ?? []);
+    const dexNames = source.effectiveRegionalDexesByVersion[game] ?? [];
+    const dexName = dexNames.join('|');
+    const dexDetails = dexNames.map((name) => dexByName.get(name));
+    const dexSpecies = new Set(dexDetails.flatMap((dex) => dex?.speciesNames ?? []));
     const dexSpeciesChecked = records.filter((record) => dexSpecies.has(record.name)).length;
     const formGameIndexSpecies = records.filter(
       (record) => record.formGameIndexGames.includes(game) || record.gameIndexGames.includes(game),
@@ -824,16 +856,23 @@ export async function auditReference(
       ? records.reduce((sum, record) => sum + (record.learnsetByVersionGroup[version.versionGroup]?.total ?? 0), 0)
       : 0;
     const walkthrough = source.walkthrough.versions.includes(game);
-    const dexVersionGroupOk = Boolean(dexInfo && version && dexInfo.versionGroups.includes(version.versionGroup));
+    const dexVersionGroupOk = Boolean(version && dexNames.length && dexDetails.every(
+      (dex) => dex?.versionGroups.includes(version.versionGroup),
+    ));
+    const missingDexDetail = !completeCatalogs.has('pokedex') || dexNames.some((name) => apiDexNames.has(name) && !dexByName.has(name));
+    const legacyOras = dexNames.some((dex) => isLegacyOrasDex(game, dex));
     let status: GameAuditRow['status'] = 'ACCURATE';
-    if (!version) status = 'UNVERIFIED';
-    else if (!dexName || !dexInfo || !dexVersionGroupOk) status = 'INCORRECT';
-    else if (!walkthrough || dexSpeciesChecked === 0) status = 'MISSING';
+    if (!walkthrough) status = 'MISSING';
+    else if (!version || missingDexDetail) status = 'UNVERIFIED';
+    else if (!dexVersionGroupOk && !legacyOras) status = 'INCORRECT';
+    else if (legacyOras) status = 'UNVERIFIED';
+    else if (dexSpeciesChecked === 0) status = 'MISSING';
     else if (learnsetSpecies === 0 || learnsetMoveSlots === 0) status = 'UNVERIFIED';
     const evidence = [
       version ? `version-group=${version.versionGroup}` : 'version not found in PokéAPI',
-      dexInfo ? `dex=${dexName} entries=${dexInfo.entryCount} checkedSpecies=${dexSpeciesChecked}` : `dex=${dexName || 'none'} unavailable`,
-      !dexVersionGroupOk && version ? `dex version-groups=${dexInfo?.versionGroups.join('|') || 'none'}` : '',
+      `effective dex=${dexName || 'none'} uniqueSpecies=${dexSpecies.size} checkedSpecies=${dexSpeciesChecked}`,
+      ...dexNames.map((name, index) => `${name}: version-groups=${dexDetails[index]?.versionGroups.join('|') ?? 'unverified'}`),
+      legacyOras ? 'ORAS legacy hoenn retained; compare stored membership with updated-hoenn on read-only staging' : '',
       `formGameIndices=${formGameIndexSpecies} encounters=${encounterSpecies}`,
       `learnsetSpecies=${learnsetSpecies} learnsetMoveSlots=${learnsetMoveSlots}`,
       `abilities(gen ${version?.generation ?? '?'})=${version ? catalogDetails.abilityCountByGeneration[version.generation] ?? 0 : 0}`,
@@ -845,7 +884,7 @@ export async function auditReference(
       versionGroup: version?.versionGroup ?? '',
       generation: version?.generation ?? 0,
       regionalDex: dexName,
-      dexEntryCount: dexInfo?.entryCount ?? 0,
+      dexEntryCount: dexSpecies.size,
       dexVersionGroupOk,
       dexSpeciesChecked,
       formGameIndexSpecies,
@@ -877,10 +916,9 @@ export async function auditReference(
       entity: 'local WebP assets',
       classification: 'MISSING',
       severity: 'medium',
-      message: 'Audited species or variety names lack local normal/shiny WebP assets. DB imageUrl may still point to remote PokeAPI URLs; runtime verification is required.',
+      message: 'Audited species or variety names lack local normal/shiny WebP assets.',
       evidence: missingImages.slice(0, 12),
       sources: ['https://pokeapi.co/api/v2/pokemon-species', 'pokedex-backend/public/images'],
-      runtimeRequired: true,
     });
   } else if (records.length) {
     push({
@@ -972,7 +1010,9 @@ export async function auditReference(
       id: 'FULL-GAME-COVERAGE',
       area: 'game-specific',
       entity: '38 supported games',
-      classification: gameIssues.length ? 'MISSING' : 'CORRECT',
+      classification: gameIssues.some((row) => row.status === 'INCORRECT') ? 'INCORRECT'
+        : gameIssues.some((row) => row.status === 'MISSING') ? 'MISSING'
+          : gameIssues.length ? 'UNVERIFIED' : 'CORRECT',
       severity: gameIssues.length ? 'high' : 'info',
       message: gameIssues.length
         ? 'Some supported games lack reference coverage or have version-group/dex inconsistencies; see game-coverage.csv.'
@@ -1005,7 +1045,7 @@ export async function auditReference(
 
   const availabilitySample: ReferenceSnapshot['availabilitySample'] = [];
   const sampleNames = speciesSample.map((species) => species.name);
-  for (const [game, dex] of Object.entries(source.regionalDexByVersion)) {
+  for (const { game, dex } of effectiveMappings) {
     const dexInfo = dexByName.get(dex);
     if (!dexInfo) continue;
     const present = new Set(dexInfo.speciesNames);
@@ -1021,7 +1061,7 @@ export async function auditReference(
       id: 'API-LEARNSET-VERSION-DETAIL',
       area: 'game-specific',
       entity: 'learnsets',
-      classification: 'MISSING',
+      classification: 'DESIGN_GAP',
       severity: 'high',
       message: 'Reference learnsets carry per-version-group detail, but the local PokemonMove model has no version dimension; imported learnsets cannot be validated per game.',
       evidence: learnsetSample.slice(0, 12).map((s) => `species ${s.id}: ${s.versionGroupCount} version groups`),

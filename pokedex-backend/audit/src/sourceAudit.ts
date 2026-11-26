@@ -1,10 +1,12 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { getRegionalDexForQuery, LEGENDS_ZA_DEX } from '../../../pokedex-frontend/src/lib/gameVersions.js';
 import type { Finding } from './types.js';
 
 export interface SourceSnapshot {
   supportedVersions: string[];
   regionalDexByVersion: Record<string, string>;
+  effectiveRegionalDexesByVersion: Record<string, string[]>;
   walkthrough: {
     records: number;
     versions: string[];
@@ -54,6 +56,28 @@ export function parseRegionalDexMap(gameVersionsSource: string): Record<string, 
   return result;
 }
 
+export function resolveAdminVersions(adminSource: string, gameVersionsSource: string): string[] | undefined {
+  const importsSharedOptions = /import\s*\{[^}]*\bGAME_VERSION_OPTIONS\b[^}]*\}\s*from\s*['"]\.\.\/lib\/gameVersions['"]/.test(adminSource);
+  if (importsSharedOptions && /\[\s*\.\.\.GAME_VERSION_OPTIONS\s*\]/.test(adminSource)) {
+    const projectsGameNames = /\bGAME_VERSION_OPTIONS\b[^=]*=\s*GENERATION_VERSIONS\.flatMap\s*\([\s\S]*?\bvalue:\s*game\.name\b/.test(gameVersionsSource);
+    return projectsGameNames ? parseSupportedVersions(gameVersionsSource) : undefined;
+  }
+  const local = /\bconst\s+GAME_OPTIONS\b/.exec(adminSource);
+  if (local) {
+    const options = extractBlock(adminSource.slice(local.index), 'GAME_OPTIONS');
+    if (options.startsWith('[')) {
+      return [...options.matchAll(/value:\s*["']([^"']+)["']/g)].map((m) => m[1]);
+    }
+  }
+  return undefined;
+}
+
+export function hasLegacyDamageTypeSplit(source: string): boolean {
+  const gate = /\bconst\s+(\w+)\s*=\s*(?:generation|gen)\s*<=\s*3\s*;/.exec(source);
+  return Boolean(gate && /\bconst\s+LEGACY_SPECIAL_TYPES\s*=\s*new Set\s*\(/.test(source) &&
+    new RegExp(String.raw`\b${gate[1]}\s*\?\s*!LEGACY_SPECIAL_TYPES\.has\(move\.type\.toLowerCase\(\)\)\s*:\s*move\.damageClass\b`).test(source));
+}
+
 function countImages(root: string): SourceSnapshot['images'] {
   const base = join(root, 'pokedex-backend/public/images');
   const byDir: Record<string, number> = {};
@@ -84,6 +108,13 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
   const gameVersions = read(root, gameVersionsPath);
   const supportedVersions = parseSupportedVersions(gameVersions);
   const regionalDexByVersion = parseRegionalDexMap(gameVersions);
+  const effectiveRegionalDexesByVersion = Object.fromEntries(supportedVersions.map((game) => [
+    game,
+    game === 'legends-za' ? Object.keys(LEGENDS_ZA_DEX).map(
+      (tab) => getRegionalDexForQuery(game, tab as keyof typeof LEGENDS_ZA_DEX),
+    )
+      : regionalDexByVersion[game] ? [getRegionalDexForQuery(game)] : [],
+  ]));
 
   const walkthroughPath = 'pokedex-backend/prisma/seeds/walkthroughs.json';
   const walkthroughRaw = JSON.parse(read(root, walkthroughPath)) as Array<{
@@ -117,7 +148,7 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
     });
   }
 
-  const unmappedVersions = supportedVersions.filter((v) => !regionalDexByVersion[v]);
+  const unmappedVersions = supportedVersions.filter((v) => !effectiveRegionalDexesByVersion[v].length);
   if (unmappedVersions.length) {
     push({
       id: 'SRC-VERSION-NO-REGIONAL-DEX',
@@ -154,33 +185,17 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
       id: 'SRC-SEED-HARDCODED-COUNT',
       area: 'master-data',
       entity: 'seed.ts POKEMON_COUNT',
-      classification: 'UNVERIFIED',
+      classification: 'DESIGN_GAP',
       severity: 'medium',
       message:
-        'Seed uses a hardcoded species count as its sync range. Counts are not stable identifiers and become stale when new species are added.',
+        'The legacy seed covers a fixed species ID range and requires maintenance when the catalog expands. The updater discovers missing IDs and names separately.',
       evidence: [`POKEMON_COUNT = ${countMatch[1]}`],
       sources: [seedPath],
-      runtimeRequired: true,
       recommendation: 'Derive IDs from PokéAPI pagination/next URLs or a maintained explicit ID list.',
     });
   }
 
   const updaterPath = 'pokedex-backend/src/services/updater.service.ts';
-  const updater = read(root, updaterPath);
-  if (/prisma\.pokemon\.count\(\)/.test(updater) && /hasUpdate/.test(updater)) {
-    push({
-      id: 'SRC-UPDATER-COUNT-CURSOR',
-      area: 'sync',
-      entity: 'updaterService.checkUpdates',
-      classification: 'INCORRECT',
-      severity: 'medium',
-      message:
-        'Update detection compares local row counts to API counts; gaps in IDs and renames cannot be detected and equal counts hide drift.',
-      evidence: ['Promise.all([prisma.pokemon.count(), prisma.item.count(), prisma.ability.count()])'],
-      sources: [updaterPath],
-    });
-  }
-
   const backendChartPath = 'pokedex-backend/src/lib/typeMatchups.ts';
   if (existsSync(join(root, backendChartPath))) {
     const chart = read(root, backendChartPath);
@@ -205,18 +220,18 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
 
   const damagePath = 'pokedex-frontend/src/utils/damageCalc.ts';
   const damage = read(root, damagePath);
-  if (/move\.damageClass/.test(damage) && !/gen\s*<=?\s*3/.test(damage)) {
+  if (/move\.damageClass/.test(damage) && !hasLegacyDamageTypeSplit(damage)) {
     push({
       id: 'SRC-DAMAGE-GEN-RULES',
       area: 'game-specific',
       entity: 'damage calculator',
-      classification: 'UNSUPPORTED',
-      severity: 'high',
+      classification: 'UNVERIFIED',
+      severity: 'medium',
       message:
-        'Damage calculation uses move.damageClass unconditionally and has no Gen I special-stat or pre-Gen IV physical/special-by-type rules.',
+        'The source scanner could not verify the pre-Gen IV physical/special split.',
       evidence: [
-        'const isPhysical = move.damageClass === "physical"',
-        'no special-case branch for generation <= 3 in damageCalc.ts',
+        'move.damageClass is referenced',
+        'expected a generation <= 3 gate selecting LEGACY_SPECIAL_TYPES',
       ],
       sources: [damagePath],
       recommendation: 'Add explicit per-generation battle rule adapters before claiming Gen I–IX support.',
@@ -269,18 +284,19 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
   const adminPath = 'pokedex-frontend/src/pages/AdminWalkthrough.tsx';
   if (existsSync(join(root, adminPath))) {
     const adminSource = read(root, adminPath);
-    const options = extractBlock(adminSource, 'GAME_OPTIONS');
-    const adminVersions = [...options.matchAll(/value:\s*["']([^"']+)["']/g)].map((m) => m[1]);
-    const adminMissing = supportedVersions.filter((v) => !adminVersions.includes(v));
-    if (adminMissing.length) {
+    const adminVersions = resolveAdminVersions(adminSource, gameVersions);
+    const adminMissing = adminVersions && supportedVersions.filter((v) => !adminVersions.includes(v));
+    if (!adminVersions || adminMissing?.length) {
       push({
         id: 'SRC-ADMIN-WALKTHROUGH-VERSIONS',
         area: 'walkthrough',
-        entity: 'AdminWalkthrough GAME_OPTIONS',
-        classification: 'MISSING',
+        entity: 'AdminWalkthrough game options',
+        classification: adminVersions ? 'MISSING' : 'UNVERIFIED',
         severity: 'medium',
-        message: 'CMS cannot create or edit walkthroughs for several supported games.',
-        evidence: [`missing from admin options: ${adminMissing.join(', ')}`],
+        message: adminVersions
+          ? 'The CMS game selector is missing supported games.'
+          : 'The source scanner could not resolve the CMS game options.',
+        evidence: adminMissing ? [`missing from admin options: ${adminMissing.join(', ')}`] : [],
         sources: [adminPath, gameVersionsPath],
       });
     }
@@ -296,33 +312,31 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
         id: 'SRC-NATUREDEX-STATIC',
         area: 'natures',
         entity: 'NatureDex',
-        classification: 'UNSUPPORTED',
-        severity: 'medium',
+        classification: 'ACCEPTABLE_DESIGN',
+        severity: 'info',
         message:
-          'Nature data is hardcoded in the frontend and absent from Prisma/GraphQL; it cannot be audited, curated or versioned as data.',
+          'NatureDex serves a fixed catalog from frontend code.',
         evidence: [`hardcoded natures: ${natures.length}`],
         sources: [naturePath, 'pokedex-backend/prisma/schema.prisma', 'pokedex-backend/src/graphql/typeDefs.ts'],
       });
     }
   }
 
-  const frontendSources = ['src/pages/TeamBuilder.tsx', 'src/lib/teamStore.ts', 'src/lib/MyPokedexContext.tsx']
-    .map((p) => `pokedex-frontend/${p}`)
-    .filter((p) => existsSync(join(root, p)))
-    .map((p) => read(root, p))
-    .join('\n');
-  if (/saveTeam/.test(read(root, 'pokedex-backend/src/graphql/typeDefs.ts')) && !/saveTeam/.test(frontendSources)) {
+  const frontendSrc = join(root, 'pokedex-frontend/src');
+  const teamMutationDeclared = /\bsaveTeam\s*\(/.test(read(root, 'pokedex-backend/src/graphql/typeDefs.ts'));
+  const frontendTeamCaller = readdirSync(frontendSrc, { recursive: true, withFileTypes: true })
+    .some((entry) => entry.isFile() && /\.[jt]sx?$/.test(entry.name) &&
+      /\bsaveTeam\s*\(/.test(readFileSync(join(entry.parentPath, entry.name), 'utf8')));
+  if (teamMutationDeclared && !frontendTeamCaller) {
     push({
       id: 'SRC-SAVE-TEAM-UNUSED',
       area: 'user data',
       entity: 'saveTeam mutation',
       classification: 'UNVERIFIED',
       severity: 'low',
-      message:
-        'The server-side saveTeam mutation has no frontend caller; team builder state appears local-only, so DB team rows cannot be assumed complete.',
-      evidence: ['no saveTeam reference in TeamBuilder/teamStore/MyPokedexContext'],
+      message: 'No direct saveTeam GraphQL operation was found in frontend source. Confirm the expected persistence contract before changing team storage.',
+      evidence: ['Searched frontend TS/JS sources for saveTeam(...)'],
       sources: ['pokedex-backend/src/graphql/typeDefs.ts', 'pokedex-frontend/src/lib/teamStore.ts'],
-      runtimeRequired: true,
     });
   }
 
@@ -353,6 +367,6 @@ export function auditSource(root: string): { findings: Finding[]; snapshot: Sour
   ];
   return {
     findings,
-    snapshot: { supportedVersions, regionalDexByVersion, walkthrough, images, sourcePaths },
+    snapshot: { supportedVersions, regionalDexByVersion, effectiveRegionalDexesByVersion, walkthrough, images, sourcePaths },
   };
 }

@@ -102,6 +102,7 @@ async function main() {
   const source = sourceResult?.snapshot ?? {
     supportedVersions: [],
     regionalDexByVersion: {},
+    effectiveRegionalDexesByVersion: {},
     walkthrough: { records: 0, versions: [], languages: [], duplicates: 0 },
     images: { total: 0, zeroByte: 0, byDir: {} },
     sourcePaths: [],

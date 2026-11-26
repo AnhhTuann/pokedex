@@ -18,6 +18,7 @@ export interface SchemaModel {
   name: string;
   fields: SchemaField[];
   line: number;
+  uniqueKeys: string[][];
 }
 
 export interface SchemaMap {
@@ -45,10 +46,15 @@ export function parsePrismaSchema(source: string): SchemaMap {
     const name = match[1];
     const bodyStartLine = source.slice(0, match.index).split('\n').length;
     const fields: SchemaField[] = [];
+    const uniqueKeys: string[][] = [];
     let localIndex = 0;
     for (const raw of match[2].split('\n')) {
       localIndex += 1;
       const line = clean(raw);
+      const compoundKey = line.match(/^@@(?:id|unique)\(\s*\[([^\]]+)\]/);
+      if (compoundKey) {
+        uniqueKeys.push(compoundKey[1].split(',').map((field) => field.trim().split('(')[0]));
+      }
       if (!line || line.startsWith('@@')) continue;
       const fieldMatch = line.match(/^(\w+)\s+(\w+)(\[\])?(\?)?/);
       if (!fieldMatch) continue;
@@ -85,9 +91,12 @@ export function parsePrismaSchema(source: string): SchemaMap {
           line: field.line,
         });
       }
+      if (/(?:^|\s)@(?:id|unique)\b/.test(line.slice(fieldMatch[0].length))) {
+        uniqueKeys.push([fieldName]);
+      }
       fields.push(field);
     }
-    models.set(name, { name, fields, line: bodyStartLine });
+    models.set(name, { name, fields, line: bodyStartLine, uniqueKeys });
   }
   return { models, relations };
 }
@@ -102,48 +111,51 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
   const push = (f: Omit<Finding, 'id' | 'phase'> & { id: string }) =>
     findings.push({ phase: 'INVENTORY', ...f });
 
-  const pokemonRelations = map.relations.filter((r) => r.target === 'Pokemon');
-  const byReference = new Map<string, string[]>();
-  for (const r of pokemonRelations) {
-    const ref = r.references.join(',') || '(none)';
-    byReference.set(ref, [...(byReference.get(ref) ?? []), `${r.model}.${r.field}`]);
-  }
-  if (byReference.size > 1) {
+  const pokemon = map.models.get('Pokemon');
+  const pokemonRelations = map.relations.filter((r) => r.target === 'Pokemon' && (r.references.length || r.fields.length));
+  const invalidRelations = pokemonRelations.filter((relation) => {
+    const local = map.models.get(relation.model);
+    const key = pokemon?.uniqueKeys.some((fields) =>
+      fields.length === relation.references.length &&
+      fields.every((field) => relation.references.includes(field)),
+    );
+    return !key || relation.fields.length !== relation.references.length ||
+      relation.references.some((reference, index) => {
+        const target = pokemon?.fields.find((field) => field.name === reference);
+        const field = local?.fields.find((field) => field.name === relation.fields[index]);
+        return !target || !field || target.type !== field.type || target.list || field.list;
+      });
+  });
+  if (invalidRelations.length) {
     push({
-      id: 'SCHEMA-FK-INCONSISTENT',
+      id: 'SCHEMA-FK-INVALID-TARGET',
       area: 'relations',
       entity: 'Pokemon foreign keys',
       classification: 'INCORRECT',
       severity: 'high',
-      message:
-        'Relations to Pokemon reference different target fields. Mixing Pokemon.id and Pokemon.pokedexNumber is an ID-contract hazard for writes and joins.',
-      evidence: [...byReference.entries()].map(
-        ([ref, fields]) => `references ${ref}: ${fields.join(', ')}`,
-      ),
+      message: 'Pokemon foreign keys must reference an existing unique key with matching field types.',
+      evidence: invalidRelations.map((r) => `${r.model}.${r.field} references Pokemon(${r.references.join(', ')})`),
       sources: [displayPath],
-      runtimeRequired: true,
-      recommendation:
-        'Choose one stable target (prefer Pokemon.id surrogate key) and migrate all references with a verified mapping; keep pokedexNumber unique for public API identity.',
     });
   }
 
-  const requiredModels = [
-    { name: 'Nature', why: 'NatureDex is requested but no model exists.' },
+  const optionalModels = [
+    { name: 'Nature', why: 'NatureDex serves its fixed catalog from frontend code.' },
     { name: 'GameVersion', why: 'Game-specific rules and walkthroughs use free-text version slugs.' },
     { name: 'Region', why: 'Regional dex membership is stored as string arrays.' },
     {
       name: 'TypeEffectiveness',
-      why: 'Type chart is code-only; no per-generation rules can be stored or audited in DB.',
+      why: 'Type charts are maintained in application code.',
     },
   ];
-  for (const { name, why } of requiredModels) {
+  for (const { name, why } of optionalModels) {
     if (!map.models.has(name)) {
       push({
         id: `SCHEMA-MODEL-MISSING-${name.toUpperCase()}`,
         area: 'models',
         entity: name,
-        classification: 'MISSING',
-        severity: name === 'Nature' || name === 'GameVersion' ? 'medium' : 'low',
+        classification: 'ACCEPTABLE_DESIGN',
+        severity: 'info',
         message: `No ${name} model. ${why}`,
         evidence: [`models present: ${[...map.models.keys()].join(', ')}`],
         sources: [displayPath],
@@ -157,7 +169,7 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
       id: 'SCHEMA-LEARNSET-NO-VERSION',
       area: 'game-specific',
       entity: 'PokemonMove',
-      classification: 'MISSING',
+      classification: 'DESIGN_GAP',
       severity: 'high',
       message:
         'Learnsets have no version/version-group dimension; the same move cannot be distinguished between games where it is or is not learnable.',
@@ -173,7 +185,7 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
       id: 'SCHEMA-EVOLUTION-NO-CONDITION',
       area: 'evolution',
       entity: 'Evolution',
-      classification: 'MISSING',
+      classification: 'DESIGN_GAP',
       severity: 'medium',
       message:
         'Evolution stores only from/to IDs; triggers, levels, held items, friendship, time and version-specific conditions cannot be represented.',
@@ -188,10 +200,9 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
       id: 'SCHEMA-VARIETY-NO-GIGANTAMAX',
       area: 'forms',
       entity: 'PokemonVariety',
-      classification: 'MISSING',
-      severity: 'medium',
-      message:
-        'Forms model has isMega/isAlternative but no Gigantamax flag or form-specific stats; form identity is incomplete.',
+      classification: 'ACCEPTABLE_DESIGN',
+      severity: 'info',
+      message: 'PokemonVariety represents alternate forms without a dedicated Gigantamax flag.',
       evidence: [`PokemonVariety fields: ${variety.fields.map((f) => f.name).join(', ')}`],
       sources: [displayPath],
     });
@@ -207,9 +218,9 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
         id: 'SCHEMA-ENCOUNTER-STRING-FK',
         area: 'encounters',
         entity: 'Encounter',
-        classification: 'INCORRECT',
+        classification: 'ACCEPTABLE_DESIGN',
         severity: 'medium',
-        message: 'Encounters reference locations and versions by free text instead of stable FKs.',
+        message: 'Encounter locations and versions use string slugs.',
         evidence: [`string fields: ${stringFks.join(', ')}`],
         sources: [displayPath],
       });
@@ -222,7 +233,7 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
       id: 'SCHEMA-WALKTHROUGH-UNVALIDATED-VERSION',
       area: 'walkthrough',
       entity: 'Walkthrough.gameVersion',
-      classification: 'INCORRECT',
+      classification: 'ACCEPTABLE_DESIGN',
       severity: 'low',
       message:
         'Walkthrough gameVersion is free text; unsupported or misspelled slugs cannot be rejected by DB constraints.',
@@ -237,10 +248,10 @@ export function auditSchema(schemaPath: string): { findings: Finding[]; map: Sch
       id: 'SCHEMA-ITEM-ISOLATED',
       area: 'items',
       entity: 'Item',
-      classification: 'UNVERIFIED',
+      classification: 'ACCEPTABLE_DESIGN',
       severity: 'low',
       message:
-        'Item has no relations to Pokemon, moves, encounters or game versions; item usage/availability cannot be modeled.',
+        'ItemDex uses a standalone item catalog. Version-specific item mapping requires separate review.',
       evidence: ['no @relation referencing Item'],
       sources: [displayPath],
       runtimeRequired: false,

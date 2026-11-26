@@ -1,10 +1,15 @@
-export type Classification =
-  | 'CORRECT'
-  | 'MISSING'
-  | 'INCORRECT'
-  | 'DUPLICATE'
-  | 'UNSUPPORTED'
-  | 'UNVERIFIED';
+export const CLASSIFICATIONS = [
+  'CORRECT',
+  'MISSING',
+  'INCORRECT',
+  'DUPLICATE',
+  'UNSUPPORTED',
+  'UNVERIFIED',
+  'DESIGN_GAP',
+  'ACCEPTABLE_DESIGN',
+] as const;
+
+export type Classification = (typeof CLASSIFICATIONS)[number];
 
 export type Phase =
   | 'INVENTORY'
