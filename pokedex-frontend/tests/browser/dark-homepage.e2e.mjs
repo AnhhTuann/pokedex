@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
-const origin = process.env.PHASE9C_ORIGIN || 'http://127.0.0.1:5299';
+const origin = process.env.PHASE9C_ORIGIN || 'http://127.0.0.1:5411';
 const baseline = process.env.PHASE11_BASELINE_ORIGIN;
-const output = new URL('../../../docs/ui-redesign/phase11-dark-homepage/', import.meta.url);
+const output = new URL('../../../docs/ui-redesign/phase11-1-dark-homepage-refinement/', import.meta.url);
 const screenshots = new URL('screenshots/', output);
 await mkdir(screenshots, { recursive: true });
 const browser = await chromium.launch({
@@ -55,7 +55,7 @@ function watch(page, result) {
 }
 
 try {
-  for (const [width, height] of [[1920, 1080], [1440, 900], [768, 1024], [390, 844]]) {
+  for (const [width, height, columns] of [[1920, 1080, 8], [1440, 900, 6], [1214, 1280, 5], [768, 1024, 3], [390, 844, 2]]) {
     const viewport = { width, height };
     const page = await browser.newPage({ viewport, reducedMotion: 'reduce', hasTouch: width <= 390 });
     const result = { width, height };
@@ -72,15 +72,22 @@ try {
       const article = card.querySelector('article');
       const id = card.querySelector('[title="National Dex number"]').getBoundingClientRect();
       const heart = card.querySelector('button[aria-label*="favorites"]').getBoundingClientRect();
-      return { id: card.id, background: getComputedStyle(article).backgroundImage, x: card.getBoundingClientRect().x,
+      return { id: card.id, width: card.getBoundingClientRect().width, height: card.getBoundingClientRect().height,
+        cardBackground: getComputedStyle(article).backgroundImage, texture: getComputedStyle(article, '::after').content,
+        x: card.getBoundingClientRect().x,
         animation: getComputedStyle(article).animationName, gapToFavorite: heart.left - id.right };
     }));
     assert.equal(result.cards, 24);
     assert.ok(sample.every(row => row.gapToFavorite >= 0 && row.animation === 'none'));
     result.columns = new Set(sample.map(row => row.x)).size;
-    assert.equal(result.columns, width >= 1600 ? 5 : width >= 1200 ? 4 : width > 600 ? 3 : 2);
+    assert.equal(result.columns, columns);
+    assert.ok(sample.every(row => row.cardBackground === 'none' && row.texture === 'none'));
+    assert.equal(new Set(sample.map(row => row.height)).size, 1);
+    result.cardWidth = sample[0].width;
+    result.cardHeight = sample[0].height;
+    result.gridWidth = await visibleCards(page).first().locator('..').evaluate(grid => grid.getBoundingClientRect().width);
     const backgrounds = await Promise.all(['bulbasaur', 'charmander', 'squirtle'].map(name =>
-      card(page, name).evaluate(button => getComputedStyle(button.closest('article')).backgroundImage)));
+      card(page, name).evaluate(button => getComputedStyle(button.querySelector('img').parentElement).backgroundImage)));
     assert.equal(new Set(backgrounds).size, 3);
     result.loadedImages = await page.locator('main img').evaluateAll(images => ({
       loaded: images.filter(img => img.complete && img.naturalWidth > 0).length,
@@ -110,11 +117,30 @@ try {
     await page.close();
   }
 
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const page = await browser.newPage({ viewport: { width: 1214, height: 1280 } });
   const activity = {};
   report.activity = activity;
   watch(page, activity);
+  const responseAt = offset => page.waitForResponse(response => response.url().endsWith('/graphql') &&
+    response.request().postDataJSON()?.operationName === 'BrowseReferencePokemon' &&
+    response.request().postDataJSON()?.variables?.filters?.offset === offset);
+  const capturePage = async pending => {
+    const response = await pending;
+    assert.equal(response.ok(), true);
+    const payload = await response.json();
+    assert.equal(payload.errors, undefined);
+    const { offset, limit } = response.request().postDataJSON().variables.filters;
+    const { totalCount, results } = payload.data.referencePokemonList;
+    assert.equal(limit, 24);
+    assert.equal(totalCount, 1351);
+    assert.equal(results.length, 24);
+    return { offset, limit, totalCount, records: results.map(({ id, speciesId, name, category }) => ({ id, speciesId, name, category })) };
+  };
+  const initialResponse = responseAt(0);
   await page.goto(origin);
+  const initial = await capturePage(initialResponse);
+  assert.equal(initial.records.at(-1).name, 'beedrill-mega');
+  assert.equal(initial.records.at(-1).speciesId, 15);
   await ready(page);
   const grass = card(page, 'bulbasaur');
   const article = grass.locator('..');
@@ -169,16 +195,32 @@ try {
 
   const firstIds = await visibleCards(page).evaluateAll(cards => cards.map(card => card.id));
   const load = page.getByRole('button', { name: 'Load More' });
-  const next = page.waitForResponse(res => res.url().endsWith('/graphql') &&
-    res.request().postDataJSON()?.variables?.filters?.offset === 24);
+  assert.deepEqual(firstIds, initial.records.map(row => 'pokemon-card-' + row.id));
+  const progress = page.getByRole('status').filter({ hasText: 'Showing 24 of 1,351 forms' });
+  await progress.scrollIntoViewIfNeeded();
+  await page.getByText('#0015', { exact: true }).last().waitFor();
+  assert.equal(await card(page, 'pidgey').count(), 0);
+  await shot(page, 'pagination-before');
+  const next = responseAt(24);
   await load.click();
-  assert.equal((await next).ok(), true);
+  const second = await capturePage(next);
+  assert.deepEqual(second.records[0], { id: 16, speciesId: 16, name: 'pidgey', category: 'DEFAULT' });
+  const pidgey = card(page, 'pidgey');
+  await pidgey.getByText('#0016', { exact: true }).waitFor();
   await card(page, 'arbok').waitFor();
   const nextIds = await visibleCards(page).evaluateAll(cards => cards.map(card => card.id));
-  assert.equal(nextIds.length, 48);
+  const firstTwoPages = [...initial.records, ...second.records];
   assert.equal(new Set(nextIds).size, 48);
-  assert.deepEqual(nextIds.slice(0, 24), firstIds);
-  report.interactions.push('Load More offset 24, original ordering retained, 48 unique cards');
+  assert.deepEqual(nextIds, firstTwoPages.map(row => 'pokemon-card-' + row.id));
+  const renderedNumbers = await visibleCards(page).locator('[title="National Dex number"]').allTextContents();
+  assert.deepEqual(renderedNumbers, firstTwoPages.map(row => '#' + String(row.speciesId).padStart(4, '0')));
+  await pidgey.scrollIntoViewIfNeeded();
+  await shot(page, 'pagination-after');
+  const afterProgress = page.getByRole('status').filter({ hasText: 'Showing 48 of 1,351 forms' });
+  await afterProgress.scrollIntoViewIfNeeded();
+  await shot(page, 'pagination-progress');
+  report.pagination = { initial, second, renderedNumbers };
+  report.interactions.push('Load More offset 24, Pidgey #0016 starts page 2, 48 unique cards');
 
   await search(page).fill('#001');
   await page.getByRole('button', { name: 'Filter by Type', exact: true }).click();
@@ -216,6 +258,8 @@ try {
   report.interactions.push('38 games, individual Red scope, National Dex/evidence controls');
 
   const ids = [];
+  const ordering = [];
+  const pages = [];
   const categories = new Set();
   const query = 'query($filters: ReferencePokemonFilters) { referencePokemonList(filters: $filters) { totalCount results { id speciesId category } } }';
   for (let offset = 0; offset < 1351; offset += 24) {
@@ -224,15 +268,21 @@ try {
     assert.equal(payload.errors, undefined);
     const { totalCount, results } = payload.data.referencePokemonList;
     assert.equal(totalCount, 1351);
+    assert.equal(results.length, Math.min(24, totalCount - offset));
+    pages.push({ offset, limit: 24, totalCount, returned: results.length, firstId: results[0].id, lastId: results.at(-1).id });
     for (const row of results) {
       ids.push(row.id);
+      ordering.push([row.speciesId, row.id]);
       categories.add(row.category);
     }
   }
   assert.equal(ids.length, 1351);
   assert.equal(new Set(ids).size, 1351);
   assert.deepEqual(ids.slice(0, 48).map(id => 'pokemon-card-' + id), nextIds);
-  report.catalog = { pageSize: 24, pages: Math.ceil(1351 / 24), ids, categories: [...categories].sort() };
+  const catalog = JSON.parse(await readFile(new URL('../../../pokedex-backend/data/reference/catalog.json', import.meta.url), 'utf8'));
+  const expected = catalog.forms.map(form => [form.speciesId, form.id]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  assert.deepEqual(ordering, expected);
+  report.catalog = { pageSize: 24, pages, ids, categories: [...categories].sort() };
   assert.deepEqual(activity.pageErrors, []);
   assert.deepEqual(activity.failed, []);
   const chartWarning = message => message.startsWith('The width(-1) and height(-1) of chart');
@@ -253,12 +303,13 @@ try {
       .locator('svg.recharts-surface[role="application"]').waitFor();
     if (activity.console.some(chartWarning)) assert.ok(baselineCompare.console.some(chartWarning));
     await basePage.close();
-    for (const [label, path] of [['homepage-dark', '/'], ['homepage-light', '/'], ['type-dex-dark', '/types'],
+    for (const [label, path] of [['homepage-reference', '/'], ['homepage-dark', '/'], ['homepage-light', '/'], ['type-dex-dark', '/types'],
       ['team-builder-dark', '/teambuilder'], ['catch-tracker-dark', '/tracker'], ['damage-calc-dark', '/calculator']]) {
       const comparison = { label, path };
       report.comparisons.push(comparison);
       for (const [prefix, base] of [['before', baseline], ['after', origin]]) {
-        const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+        const viewport = label === 'homepage-reference' ? { width: 1214, height: 1280 } : { width: 1440, height: 900 };
+        const page = await browser.newPage({ viewport, reducedMotion: 'reduce' });
         await page.goto(base + path);
         if (path === '/') await ready(page);
         else if (path === '/tracker') await page.getByText(/Showing 40 of 1351 Pokémon/).waitFor();
@@ -275,7 +326,7 @@ try {
       }
     }
   }
-  console.log('PASS Phase 11 dark homepage, four viewports and 1351 unique catalog forms');
+  console.log('PASS Phase 11.1 dark homepage, five viewports and all 1,351 unique catalog forms');
 } catch (error) {
   report.error = String(error);
   throw error;

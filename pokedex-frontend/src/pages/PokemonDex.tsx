@@ -276,6 +276,9 @@ export default function PokemonDex() {
 
       {hasMore && (
         <div className={styles.loadMoreContainer}>
+          {darkHome && <span className={styles.pageProgress} role="status">
+            Showing {pokemonList.length.toLocaleString('en-US')} of {totalCount.toLocaleString('en-US')} forms
+          </span>}
           <Button variant="outline" size="lg" onClick={() => { if (!loading) void loadMore(); }} isLoading={loading} className="rounded-full px-8">
             {loading ? 'Loading...' : 'Load More'}
           </Button>

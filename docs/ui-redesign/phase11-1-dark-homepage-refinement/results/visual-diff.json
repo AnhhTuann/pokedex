@@ -1,0 +1,75 @@
+{
+  "catch-tracker-dark.png": {
+    "size": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "percent": 0.0,
+    "bounds": null
+  },
+  "damage-calc-dark.png": {
+    "size": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "percent": 0.0,
+    "bounds": null
+  },
+  "homepage-dark.png": {
+    "size": [
+      1440,
+      900
+    ],
+    "changedPixels": 1292043,
+    "percent": 99.694676,
+    "bounds": [
+      0,
+      0,
+      1440,
+      900
+    ]
+  },
+  "homepage-light.png": {
+    "size": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "percent": 0.0,
+    "bounds": null
+  },
+  "homepage-reference.png": {
+    "size": [
+      1214,
+      1280
+    ],
+    "changedPixels": 1549902,
+    "percent": 99.741428,
+    "bounds": [
+      0,
+      0,
+      1214,
+      1280
+    ]
+  },
+  "team-builder-dark.png": {
+    "size": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "percent": 0.0,
+    "bounds": null
+  },
+  "type-dex-dark.png": {
+    "size": [
+      1440,
+      900
+    ],
+    "changedPixels": 0,
+    "percent": 0.0,
+    "bounds": null
+  }
+}

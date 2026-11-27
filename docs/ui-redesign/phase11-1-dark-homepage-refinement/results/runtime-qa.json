@@ -1,0 +1,115 @@
+[
+  {
+    "name": "desktop",
+    "pageErrors": [],
+    "console": [
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled"
+    ],
+    "network": [
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+        "net::ERR_ABORTED"
+      ]
+    ],
+    "moveDex": "PASSED_MOCK",
+    "teamDownloadEvents": [
+      "my-pokemon-team.json"
+    ],
+    "team": "PASSED_FIXTURE_AND_MOCK",
+    "auth": "PASSED_MOCK",
+    "cms": "PASSED_MOCK_REJECTED_SAVE"
+  },
+  {
+    "name": "tablet",
+    "pageErrors": [],
+    "console": [
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled"
+    ],
+    "network": [
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/graphql",
+        "net::ERR_ABORTED"
+      ]
+    ],
+    "moveDex": "PASSED_MOCK",
+    "teamDownloadEvents": [
+      "my-pokemon-team.json"
+    ],
+    "team": "PASSED_FIXTURE_AND_MOCK",
+    "auth": "PASSED_MOCK",
+    "cms": "PASSED_MOCK_REJECTED_SAVE"
+  },
+  {
+    "name": "mobile",
+    "pageErrors": [],
+    "console": [
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled",
+      "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled"
+    ],
+    "network": [
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+        "net::ERR_ABORTED"
+      ],
+      [
+        "/graphql",
+        "net::ERR_ABORTED"
+      ]
+    ],
+    "moveDex": "PASSED_MOCK",
+    "teamDownloadEvents": [
+      "my-pokemon-team.json"
+    ],
+    "team": "PASSED_FIXTURE_AND_MOCK",
+    "auth": "PASSED_MOCK",
+    "cms": "PASSED_MOCK_REJECTED_SAVE"
+  }
+]

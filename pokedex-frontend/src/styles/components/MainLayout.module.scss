@@ -805,20 +805,29 @@
 // Route-scoped shell. Shared dialogs and secondary routes retain their styling.
 .darkHome {
   --home-sidebar-width: 216px;
-  background: #171e19;
+  --discovery-base: #171a18;
+  --discovery-field: #1e211f;
+  --discovery-surface: #252a26;
+  --discovery-elevated: #2d332e;
+  --discovery-line: #3b423c;
+  --discovery-ink: #f2f0e7;
+  --discovery-muted: #b9b9ac;
+  --discovery-lime: #b9d98a;
+  --discovery-coral: #e98b83;
+  background: var(--discovery-base);
 
   &.rail { --home-sidebar-width: 72px; }
   .header {
     height: 68px;
-    background: #202923;
-    border-color: #39463c;
+    background: var(--discovery-field);
+    border-color: var(--discovery-line);
     border-top: 0;
     padding-inline: clamp(15px, 2vw, 34px);
   }
   .sidebar {
     width: var(--home-sidebar-width);
-    background: #202923;
-    border-color: #39463c;
+    background: var(--discovery-field);
+    border-color: var(--discovery-line);
     border-right-width: 1px;
     transform: none;
   }
@@ -830,49 +839,50 @@
     display: grid;
     place-items: center;
     border-radius: 13px;
-    background: #b9e66a;
-    color: #263522;
+    background: var(--discovery-elevated);
+    border: 1px solid var(--discovery-line);
+    color: var(--discovery-lime);
   }
-  .brandText { font-size: 1.08rem; white-space: nowrap; color: #f4f4e9; }
-  .divider { background: #39463c; }
+  .brandText { font-size: 1.08rem; white-space: nowrap; color: var(--discovery-ink); }
+  .divider { background: var(--discovery-line); }
   .navMenu { gap: 4px; padding: 14px 10px; }
   .navButton {
     gap: 10px;
     border-radius: 11px;
     min-height: 43px;
     padding-inline: 10px;
-    color: #c2cdbf;
+    color: var(--discovery-muted);
     transform: none;
-    &:hover { background: #303d32; color: #f4f4e9; }
+    &:hover { background: var(--discovery-elevated); color: var(--discovery-ink); }
   }
-  .navIcon { color: color-mix(in srgb, var(--primary) 60%, #e3eccc) !important; }
+  .navIcon { color: color-mix(in srgb, var(--primary) 34%, #d0cec0) !important; }
   .navButtonActive {
-    border: 1px solid #a7cc6b75;
-    background: #374a30;
-    color: #eaf4dc;
-    &::before { background: #b9e66a; }
-    &:hover { background: #405738; }
-    .navIcon { color: #b9e66a !important; }
+    border: 1px solid var(--discovery-line);
+    background: var(--discovery-elevated);
+    color: var(--discovery-ink);
+    &::before { background: var(--discovery-lime); }
+    &:hover { background: #383d36; }
+    .navIcon { color: var(--discovery-lime) !important; }
   }
-  .leftGroup, .rightGroup { gap: 9px; }
-  .title { color: #f4f4e9; letter-spacing: -.03em; }
+  .leftGroup, .rightGroup { gap: 10px; }
+  .title { color: var(--discovery-ink); letter-spacing: -.03em; }
   .menuToggle, .actionIconBtn, .themeBtn {
     width: 42px;
     height: 42px;
     flex: none;
-    border: 1px solid #465548;
+    border: 1px solid var(--discovery-line);
     border-radius: 11px;
-    background: #2b382e;
-    color: #f1f3e6;
-    &:hover { background: #3b4c3d; color: #c9ee93; }
+    background: var(--discovery-surface);
+    color: var(--discovery-ink);
+    &:hover { background: var(--discovery-elevated); color: var(--discovery-ink); }
   }
-  .themeBtn, .switchText.active { color: #ffd166; }
+  .themeBtn, .switchText.active { color: #f1a16d; }
   .switchLabel { margin-inline: 3px; gap: 7px; }
-  .slider { background: #49584b; }
-  .switch input:checked + .slider { background: #b9e66a; }
-  .switch input:checked + .slider::before { background: #263522; }
-  .header button:focus-visible, .sidebar button:focus-visible, .switch input:focus-visible + .slider { outline-color: #b9e66a; }
-  .mainContent { padding: 86px clamp(14px, 2.25vw, 42px) 0; }
+  .slider { background: #4a4e46; }
+  .switch input:checked + .slider { background: var(--discovery-lime); }
+  .switch input:checked + .slider::before { background: #282d25; }
+  .header button:focus-visible, .sidebar button:focus-visible, .switch input:focus-visible + .slider { outline-color: var(--discovery-lime); }
+  .mainContent { padding: 84px clamp(14px, 1.7vw, 30px) 0; }
 }
 
 @include respond-to(md-up) {
@@ -898,7 +908,7 @@
     .sidebar { visibility: hidden; }
     .sidebar.mobileOpen { visibility: visible; }
     .mainContent { margin-left: 0; width: 100%; }
-    .sidebarOverlay.mobileOpen { backdrop-filter: none; background: #131c17ad; }
+    .sidebarOverlay.mobileOpen { backdrop-filter: none; background: #131512ad; }
   }
 }
 @media (max-width: 640px) {
