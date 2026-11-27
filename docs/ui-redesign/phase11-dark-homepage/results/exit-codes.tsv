@@ -1,0 +1,8 @@
+frontend-tests	0	npm test
+frontend-lint	0	npm run lint
+frontend-typecheck	0	npm exec -- tsc --noEmit
+frontend-build	0	npm run build
+browser-reference	0	npm run test:browser
+browser-premium	0	node tests/browser/.phase11-premium.e2e.mjs
+browser-runtime	0	node tests/browser/runtime-qa.e2e.mjs
+browser-media	0	node tests/browser/voice-cry.e2e.mjs

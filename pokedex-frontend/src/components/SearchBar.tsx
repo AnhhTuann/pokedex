@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import styles from "../styles/components/SearchBar.module.scss";
 
 interface SearchBarProps {
+  discovery?: boolean;
   value: string;
   onChange: (v: string) => void;
   typeValue: string;
@@ -104,7 +105,7 @@ const generationOptions = GENERATIONS.map(option => ({
 }));
 
 export default function SearchBar({
-  value, onChange, typeValue, onTypeChange, genValue, onGenChange,
+  value, onChange, typeValue, onTypeChange, genValue, onGenChange, discovery,
 }: SearchBarProps) {
   const [openFilter, setOpenFilter] = useState<'type' | 'generation' | null>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
@@ -118,9 +119,9 @@ export default function SearchBar({
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={cn(styles.container, discovery && styles.discovery)}>
       <div className={styles.inputWrapper}>
-        <InputField value={value} onChange={event => onChange(event.target.value)}
+        <InputField className={discovery ? styles.discoveryInput : undefined} value={value} onChange={event => onChange(event.target.value)}
           placeholder="Search by name or #..." aria-label="Search Pokémon by name or National Dex number"
           icon={<Search size={18} />} />
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import {
@@ -105,6 +105,7 @@ export default function MainLayout() {
   const isMainDex = location.pathname === '/' || location.pathname.startsWith('/pokemon');
   const { mode, toggleColorMode } = useColorMode();
   const isDark = mode === 'dark';
+  const darkHome = isDark && location.pathname === '/';
   const { user } = useAuthStore();
 
   const { isShinyMode, toggleShinyMode, selectedVersion, setSelectedVersion } = useTeamStore();
@@ -114,16 +115,31 @@ export default function MainLayout() {
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
 
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (darkHome && mobileOpen) {
+      sidebarRef.current?.querySelector<HTMLButtonElement>('button[aria-current="page"]')?.focus();
+    }
+  }, [darkHome, mobileOpen]);
+
+  function closeDrawer() {
+    setMobileOpen(false);
+    if (darkHome) menuToggleRef.current?.focus();
+  }
+
   useEffect(() => {
     if (!mobileOpen && !versionDialogOpen) return;
     const onEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
       setVersionDialogOpen(false);
       setMobileOpen(false);
+      if (darkHome && mobileOpen) menuToggleRef.current?.focus();
     };
     window.addEventListener('keydown', onEscape);
     return () => window.removeEventListener('keydown', onEscape);
-  }, [mobileOpen, versionDialogOpen]);
+  }, [darkHome, mobileOpen, versionDialogOpen]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -170,7 +186,7 @@ export default function MainLayout() {
       <div className={styles.divider} />
 
       {/* Nav Menu */}
-      <nav className={styles.navMenu}>
+      <nav className={styles.navMenu} aria-label="Main navigation">
         {MENU_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;
           const itemColor = MENU_COLORS[item.path] || '#6366f1';
@@ -178,7 +194,7 @@ export default function MainLayout() {
 
           return (
             <button
-              key={item.text} aria-current={isActive ? 'page' : undefined}
+              key={item.text} title={darkHome ? item.text : undefined} aria-current={isActive ? 'page' : undefined}
               onClick={() => {
                 navigate(item.path);
                 setMobileOpen(false);
@@ -225,7 +241,7 @@ export default function MainLayout() {
 
   return (
     <div 
-      className={styles.appContainer}
+      className={cn(styles.appContainer, darkHome && styles.darkHome, !isSidebarOpen && styles.rail)}
       style={{
         '--route-accent': activeColor,
         '--route-accent-rgb': activeRgb
@@ -236,11 +252,20 @@ export default function MainLayout() {
       {/* ── Mobile Sidebar Overlay ── */}
       <div 
         className={cn(styles.sidebarOverlay, mobileOpen && styles.mobileOpen)} 
-        onClick={() => setMobileOpen(false)} 
+        onClick={closeDrawer}
       />
 
       {/* ── Fixed Sidebar ── */}
-      <aside 
+      <aside id="main-sidebar" ref={sidebarRef}
+        onKeyDown={event => {
+          if (!darkHome || !mobileOpen || event.key !== 'Tab') return;
+          const buttons = event.currentTarget.querySelectorAll('nav button');
+          const first = buttons.item(0) as HTMLButtonElement;
+          const last = buttons.item(buttons.length - 1) as HTMLButtonElement;
+          if (event.shiftKey ? document.activeElement !== first : document.activeElement !== last) return;
+          event.preventDefault();
+          (event.shiftKey ? last : first).focus();
+        }}
         className={cn(
           styles.sidebar,
           isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed,
@@ -257,9 +282,10 @@ export default function MainLayout() {
         <div className={styles.leftGroup}>
           {/* Hamburger Mobile */}
           <button 
+            ref={menuToggleRef}
             className={cn(styles.menuToggle, styles.mobileToggle)}
             onClick={handleDrawerToggle}
-            title="Menu" aria-expanded={mobileOpen}
+            title="Menu" aria-controls="main-sidebar" aria-expanded={mobileOpen}
           >
             <MenuIcon size={20} />
           </button>
@@ -268,7 +294,7 @@ export default function MainLayout() {
           <button 
             className={cn(styles.menuToggle, styles.desktopToggle)}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            title="Toggle Sidebar" aria-expanded={isSidebarOpen}
+            title="Toggle Sidebar" aria-controls="main-sidebar" aria-expanded={isSidebarOpen}
           >
             <MenuIcon size={20} />
           </button>

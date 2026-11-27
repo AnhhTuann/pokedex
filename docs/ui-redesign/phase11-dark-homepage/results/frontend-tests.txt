@@ -1,0 +1,159 @@
+
+> pokedex-frontend@1.0.0 test
+> node --import tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: collects first, middle and short final pages beyond 1,025 forms
+ok 1 - collects first, middle and short final pages beyond 1,025 forms
+  ---
+  duration_ms: 3.782701
+  ...
+# Subtest: terminates at an exact final-page boundary and handles zero results
+ok 2 - terminates at an exact final-page boundary and handles zero results
+  ---
+  duration_ms: 0.469143
+  ...
+# Subtest: rejects partial, duplicated or inconsistent data before publishing results
+ok 3 - rejects partial, duplicated or inconsistent data before publishing results
+  ---
+  duration_ms: 1.730953
+  ...
+# Subtest: stat formulas respect level, IV, EV and nature
+ok 4 - stat formulas respect level, IV, EV and nature
+  ---
+  duration_ms: 2.034097
+  ...
+# Subtest: status moves deal no damage
+ok 5 - status moves deal no damage
+  ---
+  duration_ms: 0.826238
+  ...
+# Subtest: damage roll regression for STAB, partial resistance and Choice Band
+ok 6 - damage roll regression for STAB, partial resistance and Choice Band
+  ---
+  duration_ms: 0.990621
+  ...
+# Subtest: immune matchup produces zero damage
+ok 7 - immune matchup produces zero damage
+  ---
+  duration_ms: 0.396974
+  ...
+# Subtest: KO chances use exact roll damage, not rounded percentages
+ok 8 - KO chances use exact roll damage, not rounded percentages
+  ---
+  duration_ms: 0.577499
+  ...
+# Subtest: damage calculation keeps 16 consistent rolls and applies weather/type modifiers
+ok 9 - damage calculation keeps 16 consistent rolls and applies weather/type modifiers
+  ---
+  duration_ms: 0.749164
+  ...
+# Subtest: damage calculation honors the supplied type-chart generation
+ok 10 - damage calculation honors the supplied type-chart generation
+  ---
+  duration_ms: 0.540681
+  ...
+# Subtest: Gen I–III select damage stats by move type and Gen IV uses the move category
+ok 11 - Gen I–III select damage stats by move type and Gen IV uses the move category
+  ---
+  duration_ms: 5.51966
+  ...
+# Subtest: shared game option list covers every supported game exactly once
+ok 12 - shared game option list covers every supported game exactly once
+  ---
+  duration_ms: 2.194552
+  ...
+# Subtest: strict generation lookup distinguishes all from unknown slugs
+ok 13 - strict generation lookup distinguishes all from unknown slugs
+  ---
+  duration_ms: 0.304836
+  ...
+# Subtest: regional list mapping preserves both Legends Z-A dexes and legacy ORAS
+ok 14 - regional list mapping preserves both Legends Z-A dexes and legacy ORAS
+  ---
+  duration_ms: 0.433074
+  ...
+# Subtest: all 38 frontend game mappings match the shared catalog contract
+ok 15 - all 38 frontend game mappings match the shared catalog contract
+  ---
+  duration_ms: 1.03745
+  ...
+# Subtest: team JSON round-trips exact form ID and selected build
+ok 16 - team JSON round-trips exact form ID and selected build
+  ---
+  duration_ms: 3.354624
+  ...
+# Subtest: team JSON rejects malformed, duplicate and oversized imports before applying them
+ok 17 - team JSON rejects malformed, duplicate and oversized imports before applying them
+  ---
+  duration_ms: 0.961599
+  ...
+# Subtest: defensive type chart matches the canonical modern matchups
+ok 18 - defensive type chart matches the canonical modern matchups
+  ---
+  duration_ms: 3.127457
+  ...
+# Subtest: bug fixes keep reversed resistances out of the modern chart
+ok 19 - bug fixes keep reversed resistances out of the modern chart
+  ---
+  duration_ms: 0.33881
+  ...
+# Subtest: dual-type defense multiplies matchups and keeps immunities
+ok 20 - dual-type defense multiplies matchups and keeps immunities
+  ---
+  duration_ms: 0.83216
+  ...
+# Subtest: offense lookup covers single-type targets
+ok 21 - offense lookup covers single-type targets
+  ---
+  duration_ms: 0.549402
+  ...
+# Subtest: Gen 2-5 removes Fairy and restores Steel resistances
+ok 22 - Gen 2-5 removes Fairy and restores Steel resistances
+  ---
+  duration_ms: 0.384393
+  ...
+# Subtest: Gen 1 uses its 15 types and historical Ghost/Psychic and Bug/Poison behavior
+ok 23 - Gen 1 uses its 15 types and historical Ghost/Psychic and Bug/Poison behavior
+  ---
+  duration_ms: 0.345789
+  ...
+# Subtest: modern rules remain the default for unknown or later generations
+ok 24 - modern rules remain the default for unknown or later generations
+  ---
+  duration_ms: 0.24041
+  ...
+# Subtest: single-type chart contains expected canonical matchups
+ok 25 - single-type chart contains expected canonical matchups
+  ---
+  duration_ms: 0.256469
+  ...
+# Subtest: dual-type defensive calculation multiplies both types
+ok 26 - dual-type defensive calculation multiplies both types
+  ---
+  duration_ms: 0.312878
+  ...
+# Subtest: offensive calculation groups defending types correctly
+ok 27 - offensive calculation groups defending types correctly
+  ---
+  duration_ms: 0.381524
+  ...
+# Subtest: dev proxy falls back to localhost when no backend URL is configured
+ok 28 - dev proxy falls back to localhost when no backend URL is configured
+  ---
+  duration_ms: 1.323445
+  ...
+# Subtest: dev proxy reads VITE_BACKEND_URL from Vite-loaded env
+ok 29 - dev proxy reads VITE_BACKEND_URL from Vite-loaded env
+  ---
+  duration_ms: 0.224231
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 442.511524

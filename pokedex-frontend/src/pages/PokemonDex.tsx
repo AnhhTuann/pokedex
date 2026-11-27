@@ -8,6 +8,8 @@ import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
 import { getGameGenerationStrict, getRegionalPokemonListFilters } from '../lib/gameVersions';
 import { useReferenceCatalog, useReferenceList } from '../hooks/useReferencePokemon';
+import { useColorMode } from '../main';
+import { assetUrl } from '../lib/apiConfig';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
 import styles from '../styles/pages/PokemonDex.module.scss';
@@ -16,6 +18,7 @@ type ViewMode = 'all' | 'favorites' | 'compare';
 
 export default function PokemonDex() {
   const { selectedVersion } = useTeamStore();
+  const darkHome = useColorMode().mode === 'dark';
   const { favorites } = useMyPokedex();
 
   const [search, setSearch]           = useState('');
@@ -72,12 +75,23 @@ export default function PokemonDex() {
   const isInitialLoad = loading && pokemonList.length === 0;
 
   return (
-    <div className={styles.container}>
+    <div className={cn(styles.container, darkHome && styles.darkHome)}>
       
-      <h2 className={styles.heading}>Pokédex</h2>
+      {darkHome ? (
+        <section className={styles.hero} aria-labelledby="discovery-title">
+          <div className={styles.heroCopy}>
+            <h2 id="discovery-title">Discover <span>Pokémon</span></h2>
+            <p>Explore every region and find your next favorite.</p>
+          </div>
+          <div className={styles.heroArt} aria-hidden="true">
+            <Sparkles className={styles.heroSpark} size={26} />
+            <img src={assetUrl('/images/pokemon/normal/pikachu.webp')} alt="" />
+          </div>
+        </section>
+      ) : <h2 className={styles.heading}>Pokédex</h2>}
       {/* Search & Filter Section */}
       <div className={styles.searchWrapper}>
-        <SearchBar
+        <SearchBar discovery={darkHome}
           value={search}         onChange={setSearch}
           typeValue={typeFilter} onTypeChange={setTypeFilter}
           genValue={genFilter}   onGenChange={setGenFilter}
@@ -89,7 +103,7 @@ export default function PokemonDex() {
               <option key={region} value={region}>{region}</option>)}
           </select></label>
           <label>Exact Dex <select aria-label="Exact Dex" value={exactDex} onChange={event => setExactDex(event.target.value)}>
-            <option value="">Use game scope</option>
+            <option value="">{darkHome ? 'Game scope' : 'Use game scope'}</option>
             {catalog?.dexes.map(dex => <option key={dex.slug} value={dex.slug}>{dex.slug}</option>)}
           </select></label>
           <label>Form <select aria-label="Form" value={formCategory} onChange={event => setFormCategory(event.target.value)}>
@@ -105,116 +119,119 @@ export default function PokemonDex() {
         </div>
       </div>
 
-      {/* View Mode Toggle */}
-      <div className={styles.modeToggleWrapper}>
-        <div className={styles.modeToggle}>
-          <button
-            onClick={() => { setViewMode('all'); setCompareIds([]); }}
-            aria-pressed={viewMode === 'all'}
-            className={cn(
-              styles.modeBtn,
-              viewMode === 'all' && styles.activeBtnAll
-            )}
-          >
-            <Sparkles size={16} />
-            <span>All</span>
-          </button>
-          
-          <button
-            onClick={() => { setViewMode('favorites'); setCompareIds([]); }}
-            aria-pressed={viewMode === 'favorites'}
-            className={cn(
-              styles.modeBtn,
-              viewMode === 'favorites' && styles.activeBtnFav
-            )}
-          >
-            <Heart size={16} />
-            <span>Favorites ({favorites.length})</span>
-          </button>
-          
-          <button
-            onClick={() => setViewMode('compare')}
-            aria-pressed={viewMode === 'compare'}
-            className={cn(
-              styles.modeBtn,
-              viewMode === 'compare' && styles.activeBtnComp
-            )}
-          >
-            <Scale size={16} />
-            <span>{compareIds.length === 2 ? 'Compare (2)' : 'Compare'}</span>
-          </button>
+      <div className={styles.collectionToolbar}>
+        {/* View Mode Toggle */}
+        <div className={styles.modeToggleWrapper}>
+          <div className={styles.modeToggle}>
+            <button
+              onClick={() => { setViewMode('all'); setCompareIds([]); }}
+              aria-pressed={viewMode === 'all'}
+              className={cn(
+                styles.modeBtn,
+                viewMode === 'all' && styles.activeBtnAll
+              )}
+            >
+              <Sparkles size={16} />
+              <span>{darkHome ? 'All Pokémon' : 'All'}</span>
+            </button>
+
+            <button
+              onClick={() => { setViewMode('favorites'); setCompareIds([]); }}
+              aria-pressed={viewMode === 'favorites'}
+              className={cn(
+                styles.modeBtn,
+                viewMode === 'favorites' && styles.activeBtnFav
+              )}
+            >
+              <Heart size={16} />
+              <span>Favorites ({favorites.length})</span>
+            </button>
+
+            <button
+              onClick={() => setViewMode('compare')}
+              aria-pressed={viewMode === 'compare'}
+              className={cn(
+                styles.modeBtn,
+                viewMode === 'compare' && styles.activeBtnComp
+              )}
+            >
+              <Scale size={16} />
+              <span>{compareIds.length === 2 ? 'Compare (2)' : 'Compare'}</span>
+            </button>
+          </div>
         </div>
+
+        {/* Regional vs National Dex Switcher */}
+        {gameGen !== null && selectedVersion !== 'ALL' && (
+          <div className={styles.dexTabWrapper}>
+            <div className={styles.dexToggle}>
+              <button
+                onClick={() => { setExactDex(''); setDexMode('regional'); }}
+                className={cn(
+                  styles.dexTab,
+                  dexMode === 'regional' && styles.activeDexTab
+                )}
+              >
+                {(() => {
+                  if (!preferredDex) return 'Regional Dex';
+                  const parts = preferredDex.split('-');
+                  const capitalized = parts
+                    .map(p => {
+                      if (p === 'original' || p === 'extended' || p === 'updated' || p === 'letsgo') return '';
+                      return p.charAt(0).toUpperCase() + p.slice(1);
+                    })
+                    .filter(Boolean)
+                    .join(' ');
+                  return `${capitalized || 'Regional'} Dex`;
+                })()}
+              </button>
+              <button
+                onClick={() => { setExactDex(''); setDexMode('national'); }}
+                className={cn(
+                  styles.dexTab,
+                  dexMode === 'national' && styles.activeDexTab
+                )}
+              >
+                National Dex
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Legends: Z-A Regional Tabs */}
+        {selectedVersion === 'legends-za' && dexMode === 'regional' && (
+          <div className={styles.zaTabWrapper}>
+            <div className={styles.zaToggle}>
+              <button
+                onClick={() => { setExactDex(''); setZaTab('lumiose'); }}
+                className={cn(
+                  styles.zaTab,
+                  zaTab === 'lumiose' && styles.activeZaTab
+                )}
+              >
+                Lumiose City Dex
+              </button>
+              <button
+                onClick={() => { setExactDex(''); setZaTab('hyperspace'); }}
+                className={cn(
+                  styles.zaTab,
+                  zaTab === 'hyperspace' && styles.activeZaTab
+                )}
+              >
+                Hyperspace Dex
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Count */}
+        {!isInitialLoad && !error && (
+          <p className={styles.infoText}>
+            {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
+          </p>
+        )}
+
       </div>
-
-      {/* Regional vs National Dex Switcher */}
-      {gameGen !== null && selectedVersion !== 'ALL' && (
-        <div className={styles.dexTabWrapper}>
-          <div className={styles.dexToggle}>
-            <button
-              onClick={() => { setExactDex(''); setDexMode('regional'); }}
-              className={cn(
-                styles.dexTab,
-                dexMode === 'regional' && styles.activeDexTab
-              )}
-            >
-              {(() => {
-                if (!preferredDex) return 'Regional Dex';
-                const parts = preferredDex.split('-');
-                const capitalized = parts
-                  .map(p => {
-                    if (p === 'original' || p === 'extended' || p === 'updated' || p === 'letsgo') return '';
-                    return p.charAt(0).toUpperCase() + p.slice(1);
-                  })
-                  .filter(Boolean)
-                  .join(' ');
-                return `${capitalized || 'Regional'} Dex`;
-              })()}
-            </button>
-            <button
-              onClick={() => { setExactDex(''); setDexMode('national'); }}
-              className={cn(
-                styles.dexTab,
-                dexMode === 'national' && styles.activeDexTab
-              )}
-            >
-              National Dex
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Legends: Z-A Regional Tabs */}
-      {selectedVersion === 'legends-za' && dexMode === 'regional' && (
-        <div className={styles.zaTabWrapper}>
-          <div className={styles.zaToggle}>
-            <button
-              onClick={() => { setExactDex(''); setZaTab('lumiose'); }}
-              className={cn(
-                styles.zaTab,
-                zaTab === 'lumiose' && styles.activeZaTab
-              )}
-            >
-              Lumiose City Dex
-            </button>
-            <button
-              onClick={() => { setExactDex(''); setZaTab('hyperspace'); }}
-              className={cn(
-                styles.zaTab,
-                zaTab === 'hyperspace' && styles.activeZaTab
-              )}
-            >
-              Hyperspace Dex
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Count */}
-      {!isInitialLoad && !error && (
-        <p className={styles.infoText}>
-          {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
-        </p>
-      )}
 
       {/* Compare banner */}
       {isCompareMode && (
@@ -238,10 +255,11 @@ export default function PokemonDex() {
         </div>
       ) : (
         <div className={styles.pokemonGrid}>
-            {pokemonList.map(p => (
+            {pokemonList.map((p, index) => (
               <PokeCard
                 key={p.id}
                 pokemon={p}
+                discoveryIndex={darkHome ? index : undefined}
                 onClick={() => handleCardClick(p.id)}
                 isCompareMode={isCompareMode}
                 isSelectedForCompare={compareIds.includes(p.id)}

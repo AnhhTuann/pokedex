@@ -11,6 +11,7 @@ import styles from "../styles/components/PokeCard.module.scss";
 
 interface PokeCardProps {
   pokemon: PokemonListItem;
+  discoveryIndex?: number;
   onClick: () => void;
   isCompareMode?: boolean;
   isSelectedForCompare?: boolean;
@@ -18,6 +19,7 @@ interface PokeCardProps {
 
 export default function PokeCard({
   pokemon,
+  discoveryIndex,
   onClick,
   isCompareMode,
   isSelectedForCompare,
@@ -26,6 +28,7 @@ export default function PokeCard({
   const { isShinyMode } = useTeamStore();
   const { mode } = useColorMode();
   const isDark = mode === "dark";
+  const discovery = discoveryIndex !== undefined;
 
   const isFav = isFavorite(pokemon.id);
   const primaryType = pokemon.types?.[0] || "normal";
@@ -60,6 +63,8 @@ export default function PokeCard({
     pokemon.name.toLowerCase().startsWith("mega ") ||
     pokemon.name.toLowerCase().endsWith(" mega");
 
+  const formBadge = isMega ? "Mega" : pokemon.category === "GIGANTAMAX" ? "Gigantamax" : null;
+
   const displayName =
     pokemon.isMega && pokemon.name.startsWith("Mega ")
       ? pokemon.name.replace("Mega ", "") + "-Mega"
@@ -68,10 +73,16 @@ export default function PokeCard({
   return (
     <div id={`pokemon-card-${pokemon.id}`} className={styles.cardWrapper}>
       <article
-        className={cn(styles.pokeCard, isSelectedForCompare && styles.selectedCompare,
+        className={cn(styles.pokeCard, discovery && styles.discoveryCard, isSelectedForCompare && styles.selectedCompare,
           isCompareMode && !isSelectedForCompare && styles.faded)}
         style={{
           "--primary-color": primaryColor,
+          ...(discoveryIndex !== undefined && {
+            "--art-tint": pastelBgColor,
+            "--primary-type": TYPE_COLORS[primaryType.toLowerCase()] || "#9ca3af",
+            "--secondary-type": TYPE_COLORS[(pokemon.types[1] || primaryType).toLowerCase()] || "#9ca3af",
+            "--card-delay": `${Math.min(discoveryIndex % 24, 7) * 24}ms`,
+          }),
           "--card-bg": `linear-gradient(155deg, ${pastelBgColor}, ${addOpacityToColor(pastelBgColor, isDark ? 0.48 : 0.33)}), var(--bg-paper)`,
         } as React.CSSProperties}
       >
@@ -95,7 +106,7 @@ export default function PokeCard({
           <span className={styles.imageContainer}>
             <PokemonArtwork src={imageUrl} name={pokemon.name} shiny={isShinyMode}
               loading="lazy" className={styles.pokemonImage} />
-            {isMega && <span className={styles.megaBadge}>Mega</span>}
+            {(discovery ? formBadge : isMega && "Mega") && <span className={styles.megaBadge}>{discovery ? formBadge : "Mega"}</span>}
           </span>
 
           {/* Info */}

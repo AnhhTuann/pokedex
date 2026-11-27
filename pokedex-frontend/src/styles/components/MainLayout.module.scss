@@ -801,3 +801,118 @@
 @media (prefers-reduced-motion: reduce) {
   .navButton:hover, .versionBtn:hover { transform: none; }
 }
+
+// Route-scoped shell. Shared dialogs and secondary routes retain their styling.
+.darkHome {
+  --home-sidebar-width: 216px;
+  background: #171e19;
+
+  &.rail { --home-sidebar-width: 72px; }
+  .header {
+    height: 68px;
+    background: #202923;
+    border-color: #39463c;
+    border-top: 0;
+    padding-inline: clamp(15px, 2vw, 34px);
+  }
+  .sidebar {
+    width: var(--home-sidebar-width);
+    background: #202923;
+    border-color: #39463c;
+    border-right-width: 1px;
+    transform: none;
+  }
+  .brandHeader { background: transparent; padding: 17px 13px; gap: 9px; justify-content: flex-start; }
+  .brandLogo {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: #b9e66a;
+    color: #263522;
+  }
+  .brandText { font-size: 1.08rem; white-space: nowrap; color: #f4f4e9; }
+  .divider { background: #39463c; }
+  .navMenu { gap: 4px; padding: 14px 10px; }
+  .navButton {
+    gap: 10px;
+    border-radius: 11px;
+    min-height: 43px;
+    padding-inline: 10px;
+    color: #c2cdbf;
+    transform: none;
+    &:hover { background: #303d32; color: #f4f4e9; }
+  }
+  .navIcon { color: color-mix(in srgb, var(--primary) 60%, #e3eccc) !important; }
+  .navButtonActive {
+    border: 1px solid #a7cc6b75;
+    background: #374a30;
+    color: #eaf4dc;
+    &::before { background: #b9e66a; }
+    &:hover { background: #405738; }
+    .navIcon { color: #b9e66a !important; }
+  }
+  .leftGroup, .rightGroup { gap: 9px; }
+  .title { color: #f4f4e9; letter-spacing: -.03em; }
+  .menuToggle, .actionIconBtn, .themeBtn {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border: 1px solid #465548;
+    border-radius: 11px;
+    background: #2b382e;
+    color: #f1f3e6;
+    &:hover { background: #3b4c3d; color: #c9ee93; }
+  }
+  .themeBtn, .switchText.active { color: #ffd166; }
+  .switchLabel { margin-inline: 3px; gap: 7px; }
+  .slider { background: #49584b; }
+  .switch input:checked + .slider { background: #b9e66a; }
+  .switch input:checked + .slider::before { background: #263522; }
+  .header button:focus-visible, .sidebar button:focus-visible, .switch input:focus-visible + .slider { outline-color: #b9e66a; }
+  .mainContent { padding: 86px clamp(14px, 2.25vw, 42px) 0; }
+}
+
+@include respond-to(md-up) {
+  .darkHome {
+    .header { left: var(--home-sidebar-width); width: calc(100% - var(--home-sidebar-width)); }
+    .mainContent { margin-left: var(--home-sidebar-width); width: calc(100% - var(--home-sidebar-width)); }
+    &.rail {
+      .brandText, .navText {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .navButton { justify-content: center; padding-inline: 0; }
+    }
+  }
+}
+
+@include respond-to(md) {
+  .darkHome {
+    .sidebar { visibility: hidden; }
+    .sidebar.mobileOpen { visibility: visible; }
+    .mainContent { margin-left: 0; width: 100%; }
+    .sidebarOverlay.mobileOpen { backdrop-filter: none; background: #131c17ad; }
+  }
+}
+@media (max-width: 640px) {
+  .darkHome {
+    .header:has(.versionBtn) {
+      height: 111px;
+      grid-template-columns: minmax(0, 1fr) repeat(3, 42px);
+      padding-inline: 12px;
+      gap: 6px 7px;
+    }
+    .header:has(.versionBtn) ~ .mainContent { padding-top: 124px; }
+    .switchText { font-size: .65rem; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .darkHome :is(.header, .mainContent, .sidebar, .navButton) { transition: none; }
+}
