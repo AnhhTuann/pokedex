@@ -20,7 +20,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@apollo/server": "^4.11.3",
+    "@apollo/server": "5.5.2",
+    "@as-integrations/express4": "1.1.2",
     "@prisma/client": "^5.20.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -38,7 +39,7 @@
     "@types/node": "^22.14.0",
     "@types/sharp": "^0.31.1",
     "prisma": "^5.20.0",
-    "tsx": "^4.21.0",
+    "tsx": "4.23.15",
     "typescript": "~5.8.2"
   },
   "overrides": {

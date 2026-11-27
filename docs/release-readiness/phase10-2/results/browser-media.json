@@ -1,0 +1,129 @@
+{
+  "voices": [],
+  "native": {
+    "speech": [
+      {
+        "event": "error",
+        "error": "synthesis-failed",
+        "lang": "en-US"
+      }
+    ],
+    "cry": [
+      {
+        "event": "created",
+        "url": "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+      },
+      {
+        "event": "loadeddata",
+        "volume": 0.5
+      },
+      {
+        "event": "playing",
+        "volume": 0.5
+      },
+      {
+        "event": "ended",
+        "volume": 0.5
+      }
+    ]
+  },
+  "mockCalls": [
+    [
+      "speak",
+      "en-GB"
+    ],
+    [
+      "pause"
+    ],
+    [
+      "resume"
+    ],
+    [
+      "cancel"
+    ],
+    [
+      "speak",
+      "en-GB"
+    ],
+    [
+      "speak",
+      "en-GB"
+    ],
+    [
+      "play",
+      0.5,
+      "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+    ],
+    [
+      "audio pause"
+    ],
+    [
+      "remove attribute",
+      "src"
+    ],
+    [
+      "audio load"
+    ],
+    [
+      "play",
+      0.5,
+      "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+    ],
+    [
+      "audio pause"
+    ],
+    [
+      "remove attribute",
+      "src"
+    ],
+    [
+      "audio load"
+    ],
+    [
+      "play",
+      0.5,
+      "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+    ],
+    [
+      "speak",
+      "en-GB"
+    ],
+    [
+      "cancel"
+    ],
+    [
+      "audio pause"
+    ],
+    [
+      "remove attribute",
+      "src"
+    ],
+    [
+      "audio load"
+    ],
+    [
+      "play",
+      0.5,
+      "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/2.ogg"
+    ],
+    [
+      "speak",
+      "en-GB"
+    ],
+    [
+      "cancel"
+    ],
+    [
+      "audio pause"
+    ],
+    [
+      "remove attribute",
+      "src"
+    ],
+    [
+      "audio load"
+    ]
+  ],
+  "missingCry": "PASSED_MOCK",
+  "mock": "PASSED"
+}

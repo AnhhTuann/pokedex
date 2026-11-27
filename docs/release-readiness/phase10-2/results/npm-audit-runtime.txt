@@ -1,0 +1,12 @@
+# npm audit report
+
+@graphql-tools/utils  10.10.1 - 12.0.1
+Severity: high
+GraphQL Tools: Prototype pollution in mergeIncrementalResult via non-primitive path segments - https://github.com/advisories/GHSA-c4qx-w738-7hr3
+fix available via `npm audit fix`
+node_modules/@graphql-tools/utils
+
+1 high severity vulnerability
+
+To address all issues, run:
+  npm audit fix

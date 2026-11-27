@@ -1,0 +1,7 @@
+
+> pokedex-frontend@1.0.0 test:browser
+> node tests/browser/reference.e2e.mjs
+
+PASS desktop 1440x900
+PASS tablet 768x1024
+PASS mobile 390x844

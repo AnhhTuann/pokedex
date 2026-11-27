@@ -1,0 +1,3 @@
+
+> pokedex-backend@1.0.0 audit:typecheck
+> tsc -p audit/tsconfig.json --noEmit

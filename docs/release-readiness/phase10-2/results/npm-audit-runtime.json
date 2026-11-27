@@ -1,0 +1,52 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@graphql-tools/utils": {
+      "name": "@graphql-tools/utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1242879,
+          "name": "@graphql-tools/utils",
+          "dependency": "@graphql-tools/utils",
+          "title": "GraphQL Tools: Prototype pollution in mergeIncrementalResult via non-primitive path segments",
+          "url": "https://github.com/advisories/GHSA-c4qx-w738-7hr3",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=10.10.1 <=12.0.1"
+        }
+      ],
+      "effects": [],
+      "range": "10.10.1 - 12.0.1",
+      "nodes": [
+        "node_modules/@graphql-tools/utils"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 1,
+      "critical": 0,
+      "total": 1
+    },
+    "dependencies": {
+      "prod": 170,
+      "dev": 48,
+      "optional": 54,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 244
+    }
+  }
+}

@@ -1,0 +1,62 @@
+TAP version 13
+# The `status400ForVariableCoercionErrors: false` configuration option is deprecated and will be removed in Apollo Server v6. Apollo recommends removing any dependency on this behavior.
+# Apollo Server started
+# Subtest: production Express GraphQL contract with mocked Prisma delegates
+ok 1 - production Express GraphQL contract with mocked Prisma delegates
+  ---
+  duration_ms: 924.05232
+  ...
+# Subtest: the executable schema serves all 35 Dex references and 38 games
+ok 2 - the executable schema serves all 35 Dex references and 38 games
+  ---
+  duration_ms: 435.224111
+  ...
+# Subtest: reference numbers preserve Victini zero, ORAS scopes and both ZA Dexes
+ok 3 - reference numbers preserve Victini zero, ORAS scopes and both ZA Dexes
+  ---
+  duration_ms: 10.613749
+  ...
+# Subtest: game evidence does not imply wild or form-level evidence
+ok 4 - game evidence does not imply wild or form-level evidence
+  ---
+  duration_ms: 20.581055
+  ...
+# Subtest: form pagination returns every row exactly once; missing artwork remains absent
+ok 5 - form pagination returns every row exactly once; missing artwork remains absent
+  ---
+  duration_ms: 48.747902
+  ...
+# Subtest: learnsets preserve slots per version group and evolution conditions exclude the disputed edge
+ok 6 - learnsets preserve slots per version group and evolution conditions exclude the disputed edge
+  ---
+  duration_ms: 11.940623
+  ...
+# Subtest: invalid game, generation and unscoped evidence return BAD_USER_INPUT
+ok 7 - invalid game, generation and unscoped evidence return BAD_USER_INPUT
+  ---
+  duration_ms: 30.389667
+  ...
+# Subtest: Move Dex passes one filtered scope to count and sorted pagination
+ok 8 - Move Dex passes one filtered scope to count and sorted pagination
+  ---
+  duration_ms: 1.984354
+  ...
+# Subtest: CMS writes require a server-side admin and never reach storage for denied users
+ok 9 - CMS writes require a server-side admin and never reach storage for denied users
+  ---
+  duration_ms: 1.625119
+  ...
+# Subtest: team retrieval is scoped to server identity and preserves database form IDs and order
+ok 10 - team retrieval is scoped to server identity and preserves database form IDs and order
+  ---
+  duration_ms: 1.274344
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1295.033618

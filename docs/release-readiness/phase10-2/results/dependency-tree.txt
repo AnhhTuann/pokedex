@@ -1,0 +1,37 @@
+pokedex-backend@1.0.0 /tmp/pokedex-phase10-2/pokedex-backend
+├─┬ @apollo/server@5.5.2
+│ ├─┬ @apollo/cache-control-types@1.0.3
+│ │ └── graphql@16.13.2 deduped
+│ ├─┬ @apollo/server-gateway-interface@2.2.0
+│ │ └── graphql@16.13.2 deduped
+│ ├─┬ @apollo/utils.usagereporting@2.1.0
+│ │ ├─┬ @apollo/utils.dropunuseddefinitions@2.0.1
+│ │ │ └── graphql@16.13.2 deduped
+│ │ ├─┬ @apollo/utils.printwithreducedwhitespace@2.0.1
+│ │ │ └── graphql@16.13.2 deduped
+│ │ ├─┬ @apollo/utils.removealiases@2.0.1
+│ │ │ └── graphql@16.13.2 deduped
+│ │ ├─┬ @apollo/utils.sortast@2.0.1
+│ │ │ └── graphql@16.13.2 deduped
+│ │ ├─┬ @apollo/utils.stripsensitiveliterals@2.0.1
+│ │ │ └── graphql@16.13.2 deduped
+│ │ └── graphql@16.13.2 deduped
+│ ├─┬ @graphql-tools/merge@9.2.4
+│ │ ├── @graphql-tools/utils@12.0.1 deduped
+│ │ └── graphql@16.13.2 deduped
+│ ├─┬ @graphql-tools/schema@10.1.1
+│ │ ├── @graphql-tools/merge@9.2.4 deduped
+│ │ ├── @graphql-tools/utils@12.0.1 deduped
+│ │ └── graphql@16.13.2 deduped
+│ ├─┬ @graphql-tools/utils@12.0.1
+│ │ ├─┬ @graphql-typed-document-node/core@3.2.0
+│ │ │ └── graphql@16.13.2 deduped
+│ │ └── graphql@16.13.2 deduped
+│ └── graphql@16.13.2 deduped
+├─┬ @as-integrations/express4@1.1.2
+│ ├── @apollo/server@5.5.2 deduped
+│ └── express@4.22.1 deduped
+├── express@4.22.1
+├── graphql@16.13.2
+└─┬ tsx@4.23.15
+  └── esbuild@0.28.2

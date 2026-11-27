@@ -1,0 +1,11 @@
+backend-ci	0	npm ci
+backend-tests	0	npm test
+backend-integration	0	node --import tsx --test tests/graphqlHttp.integration.test.ts tests/reference.integration.test.ts tests/runtimeIntegration.test.ts
+backend-audit-tests	0	npm run test:audit
+backend-audit-typecheck	0	npm run audit:typecheck
+backend-typecheck	0	npm exec -- tsc --noEmit
+backend-build	0	npm run build
+prisma-validate	0	npm exec -- prisma validate
+prisma-generate	0	npm exec -- prisma generate
+graphql-schema	0	node --import tsx --input-type=module -e import {makeExecutableSchema} from '@graphql-tools/schema'; import {assertValidSchema} from 'graphql'; import {typeDefs} from './src/graphql/typeDefs.ts'; import {resolvers} from './src/graphql/resolvers.ts'; assertValidSchema(makeExecutableSchema({typeDefs,resolvers})); console.log('Executable GraphQL schema validated');
+backend-startup	0	bash /tmp/phase102-startup.sh

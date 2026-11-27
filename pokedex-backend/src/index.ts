@@ -1,10 +1,13 @@
 import { getReferenceCatalog } from './catalog/graphql.js';
 import 'dotenv/config';
 import path from 'node:path';
+import { once } from 'node:events';
+import { createServer } from 'node:http';
+import { pathToFileURL } from 'node:url';
 import express, { Request, Response } from 'express';
 import { ApolloServer } from '@apollo/server';
-// @ts-ignore
-import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { expressMiddleware } from '@as-integrations/express4';
 import cors from 'cors';
 import { prisma } from './db/prisma.js';
 import { typeDefs } from './graphql/typeDefs.js';
@@ -18,19 +21,21 @@ import {
   verifyAccessToken,
 } from './lib/security.js';
 
-const downloadSessions = new DownloadSessionStore();
-
-async function startServer() {
+export async function startServer(port = Number(process.env.PORT) || 3000, host = '0.0.0.0') {
   assertServerConfig();
   getReferenceCatalog();
 
   const app = express();
   app.disable('x-powered-by');
-  const PORT = Number(process.env.PORT) || 3000;
+  const httpServer = createServer(app);
+  const downloadSessions = new DownloadSessionStore();
 
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    // Preserve the Apollo 4 HTTP status for GraphQL variable coercion errors.
+    status400ForVariableCoercionErrors: false,
     introspection: process.env.NODE_ENV !== 'production',
   });
 
@@ -84,13 +89,21 @@ async function startServer() {
     },
   }));
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Backend Server running on port ${PORT}`);
-    console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
-  });
+  try {
+    await once(httpServer.listen(port, host), 'listening');
+  } catch (error) {
+    await apolloServer.stop();
+    throw error;
+  }
+  return { httpServer, apolloServer };
 }
 
-startServer().catch(e => {
-  console.error(e);
-  prisma.$disconnect();
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  startServer().then(({ httpServer }) => {
+    console.log('Backend server listening', httpServer.address());
+  }).catch(async error => {
+    console.error(error);
+    await prisma.$disconnect();
+    process.exitCode = 1;
+  });
+}

@@ -1,0 +1,12 @@
+The `status400ForVariableCoercionErrors: false` configuration option is deprecated and will be removed in Apollo Server v6. Apollo recommends removing any dependency on this behavior.
+Apollo Server started
+Backend server listening { address: '0.0.0.0', family: 'IPv4', port: 33971 }
+pong from Prisma backend!
+pong from Prisma backend!
+SIGTERM exit 143, listener closed
+The `status400ForVariableCoercionErrors: false` configuration option is deprecated and will be removed in Apollo Server v6. Apollo recommends removing any dependency on this behavior.
+Apollo Server started
+Backend server listening { address: '0.0.0.0', family: 'IPv4', port: 33971 }
+pong from Prisma backend!
+pong from Prisma backend!
+SIGTERM exit 143, listener closed
