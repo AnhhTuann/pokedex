@@ -112,21 +112,16 @@
 
 // Discovery layout is mounted only on the dark homepage.
 .darkHome {
-  --discovery-ink: #f4f4e9;
-  --discovery-muted: #bcc8bb;
-  --discovery-lime: #b9e66a;
-  --discovery-surface: #263229;
-  --discovery-field: #1c261f;
-  --discovery-line: #49594b;
-  max-width: 1540px;
+  width: 100%;
+  max-width: 1720px;
   padding: 0 0 48px;
 
   .searchWrapper {
     background: var(--discovery-surface);
     border-color: var(--discovery-line);
-    border-radius: 20px;
-    padding: 16px;
-    margin: 16px 0 20px;
+    border-radius: 17px;
+    padding: 14px;
+    margin: 12px 0 14px;
     box-shadow: none;
   }
 
@@ -142,7 +137,7 @@
       color: var(--discovery-ink);
       color-scheme: dark;
       transition: border-color 160ms ease;
-      &:hover { border-color: #829677; }
+      &:hover { border-color: #747a6c; }
     }
   }
 
@@ -155,12 +150,12 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 8px 12px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .modeToggleWrapper, .dexTabWrapper, .zaTabWrapper { margin: 0; }
   .modeToggle, .dexToggle, .zaToggle {
-    background: #212c23;
+    background: var(--discovery-field);
     border-color: var(--discovery-line);
     border-radius: 14px;
   }
@@ -168,17 +163,17 @@
     min-height: 40px;
     border-radius: 10px;
     color: var(--discovery-muted);
-    &:hover { background: #36463a; }
+    &:hover { background: var(--discovery-elevated); }
   }
   .activeBtnAll, .activeBtnComp, .activeDexTab, .activeZaTab {
-    background: var(--discovery-lime);
-    color: #212d18;
-    &:hover { background: #cef198; }
+    background: #3a4235;
+    color: #d8e8c4;
+    &:hover { background: #454e3e; }
   }
   .activeBtnFav {
-    background: #ff998c;
-    color: #3c211f;
-    &:hover { background: #ffb1a6; }
+    background: #463534;
+    color: #f3b3aa;
+    &:hover { background: #513e3c; }
   }
   .infoText {
     margin: 0 0 0 auto;
@@ -187,36 +182,47 @@
   }
 
   .pokemonGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+    gap: 14px;
   }
 
-  .skeletonCard { min-height: 280px; background: var(--discovery-surface); border-radius: 20px; }
+  .skeletonCard { min-height: 278px; background: var(--discovery-surface); border-radius: 16px; animation: none; }
   .compareBanner, .offlineBanner, .emptyText {
     background: var(--discovery-surface);
     border-color: var(--discovery-line);
     color: var(--discovery-muted);
   }
-  .loadMoreContainer button {
-    border-color: var(--discovery-lime);
-    color: var(--discovery-lime);
-    &:hover { background: #30432b; }
+  .loadMoreContainer {
+    display: grid;
+    justify-items: center;
+    gap: 9px;
+    margin-top: 22px;
+    padding-block: 16px 0;
+    border-top: 1px solid var(--discovery-line);
+
+    button {
+      border-color: #697464;
+      background: var(--discovery-surface);
+      color: var(--discovery-ink);
+      &:hover { background: var(--discovery-elevated); }
+    }
   }
+
+  .pageProgress { color: var(--discovery-muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
 }
 
 .hero {
   isolation: isolate;
   position: relative;
-  min-height: 178px;
+  min-height: 151px;
   display: flex;
   align-items: center;
-  padding: 24px clamp(18px, 3vw, 46px);
+  padding: 18px clamp(16px, 2.6vw, 42px);
   overflow: hidden;
-  border: 1px solid #59663f;
-  border-radius: 25px;
+  border: 1px solid #4b463c;
+  border-radius: 19px;
   background:
-    radial-gradient(ellipse at 83% 75%, #b595493d, transparent 55%),
-    linear-gradient(105deg, #293824, #30382a 58%, #49442d);
+    linear-gradient(105deg, #272b27 36%, #38332b);
   color: var(--discovery-ink);
 }
 
@@ -225,13 +231,13 @@
   width: min(67%, 580px);
 
   h2 {
-    font-size: clamp(2rem, 4.6vw, 4.25rem);
-    letter-spacing: -.072em;
-    line-height: .99;
+    font-size: clamp(2rem, 3.7vw, 3.5rem);
+    letter-spacing: -.055em;
+    line-height: 1.04;
     font-weight: 800;
   }
   h2 span { color: var(--discovery-lime); }
-  p { color: #dae3cd; margin-top: 12px; max-width: 40ch; line-height: 1.45; font-size: clamp(.84rem, 1.3vw, 1.04rem); }
+  p { color: var(--discovery-muted); margin-top: 8px; max-width: 40ch; line-height: 1.45; font-size: clamp(.84rem, 1.3vw, 1.04rem); }
 }
 
 .heroArt {
@@ -241,37 +247,30 @@
   display: grid;
   place-items: center;
 
-  &::before, &::after {
+  &::before {
     content: '';
     position: absolute;
-    width: clamp(140px, 20vw, 292px);
+    width: clamp(112px, 14vw, 214px);
     aspect-ratio: 1;
-    border: 1px solid #ebd78e45;
+    border: 1px solid #d3b78a35;
     border-radius: 50%;
-    background: linear-gradient(transparent 49%, #ebd78e36 49%, #ebd78e36 50%, transparent 50%);
+    background: linear-gradient(transparent 49%, #d3b78a29 49%, #d3b78a29 50%, transparent 50%);
     transform: rotate(-20deg);
   }
-  &::after { scale: 1.24; border-style: dashed; background: none; }
   img {
     z-index: 1;
-    width: min(98%, 212px);
+    width: min(98%, 174px);
     height: 100%;
-    max-height: 170px;
+    max-height: 145px;
     object-fit: contain;
-    filter: drop-shadow(0 10px 10px #2d221d75);
+    filter: drop-shadow(0 10px 10px #17161255);
   }
 }
 
-.heroSpark { position: absolute; top: 20%; right: 12%; color: #ffd166; }
+.heroSpark { position: absolute; top: 20%; right: 12%; color: #cfab76; }
 
-@media (min-width: 1600px) {
-  .darkHome .pokemonGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-}
-@media (max-width: 1100px) {
-  .darkHome .pokemonGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
 @media (max-width: 600px) {
-  .hero { min-height: 150px; padding-block: 14px; border-radius: 20px; }
+  .hero { min-height: 142px; padding-block: 13px; border-radius: 16px; }
   .heroCopy { width: 66%; }
   .heroArt { right: 0; width: 38%; }
   .heroSpark { width: 17px; right: 12%; top: 12%; }
@@ -284,11 +283,11 @@
       label:has(select[aria-label='Game evidence']) { grid-column: 1 / -1; }
     }
     .pokemonGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .skeletonCard { min-height: 220px; }
+    .skeletonCard { min-height: 230px; }
     .collectionToolbar { gap: 9px; }
     .infoText { flex: 0 0 100%; margin: 0; }
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .darkHome .skeletonCard { animation: none; }
+  .darkHome :is(.modeBtn, .dexTab, .zaTab, select) { transition: none; }
 }

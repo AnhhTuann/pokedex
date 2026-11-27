@@ -78,7 +78,6 @@ export default function PokeCard({
         style={{
           "--primary-color": primaryColor,
           ...(discoveryIndex !== undefined && {
-            "--art-tint": pastelBgColor,
             "--primary-type": TYPE_COLORS[primaryType.toLowerCase()] || "#9ca3af",
             "--secondary-type": TYPE_COLORS[(pokemon.types[1] || primaryType).toLowerCase()] || "#9ca3af",
             "--card-delay": `${Math.min(discoveryIndex % 24, 7) * 24}ms`,

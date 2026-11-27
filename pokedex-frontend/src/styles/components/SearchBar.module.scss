@@ -79,17 +79,18 @@
 .discovery {
   .discoveryInput, .customSelectTrigger {
     min-height: 46px;
-    background: #1c261f;
-    border-color: #49594b;
+    background: var(--discovery-field);
+    border-color: var(--discovery-line);
     border-radius: 11px;
-    color: #f4f4e9;
-    &:hover, &:focus-visible, &[aria-expanded='true'] { border-color: #b9e66a; }
+    color: var(--discovery-ink);
+    &:hover, &[aria-expanded='true'] { border-color: #747a6c; }
+    &:focus-visible { border-color: var(--discovery-lime); }
   }
 
-  .discoveryInput::placeholder { color: #b4c0b3; }
-  .customDropdown { background: #263229; border-color: #647461; border-radius: 12px; }
-  .dropdownOption:hover, .selectedOption { background: #37483a; }
-  .selectedOption, .clearButton:hover { color: #b9e66a; }
+  .discoveryInput::placeholder { color: var(--discovery-muted); }
+  .customDropdown { background: var(--discovery-surface); border-color: #62675d; border-radius: 12px; }
+  .dropdownOption:hover, .selectedOption { background: var(--discovery-elevated); }
+  .selectedOption, .clearButton:hover { color: var(--discovery-lime); }
 }
 
 @media (prefers-reduced-motion: no-preference) {

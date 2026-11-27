@@ -3,7 +3,9 @@ import { mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
-const screenshots = new URL('../../../docs/ui-redesign/screenshots/', import.meta.url);
+const screenshots = process.env.POKEDEX_BROWSER_SCREENSHOTS
+  ? new URL(process.env.POKEDEX_BROWSER_SCREENSHOTS)
+  : new URL('../../../docs/ui-redesign/screenshots/', import.meta.url);
 await mkdir(screenshots, { recursive: true });
 const browser = await chromium.launch({
   executablePath: process.env.PHASE9C_CHROME || '/usr/bin/google-chrome-stable',
@@ -33,7 +35,7 @@ try {
     await page.getByText('1351 Pokémon', { exact: true }).waitFor();
     const bulbasaur = page.getByRole('button', { name: 'View bulbasaur', exact: true });
     const charmander = page.getByRole('button', { name: 'View charmander', exact: true });
-    const cardBackground = locator => locator.evaluate(node => getComputedStyle(node.closest('article')).backgroundImage);
+    const cardBackground = locator => locator.evaluate(node => getComputedStyle(node.querySelector('img').parentElement).backgroundImage);
     await page.waitForFunction(() => ['bulbasaur', 'charmander'].every(name =>
       document.querySelector(`img[alt="${name}"]`)?.naturalWidth > 0));
     assert.notEqual(await cardBackground(bulbasaur), await cardBackground(charmander));
