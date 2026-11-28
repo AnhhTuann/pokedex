@@ -1,21 +1,26 @@
 # Visual QA Report
 
-## Status: Incomplete (environment-limited)
+## Status: Partial / Incomplete
 
 ## Executed
-- Code-level audit of routes/components/styles.
-- Token system and shell/shared component redesign implemented.
-- `npm run lint` (tsc --noEmit): PASS.
-- `npm run build` (vite build): PASS.
+- Started redesign frontend from worktree on Vite dev server (`VITE_GRAPHQL_API_URL=http://localhost:4000/graphql`), backend already running on 4000.
+- Captured headless Chromium screenshots (virtual-time-budget) into `artifacts/redesign/` (local, not committed):
+  - Dark desktop (1440x900): home, moves, abilities, items, locations, types, natures, teambuilder, tracker, calculator, walkthrough, login, register.
+  - Dark mobile (390x844): home, moves, types, teambuilder, calculator, login.
+  - Light desktop (1440x900): home, moves, types, teambuilder, login.
+- `npm run lint` and `npm run build` were previously PASS on c302fb0; must be re-run after further changes.
 
-## Not executed
-- Real browser screenshot capture (baseline/final) - Playwright/browser automation not executed in this session.
-- Manual desktop/tablet/mobile visual inspection in running app.
-- Dark/Light side-by-side screenshot comparison.
-- Accessibility automation (axe) and keyboard walkthrough in browser.
+## Not executed / incomplete
+- Manual visual inspection of every screenshot for defects.
+- Baseline comparison against main/original.
+- Full required viewport matrix (1920x1080, 1366x768, 1024x768, 768x1024, 360x800).
+- Light mode coverage for all routes.
+- Critical component states (detail dialog, compare modal, version selector, mobile nav drawer, filter drawer, validation, loading/empty/error, admin/editor).
+- Playwright automated visual/accessibility flow.
+- Keyboard/reduced-motion manual checks.
 
 ## Required before merge
-1. Run frontend with backend/fixtures and capture baseline/final screenshots for all routes and key states.
-2. Verify Dark + Light at 1440/1024/768/390 widths.
-3. Keyboard-test sidebar, version modal, search, filters, dialogs, forms.
-4. Fix any overflow/contrast/spacing regressions found.
+1. Capture and inspect full matrix screenshots with stable selectors/waits.
+2. Fix all visual defects found (contrast, spacing, overflow, clipping, theme leaks).
+3. Verify dialogs/drawers/forms/tables on mobile and desktop in both themes.
+4. Record PASS/FAIL/PARTIAL/BLOCKED evidence in route matrix.
