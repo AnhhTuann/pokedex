@@ -481,7 +481,7 @@
   padding: 10px 14px;
   font-size: 12px;
   font-weight: 700;
-  color: #ef4444;
+  color: var(--status-error);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -495,7 +495,7 @@
   padding: 10px 14px;
   font-size: 12px;
   font-weight: 700;
-  color: #22c55e;
+  color: var(--status-success);
   display: flex;
   align-items: center;
   gap: 8px;

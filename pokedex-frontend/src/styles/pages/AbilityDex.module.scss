@@ -4,7 +4,7 @@
 .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; @media (max-width: $breakpoint-sm) { padding: 20px 14px 56px; } }
 
 .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; @media (max-width: $breakpoint-sm) { flex-direction: column; align-items: flex-start; } }
-.eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brand); }
+.eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--interactive-text); }
 .title { margin: 0; font-family: $font-display; font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -0.03em; color: var(--text-primary); }
 .desc { margin: 8px 0 0; font-size: 14px; color: var(--text-secondary); max-width: 560px; }
 .countBadge { flex-shrink: 0; display: inline-flex; align-items: baseline; gap: 8px; padding: 10px 14px; border-radius: var(--radius-lg); background: var(--bg-paper); border: 1px solid var(--border-subtle); }
@@ -22,7 +22,7 @@
 
 .resultsBar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; font-size: 13px; color: var(--text-secondary); }
 .resultsMeta { display: flex; align-items: center; gap: 8px; font-weight: 500; }
-.resetBtn { border: none; background: transparent; color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); &:hover { color: var(--brand); background: var(--bg-hover); } }
+.resetBtn { border: none; background: transparent; color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); &:hover { color: var(--interactive-text); background: var(--bg-hover); } }
 
 .stateCard { display: flex; align-items: center; gap: 14px; padding: 20px; border-radius: var(--radius-lg); background: var(--bg-paper); border: 1px solid var(--border-subtle); color: var(--text-secondary); @media (max-width: $breakpoint-sm) { flex-wrap: wrap; } }
 .stateTitle { font-size: 14px; font-weight: 700; color: var(--text-primary); }
@@ -52,7 +52,7 @@
 .drawerOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1200; }
 .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 100vw); background: var(--bg-paper); border-left: 1px solid var(--border-subtle); box-shadow: var(--shadow-lg); z-index: 1201; display: flex; flex-direction: column; }
 .drawerHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); }
-.drawerEyebrow { margin: 0 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand); }
+.drawerEyebrow { margin: 0 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--interactive-text); }
 .drawerTitle { margin: 0 0 8px; font-family: $font-display; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); text-transform: capitalize; }
 .drawerClose { width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--radius-full); border: 1px solid var(--border-subtle); background: var(--bg-paper); color: var(--text-secondary); @include flex-center; cursor: pointer; &:hover { background: var(--bg-hover); color: var(--text-primary); } }
 .drawerBody { padding: 20px 24px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; @include custom-scrollbar(6px, transparent, color-mix(in srgb, var(--text-muted) 30%, transparent)); }

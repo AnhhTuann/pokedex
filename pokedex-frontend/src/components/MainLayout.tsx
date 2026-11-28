@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, Suspense } from 'react';
 import { useNavigate, useLocation, Outlet, Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import {
@@ -122,16 +122,18 @@ export default function MainLayout() {
     return () => media.removeEventListener('change', closeOnDesktop);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const dialog = mobileOpen ? navigationDialog.current : versionDialogOpen ? versionDialog.current : null;
     if (!dialog) return;
 
+    const trigger = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     dialog.showModal();
     return () => {
       dialog.close();
       document.body.style.overflow = previousOverflow;
+      if (trigger instanceof HTMLElement && trigger.isConnected) trigger.focus({ preventScroll: true });
     };
   }, [mobileOpen, versionDialogOpen]);
 

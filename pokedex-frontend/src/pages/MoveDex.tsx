@@ -104,7 +104,7 @@ export default function MoveDex() {
     <div className={styles.filterGroup} ref={refs[key]}>
       <span className={styles.filterLabel}>{label}</span>
       <div className={styles.selectWrap}>
-        <button type="button" className={cn(styles.selectTrigger, openDrop === key && styles.open, value !== 'ALL' && styles.active)} onClick={() => setOpenDrop(openDrop === key ? null : key)} aria-haspopup="listbox" aria-expanded={openDrop === key} aria-label={`Filter by ${label}`}>
+        <button type="button" className={cn(styles.selectTrigger, openDrop === key && styles.open, value !== 'ALL' && styles.active)} onClick={() => setOpenDrop(openDrop === key ? null : key)} aria-haspopup="listbox" aria-expanded={openDrop === key}>
           <span className={styles.selectText}>{options.find(o => o.value === value)?.label || value}</span>
           <span className={styles.selectActions}>
             {value !== 'ALL' && <span role="button" tabIndex={0} className={styles.clearBtn} aria-label={`Clear ${label}`} onClick={(e) => { e.stopPropagation(); onSelect('ALL'); }} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onSelect('ALL'); } }}><X size={14} /></span>}

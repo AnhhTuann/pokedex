@@ -22,12 +22,10 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
     return `x${val}`;
   };
 
-  const getMultiplierBg = (val: number) => {
-    if (val >= 2) return '#ef4444'; // Bright red for weakness
-    if (val < 1 && val > 0) return '#10b981'; // Emerald green for resistance
-    if (val === 0) return '#8b5cf6'; // Purple for immunity
-    return 'rgba(255, 255, 255, 0.15)'; // Gray for neutral
-  };
+  const status = multiplier > 1 ? 'error'
+    : multiplier === 0 ? 'info'
+    : multiplier < 1 ? 'success'
+    : null;
 
   return (
     <div
@@ -39,7 +37,7 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
       {/* Type Name (Left) */}
       <div 
         className={styles.typeName}
-        style={{ color: typeColor }}
+        style={{ borderInlineStart: `3px solid ${typeColor}` }}
       >
         {type}
       </div>
@@ -47,7 +45,10 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
       {/* Multiplier Value (Right) */}
       <div
         className={styles.multiplier}
-        style={{ backgroundColor: getMultiplierBg(multiplier) }}
+        style={{
+          backgroundColor: status ? `var(--status-${status}-bg)` : 'var(--bg-elevated)',
+          color: status ? `var(--status-${status})` : 'var(--text-primary)',
+        }}
       >
         {formatMultiplier(multiplier)}
       </div>

@@ -21,7 +21,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--brand);
+  color: var(--interactive-text);
 }
 .title {
   margin: 0;
@@ -130,10 +130,10 @@
   font-size: 13px; color: var(--text-secondary);
 }
 .resultsMeta { display: flex; align-items: center; gap: 8px; font-weight: 500; }
-.activeCount { padding: 2px 8px; border-radius: var(--radius-full); background: color-mix(in srgb, var(--brand) 10%, transparent); color: var(--brand); font-size: 11px; font-weight: 700; }
+.activeCount { padding: 2px 8px; border-radius: var(--radius-full); background: color-mix(in srgb, var(--brand) 10%, transparent); color: var(--interactive-text); font-size: 11px; font-weight: 700; }
 .resetBtn {
   border: none; background: transparent; color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm);
-  &:hover { color: var(--brand); background: var(--bg-hover); }
+  &:hover { color: var(--interactive-text); background: var(--bg-hover); }
 }
 .activeFilters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .filterChip {
@@ -233,7 +233,7 @@
 .drawerHeader {
   display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--border-subtle);
 }
-.drawerEyebrow { margin: 0 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand); }
+.drawerEyebrow { margin: 0 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--interactive-text); }
 .drawerTitle { margin: 0; font-family: $font-display; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); text-transform: capitalize; }
 .drawerBadges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .drawerClose {

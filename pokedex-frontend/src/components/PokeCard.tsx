@@ -67,12 +67,7 @@ export default function PokeCard({
           </div>
         </div>
 
-        <button
-          type="button"
-          className={styles.cardMainBtn}
-          onClick={onClick}
-          aria-label={`${displayName}, Pokémon ${dexNumber}${isSelectedForCompare ? ', selected for comparison' : ''}`}
-        >
+        <div className={styles.cardContent}>
           <div className={styles.imageContainer}>
             <div className={styles.pokeballMotif} aria-hidden="true" />
             {displayedImage && displayedImage !== failedFallback ? (
@@ -96,7 +91,12 @@ export default function PokeCard({
           </div>
 
           <div className={styles.info}>
-            <h3 className={styles.nameText} title={displayName}>{displayName}</h3>
+            <h3 className={styles.nameText} title={displayName}>
+              <button type="button" className={styles.cardMainBtn} onClick={onClick}
+                aria-pressed={isCompareMode ? Boolean(isSelectedForCompare) : undefined}>
+                {displayName}
+              </button>
+            </h3>
             {pokemon.category && <p className={styles.categoryText}>{pokemon.category}</p>}
             <div className={styles.typeGroup}>
               {pokemon.types.map((type) => (
@@ -104,7 +104,7 @@ export default function PokeCard({
               ))}
             </div>
           </div>
-        </button>
+        </div>
       </Card>
     </div>
   );

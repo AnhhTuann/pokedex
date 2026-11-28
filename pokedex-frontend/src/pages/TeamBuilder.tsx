@@ -6,7 +6,7 @@ import { Plus, X, Zap, Shield, Brain, Star, Upload, Download, Copy, HelpCircle, 
 import html2canvas from 'html2canvas';
 import { useTeamStore, TeamMember } from '../lib/teamStore';
 import { TYPE_LIST, calculateDamageTaken } from '../utils/typeMatchups';
-import { TYPE_COLORS } from '../lib/utils';
+import { TYPE_COLORS, getTypeBadgeStyle } from '../lib/utils';
 import styles from '../styles/pages/TeamBuilder.module.scss';
 
 const GET_POKEMON_FOR_TEAM = gql`
@@ -130,7 +130,7 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
           <div className={styles.memberName}>{member.name}</div>
           <div className={styles.typesRow}>
             {member.types.map(t=>(
-              <span key={t} className={styles.typeBadge} style={{background: TYPE_COLORS[t]||'#6b7280'}}>{t}</span>
+              <span key={t} className={styles.typeBadge} style={getTypeBadgeStyle(t)}>{t}</span>
             ))}
           </div>
         </div>
@@ -362,7 +362,7 @@ export default function TeamBuilder() {
               const c = cov[type]||{weak:0,resist:0};
               return (
                 <div key={type} className={styles.typeTile}>
-                  <span className={styles.typeChip} style={{background:TYPE_COLORS[type]||'#6b7280'}}>{type}</span>
+                  <span className={styles.typeChip} style={getTypeBadgeStyle(type)}>{type}</span>
                   <div className={styles.tileStats}>
                     <span className={styles.tileStat} style={{color:c.weak>0?'#ef4444':'var(--text-muted)'}}>▼{c.weak}</span>
                     <span className={styles.tileStat} style={{color:c.resist>0?'#22c55e':'var(--text-muted)'}}>▲{c.resist}</span>
@@ -408,7 +408,7 @@ export default function TeamBuilder() {
                       <div className={styles.rowName}>{p.name}</div>
                       <div className={styles.rowTypes}>
                         {p.types.map((t:string)=>(
-                          <span key={t} className={styles.rowType} style={{background:TYPE_COLORS[t]||'#6b7280'}}>{t}</span>
+                          <span key={t} className={styles.rowType} style={getTypeBadgeStyle(t)}>{t}</span>
                         ))}
                       </div>
                     </div>

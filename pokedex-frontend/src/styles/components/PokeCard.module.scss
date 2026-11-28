@@ -26,24 +26,37 @@
   }
 }
 
-.cardMainBtn {
+.cardContent {
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 100%;
+  min-width: 0;
+}
+
+.cardMainBtn {
   padding: 0;
-  margin: 0;
-  border: none;
+  max-width: 100%;
+  border: 0;
   background: transparent;
   color: inherit;
-  text-align: left;
+  font: inherit;
+  text-transform: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   cursor: pointer;
-  min-width: 0;
 
-  &:focus-visible {
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  &:focus-visible::after {
     outline: 2px solid var(--focus-color);
-    outline-offset: 4px;
-    border-radius: calc(var(--radius-lg) - 8px);
+    outline-offset: -3px;
   }
 }
 
@@ -97,6 +110,8 @@
 }
 
 .favoriteBtn {
+  position: relative;
+  z-index: 4;
   width: 32px;
   height: 32px;
   padding: 0;
@@ -195,12 +210,12 @@
   left: 8px;
   z-index: 2;
   background: color-mix(in srgb, var(--pastel-lavender) 85%, var(--bg-paper));
-  color: var(--collectible-mega-ink);
+  color: var(--collectible-form-ink);
   font-size: 10px;
   font-weight: 700;
   padding: 3px 8px;
   border-radius: var(--radius-full);
-  border: 1px solid color-mix(in srgb, var(--collectible-mega-ink) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--collectible-form-ink) 10%, transparent);
   line-height: 1;
 }
 

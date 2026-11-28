@@ -498,7 +498,7 @@ export default function CatchTracker() {
                   setIsVersionOpen(!isVersionOpen);
                   setIsTypeOpen(false);
                 }}
-                aria-label="Filter by Game Version"
+                aria-label={`${activeVersionLabel}, filter by game version`}
               >
                 <span className={styles.triggerText}>{activeVersionLabel}</span>
                 <div className={styles.triggerActions}>
@@ -587,7 +587,7 @@ export default function CatchTracker() {
                   setIsTypeOpen(!isTypeOpen);
                   setIsVersionOpen(false);
                 }}
-                aria-label="Filter by Type"
+                aria-label={`${typeFilter || "All Types"}, filter by type`}
               >
                 <span className={styles.triggerText}>
                   {typeFilter
