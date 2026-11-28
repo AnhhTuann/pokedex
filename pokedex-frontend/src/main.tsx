@@ -16,7 +16,7 @@ import "./index.scss";
 
 // ─── Apollo Client ────────────────────────────────────────
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
+  uri: import.meta.env.VITE_GRAPHQL_API_URL || "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -57,14 +57,31 @@ export function useColorMode() {
   return useContext(ColorModeContext);
 }
 
+const THEME_STORAGE_KEY = "elite-pokedex-theme";
+
+function getInitialMode(): "light" | "dark" {
+  if (typeof window === "undefined") return "dark";
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    // ignore storage errors
+  }
+  return "dark";
+}
+
 // ─── Root ──────────────────────────────────────────────────
 function Root() {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const [mode, setMode] = useState<"light" | "dark">(getInitialMode);
 
-  // Sync mode with HTML class for local SCSS themes
   useEffect(() => {
     document.documentElement.classList.toggle("dark", mode === "dark");
     document.documentElement.setAttribute("data-theme", mode);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, mode);
+    } catch {
+      // ignore storage errors
+    }
   }, [mode]);
 
   const colorMode = useMemo(

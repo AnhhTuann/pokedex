@@ -1,0 +1,99 @@
+@use '../page-heading' as heading;
+
+.authPage {
+  display: grid;
+  place-items: center;
+  min-height: min(640px, calc(100dvh - 120px));
+}
+
+.authPanel,
+.dashboardPanel {
+  min-width: 0;
+  padding: clamp(16px, 4vw, 32px);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-xl);
+  background: var(--bg-paper);
+}
+
+.authPanel { width: min(100%, 440px); }
+
+.authHeader,
+.dashboardHeader {
+  h1 { @include heading.title; margin: 0; overflow-wrap: anywhere; }
+  p { @include heading.description; margin: 8px 0 0; }
+}
+
+.authHeader { margin-bottom: var(--space-6); }
+
+.accountMark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--brand-soft);
+  color: var(--interactive-text);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+
+  button { margin-top: var(--space-2); }
+}
+
+.authFooter {
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.authFooter a,
+.sectionHeading a {
+  color: var(--interactive-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 650;
+}
+
+.error {
+  padding: var(--space-3);
+  margin: 0 0 var(--space-4);
+  border: 1px solid var(--status-error-border);
+  border-radius: var(--radius-md);
+  color: var(--status-error);
+  background: var(--status-error-bg);
+  overflow-wrap: anywhere;
+}
+
+.dashboard {
+  max-width: 1400px;
+  margin-inline: auto;
+}
+
+.dashboardHeader,
+.sectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.dashboardGrid { display: grid; gap: var(--space-4); }
+
+.sectionHeading h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.dashboardPanel p { color: var(--text-secondary); }
+
+.count {
+  font: 700 24px var(--font-mono);
+  color: var(--text-primary);
+}

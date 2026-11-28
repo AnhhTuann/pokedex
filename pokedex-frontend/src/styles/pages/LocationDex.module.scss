@@ -1,44 +1,34 @@
+@use "../page-heading" as heading;
 @import "../variables";
 @import "../mixins";
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 0;
 
-  @media (max-width: $breakpoint-sm) {
-    padding: 24px 16px;
-  }
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 40px;
+  text-align: left;
+  margin-bottom: var(--space-6);
 
   .title {
-    font-size: 36px;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    text-transform: uppercase;
+    @include heading.title;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
     margin-bottom: 8px;
 
     .icon {
-      color: #ec4899;
+      color: var(--interactive-text);
       font-size: 38px;
     }
   }
 
   .subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    max-width: 500px;
-    margin: 0 auto 24px auto;
+    @include heading.description;
+    margin: 8px 0 16px;
   }
 }
 
@@ -65,7 +55,7 @@
 
 .searchWrapper {
   max-width: 480px;
-  margin: 0 auto 40px auto;
+  margin: 0 0 var(--space-6);
   position: relative;
 
   .searchIcon {
@@ -103,7 +93,7 @@
 
 .skeletonGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   gap: 16px;
 }
 
@@ -145,7 +135,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   gap: 16px;
 }
 
@@ -337,7 +327,7 @@
   padding: 0 16px;
   border-radius: var(--radius-full);
   border: 1.5px solid var(--border-main);
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: var(--bg-paper);
   color: var(--text-secondary);
   font-size: 12px;
   font-weight: 800;
@@ -486,7 +476,7 @@
     width: 28px;
     height: 28px;
     border-radius: var(--radius-sm);
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--bg-paper);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -604,4 +594,23 @@
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
   transition: var(--transition-normal);
   pointer-events: none;
+}
+
+.versionBadgeBtn {
+  min-height: 40px;
+  border-radius: var(--radius-md);
+  padding-inline: 12px;
+  background: var(--bg-paper);
+  color: var(--text-primary);
+  text-transform: none;
+  letter-spacing: normal;
+
+  &:hover { background: var(--bg-hover); transform: none; }
+}
+
+.versionDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--border-strong);
 }

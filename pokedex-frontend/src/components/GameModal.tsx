@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../hooks/useDialogFocus';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, RefreshCw, Trophy, Frown } from 'lucide-react';
@@ -22,6 +23,7 @@ export default function GameModal({ onClose }: GameModalProps) {
     setGuess(''); setRevealed(false); setStatus('playing');
   };
 
+  const dialogRef = useDialogFocus(true, onClose);
   useEffect(() => { newRound(); }, []);
 
   const handleGuess = (e: React.FormEvent) => {
@@ -52,11 +54,16 @@ export default function GameModal({ onClose }: GameModalProps) {
           transition={{ type: 'spring', damping: 24, stiffness: 200 }}
           onClick={e => e.stopPropagation()}
           className={styles.modalCard}
+          ref={dialogRef}
+          tabIndex={-1}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Who’s That Pokémon?"
         >
           {/* Header */}
           <div className={styles.header}>
-            <span className={styles.title}>🎮 Who's That Pokémon?</span>
-            <button onClick={onClose} className={styles.closeBtn}>
+            <span className={styles.title}>Who's That Pokémon?</span>
+            <button onClick={onClose} className={styles.closeBtn} aria-label="Close game">
               <X size={16}/>
             </button>
           </div>
@@ -90,7 +97,7 @@ export default function GameModal({ onClose }: GameModalProps) {
                   value={guess}
                   onChange={e => setGuess(e.target.value)}
                   placeholder="Enter Pokémon name…"
-                  autoFocus
+                  aria-label="Pokémon name"
                   className={styles.input}
                   style={{ border: `1px solid ${status === 'lost' ? '#ef4444' : 'var(--border-main)'}` }}
                 />

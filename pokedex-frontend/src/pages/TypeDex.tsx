@@ -22,12 +22,10 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
     return `x${val}`;
   };
 
-  const getMultiplierBg = (val: number) => {
-    if (val >= 2) return '#ef4444'; // Bright red for weakness
-    if (val < 1 && val > 0) return '#10b981'; // Emerald green for resistance
-    if (val === 0) return '#8b5cf6'; // Purple for immunity
-    return 'rgba(255, 255, 255, 0.15)'; // Gray for neutral
-  };
+  const status = multiplier > 1 ? 'error'
+    : multiplier === 0 ? 'info'
+    : multiplier < 1 ? 'success'
+    : null;
 
   return (
     <div
@@ -39,7 +37,7 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
       {/* Type Name (Left) */}
       <div 
         className={styles.typeName}
-        style={{ color: typeColor }}
+        style={{ borderInlineStart: `3px solid ${typeColor}` }}
       >
         {type}
       </div>
@@ -47,7 +45,10 @@ export function TypeMultiplierChip({ type, multiplier }: { type: string; multipl
       {/* Multiplier Value (Right) */}
       <div
         className={styles.multiplier}
-        style={{ backgroundColor: getMultiplierBg(multiplier) }}
+        style={{
+          backgroundColor: status ? `var(--status-${status}-bg)` : 'var(--bg-elevated)',
+          color: status ? `var(--status-${status})` : 'var(--text-primary)',
+        }}
       >
         {formatMultiplier(multiplier)}
       </div>
@@ -102,9 +103,10 @@ export default function TypeDex() {
         <div className={styles.selectorCard}>
           {/* Primary Type Selection */}
           <div className={styles.selectGroup}>
-            <span className={styles.label}>Primary Type</span>
+            <label htmlFor="primary-battle-type" className={styles.label}>Primary type</label>
             <div className={styles.selectWrapper}>
               <select
+                id="primary-battle-type"
                 value={primaryType}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -113,7 +115,6 @@ export default function TypeDex() {
                 }}
                 style={{
                   borderColor: TYPE_COLORS[primaryType],
-                  boxShadow: `0 0 12px ${TYPE_COLORS[primaryType]}25`
                 }}
               >
                 {TYPE_LIST.map((type) => (
@@ -127,14 +128,14 @@ export default function TypeDex() {
 
           {/* Secondary Type Selection */}
           <div className={styles.selectGroup}>
-            <span className={styles.label}>Secondary Type</span>
+            <label htmlFor="secondary-battle-type" className={styles.label}>Secondary type</label>
             <div className={styles.selectWrapper}>
               <select
+                id="secondary-battle-type"
                 value={secondaryType}
                 onChange={(e) => setSecondaryType(e.target.value)}
                 style={secondaryType !== 'none' ? {
                   borderColor: TYPE_COLORS[secondaryType],
-                  boxShadow: `0 0 12px ${TYPE_COLORS[secondaryType]}25`
                 } : {}}
               >
                 <option value="none">None</option>

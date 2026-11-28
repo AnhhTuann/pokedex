@@ -1,9 +1,10 @@
+@use "../page-heading" as heading;
 @import "../variables";
 
 .container {
   max-width: var(--width-xl);
   margin: 0 auto;
-  padding: 32px 16px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -17,16 +18,13 @@
 
   .headerIcon {
     color: var(--primary);
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     flex-shrink: 0;
   }
 
   .headerTitle {
-    font-size: 24px;
-    font-weight: 950;
-    letter-spacing: -0.5px;
-    color: var(--text-primary);
+    @include heading.title;
     margin: 0;
   }
 
@@ -61,7 +59,7 @@
 
 .fieldGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: 16px;
   align-items: center;
 }
@@ -72,7 +70,7 @@
   gap: 6px;
 
   .fieldLabel {
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -81,8 +79,8 @@
 
   .selectField, .inputField {
     width: 100%;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.03);
+    min-height: 36px;
+    background: var(--bg-paper);
     border: 1px solid var(--border-main);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
@@ -116,7 +114,7 @@
   user-select: none;
 
   .labelText {
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -216,7 +214,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 900;
     color: #fff;
 
@@ -253,7 +251,7 @@
   gap: 6px;
 
   .suggestLabel {
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -262,8 +260,8 @@
 
   .suggestInput {
     width: 100%;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.03);
+    min-height: 36px;
+    background: var(--bg-paper);
     border: 1px solid var(--border-main);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
@@ -445,7 +443,7 @@
       border: 1px solid var(--border-main);
       border-radius: 4px;
       color: var(--text-primary);
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 800;
       outline: none;
 
@@ -523,7 +521,7 @@
   }
 
   .outcomeChip {
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 900;
     text-transform: uppercase;
     padding: 4px 12px;
@@ -611,7 +609,7 @@
   border-radius: var(--radius-sm);
   background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.25);
-  color: #f87171;
+  color: var(--status-error);
   font-size: 12px;
   font-weight: 600;
   display: flex;
@@ -650,8 +648,8 @@
   }
 
   .showdownCopyBtn {
-    background: var(--primary);
-    color: #fff;
+    background: var(--action-bg);
+    color: var(--brand-on);
     border: none;
     font-weight: 850;
     font-size: 10px;

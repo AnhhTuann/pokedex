@@ -3,6 +3,7 @@
 
 .cardWrapper {
   height: 100%;
+  min-width: 0;
 }
 
 .pokeCard {
@@ -10,256 +11,282 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  padding: 24px 16px 16px 16px;
+  padding: 12px;
   overflow: hidden;
-  border-radius: $radius-lg;
+  border-radius: var(--radius-lg);
+  background: var(--bg-paper) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: var(--shadow-sm);
+  transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
 
-  @include glass;
-  @include holographic-sheen;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-main) !important;
+  }
+}
 
-  background: var(--card-bg, rgba(20, 20, 30, 0.6)) !important;
-  backdrop-filter: blur(12px) !important;
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  border-width: 2px;
-  border-style: solid;
-  position: relative;
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
 
-  &::before {
+.cardMainBtn {
+  padding: 0;
+  max-width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &::after {
     content: "";
     position: absolute;
+    z-index: 3;
     inset: 0;
-    border-radius: $radius-lg;
-    padding: 2px;
-    background: linear-gradient(
-      135deg,
-      var(--primary-color, #9ca3af) 40,
-      transparent
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
+    border-radius: var(--radius-lg);
   }
 
-  &:hover {
-    transform: translateY(-16px) scale(1.05);
-    border-color: var(--primary-color, rgba(255, 255, 255, 0.4));
-    box-shadow:
-      0 0 40px var(--primary-color-glow, rgba(0, 0, 0, 0.3)),
-      0 30px 60px rgba(0, 0, 0, 0.4),
-      inset 0 2px 4px rgba(255, 255, 255, 0.2);
-
-    &::before {
-      opacity: 1;
-    }
-    
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.3) 25%, transparent 30%);
-      background-size: 200% 200%;
-      animation: shine 1s ease-out forwards;
-      pointer-events: none;
-      z-index: 20;
-    }
+  &:focus-visible::after {
+    outline: 2px solid var(--focus-color);
+    outline-offset: -3px;
   }
 }
 
-// ─── Compare & Mega Card Modifiers ────────────────────────
 .selectedCompare {
-  box-shadow:
-    var(--glow-primary),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
-  border-color: var(--primary) !important;
+  border-color: color-mix(in srgb, var(--brand) 45%, var(--border-main)) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 16%, transparent), var(--shadow-sm) !important;
 }
-
 
 .faded {
-  opacity: 0.45;
-  filter: grayscale(40%);
-
-  &:hover {
-    opacity: 1;
-    filter: grayscale(0%);
-  }
+  opacity: 0.58;
+  &:hover { opacity: 1; }
 }
 
-// ─── Favorite Button ──────────────────────────────────────
-.favoriteBtn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 12;
-  padding: 8px;
-  border-radius: 50%;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
+.topRow {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  min-height: 28px;
+}
 
-  &:active {
-    transform: scale(0.8);
+.idText {
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.topActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compareIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-main);
+  background: var(--bg-paper);
+  color: var(--brand-on);
+  @include flex-center;
+}
+
+.compareIndicatorActive {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.favoriteBtn {
+  position: relative;
+  z-index: 4;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-paper) 90%, transparent);
+  color: var(--text-muted);
+  cursor: pointer;
+  @include flex-center;
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+
+  &:hover {
+    color: var(--brand-accent);
+    border-color: color-mix(in srgb, var(--brand) 20%, var(--border-main));
+    background: var(--bg-paper);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
   }
 }
 
 .isFavorite {
-  color: #ff3355;
-  background-color: rgba(255, 46, 85, 0.18);
-  border-color: rgba(255, 46, 85, 0.3);
-
-  &:hover {
-    background-color: rgba(255, 46, 85, 0.25);
-    transform: scale(1.08);
-  }
+  color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 10%, var(--bg-paper));
+  border-color: color-mix(in srgb, var(--brand) 22%, var(--border-main));
 }
 
-.isNotFavorite {
-  color: var(--text-muted);
-  background-color: rgba(0, 0, 0, 0.2);
-
-  :global(.dark) & {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  &:hover {
-    color: #ff3355;
-    background-color: rgba(255, 46, 85, 0.1);
-    border-color: rgba(255, 46, 85, 0.2);
-    transform: scale(1.08);
-  }
-}
-
-// ─── Image Frame Slot ─────────────────────────────────────
-@keyframes floatGentle {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-8px) scale(1);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
-}
+.isNotFavorite {}
 
 .imageContainer {
   position: relative;
-  width: 116px;
-  height: 116px;
-  border-radius: 50%;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 168px;
+  border-radius: calc(var(--radius-lg) - 4px);
   @include flex-center;
-  margin-bottom: 16px;
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    inset 0 2px 8px rgba(0, 0, 0, 0.3),
-    0 0 16px rgba(0, 0, 0, 0.2);
+  margin-bottom: 12px;
+  background: color-mix(in srgb, var(--type-accent, var(--pastel-blue)) 12%, var(--bg-elevated));
+  border: 1px solid color-mix(in srgb, var(--type-accent, var(--border-main)) 12%, var(--border-subtle));
+  overflow: hidden;
+}
 
-  .pokeCard:hover & {
-    transform: scale(1.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow:
-      inset 0 2px 12px rgba(0, 0, 0, 0.4),
-      0 0 24px var(--primary-color-glow, rgba(255, 255, 255, 0.2));
+.pokeballMotif {
+  position: absolute;
+  right: -18px;
+  bottom: -18px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 10px solid color-mix(in srgb, var(--type-accent, var(--text-muted)) 8%, transparent);
+  opacity: 0.45;
+  pointer-events: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: calc(50% - 5px);
+    height: 10px;
+    background: color-mix(in srgb, var(--type-accent, var(--text-muted)) 8%, transparent);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 14px);
+    top: calc(50% - 14px);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--bg-paper) 55%, transparent);
+    border: 8px solid color-mix(in srgb, var(--type-accent, var(--text-muted)) 8%, transparent);
   }
 }
 
 .pokemonImage {
-  width: 98px;
-  height: 98px;
+  position: relative;
+  z-index: 1;
+  width: min(76%, 132px);
+  height: min(76%, 132px);
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+  transition: transform $transition-fast;
+  image-rendering: auto;
 
   .pokeCard:hover & {
-    transform: scale(1.15);
-    animation: floatGentle 2s ease-in-out infinite;
-    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.5));
+    transform: scale(1.045);
   }
 }
 
 .megaBadge {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
-  background: linear-gradient(135deg, #f43f5e 0%, #a855f7 100%);
-  color: #000000;
-  font-size: 9px;
-  font-weight: 900;
-  padding: 3px 9px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow:
-    0 0 16px rgba(244, 63, 94, 0.7),
-    inset 0 1px 2px rgba(255, 255, 255, 0.4);
-  z-index: 10;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  background: color-mix(in srgb, var(--pastel-lavender) 85%, var(--bg-paper));
+  color: var(--collectible-form-ink);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--collectible-form-ink) 10%, transparent);
+  line-height: 1;
 }
 
-// ─── Detail Info Tags ─────────────────────────────────────
 .info {
-  width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
   margin-top: auto;
 }
 
-.idText {
-  font-size: 11px;
-  font-weight: 800;
-  color: #a0afc8;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
 .nameText {
-  font-size: 18px;
-  font-weight: 900;
+  font-family: $font-display;
+  font-size: 15px;
+  font-weight: 700;
   text-transform: capitalize;
-  margin: 4px 0;
-  color: #ffffff;
-  letter-spacing: -0.5px;
+  margin: 0;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .categoryText {
-  font-size: 13px;
-  font-style: italic;
-  color: #c0c8d8;
-  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 1.35em;
 }
 
 .typeGroup {
   display: flex;
-  justify-content: center;
   gap: 6px;
   flex-wrap: wrap;
   margin-top: 8px;
 }
 
 .typeBadge {
-  font-size: 10px;
-  font-weight: 800;
-  color: white;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 2px 10px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  line-height: 1.25;
+  border: 1px solid transparent;
+  white-space: nowrap;
 }
 
-@keyframes shine {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@media (max-width: 480px) {
+  .pokeCard { padding: 10px; }
+  .imageContainer { max-height: 148px; margin-bottom: 10px; }
+  .nameText { font-size: 14px; }
+  .typeBadge { font-size: 10px; padding: 3px 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pokeCard, .pokemonImage, .favoriteBtn { transition: none !important; }
+  .pokeCard:hover, .pokeCard:hover .pokemonImage { transform: none !important; }
+}
+
+.artworkFallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--collectible-title);
 }

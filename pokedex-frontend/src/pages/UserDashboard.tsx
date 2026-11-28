@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import { useAuthStore } from '../lib/authStore';
 import styles from '../styles/pages/PokemonDex.module.scss';
-import cardStyles from '../styles/components/common/Card.module.scss';
-import buttonStyles from '../styles/components/common/Button.module.scss';
+import account from '../styles/pages/Account.module.scss';
+import { Button } from '../components/common/Button';
 import PokeCard from '../components/PokeCard';
 
 const GET_DASHBOARD_DATA = gql`
@@ -37,49 +37,43 @@ export default function UserDashboard() {
   if (!user) return null;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+    <div className={account.dashboard}>
+      <header className={account.dashboardHeader}>
         <div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Welcome, {user.username}!</h1>
-          <p style={{ opacity: 0.8 }}>Manage your Pokémon journey here.</p>
+          <h1>{user.username}</h1>
+          <p>Trainer profile</p>
         </div>
-        <button 
-          className={`${buttonStyles.button} ${buttonStyles.danger || ''}`} 
-          onClick={() => { logout(); navigate('/'); }}
-        >
-          Logout
-        </button>
-      </div>
+        <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>Sign out</Button>
+      </header>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading dashboard data...</div>
+        <p role="status">Loading trainer profile…</p>
       ) : error ? (
-        <div style={{ color: '#ef4444' }}>Error loading dashboard: {error.message}</div>
+        <p className={account.error} role="alert">Error loading dashboard: {error.message}</p>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <section className={cardStyles.card} style={{ padding: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>My Team</h2>
+        <div className={account.dashboardGrid}>
+          <section className={account.dashboardPanel}>
+            <div className={account.sectionHeading}>
+              <h2>My team</h2>
+              <Link to="/teambuilder">Open Team Builder</Link>
+            </div>
             {data?.myTeam?.length > 0 ? (
-              <div className={styles.pokemonGrid} style={{ marginTop: '1rem' }}>
+              <div className={styles.pokemonGrid}>
                 {data.myTeam.map((p: any, idx: number) => (
-                  <PokeCard 
-                    key={p.id} 
-                    pokemon={p} 
-                    index={idx}
-                    onClick={() => navigate(`/pokemon/${p.id}`)}
-                  />
+                  <PokeCard key={p.id} pokemon={p} index={idx} onClick={() => navigate(`/pokemon/${p.id}`)} />
                 ))}
               </div>
             ) : (
-              <p style={{ opacity: 0.8, fontStyle: 'italic' }}>You haven't built a team yet. Go to the Team Builder to get started!</p>
+              <p>Your team is empty.</p>
             )}
           </section>
 
-          <section className={cardStyles.card} style={{ padding: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>My Favorites (Count)</h2>
-            <p style={{ fontSize: '1.25rem' }}>
-              You have <strong style={{ color: 'var(--color-primary)' }}>{data?.myFavorites?.length || 0}</strong> favorite Pokémon.
-            </p>
+          <section className={account.dashboardPanel}>
+            <div className={account.sectionHeading}>
+              <h2>Favorites</h2>
+              <Link to="/">Browse Pokédex</Link>
+            </div>
+            <p><strong className={account.count}>{data?.myFavorites?.length || 0}</strong> favorite Pokémon</p>
           </section>
         </div>
       )}

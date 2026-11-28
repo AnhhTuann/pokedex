@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 import { useAuthStore } from '../lib/authStore';
-import styles from '../styles/components/common/Card.module.scss';
-import inputStyles from '../styles/components/common/InputField.module.scss';
-import buttonStyles from '../styles/components/common/Button.module.scss';
+import styles from '../styles/pages/Account.module.scss';
+import { Button } from '../components/common/Button';
+import { InputField } from '../components/common/InputField';
+import { CircleDot } from 'lucide-react';
 
 const REGISTER_MUTATION = gql`
   mutation Register($username: String!, $email: String!, $password: String!) {
@@ -46,64 +47,27 @@ export default function Register() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-      <div className={styles.card} style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}>Register</h2>
-        
-        {errorMsg && (
-          <div style={{ padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', borderRadius: '8px', marginBottom: '1rem', textAlign: 'center' }}>
-            {errorMsg}
-          </div>
-        )}
+    <div className={styles.authPage}>
+      <section className={styles.authPanel} aria-labelledby="account-title">
+        <header className={styles.authHeader}>
+          <div className={styles.accountMark} aria-hidden="true"><CircleDot size={26} /></div>
+          <h1 id="account-title">Create your account</h1>
+          <p>Set up your trainer profile with an email and password.</p>
+        </header>
 
-        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', opacity: 0.8 }}>Username</label>
-            <input
-              type="text"
-              className={inputStyles.input}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
+        {errorMsg && <p className={styles.error} role="alert">{errorMsg}</p>}
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', opacity: 0.8 }}>Email</label>
-            <input
-              type="email"
-              className={inputStyles.input}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', opacity: 0.8 }}>Password</label>
-            <input
-              type="password"
-              className={inputStyles.input}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className={buttonStyles.button} 
-            disabled={loading}
-            style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }}
-          >
-            {loading ? 'Registering...' : 'Register'}
-          </button>
+        <form onSubmit={handleRegister} className={styles.form} aria-busy={loading}>
+          <InputField label="Username" name="username" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} required />
+          <InputField label="Email" name="email" type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} required />
+          <InputField label="Password" name="password" type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} required />
+          <Button type="submit" size="lg" isLoading={loading}>
+            {loading ? 'Creating account…' : 'Create your account'}
+          </Button>
         </form>
 
-        <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', opacity: 0.8 }}>
-          Already have an account? <Link to="/login" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 'bold' }}>Login</Link>
-        </p>
-      </div>
+        <p className={styles.authFooter}>Already have an account? <Link to="/login">Sign in</Link></p>
+      </section>
     </div>
   );
 }

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { Sparkles, Heart, Scale } from 'lucide-react';
+import { Sparkles, Heart, Scale, X } from 'lucide-react';
 import PokeCard from '../components/PokeCard';
 import SearchBar from '../components/SearchBar';
 import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDialog';
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame, getGameGeneration } from '../App';
+import { getRegionAndGame, getGameGeneration, getVersionDisplayName } from '../App';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
@@ -64,7 +64,7 @@ export default function PokemonDex() {
     }
   }
 
-  const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({
+  const { pokemonList, totalCount, loading, error, fetchMore, refetch } = usePokemonList({
     limit: 24, 
     offset: 0, 
     search, 
@@ -78,6 +78,15 @@ export default function PokemonDex() {
 
   const hasMore = pokemonList.length > 0 && pokemonList.length < totalCount;
   const isInitialLoad = loading && pokemonList.length === 0;
+  const hasActiveFilters = Boolean(search || typeFilter || genFilter || showFavorites);
+  const versionLabel = selectedVersion === 'ALL' ? 'All Versions' : getVersionDisplayName(selectedVersion);
+
+  const clearFilters = () => {
+    setSearch('');
+    setTypeFilter('');
+    setGenFilter(null);
+    if (viewMode === 'favorites') setViewMode('all');
+  };
 
   const loadMore = () => {
     fetchMore({ variables: { offset: pokemonList.length } });
@@ -85,6 +94,25 @@ export default function PokemonDex() {
 
   return (
     <div className={styles.container}>
+      <header className={styles.pageHeader}>
+        <div>
+          <p className={styles.pageEyebrow}>Encyclopedia</p>
+          <h1 className={styles.pageTitle}>Pokédex</h1>
+          <p className={styles.pageDescription}>
+            Explore Pokémon, forms, and regional entries with filters built for quick discovery.
+          </p>
+        </div>
+        <div className={styles.pageStats}>
+          <div className={styles.statPill}>
+            <span className={styles.statLabel}>Results</span>
+            <span className={styles.statValue}>{totalCount}</span>
+          </div>
+          <div className={styles.statPill}>
+            <span className={styles.statLabel}>Version</span>
+            <span className={styles.statValue}>{versionLabel}</span>
+          </div>
+        </div>
+      </header>
       
       {/* Search & Filter Section */}
       <div className={styles.searchWrapper}>
@@ -93,6 +121,41 @@ export default function PokemonDex() {
           typeValue={typeFilter} onTypeChange={setTypeFilter}
           genValue={genFilter}   onGenChange={setGenFilter}
         />
+        <div className={styles.resultsBar}>
+          <p className={styles.resultsSummary}>
+            <strong>{totalCount}</strong> Pokémon
+            {selectedVersion !== 'ALL' ? ` in ${versionLabel}` : ''}
+          </p>
+          {hasActiveFilters && (
+            <div className={styles.activeFiltersInline}>
+              <div className={styles.filterChips}>
+                {search && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setSearch('')}>
+                    Search: {search} <X size={12} />
+                  </button>
+                )}
+                {typeFilter && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setTypeFilter('')}>
+                    Type: {typeFilter} <X size={12} />
+                  </button>
+                )}
+                {genFilter && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setGenFilter(null)}>
+                    Gen {genFilter} <X size={12} />
+                  </button>
+                )}
+                {showFavorites && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setViewMode('all')}>
+                    Favorites <X size={12} />
+                  </button>
+                )}
+              </div>
+              <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
+                Clear all
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* View Mode Toggle */}
@@ -196,12 +259,7 @@ export default function PokemonDex() {
         </div>
       )}
 
-      {/* Count */}
-      {!isInitialLoad && !error && (
-        <p className={styles.infoText}>
-          {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
-        </p>
-      )}
+
 
       {/* Compare banner */}
       {isCompareMode && (
@@ -221,7 +279,8 @@ export default function PokemonDex() {
         </div>
       ) : error ? (
         <div className={styles.offlineBanner}>
-          Backend offline — start the server on port 3000.
+          <p>Unable to load Pokémon data. Check the backend connection and try again.</p>
+          <Button variant="outline" size="sm" onClick={() => refetch()}>Retry</Button>
         </div>
       ) : (
         <div className={styles.pokemonGrid}>
@@ -241,14 +300,18 @@ export default function PokemonDex() {
       )}
 
       {!isInitialLoad && !error && pokemonList.length === 0 && (
-        <div className={styles.emptyText}>
-          No Pokémon found.
+        <div className={styles.emptyState}>
+          <p className={styles.emptyTitle}>No Pokémon found</p>
+          <p className={styles.emptyDesc}>Try adjusting your search, type, generation, or version filters.</p>
+          {hasActiveFilters && (
+            <Button variant="outline" size="sm" onClick={clearFilters}>Clear filters</Button>
+          )}
         </div>
       )}
 
       {hasMore && (
         <div className={styles.loadMoreContainer}>
-          <Button variant="outline" size="lg" onClick={loadMore} isLoading={loading} className="rounded-full px-8">
+          <Button variant="outline" size="lg" onClick={loadMore} isLoading={loading} >
             {loading ? 'Loading...' : 'Load More'}
           </Button>
         </div>

@@ -114,11 +114,11 @@ export default function AdminWalkthrough() {
     <div className={styles.container}>
       <style>{`
         .tiptap-editor-inner-input table { border-collapse:collapse;width:100%;margin:16px 0; }
-        .tiptap-editor-inner-input table th,.tiptap-editor-inner-input table td { border:1px solid rgba(255, 255, 255, 0.12);padding:8px 12px;text-align:left;min-width:100px; }
-        .tiptap-editor-inner-input table th { background:rgba(255,255,255,0.05);font-weight:bold; }
+        .tiptap-editor-inner-input table th,.tiptap-editor-inner-input table td { border:1px solid var(--border-main);padding:8px 12px;text-align:left;min-width:100px; }
+        .tiptap-editor-inner-input table th { background:var(--bg-elevated);font-weight:bold; }
         .tiptap-editor-inner-input img { max-width:64px;display:inline-block;vertical-align:middle;margin:4px;transition:transform 0.2s; }
         .tiptap-editor-inner-input img:hover { transform:scale(1.15); }
-        .tiptap-editor-inner-input blockquote { border-left:4px solid #6366f1;padding-left:16px;margin-left:0;color:#a0aec0;font-style:italic; }
+        .tiptap-editor-inner-input blockquote { border-left:4px solid var(--interactive-text);padding-left:16px;margin-left:0;color:var(--text-secondary);font-style:italic; }
         .tiptap-editor-inner-input p { margin-bottom:10px; }
         .tiptap-editor-inner-input ul,.tiptap-editor-inner-input ol { padding-left:24px;margin-bottom:10px; }
       `}</style>
@@ -127,12 +127,12 @@ export default function AdminWalkthrough() {
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>
-            <List size={28}/> Walkthrough CMS Admin
+            <List size={28}/> Walkthrough administration
           </h1>
           <p className={styles.desc}>Quản trị và xây dựng các bài viết hướng dẫn game.</p>
         </div>
         <button onClick={() => window.open('/walkthrough','_blank')} className={styles.viewBtn}>
-          View Walkthroughs 📖
+          View walkthroughs
         </button>
       </div>
 

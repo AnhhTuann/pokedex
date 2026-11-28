@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { TYPE_COLORS } from '../../lib/utils';
+import { getTypeBadgeStyle } from '../../lib/utils';
+import { useColorMode } from '../../main';
 import { Swords, Sparkles, ShieldAlert } from 'lucide-react';
 import styles from '../../styles/features/PokemonDetailDialog.module.scss';
 
@@ -21,6 +22,8 @@ interface MoveListProps {
 
 export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
   const [tab, setTab] = useState<'level' | 'machine' | 'tutor'>('level');
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
 
   const filteredMoves = moves.filter(m => {
     if (tab === 'level') return m.learnMethod === 'level-up';
@@ -81,17 +84,14 @@ export const MoveList: React.FC<MoveListProps> = ({ moves }) => {
                     </div>
                   </td>
                   <td>
-                    <span 
-                      className={styles.moveTypeBadge}
-                      style={{ backgroundColor: TYPE_COLORS[move.type] }}
-                    >
+                    <span className={styles.moveTypeBadge} style={getTypeBadgeStyle(move.type, isDark)}>
                       {move.type}
                     </span>
                   </td>
                   <td>
-                    {move.damageClass === 'physical' && <Swords size={14} className="text-red-400" />}
-                    {move.damageClass === 'special' && <Sparkles size={14} className="text-blue-400" />}
-                    {move.damageClass === 'status' && <ShieldAlert size={14} className="text-slate-400" />}
+                    {move.damageClass === 'physical' && <Swords size={14} style={{ color: 'var(--status-error)' }} aria-label="Physical" />}
+                    {move.damageClass === 'special' && <Sparkles size={14} style={{ color: 'var(--status-info)' }} aria-label="Special" />}
+                    {move.damageClass === 'status' && <ShieldAlert size={14} style={{ color: 'var(--text-muted)' }} aria-label="Status" />}
                   </td>
                   <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
                     {move.power || '--'}

@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../hooks/useDialogFocus';
 import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
@@ -5,7 +6,7 @@ import { Plus, X, Zap, Shield, Brain, Star, Upload, Download, Copy, HelpCircle, 
 import html2canvas from 'html2canvas';
 import { useTeamStore, TeamMember } from '../lib/teamStore';
 import { TYPE_LIST, calculateDamageTaken } from '../utils/typeMatchups';
-import { TYPE_COLORS } from '../lib/utils';
+import { TYPE_COLORS, getTypeBadgeStyle } from '../lib/utils';
 import styles from '../styles/pages/TeamBuilder.module.scss';
 
 const GET_POKEMON_FOR_TEAM = gql`
@@ -129,7 +130,7 @@ function MemberSlot({ member, index }: { member: TeamMember; index: number }) {
           <div className={styles.memberName}>{member.name}</div>
           <div className={styles.typesRow}>
             {member.types.map(t=>(
-              <span key={t} className={styles.typeBadge} style={{background: TYPE_COLORS[t]||'#6b7280'}}>{t}</span>
+              <span key={t} className={styles.typeBadge} style={getTypeBadgeStyle(t)}>{t}</span>
             ))}
           </div>
         </div>
@@ -200,6 +201,7 @@ export default function TeamBuilder() {
   const { team, addMember } = useTeamStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const pickerRef = useDialogFocus(modalOpen, () => setModalOpen(false));
   const [exportOpen, setExportOpen] = useState(false);
   const [toast, setToast] = useState<{msg:string;type:'success'|'error'|'info'}|null>(null);
 
@@ -332,10 +334,10 @@ export default function TeamBuilder() {
                 </motion.div>
               ) : (
                 <motion.div key="empty" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-                  <div className={styles.emptySlot} onClick={()=>setModalOpen(true)}>
-                    <div className={styles.addIconWrap}><Plus size={24} className={styles.addIcon}/></div>
+                  <button type="button" className={styles.emptySlot} aria-haspopup="dialog" onClick={() => setModalOpen(true)}>
+                    <span className={styles.addIconWrap}><Plus size={24} className={styles.addIcon}/></span>
                     <span className={styles.addLabel}>Add Pokémon #{idx+1}</span>
-                  </div>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -347,7 +349,7 @@ export default function TeamBuilder() {
       <div className={styles.analyticsGrid}>
         {/* Synergy */}
         <div className={styles.analyticPanel}>
-          <h2 className={styles.panelTitle}><Shield size={20} style={{color:'#10b981'}}/> Team Synergy</h2>
+          <h2 className={styles.panelTitle}><Shield size={20} style={{color:'var(--status-success)'}}/> Team Synergy</h2>
           <span className={styles.panelDesc}>Defensive coverage summary. Avoid multiple Pokémon sharing the same weakness.</span>
           {team.length>0 && warnings.length>0 && warnings.map((w,i)=>(
             <div key={i} className={styles.alertWarning}><AlertTriangle size={14}/>{w}</div>
@@ -360,10 +362,10 @@ export default function TeamBuilder() {
               const c = cov[type]||{weak:0,resist:0};
               return (
                 <div key={type} className={styles.typeTile}>
-                  <span className={styles.typeChip} style={{background:TYPE_COLORS[type]||'#6b7280'}}>{type}</span>
+                  <span className={styles.typeChip} style={getTypeBadgeStyle(type)}>{type}</span>
                   <div className={styles.tileStats}>
-                    <span className={styles.tileStat} style={{color:c.weak>0?'#ef4444':'var(--text-muted)'}}>▼{c.weak}</span>
-                    <span className={styles.tileStat} style={{color:c.resist>0?'#22c55e':'var(--text-muted)'}}>▲{c.resist}</span>
+                    <span className={styles.tileStat} style={{color:c.weak>0?'var(--status-error)':'var(--text-muted)'}}>▼{c.weak}</span>
+                    <span className={styles.tileStat} style={{color:c.resist>0?'var(--status-success)':'var(--text-muted)'}}>▲{c.resist}</span>
                   </div>
                 </div>
               );
@@ -373,7 +375,7 @@ export default function TeamBuilder() {
 
         {/* AI Coach */}
         <div className={styles.analyticPanel}>
-          <h2 className={styles.panelTitle}><Brain size={20} style={{color:'#ec4899'}}/> AI Coach</h2>
+          <h2 className={styles.panelTitle}><Brain size={20} style={{color:'var(--interactive-text)'}}/> AI Coach</h2>
           <span className={styles.panelDesc}>Strategic insights, weather cores, speed-tier guidelines from our simulated coach.</span>
           <div className={styles.recCards}>
             {aiRecs.map((r,i)=>(
@@ -390,7 +392,7 @@ export default function TeamBuilder() {
       <AnimatePresence>
         {modalOpen && (
           <motion.div className={styles.modalOverlay} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setModalOpen(false)}>
-            <motion.div className={styles.modalCard} initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} exit={{y:20,opacity:0}} onClick={e=>e.stopPropagation()}>
+            <motion.div className={styles.modalCard} ref={pickerRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Add Pokémon to team" initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} exit={{y:20,opacity:0}} onClick={e=>e.stopPropagation()}>
               <div className={styles.modalHeader}>
                 <span className={styles.modalTitle}>Select Pokémon</span>
                 <button className={styles.modalClose} onClick={()=>setModalOpen(false)}><X size={14}/></button>
@@ -406,7 +408,7 @@ export default function TeamBuilder() {
                       <div className={styles.rowName}>{p.name}</div>
                       <div className={styles.rowTypes}>
                         {p.types.map((t:string)=>(
-                          <span key={t} className={styles.rowType} style={{background:TYPE_COLORS[t]||'#6b7280'}}>{t}</span>
+                          <span key={t} className={styles.rowType} style={getTypeBadgeStyle(t)}>{t}</span>
                         ))}
                       </div>
                     </div>
@@ -424,7 +426,7 @@ export default function TeamBuilder() {
       {/* Toast */}
       <AnimatePresence>
         {toast && (
-          <motion.div className={`${styles.toast} ${styles[toast.type]}`} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:20}}>
+          <motion.div role={toast.type === "error" ? "alert" : "status"} className={`${styles.toast} ${styles[toast.type]}`} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:20}}>
             {toast.msg}
           </motion.div>
         )}

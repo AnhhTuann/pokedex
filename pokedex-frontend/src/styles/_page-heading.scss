@@ -1,0 +1,15 @@
+@mixin title {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 750;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+@mixin description {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 64ch;
+}

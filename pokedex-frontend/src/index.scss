@@ -1,11 +1,18 @@
 @import "./styles/variables";
 @import "./styles/mixins";
 
+@include theme-tokens;
+
 // ─── Base Styles & Resets ─────────────────────────────────
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -17,125 +24,94 @@ body {
   transition: background-color $transition-normal, color $transition-normal;
   overflow-x: hidden;
   min-height: 100vh;
-  
-  // Immersive Background effect
-  &::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 60%),
-                radial-gradient(circle at 80% 20%, rgba(var(--secondary-rgb), 0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-// Global Custom Scrollbar on all scrollable elements
+// Global Custom Scrollbar
 * {
   @include custom-scrollbar(
-    8px, 
-    rgba(15, 23, 42, 0.1), 
-    rgba(15, 23, 42, 0.25)
+    8px,
+    color-mix(in srgb, var(--text-muted) 28%, transparent),
+    color-mix(in srgb, var(--text-muted) 46%, transparent)
   );
 }
 
-html.dark * {
-  @include custom-scrollbar(
-    8px, 
-    rgba(255, 255, 255, 0.05), 
-    rgba(255, 255, 255, 0.15)
-  );
-}
-
-// Dark Mode Form Elements Default Theme Overrides
-html.dark {
-  select, input, textarea, button {
-    color-scheme: dark;
-  }
-  
-  select option {
-    background-color: #0f172a;
-    color: #f8fafc;
-  }
-}
-
-a {
-  color: $primary;
-  text-decoration: none;
-  transition: color $transition-fast;
-  
-  &:hover {
-    color: $secondary;
-  }
-}
-
-// ─── Text Selection ───────────────────────────────────────
-::selection {
-  background-color: rgba(var(--primary-rgb), 0.3);
+select, input, textarea, button {
+  font: inherit;
   color: inherit;
 }
 
-// ─── Utility Classes (Glassmorphism & Glow) ───────────────
+select option {
+  background-color: var(--bg-paper);
+  color: var(--text-primary);
+}
+
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"] {
+  accent-color: var(--brand);
+}
+
+a {
+  color: var(--status-info);
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--brand-accent);
+  }
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--brand) 22%, transparent);
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+// ─── Utility Classes ──────────────────────────────────────
 .glass-panel {
-  background: $bg-paper;
-  backdrop-filter: $glass-blur;
-  -webkit-backdrop-filter: $glass-blur;
-  border: 1px solid $border-main;
-  box-shadow: $shadow-lg;
-  border-radius: $radius-lg;
+  background: var(--bg-paper);
+  border: 1px solid var(--border-main);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
 }
 
 .glass-panel-hover {
-  transition: all $transition-normal;
+  transition: border-color $transition-fast, box-shadow $transition-fast, background-color $transition-fast;
   &:hover {
-    background: $bg-paper-glow;
-    border-color: $border-hover;
-    box-shadow: $glow-primary;
-    transform: translateY(-2px);
+    background: var(--bg-paper-glow);
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
   }
 }
 
 .text-gradient {
-  background: $primary-gradient;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--brand);
 }
 
-// ─── Global Animation Helpers ─────────────────────────────
-.graph-line {
-  stroke-dasharray: 4;
-  animation: dash 20s linear infinite;
-}
-
-@keyframes dash {
-  to {
-    stroke-dashoffset: -100;
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.2); }
-  50% { box-shadow: 0 0 32px rgba(var(--primary-rgb), 0.6); }
-}
-
-.glow-primary {
-  box-shadow: $glow-primary;
-}
-
+.glow-primary,
 .glow-secondary {
-  box-shadow: $glow-secondary;
+  box-shadow: none;
 }

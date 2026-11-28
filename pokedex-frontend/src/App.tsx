@@ -1,22 +1,23 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'motion/react';
+import { lazy } from 'react';
+import { MotionConfig } from 'motion/react';
+import { Routes, Route, Link } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
+import { useIsAdmin } from './hooks/useIsAdmin';
 import PokemonDex from './pages/PokemonDex';
-import LocationDex from './pages/LocationDex';
-import TypeDex from './pages/TypeDex';
-import MoveDex from './pages/MoveDex';
-import AbilityDex from './pages/AbilityDex';
-import ItemDex from './pages/ItemDex';
-import NatureDex from './pages/NatureDex';
-import TeamBuilder from './pages/TeamBuilder';
-import CatchTracker from './pages/CatchTracker';
-import DamageCalculator from './pages/DamageCalculator';
-import Walkthrough from './pages/Walkthrough';
-import AdminWalkthrough from './pages/AdminWalkthrough';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import UserDashboard from './pages/UserDashboard';
+const LocationDex = lazy(() => import('./pages/LocationDex'));
+const TypeDex = lazy(() => import('./pages/TypeDex'));
+const MoveDex = lazy(() => import('./pages/MoveDex'));
+const AbilityDex = lazy(() => import('./pages/AbilityDex'));
+const ItemDex = lazy(() => import('./pages/ItemDex'));
+const NatureDex = lazy(() => import('./pages/NatureDex'));
+const TeamBuilder = lazy(() => import('./pages/TeamBuilder'));
+const CatchTracker = lazy(() => import('./pages/CatchTracker'));
+const DamageCalculator = lazy(() => import('./pages/DamageCalculator'));
+const Walkthrough = lazy(() => import('./pages/Walkthrough'));
+const AdminWalkthrough = lazy(() => import('./pages/AdminWalkthrough'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -211,11 +212,38 @@ export function getRegionAndGame(versionName: string) {
 
 function hexToRgb(hex: string): string {
   let c = hex.substring(1);
-  if (c.length === 3) {
-    c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
-  }
+  if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
   const num = parseInt(c, 16);
   return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+}
+
+function srgbToLinear(v: number): number {
+  const s = v / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+}
+
+function luminance(hex: string): number {
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+  const num = parseInt(c, 16);
+  const r = srgbToLinear((num >> 16) & 255);
+  const g = srgbToLinear((num >> 8) & 255);
+  const b = srgbToLinear(num & 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrastRatio(a: string, b: string): number {
+  const l1 = luminance(a);
+  const l2 = luminance(b);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+export function getContrastTextColor(bgHex: string): string {
+  const white = '#ffffff';
+  const dark = '#000000';
+  return contrastRatio(bgHex, dark) >= contrastRatio(bgHex, white) ? dark : white;
 }
 
 export function getVersionDisplayName(versionName: string): string {
@@ -241,96 +269,76 @@ export function getVersionDisplayName(versionName: string): string {
 export function getVersionColorStyle(versionName: string) {
   const nameLower = versionName.toLowerCase();
   if (nameLower === 'all') {
-    return {
-      bg: '#4b5563',
-      text: '#ffffff',
-      shadow: 'rgba(75, 85, 99, 0.3)',
-      isGradient: false
-    };
+    return { bg: '#4b5563', text: '#ffffff', shadow: 'rgba(75, 85, 99, 0.3)', isGradient: false as const };
   }
-  
+
   for (const g of GENERATION_VERSIONS) {
     for (const row of g.rows) {
       if (row.type === 'pair') {
-        const hasGame = row.games.some(g => g.name.toLowerCase() === nameLower);
+        const hasGame = row.games.some(gm => gm.name.toLowerCase() === nameLower);
         if (hasGame) {
           const c1 = VERSION_COLORS[row.games[0].name] || '#6366f1';
           const c2 = VERSION_COLORS[row.games[1].name] || '#6366f1';
+          const white = '#ffffff';
+          const dark = '#000000';
+          const minWhite = Math.min(contrastRatio(c1, white), contrastRatio(c2, white));
+          const minDark = Math.min(contrastRatio(c1, dark), contrastRatio(c2, dark));
+          const text = minDark >= minWhite ? dark : white;
           return {
             bg: `linear-gradient(90deg, ${c1} 50%, ${c2} 50%)`,
-            text: '#ffffff',
-            shadow: `rgba(${hexToRgb(c1)}, 0.3)`,
-            isGradient: true,
-            c1,
-            c2
+            text, shadow: `rgba(${hexToRgb(c1)}, 0.28)`,
+            isGradient: true as const, c1, c2
           };
         }
       } else {
-        const game = row.games.find(g => g.name.toLowerCase() === nameLower);
+        const game = row.games.find(gm => gm.name.toLowerCase() === nameLower);
         if (game) {
           const c = VERSION_COLORS[game.name] || '#6366f1';
-          
-          let contrastColor = '#ffffff';
-          const cLower = c.toLowerCase();
-          if (cLower === '#eab308' || cLower === '#fbbf24' || cLower === '#a5f3fc' || cLower === '#e5e7eb' || cLower === '#ffffff') {
-            contrastColor = '#0f172a';
-          }
-          
-          return {
-            bg: c,
-            text: contrastColor,
-            shadow: `rgba(${hexToRgb(c)}, 0.4)`,
-            isGradient: false
-          };
+          return { bg: c, text: getContrastTextColor(c), shadow: `rgba(${hexToRgb(c)}, 0.35)`, isGradient: false as const };
         }
       }
     }
   }
-  
+
   const c = VERSION_COLORS[versionName] || '#6366f1';
-  return {
-    bg: c,
-    text: '#ffffff',
-    shadow: `rgba(${hexToRgb(c)}, 0.4)`,
-    isGradient: false
-  };
+  return { bg: c, text: getContrastTextColor(c), shadow: `rgba(${hexToRgb(c)}, 0.35)`, isGradient: false as const };
 }
 
-const PageWrapper = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -20 }}
-    transition={{ duration: 0.25, ease: "easeInOut" }}
-    style={{ width: '100%', height: '100%' }}
-  >
-    {children}
-  </motion.div>
-);
+function WalkthroughAdministration() {
+  const { isAdmin, loading } = useIsAdmin();
+  if (loading) return <p role="status">Checking account access…</p>;
+  if (!isAdmin) return (
+    <section>
+      <h1>Walkthrough administration</h1>
+      <p>This workspace requires an administrator account.</p>
+      <Link to="/walkthrough">Browse walkthroughs</Link>
+    </section>
+  );
+  return <AdminWalkthrough />;
+}
 
 export default function App() {
-  const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
+    <MotionConfig reducedMotion="user">
+      <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<PageWrapper><PokemonDex /></PageWrapper>} />
-          <Route path="/moves" element={<PageWrapper><MoveDex /></PageWrapper>} />
-          <Route path="/abilities" element={<PageWrapper><AbilityDex /></PageWrapper>} />
-          <Route path="/items" element={<PageWrapper><ItemDex /></PageWrapper>} />
-          <Route path="/locations" element={<PageWrapper><LocationDex /></PageWrapper>} />
-          <Route path="/types" element={<PageWrapper><TypeDex /></PageWrapper>} />
-          <Route path="/natures" element={<PageWrapper><NatureDex /></PageWrapper>} />
-          <Route path="/teambuilder" element={<PageWrapper><TeamBuilder /></PageWrapper>} />
-          <Route path="/tracker" element={<PageWrapper><CatchTracker /></PageWrapper>} />
-          <Route path="/calculator" element={<PageWrapper><DamageCalculator /></PageWrapper>} />
-          <Route path="/walkthrough" element={<PageWrapper><Walkthrough /></PageWrapper>} />
-          <Route path="/admin/walkthrough" element={<PageWrapper><AdminWalkthrough /></PageWrapper>} />
-          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-          <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
-          <Route path="/dashboard" element={<PageWrapper><UserDashboard /></PageWrapper>} />
+          <Route path="/" element={<PokemonDex />} />
+          <Route path="/moves" element={<MoveDex />} />
+          <Route path="/abilities" element={<AbilityDex />} />
+          <Route path="/items" element={<ItemDex />} />
+          <Route path="/locations" element={<LocationDex />} />
+          <Route path="/types" element={<TypeDex />} />
+          <Route path="/natures" element={<NatureDex />} />
+          <Route path="/teambuilder" element={<TeamBuilder />} />
+          <Route path="/tracker" element={<CatchTracker />} />
+          <Route path="/calculator" element={<DamageCalculator />} />
+          <Route path="/walkthrough" element={<Walkthrough />} />
+          <Route path="/admin/walkthrough" element={<WalkthroughAdministration />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
         </Route>
       </Routes>
-    </AnimatePresence>
+    </MotionConfig>
   );
 }

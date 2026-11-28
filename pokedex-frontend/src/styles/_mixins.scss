@@ -32,53 +32,22 @@
 // ─── Visual Effects Mixins ────────────────────────────────
 @mixin glass {
   background: var(--bg-paper);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-main);
-  box-shadow: var(--shadow-md), inset 0 1px 1px var(--inset-glow);
+  box-shadow: var(--shadow-sm);
 }
 
 @mixin holographic-sheen {
+  // Neutralized - kept for compatibility, no decorative sheen
   position: relative;
-  overflow: hidden;
-  
-  &::after {
-    content: "";
-    position: absolute;
-    top: -150%;
-    left: -150%;
-    width: 300%;
-    height: 300%;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0) 30%,
-      rgba(255, 255, 255, 0.03) 40%,
-      rgba(0, 229, 255, 0.12) 48%,
-      rgba(255, 46, 85, 0.12) 52%,
-      rgba(255, 255, 255, 0.03) 60%,
-      rgba(255, 255, 255, 0) 70%
-    );
-    transform: rotate(-15deg);
-    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 5;
-  }
-  
-  &:hover::after {
-    opacity: 1;
-    top: -50%;
-    left: -50%;
-  }
 }
 
-@mixin glow-hover($glow-var: var(--glow-primary), $translate-y: -4px) {
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  
+@mixin glow-hover($glow-var: none, $translate-y: -2px) {
+  transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast, background-color $transition-fast;
+
   &:hover {
     transform: translateY($translate-y);
     border-color: var(--border-hover);
-    box-shadow: var(--shadow-lg), $glow-var;
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -111,34 +80,33 @@
 }
 
 // ─── Scrollbar Customizer ─────────────────────────────────
-@mixin custom-scrollbar($width: 6px, $thumb-color: rgba(255, 255, 255, 0.08), $thumb-hover: rgba(255, 255, 255, 0.2)) {
+@mixin custom-scrollbar($width: 6px, $thumb-color: rgba(0, 0, 0, 0.16), $thumb-hover: rgba(0, 0, 0, 0.28)) {
   &::-webkit-scrollbar {
     width: $width;
     height: $width;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: $thumb-color;
     border-radius: 10px;
-    
+
     &:hover {
       background: $thumb-hover;
     }
   }
-  
+
   scrollbar-width: thin;
   scrollbar-color: $thumb-color transparent;
 }
 
 // ─── Modal and Drawer Layouts ──────────────────────────────
-@mixin overlay-fixed($bg: rgba(0, 0, 0, 0.7), $blur: 8px, $z-index: var(--z-modal)) {
+@mixin overlay-fixed($bg: var(--overlay), $blur: 4px, $z-index: 1000) {
   position: fixed;
-  left: 0;
-  top: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   background-color: $bg;
@@ -147,7 +115,7 @@
   z-index: $z-index;
 }
 
-@mixin drawer-sheet-right($max-width: 520px, $bg: var(--bg-paper), $z-index: calc(var(--z-modal) + 1)) {
+@mixin drawer-sheet-right($max-width: 520px, $bg: var(--bg-paper), $z-index: 1001) {
   position: fixed;
   right: 0;
   top: 0;
@@ -156,20 +124,19 @@
   height: 100%;
   background-color: $bg;
   border-left: 1px solid var(--border-main);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-overlay);
   display: flex;
   flex-direction: column;
   z-index: $z-index;
 
   @media (max-width: $breakpoint-sm) {
     max-width: 100%;
-    height: 85%;
+    height: min(92dvh, 100%);
     top: auto;
     bottom: 0;
     border-left: 0;
     border-top: 1px solid var(--border-main);
-    border-top-left-radius: var(--radius-3xl);
-    border-top-right-radius: var(--radius-3xl);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
   }
 }
-

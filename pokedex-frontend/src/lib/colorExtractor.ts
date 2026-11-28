@@ -217,16 +217,14 @@ export function getExtractedColors(
   const { h, s, l } = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
   if (isDark) {
-    // Bright neon-cyber color for Dark Mode
-    const activeS = Math.max(s, 75); // make it highly saturated for glow
-    const activeL = Math.max(35, Math.min(l, 55)); // maintain brightness but keep details visible
+    // Muted premium accent for Dark Mode
+    const activeS = Math.min(Math.max(s, 35), 62);
+    const activeL = Math.max(42, Math.min(l, 62));
     const primary = `hsl(${h}, ${activeS}%, ${activeL}%)`;
-    // Softer dark pastel color for background tint:
-    // Saturation around 25%, Lightness around 14% to make it dark and premium.
-    const darkPastel = `hsl(${h}, ${Math.min(s, 25)}%, 14%)`;
+    const darkPastel = `hsl(${h}, ${Math.min(s, 22)}%, 18%)`;
     return {
       primaryColor: primary,
-      primaryColorGlow: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.35)`,
+      primaryColorGlow: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.18)`,
       pastelBgColor: darkPastel
     };
   } else {

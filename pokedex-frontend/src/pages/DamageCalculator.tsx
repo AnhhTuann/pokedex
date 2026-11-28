@@ -8,7 +8,7 @@ import {
   calculateDamage, calculateActualHP, calculateActualOtherStat,
   getNatureModifier, getFinalEffectiveness, CalculatorPokemon, CalculatorMove, FieldState
 } from '../utils/damageCalc';
-import { TYPE_COLORS } from '../lib/utils';
+import { getTypeBadgeStyle } from '../lib/utils';
 import styles from '../styles/pages/DamageCalculator.module.scss';
 
 // GraphQL queries
@@ -59,11 +59,10 @@ const DEFAULT_STATS = {
   hp: 80, attack: 80, defense: 80, 'special-attack': 80, 'special-defense': 80, speed: 80
 };
 
-function getDamageColor(maxPercent: number) {
-  if (maxPercent < 25) return '#10b981'; // Green
-  if (maxPercent < 50) return '#eab308'; // Yellow
-  if (maxPercent < 100) return '#f97316'; // Orange
-  return '#ef4444'; // Red
+function getDamageTone(maxPercent: number) {
+  if (maxPercent < 25) return 'success';
+  if (maxPercent < 100) return 'warning';
+  return 'error';
 }
 
 function calcTypeColor(pct: number) {
@@ -94,10 +93,11 @@ function AutoSuggest({ label, value, options, onSearchChange, onSelect, placehol
 
   return (
     <div className={styles.suggestWrapper}>
-      <label className={styles.suggestLabel}>{label}</label>
+      <span className={styles.suggestLabel}>{label}</span>
       <input
         type="text"
         className={styles.suggestInput}
+        aria-label={label}
         value={searchVal}
         placeholder={placeholder}
         onChange={e => {
@@ -175,10 +175,10 @@ const StatRowComponent: React.FC<StatRowProps> = ({
   if (statKey !== 'hp') {
     if (natureMod === 1.1) {
       natureIndicator = ' ▲';
-      natureColor = '#f43f5e';
+      natureColor = 'var(--status-success)';
     } else if (natureMod === 0.9) {
       natureIndicator = ' ▼';
-      natureColor = '#3b82f6';
+      natureColor = 'var(--status-error)';
     }
   }
 
@@ -193,6 +193,7 @@ const StatRowComponent: React.FC<StatRowProps> = ({
       <div className={styles.statEvInput}>
         <input
           type="number"
+          aria-label={`${label} effort value`}
           value={localEv}
           onChange={e => {
             const val = parseInt(e.target.value) || 0;
@@ -206,6 +207,7 @@ const StatRowComponent: React.FC<StatRowProps> = ({
       <div className={styles.sliderWrapper}>
         <input
           type="range"
+          aria-label={`${label} effort value slider`}
           min={0}
           max={252}
           step={4}
@@ -223,6 +225,7 @@ const StatRowComponent: React.FC<StatRowProps> = ({
       <div className={styles.statIvInput}>
         <input
           type="number"
+          aria-label={`${label} individual value`}
           value={iv}
           onChange={e => onIvChange(statKey, parseInt(e.target.value) || 0)}
         />
@@ -289,7 +292,7 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
               <span
                 key={type}
                 className={styles.typeChip}
-                style={{ background: TYPE_COLORS[type] || '#ccc' }}
+                style={getTypeBadgeStyle(type)}
               >
                 {type}
               </span>
@@ -325,8 +328,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
         {/* Options Row Grid */}
         <div className={styles.compactGrid}>
           <div className={styles.formGroup} style={{ gridColumn: 'span 3' }}>
-            <label className={styles.fieldLabel}>LV</label>
+            <span className={styles.fieldLabel}>Level</span>
             <input
+              aria-label="Level"
               className={styles.inputField}
               type="number"
               value={level}
@@ -335,8 +339,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
           </div>
 
           <div className={styles.formGroup} style={{ gridColumn: 'span 5' }}>
-            <label className={styles.fieldLabel}>NATURE</label>
+            <span className={styles.fieldLabel}>Nature</span>
             <select
+              aria-label="Nature"
               className={styles.selectField}
               value={nature}
               onChange={e => onNatureChange(e.target.value)}
@@ -348,8 +353,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
           </div>
 
           <div className={styles.formGroup} style={{ gridColumn: 'span 4' }}>
-            <label className={styles.fieldLabel}>STATUS</label>
+            <span className={styles.fieldLabel}>Status</span>
             <select
+              aria-label="Status"
               className={styles.selectField}
               value={status}
               onChange={e => onStatusChange(e.target.value)}
@@ -361,8 +367,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
           </div>
 
           <div className={styles.formGroup} style={{ gridColumn: 'span 6', marginTop: 8 }}>
-            <label className={styles.fieldLabel}>ABILITY</label>
+            <span className={styles.fieldLabel}>Ability</span>
             <select
+              aria-label="Ability"
               className={styles.selectField}
               value={ability}
               onChange={e => onAbilityChange(e.target.value)}
@@ -374,8 +381,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
           </div>
 
           <div className={styles.formGroup} style={{ gridColumn: 'span 6', marginTop: 8 }}>
-            <label className={styles.fieldLabel}>HELD ITEM</label>
+            <span className={styles.fieldLabel}>Held item</span>
             <select
+              aria-label="Held item"
               className={styles.selectField}
               value={item}
               onChange={e => onItemChange(e.target.value)}
@@ -390,8 +398,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
         {/* Moves selection only for Attacker */}
         {isAtk && currentPoke && onMoveSelect ? (
           <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>SELECT ATTACK MOVE</label>
+            <span className={styles.fieldLabel}>Select attack move</span>
             <select
+              aria-label="Select attack move"
               className={styles.selectField}
               value={selectedMove?.name || ''}
               onChange={e => {
@@ -418,7 +427,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
             <span className={styles.tableTitle}>📈 STATS EVS</span>
             <span
               className={styles.evLeftBadge}
-              style={{ background: remainingEvs > 0 ? '#10b981' : '#ef4444' }}
+              style={remainingEvs > 0
+                ? { background: 'var(--status-success-bg)', color: 'var(--status-success)' }
+                : { background: 'var(--status-warning-bg)', color: 'var(--status-warning)' }}
             >
               EV Left: {remainingEvs}
             </span>
@@ -625,7 +636,10 @@ export default function DamageCalculator() {
     setTimeout(() => setCopied(false), 2000);
   }, [showdownOutput]);
 
-  const damageColor = calcResult ? getDamageColor(calcResult.maxPercent) : '#fbbf24';
+  const damageTone = calcResult ? getDamageTone(calcResult.maxPercent) : 'warning';
+  const damageColor = `var(--status-${damageTone})`;
+  const damageBackground = `var(--status-${damageTone}-bg)`;
+  const damageBorder = `var(--status-${damageTone}-border)`;
 
   return (
     <div className={styles.container}>
@@ -633,7 +647,7 @@ export default function DamageCalculator() {
       <div className={styles.headerRow}>
         <Swords className={styles.headerIcon} />
         <div>
-          <h1 className={styles.headerTitle}>BATTLE DAMAGE CALCULATOR</h1>
+          <h1 className={styles.headerTitle}>Battle Damage Calculator</h1>
           <p className={styles.headerSub}>
             Simulate competitive damage rolls, stats distributions, items, screens, and weather multipliers!
           </p>
@@ -649,8 +663,9 @@ export default function DamageCalculator() {
         <div className={styles.fieldGrid}>
           {/* Weather Option */}
           <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>WEATHER</label>
+            <span className={styles.fieldLabel}>Weather</span>
             <select
+              aria-label="Weather"
               className={styles.selectField}
               value={weather}
               onChange={e => setWeather(e.target.value as any)}
@@ -664,8 +679,9 @@ export default function DamageCalculator() {
 
           {/* Terrain Option */}
           <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>TERRAIN</label>
+            <span className={styles.fieldLabel}>Terrain</span>
             <select
+              aria-label="Terrain"
               className={styles.selectField}
               value={terrain}
               onChange={e => setTerrain(e.target.value as any)}
@@ -754,12 +770,12 @@ export default function DamageCalculator() {
 
       {/* Prominent Outcome Card */}
       {calcResult && attackerPoke && defenderPoke && selectedMove && (
-        <div className={styles.outcomeCard} style={{ border: `1px solid ${damageColor}35`, boxShadow: `0 8px 32px ${damageColor}0f` }}>
-          <div className={styles.outcomeHeader} style={{ background: `${damageColor}0f`, borderBottom: `1px solid ${damageColor}22` }}>
+        <div className={styles.outcomeCard} style={{ borderColor: damageBorder }}>
+          <div className={styles.outcomeHeader} style={{ background: damageBackground, borderBottomColor: damageBorder }}>
             <span className={styles.outcomeTitle} style={{ color: damageColor }}>
               <Scale size={16} /> BATTLE CALCULATION OUTCOME (SHOWDOWN FORMAT)
             </span>
-            <div className={styles.outcomeChip} style={{ background: damageColor }}>
+            <div className={styles.outcomeChip} style={{ background: "var(--bg-paper)", color: damageColor }}>
               {calcResult.koChanceText}
             </div>
           </div>
