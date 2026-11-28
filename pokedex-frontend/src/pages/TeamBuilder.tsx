@@ -364,8 +364,8 @@ export default function TeamBuilder() {
                 <div key={type} className={styles.typeTile}>
                   <span className={styles.typeChip} style={getTypeBadgeStyle(type)}>{type}</span>
                   <div className={styles.tileStats}>
-                    <span className={styles.tileStat} style={{color:c.weak>0?'#ef4444':'var(--text-muted)'}}>▼{c.weak}</span>
-                    <span className={styles.tileStat} style={{color:c.resist>0?'#22c55e':'var(--text-muted)'}}>▲{c.resist}</span>
+                    <span className={styles.tileStat} style={{color:c.weak>0?'var(--status-error)':'var(--text-muted)'}}>▼{c.weak}</span>
+                    <span className={styles.tileStat} style={{color:c.resist>0?'var(--status-success)':'var(--text-muted)'}}>▲{c.resist}</span>
                   </div>
                 </div>
               );

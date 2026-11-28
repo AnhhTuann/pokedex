@@ -55,7 +55,7 @@
   transition: var(--transition-normal);
 
   &:hover {
-    border-color: var(--primary);
+    border-color: var(--interactive-text);
     background: rgba(var(--primary-rgb), 0.05);
     transform: translateY(-2px);
   }
@@ -314,7 +314,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--interactive-text);
       box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.15);
     }
   }
@@ -351,7 +351,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--interactive-text);
     }
   }
 }
@@ -519,7 +519,7 @@
   .recTitle {
     font-size: 13px;
     font-weight: 900;
-    color: var(--primary);
+    color: var(--interactive-text);
     margin-bottom: 6px;
   }
 
@@ -595,7 +595,7 @@
       font-size: 13px;
       font-weight: 700;
 
-      &:focus { outline: none; border-color: var(--primary); }
+      &:focus { outline: none; border-color: var(--interactive-text); }
       &::placeholder { color: var(--text-muted); }
     }
   }
@@ -622,7 +622,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: var(--primary);
+    border-color: var(--interactive-text);
   }
 
   img {

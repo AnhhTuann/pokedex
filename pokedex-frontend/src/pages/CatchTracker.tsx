@@ -411,7 +411,7 @@ export default function CatchTracker() {
                   <CheckCircle2 size={13} style={{ color: 'var(--status-success)' }} />
                   Regular Dex Progress
                 </span>
-                <span className={styles.value} style={{ color: 'var(--primary)' }}>
+                <span className={styles.value} style={{ color: 'var(--interactive-text)' }}>
                   Caught: {caughtPokemonIds.length} / {totalPokemon} ({nationalProgress}%)
                 </span>
               </div>
@@ -427,7 +427,7 @@ export default function CatchTracker() {
                   <Sparkles size={13} style={{ color: '#fbbf24' }} />
                   Shiny Dex Progress
                 </span>
-                <span className={styles.value} style={{ color: '#d97706' }}>
+                <span className={styles.value} style={{ color: 'var(--status-warning)' }}>
                   Shiny: {shinyPokemonIds.length} / {totalPokemon} ({nationalShinyProgress}%)
                 </span>
               </div>
@@ -449,7 +449,7 @@ export default function CatchTracker() {
                     <CheckCircle2 size={13} style={{ color: 'var(--status-success)' }} />
                     Regional Regular Dex
                   </span>
-                  <span className={styles.value} style={{ color: '#06b6d4' }}>
+                  <span className={styles.value} style={{ color: 'var(--status-info)' }}>
                     Caught: {caughtInActiveFilter} / {localTotal} ({localProgress}%)
                   </span>
                 </div>
@@ -465,7 +465,7 @@ export default function CatchTracker() {
                     <Sparkles size={13} style={{ color: '#fbbf24' }} />
                     Regional Shiny Dex
                   </span>
-                  <span className={styles.value} style={{ color: '#d97706' }}>
+                  <span className={styles.value} style={{ color: 'var(--status-warning)' }}>
                     Shiny: {shinyInActiveFilter} / {localTotal} ({localShinyProgress}%)
                   </span>
                 </div>
@@ -778,7 +778,7 @@ export default function CatchTracker() {
         <div className={styles.modalOverlay} onClick={() => setConfirmMarkAllOpen(false)}>
           <div className={styles.modalContent} ref={markAllRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Mark all as caught" onClick={(e) => e.stopPropagation()}>
             <h2 className={styles.modalTitle}>
-              <CheckSquare style={{ color: 'var(--primary)' }} />
+              <CheckSquare style={{ color: 'var(--interactive-text)' }} />
               Mark All as Caught?
             </h2>
             <p className={styles.modalDesc}>

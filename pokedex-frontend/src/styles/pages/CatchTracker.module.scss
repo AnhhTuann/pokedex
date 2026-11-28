@@ -35,7 +35,7 @@
     gap: 10px;
 
     .pokeballIcon {
-      color: var(--primary);
+      color: var(--interactive-text);
       font-size: 28px;
     }
   }
@@ -78,7 +78,7 @@
 
   &.primary {
     border: 2px solid var(--primary);
-    color: var(--primary);
+    color: var(--interactive-text);
 
     &:hover {
       background-color: rgba(var(--primary-rgb), 0.1);
@@ -237,7 +237,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--interactive-text);
       box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.15);
     }
   }
@@ -283,7 +283,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--interactive-text);
       box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.15);
     }
   }
@@ -497,7 +497,7 @@
     text-transform: uppercase;
 
     &.caught {
-      color: var(--primary);
+      color: var(--interactive-text);
     }
 
     &.shiny {
@@ -548,7 +548,7 @@
 
     &:hover {
       opacity: 1 !important;
-      color: var(--primary);
+      color: var(--interactive-text);
     }
   }
 }
@@ -626,7 +626,7 @@
     }
 
     &.confirm {
-      background-color: var(--primary);
+      background-color: var(--interactive-text);
       color: #ffffff;
 
       &:hover {
@@ -666,7 +666,7 @@
 
   &:hover {
     transform: translateY(-2px);
-    border-color: var(--primary);
+    border-color: var(--interactive-text);
     box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.15);
   }
 }
@@ -722,13 +722,13 @@
   }
 
   &:focus, &.active {
-    border-color: var(--primary);
+    border-color: var(--interactive-text);
     box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
     background-color: rgba(255, 255, 255, 0.9);
     
     :global(.dark) & {
       background-color: rgba(255, 255, 255, 0.1);
-      border-color: var(--primary);
+      border-color: var(--interactive-text);
       box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
     }
   }
@@ -777,7 +777,7 @@
 
 .rotated {
   transform: rotate(180deg);
-  color: var(--primary);
+  color: var(--interactive-text);
 }
 
 .customDropdown {
@@ -815,7 +815,7 @@
   
   &:hover {
     background-color: rgba(26, 191, 255, 0.08);
-    color: var(--primary);
+    color: var(--interactive-text);
     
     :global(.dark) & {
       background-color: rgba(255, 255, 255, 0.06);

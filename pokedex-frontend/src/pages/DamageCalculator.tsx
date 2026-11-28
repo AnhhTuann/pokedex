@@ -59,11 +59,10 @@ const DEFAULT_STATS = {
   hp: 80, attack: 80, defense: 80, 'special-attack': 80, 'special-defense': 80, speed: 80
 };
 
-function getDamageColor(maxPercent: number) {
-  if (maxPercent < 25) return '#10b981'; // Green
-  if (maxPercent < 50) return '#eab308'; // Yellow
-  if (maxPercent < 100) return '#f97316'; // Orange
-  return '#ef4444'; // Red
+function getDamageTone(maxPercent: number) {
+  if (maxPercent < 25) return 'success';
+  if (maxPercent < 100) return 'warning';
+  return 'error';
 }
 
 function calcTypeColor(pct: number) {
@@ -176,10 +175,10 @@ const StatRowComponent: React.FC<StatRowProps> = ({
   if (statKey !== 'hp') {
     if (natureMod === 1.1) {
       natureIndicator = ' ▲';
-      natureColor = '#f43f5e';
+      natureColor = 'var(--status-success)';
     } else if (natureMod === 0.9) {
       natureIndicator = ' ▼';
-      natureColor = '#3b82f6';
+      natureColor = 'var(--status-error)';
     }
   }
 
@@ -428,7 +427,9 @@ const PokemonConfigCardComponent: React.FC<PokemonConfigCardProps> = ({
             <span className={styles.tableTitle}>📈 STATS EVS</span>
             <span
               className={styles.evLeftBadge}
-              style={{ background: remainingEvs > 0 ? '#10b981' : '#ef4444' }}
+              style={remainingEvs > 0
+                ? { background: 'var(--status-success-bg)', color: 'var(--status-success)' }
+                : { background: 'var(--status-warning-bg)', color: 'var(--status-warning)' }}
             >
               EV Left: {remainingEvs}
             </span>
@@ -635,7 +636,10 @@ export default function DamageCalculator() {
     setTimeout(() => setCopied(false), 2000);
   }, [showdownOutput]);
 
-  const damageColor = calcResult ? getDamageColor(calcResult.maxPercent) : '#fbbf24';
+  const damageTone = calcResult ? getDamageTone(calcResult.maxPercent) : 'warning';
+  const damageColor = `var(--status-${damageTone})`;
+  const damageBackground = `var(--status-${damageTone}-bg)`;
+  const damageBorder = `var(--status-${damageTone}-border)`;
 
   return (
     <div className={styles.container}>
@@ -766,12 +770,12 @@ export default function DamageCalculator() {
 
       {/* Prominent Outcome Card */}
       {calcResult && attackerPoke && defenderPoke && selectedMove && (
-        <div className={styles.outcomeCard} style={{ border: `1px solid ${damageColor}35`, boxShadow: `0 8px 32px ${damageColor}0f` }}>
-          <div className={styles.outcomeHeader} style={{ background: `${damageColor}0f`, borderBottom: `1px solid ${damageColor}22` }}>
+        <div className={styles.outcomeCard} style={{ borderColor: damageBorder }}>
+          <div className={styles.outcomeHeader} style={{ background: damageBackground, borderBottomColor: damageBorder }}>
             <span className={styles.outcomeTitle} style={{ color: damageColor }}>
               <Scale size={16} /> BATTLE CALCULATION OUTCOME (SHOWDOWN FORMAT)
             </span>
-            <div className={styles.outcomeChip} style={{ background: damageColor }}>
+            <div className={styles.outcomeChip} style={{ background: "var(--bg-paper)", color: damageColor }}>
               {calcResult.koChanceText}
             </div>
           </div>
