@@ -1,22 +1,23 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'motion/react';
+import { lazy } from 'react';
+import { MotionConfig } from 'motion/react';
+import { Routes, Route, Link } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
+import { useIsAdmin } from './hooks/useIsAdmin';
 import PokemonDex from './pages/PokemonDex';
-import LocationDex from './pages/LocationDex';
-import TypeDex from './pages/TypeDex';
-import MoveDex from './pages/MoveDex';
-import AbilityDex from './pages/AbilityDex';
-import ItemDex from './pages/ItemDex';
-import NatureDex from './pages/NatureDex';
-import TeamBuilder from './pages/TeamBuilder';
-import CatchTracker from './pages/CatchTracker';
-import DamageCalculator from './pages/DamageCalculator';
-import Walkthrough from './pages/Walkthrough';
-import AdminWalkthrough from './pages/AdminWalkthrough';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import UserDashboard from './pages/UserDashboard';
+const LocationDex = lazy(() => import('./pages/LocationDex'));
+const TypeDex = lazy(() => import('./pages/TypeDex'));
+const MoveDex = lazy(() => import('./pages/MoveDex'));
+const AbilityDex = lazy(() => import('./pages/AbilityDex'));
+const ItemDex = lazy(() => import('./pages/ItemDex'));
+const NatureDex = lazy(() => import('./pages/NatureDex'));
+const TeamBuilder = lazy(() => import('./pages/TeamBuilder'));
+const CatchTracker = lazy(() => import('./pages/CatchTracker'));
+const DamageCalculator = lazy(() => import('./pages/DamageCalculator'));
+const Walkthrough = lazy(() => import('./pages/Walkthrough'));
+const AdminWalkthrough = lazy(() => import('./pages/AdminWalkthrough'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 
 export const VERSION_COLORS: Record<string, string> = {
   ALL: '#6b7280',
@@ -241,7 +242,7 @@ function contrastRatio(a: string, b: string): number {
 
 export function getContrastTextColor(bgHex: string): string {
   const white = '#ffffff';
-  const dark = '#0f172a';
+  const dark = '#000000';
   return contrastRatio(bgHex, dark) >= contrastRatio(bgHex, white) ? dark : white;
 }
 
@@ -279,7 +280,7 @@ export function getVersionColorStyle(versionName: string) {
           const c1 = VERSION_COLORS[row.games[0].name] || '#6366f1';
           const c2 = VERSION_COLORS[row.games[1].name] || '#6366f1';
           const white = '#ffffff';
-          const dark = '#0f172a';
+          const dark = '#000000';
           const minWhite = Math.min(contrastRatio(c1, white), contrastRatio(c2, white));
           const minDark = Math.min(contrastRatio(c1, dark), contrastRatio(c2, dark));
           const text = minDark >= minWhite ? dark : white;
@@ -303,41 +304,41 @@ export function getVersionColorStyle(versionName: string) {
   return { bg: c, text: getContrastTextColor(c), shadow: `rgba(${hexToRgb(c)}, 0.35)`, isGradient: false as const };
 }
 
-const PageWrapper = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={false}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -8 }}
-    transition={{ duration: 0.2, ease: "easeOut" }}
-    style={{ width: '100%', height: '100%' }}
-  >
-    {children}
-  </motion.div>
-);
+function WalkthroughAdministration() {
+  const { isAdmin, loading } = useIsAdmin();
+  if (loading) return <p role="status">Checking account access…</p>;
+  if (!isAdmin) return (
+    <section>
+      <h1>Walkthrough administration</h1>
+      <p>This workspace requires an administrator account.</p>
+      <Link to="/walkthrough">Browse walkthroughs</Link>
+    </section>
+  );
+  return <AdminWalkthrough />;
+}
 
 export default function App() {
-  const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
+    <MotionConfig reducedMotion="user">
+      <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<PageWrapper><PokemonDex /></PageWrapper>} />
-          <Route path="/moves" element={<PageWrapper><MoveDex /></PageWrapper>} />
-          <Route path="/abilities" element={<PageWrapper><AbilityDex /></PageWrapper>} />
-          <Route path="/items" element={<PageWrapper><ItemDex /></PageWrapper>} />
-          <Route path="/locations" element={<PageWrapper><LocationDex /></PageWrapper>} />
-          <Route path="/types" element={<PageWrapper><TypeDex /></PageWrapper>} />
-          <Route path="/natures" element={<PageWrapper><NatureDex /></PageWrapper>} />
-          <Route path="/teambuilder" element={<PageWrapper><TeamBuilder /></PageWrapper>} />
-          <Route path="/tracker" element={<PageWrapper><CatchTracker /></PageWrapper>} />
-          <Route path="/calculator" element={<PageWrapper><DamageCalculator /></PageWrapper>} />
-          <Route path="/walkthrough" element={<PageWrapper><Walkthrough /></PageWrapper>} />
-          <Route path="/admin/walkthrough" element={<PageWrapper><AdminWalkthrough /></PageWrapper>} />
-          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-          <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
-          <Route path="/dashboard" element={<PageWrapper><UserDashboard /></PageWrapper>} />
+          <Route path="/" element={<PokemonDex />} />
+          <Route path="/moves" element={<MoveDex />} />
+          <Route path="/abilities" element={<AbilityDex />} />
+          <Route path="/items" element={<ItemDex />} />
+          <Route path="/locations" element={<LocationDex />} />
+          <Route path="/types" element={<TypeDex />} />
+          <Route path="/natures" element={<NatureDex />} />
+          <Route path="/teambuilder" element={<TeamBuilder />} />
+          <Route path="/tracker" element={<CatchTracker />} />
+          <Route path="/calculator" element={<DamageCalculator />} />
+          <Route path="/walkthrough" element={<Walkthrough />} />
+          <Route path="/admin/walkthrough" element={<WalkthroughAdministration />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
         </Route>
       </Routes>
-    </AnimatePresence>
+    </MotionConfig>
   );
 }

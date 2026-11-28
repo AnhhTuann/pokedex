@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
+import { useNavigate, useLocation, Outlet, Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import {
   Menu as MenuIcon,
@@ -20,6 +20,8 @@ import {
   Shield,
   Dna,
   Calculator,
+  ChevronDown,
+  Sparkles,
 } from 'lucide-react';
 import { useColorMode } from '../main';
 import { useAuthStore } from '../lib/authStore';
@@ -110,14 +112,34 @@ export default function MainLayout() {
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
 
+  const versionDialog = useRef<HTMLDialogElement>(null);
+  const navigationDialog = useRef<HTMLDialogElement>(null);
+
   useEffect(() => {
-    if (!versionDialogOpen) return;
-    const prev = document.body.style.overflow;
+    const media = window.matchMedia('(max-width: 768px)');
+    const closeOnDesktop = () => { if (!media.matches) setMobileOpen(false); };
+    media.addEventListener('change', closeOnDesktop);
+    return () => media.removeEventListener('change', closeOnDesktop);
+  }, []);
+
+  useEffect(() => {
+    const dialog = mobileOpen ? navigationDialog.current : versionDialogOpen ? versionDialog.current : null;
+    if (!dialog) return;
+
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setVersionDialogOpen(false); };
-    window.addEventListener('keydown', onKey);
-    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
-  }, [versionDialogOpen]);
+    dialog.showModal();
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileOpen, versionDialogOpen]);
+
+  useEffect(() => {
+    setMobileOpen(false);
+    setVersionDialogOpen(false);
+    setGameOpen(false);
+  }, [location.pathname]);
 
   const allNavItems = NAV_GROUPS.flatMap((g) => g.items);
   if (isAdmin) {
@@ -144,18 +166,16 @@ export default function MainLayout() {
             {group.items.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <button
+                <Link
                   key={item.text}
-                  onClick={() => {
-                    navigate(item.path);
-                    setMobileOpen(false);
-                  }}
+                  to={item.path}
+                  onClick={() => setMobileOpen(false)}
                   className={cn(styles.navButton, isActive && styles.navButtonActive)}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   <span className={styles.navIcon}>{item.icon}</span>
                   <span className={styles.navText}>{item.text}</span>
-                </button>
+                </Link>
               );
             })}
           </div>
@@ -184,30 +204,40 @@ export default function MainLayout() {
         </div>
       </nav>
 
-      <div className={styles.divider} />
-      <div className={styles.footerSignature}>V2 Redesign</div>
     </>
   );
 
   return (
     <div className={styles.appContainer}>
-      <UpdateNotifier />
+      {isAdmin && <UpdateNotifier />}
 
-      <div
-        className={cn(styles.sidebarOverlay, mobileOpen && styles.mobileOpen)}
-        onClick={() => setMobileOpen(false)}
-      />
-
+      <a href="#main-content" className={styles.skipLink}>Skip to content</a>
       <aside
-        className={cn(
-          styles.sidebar,
-          isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed,
-          mobileOpen && styles.mobileOpen
-        )}
+        id="desktop-navigation"
+        className={cn(styles.sidebar, isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed)}
         aria-label="Sidebar"
+        inert={!isSidebarOpen}
       >
         {sidebarContent}
       </aside>
+
+      {mobileOpen && (
+        <dialog
+          id="mobile-navigation"
+          ref={navigationDialog}
+          className={styles.navigationDialog}
+          aria-label="Navigation menu"
+          onCancel={() => setMobileOpen(false)}
+          onClick={event => { if (event.target === event.currentTarget) setMobileOpen(false); }}
+        >
+          <div className={styles.navigationPanel}>
+            <button type="button" className={styles.navigationClose} onClick={() => setMobileOpen(false)} aria-label="Close navigation menu">
+              <X size={20} />
+            </button>
+            {sidebarContent}
+          </div>
+        </dialog>
+      )}
 
       <header className={cn(styles.header, isSidebarOpen ? styles.headerWithSidebar : styles.headerFull)}>
         <div className={styles.leftGroup}>
@@ -216,6 +246,8 @@ export default function MainLayout() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Open navigation menu"
             aria-expanded={mobileOpen}
+            aria-haspopup="dialog"
+            aria-controls={mobileOpen ? "mobile-navigation" : undefined}
           >
             <MenuIcon size={20} />
           </button>
@@ -225,77 +257,36 @@ export default function MainLayout() {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
             aria-expanded={isSidebarOpen}
+            aria-controls="desktop-navigation"
           >
             <MenuIcon size={20} />
           </button>
 
-          <h1 className={styles.title}>{currentTitle}</h1>
+          <span className={styles.title}>{currentTitle}</span>
         </div>
 
         <div className={styles.rightGroup}>
           {isMainDex && (
             <>
-              {(() => {
-                const styleInfo = getVersionColorStyle(selectedVersion);
-                const isPair = String(styleInfo.bg).toLowerCase().includes('gradient');
-                const displayName = getVersionDisplayName(selectedVersion);
-                const [game1Label, game2Label] = isPair ? displayName.split(' / ') : ['', ''];
-                const getLightModeHeaderColor = (color: string): string => {
-                  const c = color.toLowerCase();
-                  const overrides: Record<string, string> = {
-                    '#e3350d': '#B91C1C', '#1b53ba': '#1D4ED8', '#f5c518': '#B8860B', '#d4af37': '#B8860B',
-                    '#4fc1e9': '#0369A1', '#c0392b': '#991B1B', '#0f52ba': '#1E40AF', '#00a86b': '#047857',
-                    '#ff4500': '#C2410C', '#32cd32': '#15803D', '#5dade2': '#0369A1', '#ff8fa3': '#BE185D',
-                    '#8a9597': '#475569', '#b8860b': '#92400E', '#708090': '#334155', '#1abfff': '#0369A1',
-                    '#ff007f': '#BE185D', '#ea580c': '#C2410C', '#1e40af': '#1E3A8A',
-                  };
-                  return overrides[c] || c;
-                };
-                const resolvedC1 = isDark ? (styleInfo.c1 || '#6366f1') : getLightModeHeaderColor(styleInfo.c1 || '#6366f1');
-                const resolvedC2 = isDark ? (styleInfo.c2 || '#6366f1') : getLightModeHeaderColor(styleInfo.c2 || '#6366f1');
-                const resolvedBg = isDark ? styleInfo.bg : getLightModeHeaderColor(styleInfo.bg);
-
-                return (
-                  <button
-                    id="game-version-selector-btn"
-                    className={styles.versionBtn}
-                    onClick={() => setVersionDialogOpen(true)}
-                    aria-haspopup="dialog"
-                    aria-expanded={versionDialogOpen}
-                    style={{
-                      background: isPair ? 'transparent' : resolvedBg,
-                      color: getContrastTextColor(resolvedBg),
-                      boxShadow: isDark ? 'none' : '0 1px 2px rgba(0,0,0,0.08)',
-                      borderRadius: '999px',
-                      overflow: 'hidden',
-                      padding: isPair ? 0 : '0 14px',
-                      border: '1px solid rgba(255,255,255,0.14)',
-                    } as React.CSSProperties}
-                  >
-                    {isPair ? (
-                      <div style={{ display: 'flex', width: '100%', alignItems: 'stretch', minWidth: 220, position: 'relative' }}>
-                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC1, padding: '0 8px', color: getContrastTextColor(resolvedC1) }}>
-                          <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{game1Label.toUpperCase()}</span>
-                        </div>
-                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC2, padding: '0 8px', color: getContrastTextColor(resolvedC2) }}>
-                          <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{game2Label.toUpperCase()}</span>
-                        </div>
-                        <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, backgroundColor: 'rgba(255,255,255,0.25)', transform: 'translateX(-50%)' }} />
-                      </div>
-                    ) : (
-                      <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {selectedVersion === 'ALL' ? 'ALL VERSIONS' : getVersionDisplayName(selectedVersion).toUpperCase()}
-                      </span>
-                    )}
-                  </button>
-                );
-              })()}
+              <button
+                id="game-version-selector-btn"
+                type="button"
+                className={styles.versionTrigger}
+                onClick={() => setVersionDialogOpen(true)}
+                aria-haspopup="dialog"
+                aria-expanded={versionDialogOpen}
+                aria-label={`Select game version. Current: ${getVersionDisplayName(selectedVersion)}`}
+              >
+                <span className={styles.versionSwatch} style={{ background: getVersionColorStyle(selectedVersion).bg }} />
+                <span className={styles.versionLabel}>{getVersionDisplayName(selectedVersion)}</span>
+                <ChevronDown size={14} aria-hidden="true" />
+              </button>
 
               <label id="global-shiny-toggle" className={styles.switchLabel}>
+                <Sparkles size={16} aria-hidden="true" />
                 <span className={cn(styles.switchText, isShinyMode && styles.active)}>Shiny</span>
                 <span className={styles.switch}>
                   <input type="checkbox" checked={isShinyMode} onChange={toggleShinyMode} aria-label="Toggle shiny sprites" />
-                  <span className={styles.slider} />
                 </span>
               </label>
             </>
@@ -331,18 +322,20 @@ export default function MainLayout() {
         </div>
       </header>
 
-      <main className={cn(styles.mainContent, isSidebarOpen ? styles.mainWithSidebar : styles.mainFull)}>
-        <Outlet />
+      <main id="main-content" tabIndex={-1} className={cn(styles.mainContent, isSidebarOpen ? styles.mainWithSidebar : styles.mainFull)}>
+        <Suspense fallback={<p className={styles.routeLoading} role="status">Loading page…</p>}>
+          <Outlet />
+        </Suspense>
       </main>
 
       {gameOpen && <GameModal onClose={() => setGameOpen(false)} />}
 
       {versionDialogOpen && (
-        <div className={styles.modalOverlay} onClick={() => setVersionDialogOpen(false)} role="dialog" aria-modal="true" aria-label="Select game version">
+        <dialog ref={versionDialog} className={styles.versionDialog} onClick={event => { if (event.target === event.currentTarget) setVersionDialogOpen(false); }} onCancel={() => setVersionDialogOpen(false)} aria-labelledby="version-dialog-title">
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <div>
-                <h2 className={styles.modalTitle}>
+                <h2 id="version-dialog-title" className={styles.modalTitle}>
                   <Gamepad2 size={22} />
                   <span>Select Game Version</span>
                 </h2>
@@ -419,7 +412,7 @@ export default function MainLayout() {
               <button onClick={() => setVersionDialogOpen(false)} className={styles.cancelBtn}>Close</button>
             </div>
           </div>
-        </div>
+        </dialog>
       )}
     </div>
   );
