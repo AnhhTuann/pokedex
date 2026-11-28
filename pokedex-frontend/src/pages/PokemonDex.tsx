@@ -248,7 +248,7 @@ export default function PokemonDex() {
 
       {hasMore && (
         <div className={styles.loadMoreContainer}>
-          <Button variant="outline" size="lg" onClick={loadMore} isLoading={loading} className="rounded-full px-8">
+          <Button variant="outline" size="lg" onClick={loadMore} isLoading={loading} >
             {loading ? 'Loading...' : 'Load More'}
           </Button>
         </div>

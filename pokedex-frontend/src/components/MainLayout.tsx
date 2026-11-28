@@ -3,7 +3,6 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import {
   Menu as MenuIcon,
-  Search,
   ListChecks,
   Flame,
   Brain,
@@ -17,18 +16,20 @@ import {
   Sun,
   Moon,
   X,
-  Sparkles,
-  User
+  User,
+  Shield,
+  Dna,
+  Calculator,
 } from 'lucide-react';
 import { useColorMode } from '../main';
 import { useAuthStore } from '../lib/authStore';
 import { useTeamStore } from '../lib/teamStore';
+import { useIsAdmin } from '../hooks/useIsAdmin';
 import GameModal from './GameModal';
 import UpdateNotifier from './UpdateNotifier';
 import { VERSION_COLORS, GENERATION_VERSIONS, getVersionDisplayName, getVersionColorStyle } from '../App';
 import styles from '../styles/components/MainLayout.module.scss';
 
-// ─── Custom Pokeball SVG Icon ─────────────────────────────
 const PokeballIcon = ({ className, size = 24 }: { className?: string; size?: number }) => (
   <svg
     viewBox="0 0 24 24"
@@ -37,66 +38,69 @@ const PokeballIcon = ({ className, size = 24 }: { className?: string; size?: num
     className={className}
     fill="none"
     stroke="currentColor"
-    strokeWidth="2.5"
+    strokeWidth="2.2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    aria-hidden="true"
   >
-    <circle cx="12" cy="12" r="10" />
-    <path d="M2 12h20" />
-    <circle cx="12" cy="12" r="3.5" fill="currentColor" />
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none" />
   </svg>
 );
 
-const MENU_ITEMS = [
-  { text: 'Pokédex', path: '/', icon: <PokeballIcon size={20} /> },
-  { text: 'Catch Tracker', path: '/tracker', icon: <ListChecks size={20} /> },
-  { text: 'Move Dex', path: '/moves', icon: <Flame size={20} /> },
-  { text: 'Ability Dex', path: '/abilities', icon: <Brain size={20} /> },
-  { text: 'Item Dex', path: '/items', icon: <ShoppingBag size={20} /> },
-  { text: 'Location Dex', path: '/locations', icon: <MapIcon size={20} /> },
-  { text: 'Type Dex', path: '/types', icon: <GridIcon size={20} /> },
-  { text: 'Nature Dex', path: '/natures', icon: <Heart size={20} /> },
-  { text: 'Team Builder', path: '/teambuilder', icon: <Gamepad2 size={20} /> },
-  { text: 'Damage Calc', path: '/calculator', icon: <Swords size={20} /> },
-  { text: 'Walkthroughs', path: '/walkthrough', icon: <BookOpen size={20} /> },
+type NavItem = { text: string; path: string; icon: React.ReactNode };
+
+const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
+  {
+    label: 'Encyclopedia',
+    items: [
+      { text: 'Pokédex', path: '/', icon: <PokeballIcon size={18} /> },
+      { text: 'Moves', path: '/moves', icon: <Flame size={18} /> },
+      { text: 'Abilities', path: '/abilities', icon: <Brain size={18} /> },
+      { text: 'Items', path: '/items', icon: <ShoppingBag size={18} /> },
+      { text: 'Locations', path: '/locations', icon: <MapIcon size={18} /> },
+      { text: 'Types', path: '/types', icon: <GridIcon size={18} /> },
+      { text: 'Natures', path: '/natures', icon: <Dna size={18} /> },
+    ],
+  },
+  {
+    label: 'Trainer Tools',
+    items: [
+      { text: 'Team Builder', path: '/teambuilder', icon: <Gamepad2 size={18} /> },
+      { text: 'Damage Calc', path: '/calculator', icon: <Calculator size={18} /> },
+      { text: 'Catch Tracker', path: '/tracker', icon: <ListChecks size={18} /> },
+    ],
+  },
+  {
+    label: 'Adventure',
+    items: [
+      { text: 'Walkthroughs', path: '/walkthrough', icon: <BookOpen size={18} /> },
+    ],
+  },
 ];
 
-// Helper to convert hex to rgb string for modern neon shadow variables
 function hexToRgb(hex: string): string {
-  let c = hex.substring(1);
-  if (c.length === 3) {
-    c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
-  }
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
   const num = parseInt(c, 16);
   return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
 }
 
-const MENU_COLORS: Record<string, string> = {
-  '/': '#E3350D',
-  '/tracker': '#4CAF50',
-  '/moves': '#FF9800',
-  '/abilities': '#9C27B0',
-  '/items': '#FFC107',
-  '/locations': '#009688',
-  '/types': '#3F51B5',
-  '/natures': '#E91E63',
-  '/teambuilder': '#2196F3',
-  '/calculator': '#D32F2F',
-  '/walkthrough': '#00BCD4',
-};
+function getContrastColor(color: string) {
+  const c = color.toLowerCase();
+  if (['#eab308', '#fbbf24', '#a5f3fc', '#e5e7eb', '#f3f4f6', '#ffffff', '#facc15', '#a9b0b3', '#f5c518', '#d4af37'].includes(c)) {
+    return '#0f172a';
+  }
+  return '#ffffff';
+}
 
-function getRouteColor(pathname: string): string {
-  if (pathname.startsWith('/tracker')) return '#4CAF50';
-  if (pathname.startsWith('/moves')) return '#FF9800';
-  if (pathname.startsWith('/abilities')) return '#9C27B0';
-  if (pathname.startsWith('/items')) return '#FFC107';
-  if (pathname.startsWith('/locations')) return '#009688';
-  if (pathname.startsWith('/types')) return '#3F51B5';
-  if (pathname.startsWith('/natures')) return '#E91E63';
-  if (pathname.startsWith('/teambuilder')) return '#2196F3';
-  if (pathname.startsWith('/calculator')) return '#D32F2F';
-  if (pathname.startsWith('/walkthrough') || pathname.startsWith('/admin')) return '#00BCD4';
-  return '#E3350D'; // Fallback to Pokédex (root / and /pokemon)
+function getLightModeInactiveColor(gameName: string, vColor: string): string {
+  const nameLower = gameName.toLowerCase();
+  if (nameLower === 'yellow' || nameLower === 'lets-go-pikachu') return '#92700c';
+  if (nameLower === 'gold' || nameLower === 'heartgold') return '#8a6d18';
+  if (['silver', 'platinum', 'white', 'white-2', 'soulsilver'].includes(nameLower)) return '#475569';
+  return vColor;
 }
 
 export default function MainLayout() {
@@ -106,7 +110,7 @@ export default function MainLayout() {
   const { mode, toggleColorMode } = useColorMode();
   const isDark = mode === 'dark';
   const { user } = useAuthStore();
-
+  const { isAdmin } = useIsAdmin();
   const { isShinyMode, toggleShinyMode, selectedVersion, setSelectedVersion } = useTeamStore();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -114,208 +118,138 @@ export default function MainLayout() {
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const allNavItems = NAV_GROUPS.flatMap((g) => g.items);
+  if (isAdmin) {
+    allNavItems.push({ text: 'Admin Walkthrough', path: '/admin/walkthrough', icon: <Shield size={18} /> });
+  }
+  const currentTitle = allNavItems.find((m) => location.pathname === m.path)?.text
+    || (location.pathname === '/dashboard' ? 'Dashboard' : location.pathname === '/login' ? 'Login' : location.pathname === '/register' ? 'Register' : 'Elite Pokédex');
 
-  const getContrastColor = (color: string) => {
-    const c = color.toLowerCase();
-    if (
-      c === '#eab308' || 
-      c === '#fbbf24' || 
-      c === '#a5f3fc' || 
-      c === '#e5e7eb' || 
-      c === '#f3f4f6' || 
-      c === '#ffffff' || 
-      c === '#facc15' || 
-      c === '#a9b0b3'
-    ) {
-      return '#0f172a';
-    }
-    return '#ffffff';
-  };
-
-  const getLightModeInactiveColor = (gameName: string, vColor: string): string => {
-    const nameLower = gameName.toLowerCase();
-    if (nameLower === "yellow" || nameLower === "lets-go-pikachu") return "#a17a00";
-    if (nameLower === "gold" || nameLower === "heartgold") return "#9a7d1c";
-    if (nameLower === "silver" || nameLower === "platinum" || nameLower === "white" || nameLower === "white-2" || nameLower === "soulsilver") {
-      return "#475569";
-    }
-    return vColor;
-  };
-
-  // Build the sidebar inner content
   const sidebarContent = (
     <>
-      {/* Brand Header */}
       <div className={styles.brandHeader}>
         <div className={styles.brandLogo}>
-          <PokeballIcon size={28} />
+          <PokeballIcon size={20} />
         </div>
-        <span className={styles.brandText}>Pokédex Wiki</span>
+        <span className={styles.brandText}>Elite Pokédex</span>
       </div>
-      
+
       <div className={styles.divider} />
 
-      {/* Nav Menu */}
-      <nav className={styles.navMenu}>
-        {MENU_ITEMS.map((item) => {
-          const isActive = location.pathname === item.path;
-          const itemColor = MENU_COLORS[item.path] || '#6366f1';
-          const itemRgb = hexToRgb(itemColor);
+      <nav className={styles.navMenu} aria-label="Primary navigation">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label} className={styles.navGroup}>
+            <div className={styles.navGroupLabel}>{group.label}</div>
+            {group.items.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <button
+                  key={item.text}
+                  onClick={() => {
+                    navigate(item.path);
+                    setMobileOpen(false);
+                  }}
+                  className={cn(styles.navButton, isActive && styles.navButtonActive)}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <span className={styles.navIcon}>{item.icon}</span>
+                  <span className={styles.navText}>{item.text}</span>
+                </button>
+              );
+            })}
+          </div>
+        ))}
 
-          return (
+        <div className={styles.navGroup}>
+          <div className={styles.navGroupLabel}>Account</div>
+          <button
+            onClick={() => { navigate(user ? '/dashboard' : '/login'); setMobileOpen(false); }}
+            className={cn(styles.navButton, (location.pathname === '/dashboard' || location.pathname === '/login' || location.pathname === '/register') && styles.navButtonActive)}
+            aria-current={(location.pathname === '/dashboard' || location.pathname === '/login' || location.pathname === '/register') ? 'page' : undefined}
+          >
+            <span className={styles.navIcon}><User size={18} /></span>
+            <span className={styles.navText}>{user ? 'Dashboard' : 'Sign In'}</span>
+          </button>
+          {isAdmin && (
             <button
-              key={item.text}
-              onClick={() => {
-                navigate(item.path);
-                setMobileOpen(false);
-              }}
-              className={cn(
-                styles.navButton,
-                isActive && styles.navButtonActive
-              )}
-              style={{
-                '--primary': itemColor,
-                '--primary-rgb': itemRgb,
-              } as React.CSSProperties}
+              onClick={() => { navigate('/admin/walkthrough'); setMobileOpen(false); }}
+              className={cn(styles.navButton, location.pathname === '/admin/walkthrough' && styles.navButtonActive)}
+              aria-current={location.pathname === '/admin/walkthrough' ? 'page' : undefined}
             >
-              <span 
-                className={styles.navIcon}
-                style={{
-                  color: isActive ? itemColor : `rgba(${itemRgb}, 0.55)`,
-                  filter: isActive ? `drop-shadow(0 0 6px rgba(${itemRgb}, 0.4))` : 'none'
-                }}
-              >
-                {item.icon}
-              </span>
-              <span 
-                className={styles.navText}
-                style={{
-                  color: isActive ? itemColor : undefined
-                }}
-              >
-                {item.text}
-              </span>
+              <span className={styles.navIcon}><Shield size={18} /></span>
+              <span className={styles.navText}>Admin</span>
             </button>
-          );
-        })}
+          )}
+        </div>
       </nav>
 
       <div className={styles.divider} />
-
-      {/* Footer Signature */}
-      <div className={styles.footerSignature}>
-        Console v3.2
-      </div>
+      <div className={styles.footerSignature}>V2 Redesign</div>
     </>
   );
 
-  const currentVersionColor = VERSION_COLORS[selectedVersion] || '#6366f1';
-  const currentVersionText = getContrastColor(currentVersionColor);
-  const currentVersionShadow = `rgba(${hexToRgb(currentVersionColor)}, 0.35)`;
-
-  const activeColor = getRouteColor(location.pathname);
-  const activeRgb = hexToRgb(activeColor);
-
   return (
-    <div 
-      className={styles.appContainer}
-      style={{
-        '--primary': activeColor,
-        '--primary-rgb': activeRgb,
-        '--glow-primary': isDark 
-          ? `0 0 25px rgba(${activeRgb}, 0.55), 0 0 10px rgba(189, 0, 255, 0.35)`
-          : `0 0 18px rgba(${activeRgb}, 0.35)`
-      } as React.CSSProperties}
-    >
+    <div className={styles.appContainer}>
       <UpdateNotifier />
-      
-      {/* ── Mobile Sidebar Overlay ── */}
-      <div 
-        className={cn(styles.sidebarOverlay, mobileOpen && styles.mobileOpen)} 
-        onClick={() => setMobileOpen(false)} 
+
+      <div
+        className={cn(styles.sidebarOverlay, mobileOpen && styles.mobileOpen)}
+        onClick={() => setMobileOpen(false)}
       />
 
-      {/* ── Fixed Sidebar ── */}
-      <aside 
+      <aside
         className={cn(
           styles.sidebar,
           isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed,
           mobileOpen && styles.mobileOpen
         )}
+        aria-label="Sidebar"
       >
         {sidebarContent}
       </aside>
 
-      {/* ── Header Top Navigation Bar ── */}
-      <header 
-        className={cn(styles.header, isSidebarOpen ? styles.headerWithSidebar : styles.headerFull)}
-      >
+      <header className={cn(styles.header, isSidebarOpen ? styles.headerWithSidebar : styles.headerFull)}>
         <div className={styles.leftGroup}>
-          {/* Hamburger Mobile */}
-          <button 
+          <button
             className={cn(styles.menuToggle, styles.mobileToggle)}
-            onClick={handleDrawerToggle}
-            title="Menu"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Open navigation menu"
+            aria-expanded={mobileOpen}
           >
             <MenuIcon size={20} />
           </button>
 
-          {/* Sidebar Toggle Desktop */}
-          <button 
+          <button
             className={cn(styles.menuToggle, styles.desktopToggle)}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            title="Toggle Sidebar"
+            aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+            aria-expanded={isSidebarOpen}
           >
             <MenuIcon size={20} />
           </button>
 
-          {/* Current Page Title */}
-          <h1 className={styles.title}>
-            {MENU_ITEMS.find((m) => m.path === location.pathname)?.text || 'Wiki'}
-          </h1>
+          <h1 className={styles.title}>{currentTitle}</h1>
         </div>
 
-        {/* Quick Global Switchers */}
         <div className={styles.rightGroup}>
           {isMainDex && (
             <>
-              {/* Game Version Button */}
               {(() => {
                 const styleInfo = getVersionColorStyle(selectedVersion);
-                const isPair = styleInfo.bg.toLowerCase().includes('gradient');
+                const isPair = String(styleInfo.bg).toLowerCase().includes('gradient');
                 const displayName = getVersionDisplayName(selectedVersion);
                 const [game1Label, game2Label] = isPair ? displayName.split(' / ') : ['', ''];
-
-                // Light Mode header color override helper
                 const getLightModeHeaderColor = (color: string): string => {
                   const c = color.toLowerCase();
                   const overrides: Record<string, string> = {
-                    '#e3350d': '#B91C1C', // Deep Red
-                    '#1b53ba': '#1D4ED8', // Rich Royal Blue
-                    '#f5c518': '#B8860B', // Beautiful deep metallic Gold
-                    '#d4af37': '#B8860B', // Beautiful deep metallic Gold
-                    '#4fc1e9': '#0369A1', // Deep Cyan
-                    '#c0392b': '#991B1B', // Rich Ruby
-                    '#0f52ba': '#1E40AF', // Deep Royal Sapphire
-                    '#00a86b': '#047857', // Deep Emerald
-                    '#ff4500': '#B91C1C', // Dark Orange Red
-                    '#32cd32': '#15803D', // Deep Green
-                    '#5dade2': '#0369A1', // Deep Blue
-                    '#ff8fa3': '#BE185D', // Deep Pink
-                    '#8a9597': '#475569', // Deep Platinum
-                    '#b8860b': '#B8860B', // Keep HeartGold as a rich gold!
-                    '#708090': '#334155', // Deep Slate
-                    '#1abfff': '#0369A1', // Deep Sky Blue
-                    '#ff007f': '#BE185D', // Deep Rose
-                    '#ea580c': '#C2410C', // Deep Orange
-                    '#1e40af': '#1E3A8A', // Deep Blue
+                    '#e3350d': '#B91C1C', '#1b53ba': '#1D4ED8', '#f5c518': '#B8860B', '#d4af37': '#B8860B',
+                    '#4fc1e9': '#0369A1', '#c0392b': '#991B1B', '#0f52ba': '#1E40AF', '#00a86b': '#047857',
+                    '#ff4500': '#C2410C', '#32cd32': '#15803D', '#5dade2': '#0369A1', '#ff8fa3': '#BE185D',
+                    '#8a9597': '#475569', '#b8860b': '#92400E', '#708090': '#334155', '#1abfff': '#0369A1',
+                    '#ff007f': '#BE185D', '#ea580c': '#C2410C', '#1e40af': '#1E3A8A',
                   };
                   return overrides[c] || c;
                 };
-
                 const resolvedC1 = isDark ? (styleInfo.c1 || '#6366f1') : getLightModeHeaderColor(styleInfo.c1 || '#6366f1');
                 const resolvedC2 = isDark ? (styleInfo.c2 || '#6366f1') : getLightModeHeaderColor(styleInfo.c2 || '#6366f1');
                 const resolvedBg = isDark ? styleInfo.bg : getLightModeHeaderColor(styleInfo.bg);
@@ -325,171 +259,115 @@ export default function MainLayout() {
                     id="game-version-selector-btn"
                     className={styles.versionBtn}
                     onClick={() => setVersionDialogOpen(true)}
+                    aria-haspopup="dialog"
+                    aria-expanded={versionDialogOpen}
                     style={{
                       background: isPair ? 'transparent' : resolvedBg,
-                      '--v-bg': isPair ? 'transparent' : resolvedBg,
-                      '--v-text': getContrastColor(resolvedBg),
-                      '--v-box-shadow': isDark ? `0 0 12px ${styleInfo.shadow}` : '0 4px 10px rgba(0, 0, 0, 0.15)',
-                      '--v-box-shadow-hover': isDark ? `0 0 20px ${styleInfo.shadow}` : '0 6px 14px rgba(0, 0, 0, 0.2)',
-                      borderRadius: '19px',
+                      color: getContrastColor(resolvedBg),
+                      boxShadow: isDark ? 'none' : '0 1px 2px rgba(0,0,0,0.08)',
+                      borderRadius: '999px',
                       overflow: 'hidden',
-                      isolation: 'isolate',
-                      padding: isPair ? 0 : '0 18px',
-                      border: '1px solid rgba(255, 255, 255, 0.15)'
+                      padding: isPair ? 0 : '0 14px',
+                      border: '1px solid rgba(255,255,255,0.14)',
                     } as React.CSSProperties}
                   >
                     {isPair ? (
-                      <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: '100%', minWidth: '280px', position: 'relative' }}>
-                        {/* Left Half */}
-                        <div style={{
-                          width: '50%',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          height: '100%',
-                          background: resolvedC1,
-                          padding: '0 8px',
-                          color: getContrastColor(resolvedC1)
-                        }}>
-                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap', color: getContrastColor(resolvedC1) }}>{game1Label.toUpperCase()}</span>
+                      <div style={{ display: 'flex', width: '100%', alignItems: 'stretch', minWidth: 220, position: 'relative' }}>
+                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC1, padding: '0 8px', color: getContrastColor(resolvedC1) }}>
+                          <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{game1Label.toUpperCase()}</span>
                         </div>
-                        {/* Right Half */}
-                        <div style={{
-                          width: '50%',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          height: '100%',
-                          background: resolvedC2,
-                          padding: '0 8px',
-                          color: getContrastColor(resolvedC2)
-                        }}>
-                          <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap', color: getContrastColor(resolvedC2) }}>{game2Label.toUpperCase()}</span>
+                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC2, padding: '0 8px', color: getContrastColor(resolvedC2) }}>
+                          <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{game2Label.toUpperCase()}</span>
                         </div>
-                        {/* Symmetrical Split Divider positioned at absolute center */}
-                        <div style={{
-                          position: 'absolute',
-                          left: '50%',
-                          top: 0,
-                          bottom: 0,
-                          transform: 'translateX(-50%)',
-                          width: '2px',
-                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                          pointerEvents: 'none',
-                          zIndex: 10
-                        }} />
+                        <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, backgroundColor: 'rgba(255,255,255,0.25)', transform: 'translateX(-50%)' }} />
                       </div>
                     ) : (
-                      <span style={{ fontWeight: 800, fontSize: '11px', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
-                        {selectedVersion === 'ALL'
-                          ? 'ALL VERSIONS'
-                          : getVersionDisplayName(selectedVersion).toUpperCase()}
+                      <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {selectedVersion === 'ALL' ? 'ALL VERSIONS' : getVersionDisplayName(selectedVersion).toUpperCase()}
                       </span>
                     )}
                   </button>
                 );
               })()}
 
-              {/* Shiny Mode switch */}
               <label id="global-shiny-toggle" className={styles.switchLabel}>
-                <span className={cn(styles.switchText, isShinyMode && styles.active)}>
-                  ✨ SHINY
-                </span>
+                <span className={cn(styles.switchText, isShinyMode && styles.active)}>Shiny</span>
                 <span className={styles.switch}>
-                  <input
-                    type="checkbox"
-                    checked={isShinyMode}
-                    onChange={toggleShinyMode}
-                  />
+                  <input type="checkbox" checked={isShinyMode} onChange={toggleShinyMode} aria-label="Toggle shiny sprites" />
                   <span className={styles.slider} />
                 </span>
               </label>
             </>
           )}
 
-          {/* Minigame Button */}
           <button
             id="open-game-btn"
             className={styles.actionIconBtn}
             onClick={() => setGameOpen(true)}
-            title="Who's That Pokémon? 🎮"
+            title="Who's That Pokémon?"
+            aria-label="Open Who's That Pokémon game"
           >
-            <Gamepad2 size={16} />
+            <Gamepad2 size={18} />
           </button>
 
-          {/* User Button */}
           <button
             className={styles.actionIconBtn}
             onClick={() => navigate(user ? '/dashboard' : '/login')}
             title={user ? 'Dashboard' : 'Login'}
+            aria-label={user ? 'Open dashboard' : 'Open login'}
           >
-            <User size={16} />
+            <User size={18} />
           </button>
 
-          {/* Theme Toggle Button */}
-          <button 
+          <button
             className={styles.themeBtn}
             onClick={toggleColorMode}
-            title={isDark ? 'Light mode' : 'Dark mode'}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
       </header>
 
-      {/* ── Main Routing Content Panel ── */}
-      <main 
-        className={cn(styles.mainContent, isSidebarOpen ? styles.mainWithSidebar : styles.mainFull)}
-      >
+      <main className={cn(styles.mainContent, isSidebarOpen ? styles.mainWithSidebar : styles.mainFull)}>
         <Outlet />
       </main>
 
-      {/* ── Minigame Overlay ── */}
       {gameOpen && <GameModal onClose={() => setGameOpen(false)} />}
 
-      {/* ── Game Version Dialog Overlay (Custom Modal) ── */}
       {versionDialogOpen && (
-        <div className={styles.modalOverlay} onClick={() => setVersionDialogOpen(false)}>
+        <div className={styles.modalOverlay} onClick={() => setVersionDialogOpen(false)} role="dialog" aria-modal="true" aria-label="Select game version">
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
-                <Gamepad2 size={26} />
-                <span>SELECT GAME VERSION</span>
+                <Gamepad2 size={22} />
+                <span>Select Game Version</span>
               </h2>
-              <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)}>
-                <X size={22} />
+              <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)} aria-label="Close">
+                <X size={20} />
               </button>
             </div>
-            
-            {/* Modal Body */}
+
             <div className={styles.modalBody}>
-              {/* All Versions button */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
                 <button
-                  onClick={() => {
-                    setSelectedVersion('ALL');
-                    setVersionDialogOpen(false);
-                  }}
-                  className={cn(
-                    styles.allVersionsBtn,
-                    selectedVersion !== 'ALL' && styles.unselected
-                  )}
+                  onClick={() => { setSelectedVersion('ALL'); setVersionDialogOpen(false); }}
+                  className={cn(styles.allVersionsBtn, selectedVersion !== 'ALL' && styles.unselected)}
                 >
-                  ALL VERSIONS
+                  All Versions
                 </button>
               </div>
 
-              {/* Generations list */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                 {GENERATION_VERSIONS.map((g) => (
                   <div key={g.gen} className={styles.genSection}>
                     <div className={styles.genHeader}>
                       <span className={styles.genTitle}>{g.gen}</span>
                       <div className={styles.genDivider} />
                     </div>
-                    
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                       {g.rows.map((row, rowIdx) => {
                         const isPair = row.type === 'pair' && row.games.length === 2;
                         return (
@@ -497,61 +375,25 @@ export default function MainLayout() {
                             {row.games.map((game) => {
                               const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
                               let vColor = VERSION_COLORS[game.name] || '#6366f1';
-                              
-                              if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') {
-                                vColor = '#555555';
-                              }
-                              
+                              if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') vColor = '#555555';
                               const contrastColor = getContrastColor(vColor);
-                              
                               return (
                                 <button
                                   key={game.name}
-                                  onClick={() => {
-                                    setSelectedVersion(game.name);
-                                    setVersionDialogOpen(false);
-                                  }}
-                                  className={cn(
-                                    styles.gameButton,
-                                    isActive && styles.gameButtonActive
-                                  )}
-                                  style={
-                                    {
-                                      background: isActive 
-                                        ? vColor 
-                                        : isDark 
-                                          ? '#13171F' 
-                                          : `rgba(${hexToRgb(vColor)}, 0.08)`,
-                                      borderColor: isActive 
-                                        ? vColor 
-                                        : isDark 
-                                          ? vColor 
-                                          : `rgba(${hexToRgb(vColor)}, 0.18)`,
-                                      color: isActive 
-                                        ? contrastColor 
-                                        : isDark 
-                                          ? '#F1F5F9' 
-                                          : getLightModeInactiveColor(game.name, vColor),
-                                      boxShadow: isActive 
-                                        ? isDark 
-                                          ? `0 0 16px rgba(${hexToRgb(vColor)}, 0.45)`
-                                          : `0 8px 24px rgba(${hexToRgb(vColor)}, 0.35)`
-                                        : 'none',
-                                    } as React.CSSProperties
-                                  }
+                                  onClick={() => { setSelectedVersion(game.name); setVersionDialogOpen(false); }}
+                                  className={cn(styles.gameButton, isActive && styles.gameButtonActive)}
+                                  style={{
+                                    background: isActive ? vColor : (isDark ? 'var(--bg-elevated)' : `rgba(${hexToRgb(vColor)}, 0.08)`),
+                                    borderColor: isActive ? vColor : (isDark ? 'var(--border-main)' : `rgba(${hexToRgb(vColor)}, 0.22)`),
+                                    color: isActive ? contrastColor : (isDark ? 'var(--text-primary)' : getLightModeInactiveColor(game.name, vColor)),
+                                    boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
+                                  } as React.CSSProperties}
                                 >
-                                  <span 
+                                  <span
                                     className={styles.gameDot}
-                                    style={
-                                      {
-                                        backgroundColor: isActive ? contrastColor : vColor,
-                                        boxShadow: isDark 
-                                          ? `0 0 10px ${vColor}, 0 0 20px ${vColor}`
-                                          : `0 0 8px ${vColor}`,
-                                      } as React.CSSProperties
-                                    }
+                                    style={{ backgroundColor: isActive ? contrastColor : vColor }}
                                   />
-                                  <span>{game.label.toUpperCase()}</span>
+                                  <span>{game.label}</span>
                                 </button>
                               );
                             })}
@@ -564,14 +406,8 @@ export default function MainLayout() {
               </div>
             </div>
 
-            {/* Modal Footer */}
             <div className={styles.modalFooter}>
-              <button 
-                onClick={() => setVersionDialogOpen(false)} 
-                className={styles.cancelBtn}
-              >
-                CANCEL
-              </button>
+              <button onClick={() => setVersionDialogOpen(false)} className={styles.cancelBtn}>Close</button>
             </div>
           </div>
         </div>

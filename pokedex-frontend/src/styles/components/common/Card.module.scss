@@ -2,35 +2,25 @@
 @import "../../mixins";
 
 .card {
-  border-radius: $radius-lg;
-  border: 1px solid transparent;
-  transition: all $transition-normal;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper);
+  transition: border-color $transition-fast, box-shadow $transition-fast, background-color $transition-fast;
 }
 
-// ─── Variants ─────────────────────────────────────────────
 .standard {
-  background-color: $bg-paper;
-  border-color: $border-main;
-  box-shadow: $shadow-sm;
+  background-color: var(--bg-paper);
+  border-color: var(--border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 .glass {
-  @include glass;
+  background: var(--bg-paper);
+  border-color: var(--border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
-// ─── Paddings ─────────────────────────────────────────────
-.p_none {
-  padding: 0;
-}
-
-.p_sm {
-  padding: 12px;
-}
-
-.p_md {
-  padding: 20px;
-}
-
-.p_lg {
-  padding: 32px;
-}
+.p_none { padding: 0; }
+.p_sm { padding: 12px; }
+.p_md { padding: 20px; }
+.p_lg { padding: 32px; }

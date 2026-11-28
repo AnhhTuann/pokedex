@@ -53,7 +53,7 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
             {/* P1 */}
             <div className={styles.pokemonColumn}>
               <div className={`${styles.avatarCircle} ${styles.p1}`}>
-                <img src={p1.image} alt={p1.name} className={styles.pokemonImage} style={{ filter: 'drop-shadow(0 6px 20px rgba(99,102,241,0.4))' }}/>
+                <img src={p1.image} alt={p1.name} className={styles.pokemonImage} style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.18))' }}/>
               </div>
               <span className={`${styles.pokemonName} ${styles.p1}`}>{p1.name}</span>
               <div className={styles.typesRow}>
@@ -83,8 +83,8 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
                   <PolarGrid strokeOpacity={0.2}/>
                   <PolarAngleAxis dataKey="stat" tick={{ fill: 'var(--text-secondary)', fontSize: 10, fontWeight: 800 }}/>
                   <PolarRadiusAxis angle={30} domain={[0, 255]} tick={false} axisLine={false}/>
-                  <Radar name={p1.name} dataKey={p1.name} stroke="#6366f1" fill="#6366f1" fillOpacity={0.45}/>
-                  <Radar name={p2.name} dataKey={p2.name} stroke="#ec4899" fill="#ec4899" fillOpacity={0.45}/>
+                  <Radar name={p1.name} dataKey={p1.name} stroke="var(--chart-compare-one)" fill="var(--chart-compare-one)" fillOpacity={0.45}/>
+                  <Radar name={p2.name} dataKey={p2.name} stroke="var(--chart-compare-two)" fill="var(--chart-compare-two)" fillOpacity={0.45}/>
                   <Tooltip contentStyle={{ borderRadius: 12, border: 'none', background: 'var(--bg-paper)', color: 'var(--text-primary)', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}/>
                   <Legend wrapperStyle={{ fontSize: 12, fontWeight: 800, textTransform: 'uppercase', marginTop: 10 }}/>
                 </RadarChart>
@@ -94,7 +94,7 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
             {/* P2 */}
             <div className={styles.pokemonColumn}>
               <div className={`${styles.avatarCircle} ${styles.p2}`}>
-                <img src={p2.image} alt={p2.name} className={styles.pokemonImage} style={{ filter: 'drop-shadow(0 6px 20px rgba(236,72,153,0.4))' }}/>
+                <img src={p2.image} alt={p2.name} className={styles.pokemonImage} style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.18))' }}/>
               </div>
               <span className={`${styles.pokemonName} ${styles.p2}`}>{p2.name}</span>
               <div className={styles.typesRow}>

@@ -4,36 +4,37 @@
 .appContainer {
   display: flex;
   min-height: 100vh;
-  background-color: $bg-default;
-  color: $text-primary;
+  background-color: var(--bg-default);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 
-// ─── Header Top Bar ───────────────────────────────────────
+// ─── Header ───────────────────────────────────────────────
 .header {
   position: fixed;
   top: 0;
   right: 0;
   height: 64px;
-  @include glass;
-  border-bottom: 1px solid var(--border-main);
-  box-shadow: none;
+  background: color-mix(in srgb, var(--bg-paper) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-subtle);
   z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 24px;
   transition: width $transition-normal, left $transition-normal;
-  
+
   @include respond-to(sm) {
     padding: 0 16px;
   }
 }
 
 .headerWithSidebar {
-  left: 232px;
-  width: calc(100% - 232px);
-  
+  left: 240px;
+  width: calc(100% - 240px);
+
   @include respond-to(md) {
     left: 0 !important;
     width: 100% !important;
@@ -49,21 +50,24 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .menuToggle {
   background: transparent;
-  border: none;
-  color: $text-primary;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
   cursor: pointer;
   width: 36px;
   height: 36px;
-  border-radius: $radius-sm;
+  border-radius: var(--radius-md);
   @include flex-center;
-  transition: background-color $transition-fast;
-  
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+
   &:hover {
-    background-color: rgba(var(--primary-rgb), 0.06);
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
   }
 }
 
@@ -82,40 +86,54 @@
 
 .title {
   font-family: $font-display;
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-// ─── Sidebar Drawer ───────────────────────────────────────
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @include respond-to(sm) {
+    gap: 8px;
+  }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  @include glass;
-  border-right: 1px solid var(--border-main);
-  box-shadow: none;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   z-index: 110;
   transition: transform $transition-normal, width $transition-normal;
   overflow: hidden;
-  
+
   @include respond-to(md) {
     transform: translateX(-100%) !important;
-    width: 232px !important;
-    
+    width: 280px !important;
+    max-width: calc(100vw - 24px);
+    box-shadow: none;
+
     &.mobileOpen {
       transform: translateX(0) !important;
-      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+      box-shadow: var(--shadow-overlay);
     }
   }
 }
 
 .sidebarOpen {
-  width: 232px;
+  width: 240px;
   transform: translateX(0);
 }
 
@@ -127,231 +145,219 @@
 
 .sidebarOverlay {
   display: none;
-  
+
   @include respond-to(md) {
     &.mobileOpen {
       display: block;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.5);
+      inset: 0;
+      background-color: var(--overlay);
       z-index: 105;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(2px);
     }
   }
 }
 
 .brandHeader {
-  padding: 24px;
+  padding: 20px 20px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-height: 64px;
 }
 
 .brandLogo {
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  filter: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+  color: var(--brand);
+  @include flex-center;
+  flex-shrink: 0;
 }
 
 .brandText {
   font-family: $font-display;
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: -1px;
-  color: var(--primary);
-  text-transform: uppercase;
-  text-shadow: none;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  white-space: nowrap;
 }
 
 .divider {
   height: 1px;
-  background-color: $border-main;
-  width: 100%;
+  background-color: var(--border-subtle);
+  width: calc(100% - 32px);
+  margin: 0 16px;
 }
 
 .navMenu {
   flex: 1;
-  padding: 20px 16px;
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   overflow-y: auto;
   overflow-x: hidden;
-  @include custom-scrollbar;
+  @include custom-scrollbar(6px, transparent, color-mix(in srgb, var(--text-muted) 30%, transparent));
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.navGroupLabel {
+  padding: 8px 12px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .navButton {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 10px 12px;
-  border-radius: $radius-md;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
   color: var(--text-secondary);
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
   text-align: left;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
   position: relative;
-  overflow: hidden;
   width: 100%;
-  
+  font: inherit;
+
   &:hover {
     color: var(--text-primary);
-    background-color: var(--bg-paper-glow);
-    border-color: var(--border-hover);
-    transform: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    
-    .navIcon {
-      color: var(--primary);
-      transform: scale(1.1) rotate(5deg);
-      filter: none;
-    }
+    background-color: var(--bg-hover);
   }
 }
 
 .navButtonActive {
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%);
-  border-color: rgba(var(--primary-rgb), 0.3);
-  color: var(--primary);
-  font-weight: 800;
-  box-shadow: 0 4px 24px rgba(var(--primary-rgb), 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.2);
-  
+  background: var(--brand-soft);
+  border-color: color-mix(in srgb, var(--brand) 14%, transparent);
+  color: var(--brand);
+
   &::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 20%;
-    height: 60%;
-    width: 4px;
-    border-radius: 4px;
-    background-color: var(--primary);
-    box-shadow: none;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background-color: var(--brand);
   }
-  
+
   .navIcon {
-    color: var(--primary);
-    filter: none;
+    color: var(--brand);
+  }
+
+  .navText {
+    color: var(--brand);
+    font-weight: 600;
   }
 }
 
 .navIcon {
-  color: $text-muted;
+  color: currentColor;
   transition: color $transition-fast;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  opacity: 0.92;
 }
 
 .navText {
   font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .footerSignature {
-  padding: 24px;
-  text-align: center;
-  opacity: 0.4;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-// ─── Main Content Wrap ─────────────────────────────────────
-.mainContent {
-  flex-grow: 1;
-  padding: 24px;
-  min-height: 100vh;
-  padding-top: 88px; // 64px header + padding
-  transition: margin-left $transition-normal, width $transition-normal;
-  
-  @include respond-to(sm) {
-    padding: 16px;
-    padding-top: 80px;
-  }
-}
-
-.mainWithSidebar {
-  margin-left: 232px;
-  width: calc(100% - 232px);
-  
-  @include respond-to(md) {
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
-}
-
-.mainFull {
-  margin-left: 0;
-  width: 100%;
-}
-
-// ─── Header Quick Actions ──────────────────────────────────
-.rightGroup {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  
-  @include respond-to(sm) {
-    gap: 8px;
-  }
-}
-
-.versionBtn {
-  font-family: $font-sans;
-  font-weight: 800;
+  padding: 16px 20px;
   font-size: 11px;
-  letter-spacing: 0.5px;
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 19px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  display: flex;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+// ─── Header Controls ──────────────────────────────────────
+.versionBtn {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  transition: all $transition-fast;
-  box-shadow: var(--v-box-shadow, 0 0 12px rgba(var(--primary-rgb), 0.3));
-  background: var(--v-bg, #E3350D);
-  color: var(--v-text, #fff);
-  
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: transform $transition-fast, box-shadow $transition-fast, filter $transition-fast;
+  font-family: $font-sans;
+  min-width: 0;
+  max-width: min(360px, 38vw);
+
   &:hover {
-    filter: brightness(1.15);
-    transform: translateY(-1px);
-    box-shadow: var(--v-box-shadow-hover, 0 0 20px rgba(var(--primary-rgb), 0.45));
+    filter: brightness(0.98);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  @include respond-to(lg) {
+    max-width: 240px;
+  }
+
+  @include respond-to(sm) {
+    max-width: 160px;
+    padding: 0 10px;
   }
 }
 
-// ─── Custom CSS Toggle Switch ──────────────────────────────
 .switchLabel {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   user-select: none;
-  
+  padding: 4px 6px;
+  border-radius: var(--radius-md);
+
   @include respond-to(sm) {
-    display: none !important;
+    gap: 0;
+    padding: 4px;
   }
 }
 
 .switchText {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: $text-muted;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
   transition: color $transition-fast;
-  
+
   &.active {
-    color: $secondary;
+    color: var(--brand-accent);
+  }
+
+  @include respond-to(sm) {
+    display: none;
   }
 }
 
@@ -359,21 +365,26 @@
   position: relative;
   display: inline-block;
   width: 40px;
-  height: 20px;
-  
+  height: 22px;
+  flex-shrink: 0;
+
   input {
     opacity: 0;
     width: 0;
     height: 0;
-    
+
     &:checked + .slider {
-      background-color: rgba(236, 72, 153, 0.3);
-      
-      &::before {
-        transform: translateX(20px);
-        background-color: #fbbf24; // gold shiny color
-        box-shadow: 0 0 10px #fbbf24;
-      }
+      background: color-mix(in srgb, var(--brand) 70%, var(--bg-hover));
+      border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+    }
+
+    &:checked + .slider::before {
+      transform: translateX(18px);
+      background: #fff;
+    }
+
+    &:focus-visible + .slider {
+      box-shadow: var(--focus-ring);
     }
   }
 }
@@ -381,363 +392,266 @@
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.08);
+  inset: 0;
+  background-color: var(--bg-hover);
+  border: 1px solid var(--border-main);
   transition: $transition-fast;
-  border-radius: 20px;
-  border: 1px solid $border-main;
-  
+  border-radius: 22px;
+
   &::before {
     position: absolute;
     content: "";
-    height: 14px;
-    width: 14px;
+    height: 16px;
+    width: 16px;
     left: 2px;
     bottom: 2px;
-    background-color: $text-muted;
+    background-color: var(--text-muted);
     transition: $transition-fast;
     border-radius: 50%;
   }
 }
 
-.actionIconBtn {
-  background-color: rgba(var(--primary-rgb), 0.08);
-  color: $primary;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  @include flex-center;
-  cursor: pointer;
-  transition: all $transition-fast;
-  
-  &:hover {
-    background-color: $primary;
-    color: white;
-  }
-}
-
+.actionIconBtn,
 .themeBtn {
-  color: $text-secondary;
-  background: transparent;
-  border: none;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper);
+  color: var(--text-secondary);
   @include flex-center;
   cursor: pointer;
-  transition: all $transition-fast;
-  
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+
   &:hover {
-    background-color: rgba(var(--primary-rgb), 0.06);
-    color: $text-primary;
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--border-main);
   }
 }
 
-// ─── Custom Modal Styles (Pure HTML/SCSS replacement) ──────
+// ─── Main Content ─────────────────────────────────────────
+.mainContent {
+  flex: 1;
+  min-width: 0;
+  padding: 88px 24px 32px;
+  transition: margin-left $transition-normal;
+  width: 100%;
+
+  @include respond-to(md) {
+    padding: 84px 16px 24px;
+  }
+
+  @include respond-to(sm) {
+    padding: 80px 12px 20px;
+  }
+}
+
+.mainWithSidebar {
+  margin-left: 240px;
+
+  @include respond-to(md) {
+    margin-left: 0 !important;
+  }
+}
+
+.mainFull {
+  margin-left: 0;
+}
+
+// ─── Version Modal ────────────────────────────────────────
 .modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  z-index: 1000;
+  @include overlay-fixed(var(--overlay), 4px, 1200);
   @include flex-center;
-  padding: 16px;
+  padding: 20px;
 }
 
 .modalContent {
   width: 100%;
-  max-width: 720px;
-  max-height: 85vh;
-  background-color: #FAFAF9; // Ivory white by default (Light Mode)
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+  max-width: 760px;
+  max-height: min(85vh, 820px);
+  background: var(--bg-paper);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-overlay);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  
-  :global(.dark) & {
-    background-color: #111318; // Coal black for Dark Mode
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-  }
-
-  @include respond-to(sm) {
-    max-height: 90vh;
-  }
-}
-
-@keyframes modalScaleUp {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 .modalHeader {
-  padding: 24px 28px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-
-  :global(.dark) & {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .modalTitle {
-  font-family: $font-display;
-  font-weight: 900;
-  font-size: 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #1C1917; // Saturated charcoal black in light mode
+  gap: 10px;
+  margin: 0;
+  font-family: $font-display;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 
-  :global(.dark) & {
-    color: #F1F5F9; // Opal white in dark mode
+  svg {
+    color: var(--brand);
   }
 }
 
 .modalCloseBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
   background: transparent;
-  border: none;
-  color: $text-secondary;
+  color: var(--text-secondary);
+  @include flex-center;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  transition: all $transition-fast;
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: #1C1917;
-  }
+  transition: $transition-fast;
 
-  :global(.dark) & {
-    color: rgba(255, 255, 255, 0.5);
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-    }
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
   }
 }
 
 .modalBody {
-  padding: 28px;
+  padding: 24px;
   overflow-y: auto;
-  flex: 1;
-  @include custom-scrollbar;
+  @include custom-scrollbar(6px, transparent, color-mix(in srgb, var(--text-muted) 30%, transparent));
 }
 
 .modalFooter {
-  padding: 20px 28px;
   display: flex;
   justify-content: flex-end;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-paper);
+}
 
-  :global(.dark) & {
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+.allVersionsBtn {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent);
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:hover {
+    background: var(--brand-soft-strong);
+  }
+
+  &.unselected {
+    background: var(--bg-paper);
+    border-color: var(--border-main);
+    color: var(--text-secondary);
+
+    &:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
   }
 }
 
 .genSection {
-  margin-bottom: 32px;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .genHeader {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 18px;
+  gap: 12px;
 }
 
 .genTitle {
-  font-size: 11px;
-  font-weight: 900;
-  color: #5c6c94;
-  letter-spacing: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--text-muted);
   white-space: nowrap;
-
-  :global(.dark) & {
-    color: #8b949e;
-  }
 }
 
 .genDivider {
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.05);
   flex: 1;
-
-  :global(.dark) & {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
+  height: 1px;
+  background: var(--border-subtle);
 }
 
 .gameGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  
-  @include respond-to(xs) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  @include respond-to(sm) {
     grid-template-columns: 1fr;
   }
 }
 
 .gameButton {
-  font-family: $font-sans;
-  font-weight: 900;
-  font-size: 13px;
-  letter-spacing: 0.8px;
-  border-radius: 28px;
-  height: 48px;
-  padding: 0 24px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  text-transform: uppercase;
-  border: 1.5px solid transparent;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-main);
+  background: var(--bg-paper);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: all $transition-normal;
-  width: 100%;
-  box-sizing: border-box;
+  transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast, filter $transition-fast;
 
   &:hover {
-    transform: translateY(-2px);
+    filter: brightness(0.98);
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }
 
 .gameButtonActive {
-  &:hover {
-    filter: brightness(1.1);
-  }
+  border-color: transparent;
 }
 
 .gameDot {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  margin-right: 12px;
   flex-shrink: 0;
-  transition: transform $transition-fast;
-}
-
-.allVersionsBtn {
-  font-family: $font-sans;
-  font-weight: 900;
-  font-size: 13px;
-  letter-spacing: 0.8px;
-  border-radius: 28px;
-  height: 48px;
-  width: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  transition: all $transition-normal;
-  
-  // Light Mode Selected
-  background: linear-gradient(135deg, #1ABFFF 0%, #009ce0 100%);
-  color: #ffffff;
-  box-shadow: 0 8px 24px rgba(26, 191, 255, 0.35);
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(26, 191, 255, 0.45);
-    filter: brightness(1.1);
-  }
-  
-  // Dark Mode Selected
-  :global(.dark) & {
-    background: linear-gradient(135deg, #00A2E8 0%, #005f8f 100%);
-    box-shadow: 0 8px 24px rgba(0, 162, 232, 0.4);
-    
-    &:hover {
-      box-shadow: 0 12px 28px rgba(0, 162, 232, 0.55);
-    }
-  }
-
-  // Unselected State
-  &.unselected {
-    background: rgba(0, 0, 0, 0.05);
-    color: #475569;
-    box-shadow: none;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.08);
-      color: #0f172a;
-    }
-
-    :global(.dark) & {
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.5);
-      box-shadow: none;
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: #ffffff;
-      }
-    }
-  }
 }
 
 .cancelBtn {
-  font-family: $font-sans;
-  font-weight: 900;
-  font-size: 13px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  border-radius: 8px;
-  height: 44px;
-  padding: 0 32px;
-  cursor: pointer;
-  transition: all $transition-normal;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-main);
   background: transparent;
-  box-sizing: border-box;
-  
-  // Light Mode default
-  border: 2px solid #1ABFFF;
-  color: #1ABFFF;
-  
-  &:hover {
-    background-color: rgba(26, 191, 255, 0.08);
-    transform: translateY(-2px);
-  }
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition-fast;
 
-  // Dark Mode override
-  :global(.dark) & {
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    color: #ffffff;
-    
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.08);
-      border-color: #ffffff;
-    }
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
   }
 }
-
-.header, .sidebar { background: $bg-paper; backdrop-filter: none; }
-.brandText, .brandLogo { color: var(--primary); }
-.navButtonActive { background: rgba(var(--primary-rgb), .1); box-shadow: none; }
-.navButton:hover .navIcon { transform: none; }
-.mainContent { min-width: 0; }

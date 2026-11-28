@@ -64,7 +64,7 @@
     padding: 12px 16px 12px 44px;
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-main);
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--bg-paper);
     color: var(--text-primary);
     font-size: 14px;
     font-weight: 600;
@@ -165,7 +165,7 @@
 .neutralBadge {
   padding: 8px 12px;
   border-radius: var(--radius-md);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: var(--bg-paper);
   text-align: center;
 
   .neutralText {
@@ -275,7 +275,7 @@
   gap: 4px;
   padding: 2px 8px;
   border-radius: var(--radius-md);
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: var(--bg-paper);
   border: 1px solid var(--border-main);
   transition: var(--transition-fast);
 

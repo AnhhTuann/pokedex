@@ -337,7 +337,7 @@
   padding: 0 16px;
   border-radius: var(--radius-full);
   border: 1.5px solid var(--border-main);
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: var(--bg-paper);
   color: var(--text-secondary);
   font-size: 12px;
   font-weight: 800;
@@ -486,7 +486,7 @@
     width: 28px;
     height: 28px;
     border-radius: var(--radius-sm);
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--bg-paper);
     display: flex;
     align-items: center;
     justify-content: center;
