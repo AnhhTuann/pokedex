@@ -79,7 +79,7 @@ export default function AbilityDex() {
 
       {error ? (
         <div style={{padding:20,borderRadius:12,background:'rgba(239,68,68,0.08)',border:'1px solid rgba(239,68,68,0.3)',color:'#ef4444',display:'flex',alignItems:'center',gap:12,fontWeight:700}}>
-          <ShieldAlert/> Backend offline — start the server on port 3000.
+          <ShieldAlert/> Backend offline — unable to reach the API. Check the backend connection.
         </div>
       ) : loading && list.length===0 ? (
         <div className={styles.grid}>

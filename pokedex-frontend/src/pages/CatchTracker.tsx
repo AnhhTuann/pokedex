@@ -720,7 +720,7 @@ export default function CatchTracker() {
           fontWeight: 700
         }}>
           <AlertTriangle />
-          Backend offline — please start the server on port 3000.
+          Backend offline — unable to reach the API. Check the backend connection.
         </div>
       ) : (
         <>

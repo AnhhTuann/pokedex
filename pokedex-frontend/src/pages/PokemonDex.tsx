@@ -264,7 +264,7 @@ export default function PokemonDex() {
         </div>
       ) : error ? (
         <div className={styles.offlineBanner}>
-          Backend offline — start the server on port 3000.
+          Backend offline — unable to reach the API. Check the backend connection.
         </div>
       ) : (
         <div className={styles.pokemonGrid}>

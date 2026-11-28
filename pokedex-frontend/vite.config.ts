@@ -20,15 +20,15 @@ export default defineConfig(({mode}) => {
       hmr: false,
       proxy: {
         '/graphql': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:4000',
           changeOrigin: true,
         },
         '/api': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:4000',
           changeOrigin: true,
         },
         '/images': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:4000',
           changeOrigin: true,
         },
       },

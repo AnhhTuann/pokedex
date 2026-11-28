@@ -16,7 +16,7 @@ import "./index.scss";
 
 // ─── Apollo Client ────────────────────────────────────────
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
+  uri: import.meta.env.VITE_GRAPHQL_API_URL || "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {

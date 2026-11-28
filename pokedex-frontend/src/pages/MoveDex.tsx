@@ -464,7 +464,7 @@ export default function MoveDex() {
           fontWeight: 700
         }}>
           <ShieldAlert />
-          Backend offline — start the server on port 3000 to fetch real Moves.
+          Backend offline — unable to reach the API. Check the backend connection.
         </div>
       ) : loading && movesList.length === 0 ? (
         /* Loading skeletons */
