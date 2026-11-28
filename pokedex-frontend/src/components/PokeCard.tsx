@@ -19,29 +19,22 @@ interface PokeCardProps {
 }
 
 export default function PokeCard({
-  pokemon,
-  onClick,
-  index,
-  isCompareMode,
-  isSelectedForCompare,
+  pokemon, onClick, index, isCompareMode, isSelectedForCompare,
 }: PokeCardProps) {
   const { isFavorite, toggleFavorite } = useMyPokedex();
   const { isShinyMode } = useTeamStore();
   const { mode } = useColorMode();
   const isDark = mode === "dark";
-
   const isFav = isFavorite(pokemon.id);
   const primaryType = pokemon.types?.[0] || "normal";
   const [accent, setAccent] = useState<string>(getTypeBadgeColor(primaryType));
-
   const imageUrl = isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image;
 
   useEffect(() => {
     let active = true;
     extractDominantColor(imageUrl, primaryType).then((rgb) => {
       if (!active) return;
-      if (rgb) setAccent(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`);
-      else setAccent(getTypeBadgeColor(primaryType));
+      setAccent(rgb ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : getTypeBadgeColor(primaryType));
     });
     return () => { active = false; };
   }, [imageUrl, primaryType]);
@@ -64,12 +57,7 @@ export default function PokeCard({
     >
       <Card
         padding="none"
-        onClick={onClick}
-        className={cn(
-          styles.pokeCard,
-          isSelectedForCompare && styles.selectedCompare,
-          isCompareMode && !isSelectedForCompare && styles.faded,
-        )}
+        className={cn(styles.pokeCard, isSelectedForCompare && styles.selectedCompare, isCompareMode && !isSelectedForCompare && styles.faded)}
         style={{ "--type-accent": accent } as React.CSSProperties}
       >
         <div className={styles.topRow}>
@@ -81,10 +69,8 @@ export default function PokeCard({
               </span>
             )}
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleFavorite(pokemon.id);
-              }}
+              type="button"
+              onClick={(e) => { e.stopPropagation(); toggleFavorite(pokemon.id); }}
               className={cn(styles.favoriteBtn, isFav ? styles.isFavorite : styles.isNotFavorite)}
               title={isFav ? "Remove from favorites" : "Add to favorites"}
               aria-label={isFav ? `Remove ${displayName} from favorites` : `Add ${displayName} to favorites`}
@@ -95,31 +81,36 @@ export default function PokeCard({
           </div>
         </div>
 
-        <div className={styles.imageContainer}>
-          <div className={styles.pokeballMotif} aria-hidden="true" />
-          <img
-            src={imageUrl}
-            alt={pokemon.name}
-            loading="lazy"
-            width={112}
-            height={112}
-            className={styles.pokemonImage}
-            onError={(e) => { (e.target as HTMLImageElement).src = '/images/placeholder.png'; }}
-          />
-          {isMega && <div className={styles.megaBadge}>Mega</div>}
-        </div>
-
-        <div className={styles.info}>
-          <h3 className={styles.nameText}>{displayName}</h3>
-          {pokemon.category && <p className={styles.categoryText}>{pokemon.category}</p>}
-          <div className={styles.typeGroup}>
-            {pokemon.types.map((type) => (
-              <span key={type} className={styles.typeBadge} style={getTypeBadgeStyle(type, isDark)}>
-                {type}
-              </span>
-            ))}
+        <button
+          type="button"
+          className={styles.cardMainBtn}
+          onClick={onClick}
+          aria-label={`${displayName}, Pokémon ${dexNumber}${isSelectedForCompare ? ', selected for comparison' : ''}`}
+        >
+          <div className={styles.imageContainer}>
+            <div className={styles.pokeballMotif} aria-hidden="true" />
+            <img
+              src={imageUrl}
+              alt={pokemon.name}
+              loading="lazy"
+              width={112}
+              height={112}
+              className={styles.pokemonImage}
+              onError={(e) => { const img = e.target as HTMLImageElement; img.onerror = null; img.style.opacity = '0'; }}
+            />
+            {isMega && <div className={styles.megaBadge}>Mega</div>}
           </div>
-        </div>
+
+          <div className={styles.info}>
+            <h3 className={styles.nameText} title={displayName}>{displayName}</h3>
+            {pokemon.category && <p className={styles.categoryText}>{pokemon.category}</p>}
+            <div className={styles.typeGroup}>
+              {pokemon.types.map((type) => (
+                <span key={type} className={styles.typeBadge} style={getTypeBadgeStyle(type, isDark)}>{type}</span>
+              ))}
+            </div>
+          </div>
+        </button>
       </Card>
     </motion.div>
   );

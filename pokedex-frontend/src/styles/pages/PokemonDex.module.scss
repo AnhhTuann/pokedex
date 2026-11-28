@@ -76,7 +76,7 @@
   white-space: nowrap;
 }
 
-.activeFilters {
+.resultsBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -87,15 +87,31 @@
   flex-wrap: wrap;
 }
 
+.resultsSummary {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  strong { color: var(--text-primary); font-weight: 700; }
+}
+
+.activeFiltersInline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .filterChips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.filterChip {
+.filterChipBtn {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   padding: 5px 10px;
   border-radius: var(--radius-full);
   background: var(--bg-elevated);
@@ -103,6 +119,13 @@
   color: var(--text-secondary);
   font-size: 12px;
   font-weight: 600;
+  cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+  &:hover {
+    color: var(--brand);
+    border-color: color-mix(in srgb, var(--brand) 20%, var(--border-main));
+    background: var(--brand-soft);
+  }
 }
 
 .clearFiltersBtn {
@@ -118,7 +141,6 @@
   font-weight: 600;
   cursor: pointer;
   transition: color $transition-fast, background-color $transition-fast, border-color $transition-fast;
-
   &:hover {
     color: var(--brand);
     background: var(--brand-soft);
@@ -252,21 +274,26 @@
 
 .pokemonGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
 
-  @include respond-to(sm) {
+  @media (max-width: 1536px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (max-width: 1180px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (max-width: 860px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-
   @media (max-width: 360px) {
     grid-template-columns: 1fr;
   }
 }
 
 .skeletonCard {
-  height: 280px;
+  min-height: 292px;
   background: linear-gradient(110deg, var(--bg-elevated) 8%, var(--bg-hover) 18%, var(--bg-elevated) 33%);
   background-size: 200% 100%;
   border: 1px solid var(--border-subtle);
@@ -279,24 +306,45 @@
 }
 
 .offlineBanner {
-  padding: 16px;
-  border-radius: var(--radius-md);
+  padding: 24px 16px;
+  border-radius: var(--radius-lg);
   background: var(--status-error-bg);
   border: 1px solid var(--status-error-border);
   color: var(--status-error);
   font-weight: 600;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  p { margin: 0; }
 }
 
-.emptyText {
+.emptyState {
   text-align: center;
-  padding: 64px 16px;
+  padding: 56px 16px;
   color: var(--text-muted);
-  font-weight: 600;
-  font-size: 15px;
   background: var(--bg-paper);
   border: 1px dashed var(--border-main);
   border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emptyDesc {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 44ch;
 }
 
 .loadMoreContainer {

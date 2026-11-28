@@ -64,7 +64,7 @@ export default function PokemonDex() {
     }
   }
 
-  const { pokemonList, totalCount, loading, error, fetchMore } = usePokemonList({
+  const { pokemonList, totalCount, loading, error, fetchMore, refetch } = usePokemonList({
     limit: 24, 
     offset: 0, 
     search, 
@@ -85,8 +85,7 @@ export default function PokemonDex() {
     setSearch('');
     setTypeFilter('');
     setGenFilter(null);
-    setViewMode('all');
-    setCompareIds([]);
+    if (viewMode === 'favorites') setViewMode('all');
   };
 
   const loadMore = () => {
@@ -122,20 +121,41 @@ export default function PokemonDex() {
           typeValue={typeFilter} onTypeChange={setTypeFilter}
           genValue={genFilter}   onGenChange={setGenFilter}
         />
-        {hasActiveFilters && (
-          <div className={styles.activeFilters}>
-            <div className={styles.filterChips}>
-              {search && <span className={styles.filterChip}>Search: {search}</span>}
-              {typeFilter && <span className={styles.filterChip}>Type: {typeFilter}</span>}
-              {genFilter && <span className={styles.filterChip}>Gen {genFilter}</span>}
-              {showFavorites && <span className={styles.filterChip}>Favorites</span>}
+        <div className={styles.resultsBar}>
+          <p className={styles.resultsSummary}>
+            <strong>{totalCount}</strong> Pokémon
+            {selectedVersion !== 'ALL' ? ` in ${versionLabel}` : ''}
+          </p>
+          {hasActiveFilters && (
+            <div className={styles.activeFiltersInline}>
+              <div className={styles.filterChips}>
+                {search && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setSearch('')}>
+                    Search: {search} <X size={12} />
+                  </button>
+                )}
+                {typeFilter && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setTypeFilter('')}>
+                    Type: {typeFilter} <X size={12} />
+                  </button>
+                )}
+                {genFilter && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setGenFilter(null)}>
+                    Gen {genFilter} <X size={12} />
+                  </button>
+                )}
+                {showFavorites && (
+                  <button type="button" className={styles.filterChipBtn} onClick={() => setViewMode('all')}>
+                    Favorites <X size={12} />
+                  </button>
+                )}
+              </div>
+              <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
+                Clear all
+              </button>
             </div>
-            <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
-              <X size={14} />
-              Clear filters
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* View Mode Toggle */}
@@ -239,12 +259,7 @@ export default function PokemonDex() {
         </div>
       )}
 
-      {/* Count */}
-      {!isInitialLoad && !error && (
-        <p className={styles.infoText}>
-          {totalCount} Pokémon {search ? `matching "${search}"` : ''}{genFilter ? ` · Gen ${genFilter}` : ''}
-        </p>
-      )}
+
 
       {/* Compare banner */}
       {isCompareMode && (
@@ -264,7 +279,8 @@ export default function PokemonDex() {
         </div>
       ) : error ? (
         <div className={styles.offlineBanner}>
-          Backend offline — unable to reach the API. Check the backend connection.
+          <p>Unable to load Pokémon data. Check the backend connection and try again.</p>
+          <Button variant="outline" size="sm" onClick={() => refetch()}>Retry</Button>
         </div>
       ) : (
         <div className={styles.pokemonGrid}>
@@ -284,8 +300,12 @@ export default function PokemonDex() {
       )}
 
       {!isInitialLoad && !error && pokemonList.length === 0 && (
-        <div className={styles.emptyText}>
-          No Pokémon found.
+        <div className={styles.emptyState}>
+          <p className={styles.emptyTitle}>No Pokémon found</p>
+          <p className={styles.emptyDesc}>Try adjusting your search, type, generation, or version filters.</p>
+          {hasActiveFilters && (
+            <Button variant="outline" size="sm" onClick={clearFilters}>Clear filters</Button>
+          )}
         </div>
       )}
 

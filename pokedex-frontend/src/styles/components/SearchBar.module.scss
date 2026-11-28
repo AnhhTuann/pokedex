@@ -15,9 +15,37 @@
 }
 
 .inputWrapper {
+  position: relative;
   width: 100%;
   flex: 2;
   min-width: 180px;
+
+  :global(input) {
+    padding-right: 40px !important;
+  }
+}
+
+.searchClearBtn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
 }
 
 .dropdownGroup {
