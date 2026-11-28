@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Brain, Search, X, HelpCircle, ShieldAlert } from 'lucide-react';
+import { Search, X, ShieldAlert, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Ability } from '../types';
 import { TYPE_COLORS, capitalizeSlug } from '../lib/utils';
@@ -17,153 +17,149 @@ const GET_ALL_ABILITIES = gql`
 `;
 
 const fmt = capitalizeSlug;
+const GEN_OPTIONS = [{ value: 'ALL', label: 'All Generations' }, ...Array.from({ length: 9 }, (_, i) => ({ value: String(i + 1), label: `Generation ${i + 1}` }))];
 
 export default function AbilityDex() {
   const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearch = useDebounce(searchTerm, 500);
-  const [genFilter, setGenFilter] = useState<number|string>('ALL');
-  const [selectedAbility, setSelectedAbility] = useState<Ability|null>(null);
+  const debouncedSearch = useDebounce(searchTerm, 400);
+  const [genFilter, setGenFilter] = useState('ALL');
+  const [selected, setSelected] = useState<Ability | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const limit = 30;
 
-
-  const limit = 24;
-  const queryGen = genFilter==='ALL' ? null : Number(genFilter);
-
-  const { data, loading, error, fetchMore } = useQuery<{getAllAbilities:{results:Ability[];totalCount:number}}>( GET_ALL_ABILITIES, {
-    variables: { gen:queryGen, limit, offset:0, search:debouncedSearch },
+  const queryGen = genFilter === 'ALL' ? null : Number(genFilter);
+  const { data, loading, error, fetchMore, refetch } = useQuery<{ getAllAbilities: { results: Ability[]; totalCount: number } }>(GET_ALL_ABILITIES, {
+    variables: { gen: queryGen, limit, offset: 0, search: debouncedSearch },
+    notifyOnNetworkStatusChange: true,
   });
 
   const list = data?.getAllAbilities?.results || [];
   const total = data?.getAllAbilities?.totalCount || 0;
   const hasMore = list.length > 0 && list.length < total;
+  const hasFilters = genFilter !== 'ALL' || !!searchTerm;
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setDrawerOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
+  }, [drawerOpen]);
 
   const loadMore = () => {
-    fetchMore({ variables:{ offset:list.length },
-      updateQuery:(prev,{fetchMoreResult})=>{
+    if (!hasMore || loading) return;
+    fetchMore({
+      variables: { offset: list.length },
+      updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
-        return { getAllAbilities:{ ...prev.getAllAbilities, results:[...prev.getAllAbilities.results,...fetchMoreResult.getAllAbilities.results] } };
-      }
+        return { getAllAbilities: { ...prev.getAllAbilities, results: [...prev.getAllAbilities.results, ...fetchMoreResult.getAllAbilities.results] } };
+      },
     });
   };
 
-  const genOptions = [
-    {value:'ALL',label:'All Generations'},
-    ...Array.from({length:7},(_,i)=>({value:i+3,label:`Generation ${i+3}`}))
-  ];
+  const clearAll = () => { setSearchTerm(''); setGenFilter('ALL'); };
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}><Brain className={styles.icon}/> Ability Dex</h1>
-        <p className={styles.desc}>Explore unique battle passive traits, hidden capabilities, and strategic benefits.</p>
-      </div>
-
-      <div className={styles.searchContainer}>
-        <Search className={styles.searchIcon} size={16}/>
-        <input className={styles.searchInput} type="text" placeholder="Search abilities..."
-          value={searchTerm} onChange={e=>setSearchTerm(e.target.value)}/>
-      </div>
-
-      <div className={styles.filterCard}>
-        <div className={styles.formGroup}>
-          <span className={styles.inputLabel}>Generation</span>
-          <div className={styles.selectWrapper}>
-            <select className={styles.selectField} value={genFilter} onChange={e=>setGenFilter(e.target.value)}>
-              {genOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
-          </div>
+      <header className={styles.header}>
+        <div>
+          <p className={styles.eyebrow}>Encyclopedia</p>
+          <h1 className={styles.title}>Ability Dex</h1>
+          <p className={styles.desc}>Explore Pokémon abilities, effects, and battle traits.</p>
         </div>
-      </div>
+        {!loading && !error && <div className={styles.countBadge}><span className={styles.countNum}>{total}</span><span className={styles.countLabel}>Abilities</span></div>}
+      </header>
 
-      {!loading && !error && <span className={styles.infoLabel}>{total} Abilities{genFilter!=='ALL'?` · Gen ${genFilter}`:''}</span>}
+      <section className={styles.toolbar} aria-label="Ability search and filters">
+        <div className={styles.searchWrap}>
+          <Search size={16} className={styles.searchIcon} aria-hidden="true" />
+          <input className={styles.searchInput} type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search abilities..." aria-label="Search abilities by name" />
+          {searchTerm && <button type="button" className={styles.searchClear} onClick={() => setSearchTerm('')} aria-label="Clear search"><X size={14} /></button>}
+        </div>
+        <div className={styles.filterGroup}>
+          <label className={styles.filterLabel} htmlFor="ability-gen">Generation</label>
+          <select id="ability-gen" className={styles.selectField} value={genFilter} onChange={e => setGenFilter(e.target.value)}>
+            {GEN_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+        </div>
+      </section>
+
+      <div className={styles.resultsBar}>
+        <div className={styles.resultsMeta}><SlidersHorizontal size={14} aria-hidden="true" /><span>{loading && list.length === 0 ? 'Loading abilities...' : `${total} result${total === 1 ? '' : 's'}`}</span></div>
+        {hasFilters && <button type="button" className={styles.resetBtn} onClick={clearAll}>Clear all</button>}
+      </div>
 
       {error ? (
-        <div style={{padding:20,borderRadius:12,background:'rgba(239,68,68,0.08)',border:'1px solid rgba(239,68,68,0.3)',color:'#ef4444',display:'flex',alignItems:'center',gap:12,fontWeight:700}}>
-          <ShieldAlert/> Backend offline — unable to reach the API. Check the backend connection.
+        <div className={styles.stateCard} role="alert">
+          <ShieldAlert size={20} />
+          <div><div className={styles.stateTitle}>Unable to load abilities</div><div className={styles.stateDesc}>Check the backend connection and try again.</div></div>
+          <button type="button" className={styles.retryBtn} onClick={() => refetch()}>Retry</button>
         </div>
-      ) : loading && list.length===0 ? (
-        <div className={styles.grid}>
-          {[...Array(12)].map((_,i)=><div key={i} style={{height:120,borderRadius:16,background:'rgba(255,255,255,0.03)',border:'1px solid var(--border-main)'}}/>)}
+      ) : loading && list.length === 0 ? (
+        <div className={styles.list}>{Array.from({ length: 8 }).map((_, i) => <div key={i} className={styles.skeletonCard} />)}</div>
+      ) : list.length === 0 ? (
+        <div className={styles.stateCard}>
+          <Search size={20} />
+          <div><div className={styles.stateTitle}>No abilities found</div><div className={styles.stateDesc}>Try adjusting your search or filters.</div></div>
+          {hasFilters && <button type="button" className={styles.retryBtn} onClick={clearAll}>Clear filters</button>}
         </div>
       ) : (
-        <div className={styles.grid}>
-          <AnimatePresence mode="popLayout">
-            {list.map((ab,i)=>(
-              <motion.div key={ab.id} className={styles.abilityCard}
-                initial={{opacity:0,y:15}} animate={{opacity:1,y:0}}
-                transition={{duration:0.3,delay:Math.min(i*0.03,0.4)}}
-                onClick={()=>{setSelectedAbility(ab);setDrawerOpen(true);}}>
-                <div className={styles.abilityName}>{fmt(ab.name)}</div>
-                <div className={styles.abilityDesc}>{ab.shortEffect||'No effect description available.'}</div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-          {!loading && list.length===0 && (
-            <div style={{gridColumn:'1/-1',textAlign:'center',padding:'60px 0',color:'var(--text-muted)'}}>
-              <HelpCircle size={48} style={{opacity:0.4,marginBottom:12}}/>
-              <h3 style={{fontWeight:800,color:'var(--text-secondary)'}}>No Abilities found.</h3>
-            </div>
-          )}
-        </div>
+        <>
+          <div className={styles.list}>
+            <AnimatePresence mode="popLayout">
+              {list.map((ab, i) => (
+                <motion.button key={ab.id} type="button" className={styles.abilityCard} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.15, delay: Math.min(i * 0.015, 0.2) }} onClick={() => { setSelected(ab); setDrawerOpen(true); }}>
+                  <div className={styles.cardMain}>
+                    <div className={styles.cardTop}>
+                      <h3 className={styles.abilityName}>{fmt(ab.name)}</h3>
+                      {ab.generation && <span className={styles.genPill}>Gen {ab.generation}</span>}
+                    </div>
+                    <p className={styles.abilityDesc}>{ab.shortEffect?.trim() || ab.flavorText?.trim() || 'No description available.'}</p>
+                  </div>
+                  <div className={styles.cardMeta}>
+                    {ab.pokemons?.length > 0 && <span className={styles.pokemonCount}>{ab.pokemons.length} Pokémon</span>}
+                    <ChevronRight size={16} className={styles.chevron} aria-hidden="true" />
+                  </div>
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </div>
+          {hasMore && <div className={styles.loadMoreWrap}><button type="button" className={styles.loadMoreBtn} onClick={loadMore} disabled={loading}>{loading ? 'Loading...' : 'Load more abilities'}</button></div>}
+        </>
       )}
 
-      {!loading && hasMore && (
-        <div className={styles.loadMoreContainer}>
-          <button className={styles.loadMoreBtn} onClick={loadMore}>Load More Abilities</button>
-        </div>
-      )}
-
-      {/* Drawer */}
       <AnimatePresence>
-        {drawerOpen && selectedAbility && (
+        {drawerOpen && selected && (
           <>
-            <motion.div className={styles.drawerOverlay} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setDrawerOpen(false)}/>
-            <motion.div className={styles.drawerSheet} initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',damping:26,stiffness:200}}>
+            <motion.div className={styles.drawerOverlay} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawerOpen(false)} />
+            <motion.aside className={styles.drawer} initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 28, stiffness: 260 }} role="dialog" aria-modal="true" aria-label={fmt(selected.name)}>
               <div className={styles.drawerHeader}>
                 <div>
-                  <div className={styles.drawerTitle}>{fmt(selectedAbility.name)}</div>
-                  <div className={styles.drawerSub}>Ability</div>
+                  <p className={styles.drawerEyebrow}>Ability</p>
+                  <h2 className={styles.drawerTitle}>{fmt(selected.name)}</h2>
+                  {selected.generation && <span className={styles.genPill}>Generation {selected.generation}</span>}
                 </div>
-                <button className={styles.closeBtn} onClick={()=>setDrawerOpen(false)}><X size={16}/></button>
+                <button type="button" className={styles.drawerClose} onClick={() => setDrawerOpen(false)} aria-label="Close ability details"><X size={18} /></button>
               </div>
               <div className={styles.drawerBody}>
-                {selectedAbility.generation && (
-                  <span className={styles.genChip}>Introduced in Generation {selectedAbility.generation}</span>
-                )}
-                {selectedAbility.flavorText?.trim() && (
+                {selected.flavorText?.trim() && <div className={styles.detailCard}><div className={styles.detailHead}>Game Description</div><p className={styles.detailText}>{selected.flavorText}</p></div>}
+                {selected.shortEffect?.trim() && <div className={styles.detailCard}><div className={styles.detailHead}>Effect</div><p className={styles.detailText}>{selected.shortEffect}</p></div>}
+                {selected.effect?.trim() && selected.effect.trim() !== selected.shortEffect?.trim() && <div className={styles.detailCard}><div className={styles.detailHead}>In-Depth Effect</div><p className={styles.detailText}>{selected.effect}</p></div>}
+                {selected.pokemons?.length > 0 && (
                   <div className={styles.detailCard}>
-                    <div className={styles.cardHead}>Game Description</div>
-                    <div className={styles.cardContent}>{selectedAbility.flavorText}</div>
-                  </div>
-                )}
-                {selectedAbility.shortEffect?.trim() && (
-                  <div className={styles.detailCard}>
-                    <div className={styles.cardHead}>Effect</div>
-                    <div className={styles.cardContent}>{selectedAbility.shortEffect}</div>
-                  </div>
-                )}
-                {selectedAbility.effect?.trim() && (
-                  <div className={styles.detailCard}>
-                    <div className={styles.cardHead}>In-Depth Effect</div>
-                    <div className={styles.cardContent}>{selectedAbility.effect}</div>
-                  </div>
-                )}
-                {selectedAbility.pokemons?.length > 0 && (
-                  <div>
-                    <div className={styles.sectionTitle}>Pokémon with this Ability ({selectedAbility.pokemons.length})</div>
-                    <div className={styles.pokemonList}>
-                      {selectedAbility.pokemons.map(p=>{
-                        const tc = TYPE_COLORS[p.types[0]?.toLowerCase()||'normal']||'#9ca3af';
+                    <div className={styles.detailHead}>Pokémon with this Ability ({selected.pokemons.length})</div>
+                    <div className={styles.pokemonGrid}>
+                      {selected.pokemons.map(p => {
+                        const tc = TYPE_COLORS[p.types[0]?.toLowerCase() || 'normal'] || '#9ca3af';
                         return (
-                          <div key={p.id} className={styles.pokemonCard} style={{background:`${tc}18`}}>
-                            <div className={styles.meta}>
-                              <span className={styles.id}>#{String(p.id).padStart(3,'0')}</span>
-                              <span className={styles.name}>{p.name}</span>
-                              <div className={styles.typesRow}>
-                                {p.types.map(t=><span key={t} className={styles.typeBadge} style={{background:TYPE_COLORS[t.toLowerCase()]||'#9ca3af'}}>{t}</span>)}
-                              </div>
+                          <div key={p.id} className={styles.pokemonRow}>
+                            <img src={p.image} alt={p.name} className={styles.pokemonSprite} loading="lazy" />
+                            <div className={styles.pokemonInfo}>
+                              <span className={styles.pokemonId}>#{String(p.id).padStart(3, '0')}</span>
+                              <span className={styles.pokemonName}>{p.name}</span>
+                              <div className={styles.typesRow}>{p.types.map(t => <span key={t} className={styles.typeDot} style={{ background: tc, opacity: t === p.types[0] ? 1 : 0.75 }} title={t} />)}</div>
                             </div>
-                            <img className={styles.sprite} src={p.image} alt={p.name}/>
                           </div>
                         );
                       })}
@@ -171,7 +167,7 @@ export default function AbilityDex() {
                   </div>
                 )}
               </div>
-            </motion.div>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>
