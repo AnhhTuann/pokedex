@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Heart } from "lucide-react";
+import { Heart, Check } from "lucide-react";
 import { Card } from "./common/Card";
 import { PokemonListItem } from "../types";
 import { useMyPokedex } from "../lib/MyPokedexContext";
@@ -46,22 +46,20 @@ export default function PokeCard({
     return () => { active = false; };
   }, [imageUrl, primaryType]);
 
-  const isMega =
-    !!pokemon.isMega ||
-    pokemon.name.toLowerCase().endsWith("-mega") ||
-    pokemon.name.toLowerCase().includes("-mega-");
-
-  const displayName =
-    pokemon.isMega && pokemon.name.startsWith("Mega ")
-      ? pokemon.name.replace("Mega ", "") + "-Mega"
-      : pokemon.name;
+  const isMega = !!pokemon.isMega || pokemon.name.toLowerCase().includes("-mega");
+  const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
+    ? pokemon.name.replace("Mega ", "") + "-Mega"
+    : pokemon.name;
+  const dexNumber = pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
+    ? pokemon.regionalNumber.toString().padStart(3, "0")
+    : formatSpeciesId(pokemon.speciesId || pokemon.id);
 
   return (
     <motion.div
       layoutId={`pokemon-card-${pokemon.id}`}
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22, delay: Math.min(index * 0.02, 0.2) }}
+      transition={{ duration: 0.2, delay: Math.min(index * 0.015, 0.18) }}
       className={styles.cardWrapper}
     >
       <Card
@@ -74,50 +72,49 @@ export default function PokeCard({
         )}
         style={{ "--type-accent": accent } as React.CSSProperties}
       >
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleFavorite(pokemon.id);
-          }}
-          className={cn(styles.favoriteBtn, isFav ? styles.isFavorite : styles.isNotFavorite)}
-          title={isFav ? "Remove from favorites" : "Add to favorites"}
-          aria-label={isFav ? `Remove ${displayName} from favorites` : `Add ${displayName} to favorites`}
-          aria-pressed={isFav}
-        >
-          <Heart size={15} fill={isFav ? "currentColor" : "none"} />
-        </button>
+        <div className={styles.topRow}>
+          <span className={styles.idText}>{dexNumber}</span>
+          <div className={styles.topActions}>
+            {isCompareMode && (
+              <span className={cn(styles.compareIndicator, isSelectedForCompare && styles.compareIndicatorActive)} aria-hidden="true">
+                {isSelectedForCompare && <Check size={12} strokeWidth={3} />}
+              </span>
+            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavorite(pokemon.id);
+              }}
+              className={cn(styles.favoriteBtn, isFav ? styles.isFavorite : styles.isNotFavorite)}
+              title={isFav ? "Remove from favorites" : "Add to favorites"}
+              aria-label={isFav ? `Remove ${displayName} from favorites` : `Add ${displayName} to favorites`}
+              aria-pressed={isFav}
+            >
+              <Heart size={14} fill={isFav ? "currentColor" : "none"} />
+            </button>
+          </div>
+        </div>
 
         <div className={styles.imageContainer}>
+          <div className={styles.pokeballMotif} aria-hidden="true" />
           <img
             src={imageUrl}
             alt={pokemon.name}
             loading="lazy"
-            width={96}
-            height={96}
+            width={112}
+            height={112}
             className={styles.pokemonImage}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = '/images/placeholder.png';
-            }}
+            onError={(e) => { (e.target as HTMLImageElement).src = '/images/placeholder.png'; }}
           />
           {isMega && <div className={styles.megaBadge}>Mega</div>}
         </div>
 
         <div className={styles.info}>
-          <p className={styles.idText}>
-            {pokemon.regionalNumber !== undefined && pokemon.regionalNumber !== null
-              ? pokemon.regionalNumber.toString().padStart(3, "0")
-              : formatSpeciesId(pokemon.speciesId || pokemon.id)}
-          </p>
           <h3 className={styles.nameText}>{displayName}</h3>
           {pokemon.category && <p className={styles.categoryText}>{pokemon.category}</p>}
-
           <div className={styles.typeGroup}>
             {pokemon.types.map((type) => (
-              <span
-                key={type}
-                className={styles.typeBadge}
-                style={getTypeBadgeStyle(type, isDark)}
-              >
+              <span key={type} className={styles.typeBadge} style={getTypeBadgeStyle(type, isDark)}>
                 {type}
               </span>
             ))}

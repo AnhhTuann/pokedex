@@ -3,6 +3,7 @@
 
 .cardWrapper {
   height: 100%;
+  min-width: 0;
 }
 
 .pokeCard {
@@ -10,18 +11,17 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   cursor: pointer;
-  padding: 16px 14px 14px;
+  padding: 12px;
   overflow: hidden;
   border-radius: var(--radius-lg);
   background: var(--bg-paper) !important;
   border: 1px solid var(--border-subtle) !important;
   box-shadow: var(--shadow-sm);
-  transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast, background-color $transition-fast;
+  transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
 
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     border-color: var(--border-main) !important;
   }
@@ -34,41 +34,69 @@
 
 .selectedCompare {
   border-color: color-mix(in srgb, var(--brand) 45%, var(--border-main)) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 18%, transparent), var(--shadow-sm) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 16%, transparent), var(--shadow-sm) !important;
 }
 
 .faded {
-  opacity: 0.55;
+  opacity: 0.58;
+  &:hover { opacity: 1; }
+}
 
-  &:hover {
-    opacity: 1;
-  }
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  min-height: 28px;
+}
+
+.idText {
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.topActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compareIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-main);
+  background: var(--bg-paper);
+  color: var(--brand-on);
+  @include flex-center;
+}
+
+.compareIndicatorActive {
+  background: var(--brand);
+  border-color: var(--brand);
 }
 
 .favoriteBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 3;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-subtle);
-  background: color-mix(in srgb, var(--bg-paper) 88%, transparent);
+  background: color-mix(in srgb, var(--bg-paper) 90%, transparent);
   color: var(--text-muted);
   cursor: pointer;
   @include flex-center;
-  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast, transform $transition-fast;
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
 
   &:hover {
     color: var(--brand-accent);
-    border-color: color-mix(in srgb, var(--brand) 25%, var(--border-main));
+    border-color: color-mix(in srgb, var(--brand) 20%, var(--border-main));
     background: var(--bg-paper);
-  }
-
-  &:active {
-    transform: scale(0.96);
   }
 }
 
@@ -78,97 +106,123 @@
   border-color: color-mix(in srgb, var(--brand) 22%, var(--border-main));
 }
 
-.isNotFavorite {
-  // inherits base
-}
+.isNotFavorite {}
 
 .imageContainer {
   position: relative;
-  width: 112px;
-  height: 112px;
-  border-radius: 50%;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 168px;
+  border-radius: calc(var(--radius-lg) - 4px);
   @include flex-center;
-  margin: 8px 0 14px;
-  background: color-mix(in srgb, var(--type-accent, var(--pastel-blue)) 14%, var(--bg-elevated));
-  border: 1px solid color-mix(in srgb, var(--type-accent, var(--border-main)) 18%, var(--border-subtle));
-  transition: transform $transition-fast, background-color $transition-fast;
+  margin-bottom: 12px;
+  background: color-mix(in srgb, var(--type-accent, var(--pastel-blue)) 12%, var(--bg-elevated));
+  border: 1px solid color-mix(in srgb, var(--type-accent, var(--border-main)) 12%, var(--border-subtle));
+  overflow: hidden;
+}
 
-  .pokeCard:hover & {
-    transform: scale(1.03);
+.pokeballMotif {
+  position: absolute;
+  right: -18px;
+  bottom: -18px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 10px solid color-mix(in srgb, var(--type-accent, var(--text-muted)) 8%, transparent);
+  opacity: 0.45;
+  pointer-events: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: calc(50% - 5px);
+    height: 10px;
+    background: color-mix(in srgb, var(--type-accent, var(--text-muted)) 8%, transparent);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 14px);
+    top: calc(50% - 14px);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--bg-paper) 55%, transparent);
+    border: 8px solid color-mix(in srgb, var(--type-accent, var(--text-muted)) 8%, transparent);
   }
 }
 
 .pokemonImage {
-  width: 96px;
-  height: 96px;
+  position: relative;
+  z-index: 1;
+  width: min(76%, 132px);
+  height: min(76%, 132px);
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
   transition: transform $transition-fast;
   image-rendering: auto;
 
   .pokeCard:hover & {
-    transform: scale(1.04);
+    transform: scale(1.045);
   }
 }
 
 .megaBadge {
   position: absolute;
-  bottom: -2px;
-  right: -6px;
-  background: var(--pastel-lavender);
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  background: color-mix(in srgb, var(--pastel-lavender) 85%, var(--bg-paper));
   color: var(--collectible-mega-ink);
   font-size: 10px;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: var(--radius-full);
-  letter-spacing: 0.01em;
-  border: 1px solid color-mix(in srgb, var(--collectible-mega-ink) 12%, transparent);
-  z-index: 2;
+  border: 1px solid color-mix(in srgb, var(--collectible-mega-ink) 10%, transparent);
+  line-height: 1;
 }
 
 .info {
-  width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
   margin-top: auto;
-}
-
-.idText {
-  font-family: $font-mono;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
-  margin-bottom: 2px;
 }
 
 .nameText {
   font-family: $font-display;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   text-transform: capitalize;
-  margin: 0 0 2px;
+  margin: 0;
   color: var(--text-primary);
   letter-spacing: -0.02em;
   line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .categoryText {
   font-size: 12px;
   color: var(--text-secondary);
-  margin-bottom: 8px;
   line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  margin: 0;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 1.35em;
 }
 
 .typeGroup {
   display: flex;
-  justify-content: center;
   gap: 6px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .typeBadge {
@@ -176,22 +230,21 @@
   font-weight: 700;
   text-transform: capitalize;
   letter-spacing: 0.01em;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: var(--radius-full);
-  line-height: 1.3;
+  line-height: 1.25;
   border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .pokeCard { padding: 10px; }
+  .imageContainer { max-height: 148px; margin-bottom: 10px; }
+  .nameText { font-size: 14px; }
+  .typeBadge { font-size: 10px; padding: 3px 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pokeCard,
-  .imageContainer,
-  .pokemonImage,
-  .favoriteBtn {
-    transition: none !important;
-  }
-  .pokeCard:hover,
-  .pokeCard:hover .imageContainer,
-  .pokeCard:hover .pokemonImage {
-    transform: none !important;
-  }
+  .pokeCard, .pokemonImage, .favoriteBtn { transition: none !important; }
+  .pokeCard:hover, .pokeCard:hover .pokemonImage { transform: none !important; }
 }
