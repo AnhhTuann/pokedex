@@ -25,3 +25,7 @@
 ## Phase 8-10 - QA/Docs
 - `npm run lint` and `npm run build` pass in `pokedex-frontend`.
 - Browser visual QA/screenshots not captured in this environment; must be completed before merge.
+
+## Scope of this pass
+
+Preserve the existing V2 commit sequence. Land independent changes for the persistent shell, reusable controls, route layouts and verification. Gate publication on observed build and browser results. Authorized account and CMS write testing and remaining design debt are recorded in the route and regression reports.

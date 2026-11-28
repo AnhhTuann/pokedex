@@ -1,30 +1,29 @@
-# Final Report - Elite Pokédex V2 Redesign (Work in Progress)
+# Elite Pokédex V2 implementation report
 
-## Executive summary
-- Implemented a new V2 design foundation: semantic tokens, Premium Charcoal dark / Warm Porcelain light / Crimson brand / Pastel accent system, neutralized neon-glass mixins.
-- Redesigned app shell: grouped sidebar, compact header, responsive drawer, accessible controls, restyled version modal.
-- Redesigned shared primitives: Button, Card, InputField, SearchBar.
-- Redesigned flagship Pokemon card/grid/search experience for better consistency and reduced visual noise.
-- Updated CompareModal chart styling to token-based colors.
-- Broad SCSS normalization pass applied across page modules; many pages still need dedicated page-by-page visual polish.
+**Bản Draft sẵn sàng để review giao diện. Chưa đạt Definition of Done của toàn bộ V2.**
 
-## What was not fully completed
-- Full pixel-perfect redesign of every route/component as specified in master prompt.
-- Browser screenshot baseline/final capture and visual QA.
-- Full accessibility/keyboard/browser regression testing.
-- Dedicated redesign passes for all secondary pages, modals, admin/editor, and complex tool UIs.
-- Performance baseline/after measurements.
+The redesign builds on the existing [Draft PR #6](https://github.com/AnhhTuann/pokedex/pull/6). This pass covers the persistent application shell, Pokédex, shared controls and dialogs, six secondary encyclopedias, three trainer tools, walkthrough, account and CMS presentation. The previous Move, Ability and Item Dex implementations remain the starting point for those surfaces.
 
-## Safety
-- No database schema/migration/seed/destructive commands run.
-- No auth/JWT/permission logic changes intended.
-- No GraphQL contract changes.
-- No battle calculation/type effectiveness logic changes.
-- No production deployment. No merge to main.
+- The shell has grouped navigation, an accessible mobile drawer, a neutral header with a contextual game swatch, and persistent theme and desktop navigation state. Most secondary routes load on demand with an inline loading status.
+- Pokémon cards use semantic type stages, lazy artwork with a genuine fallback, and independent keyboard actions. The detail dialog reserves the full tab height on a phone.
+- The remaining encyclopedia and trainer pages adopt the common heading scale, shared feedback colors and smaller or better labeled controls. Walkthrough chapters collapse on mobile. Login, registration and profile use a shared account design.
+- Editor and updater visibility follow the existing admin check. Backend permissions remain the responsibility of the server.
+- The Vite configuration no longer defines an unused client-side secret injection.
 
-## Verification
-- `pokedex-frontend/npm run lint`: PASS
-- `pokedex-frontend/npm run build`: PASS
+## Evidence
 
-## Recommendation
-**Not ready for merge**. Ready for **design/system review and follow-up implementation**. Requires browser visual QA, route-by-route polish, and regression testing before merge consideration.
+- [Design system](../design/DESIGN_SYSTEM.md)
+- [Baseline audit](UI_UX_AUDIT.md)
+- [Route coverage](ROUTE_COVERAGE.md)
+- [Visual QA](VISUAL_QA_REPORT.md)
+- [Regression results](REGRESSION_REPORT.md)
+
+Vite reported a decrease in the initial JavaScript entry from 1,644.54 kB to about 1,012.61 kB minified, or 503.51 kB to about 310.20 kB gzip. The CMS editor is a separate 445 kB chunk. Browser performance profiling remains pending.
+
+## Publication and safety
+
+The V2 branch is the only Git target for this work. Main remained on its existing commit and its unrelated working-tree changes were preserved. No deployment or merge command was issued. No database write was used for visual QA. The public browser suite used the existing local Vite proxy and backend, and destructive confirmation dialogs were dismissed.
+
+## Owner review
+
+Visual review can proceed using the public route captures. Merge consideration requires closing the remaining contrast and legacy interaction issues, completing state coverage for the encyclopedia and trainer tools, and running authenticated account and CMS workflows against an authorized disposable environment. The six-slot team and calculator forms retain their existing workflow and persistence model.

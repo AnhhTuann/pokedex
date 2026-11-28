@@ -59,3 +59,15 @@ Success/Warning/Error/Info use theme-aware semantic tokens with `*-bg` and `*-bo
 - Shell: `components/MainLayout` with grouped sidebar, compact header, theme/version/shiny/game/user controls.
 - Pokemon: `components/PokeCard`, detail/compare/moves modals, SearchBar.
 - Use semantic tokens, visible focus, accessible labels, consistent states.
+
+## Current implementation
+
+The global shell owns page gutters. Most content pages use the shared display heading at 24–32 px and a 14 px description. Inter handles body copy with Be Vietnam Pro and system fallbacks. Plus Jakarta Sans handles display text and statistics use the monospace stack.
+
+Warm porcelain uses a #F7F6F3 canvas and #FFFFFF surface. Premium charcoal uses #101114 and #181A20. Crimson actions use #B42343 with white text, hover #C72B4B and pressed #991B36. Selected states pair a soft crimson surface with the theme-aware interactive text token. Pokémon type accents remain contextual on badge and artwork surfaces. Game colors appear in swatches and selected game controls.
+
+The 4 px spacing scale drives account panels, headings and toolbars. Small controls use 6–8 px radii, cards 12 px and dialogs 16 px. Shell layout uses a 240 px sidebar and 64 px header. The native navigation drawer replaces the desktop sidebar at 768 px and below.
+
+The HTML bootstrap applies the persisted theme before loading React. Motion receives the OS reduced-motion preference, complemented by the stylesheet's reduced-motion rules. Card artwork uses CSS hover feedback and a fixed stage with the existing asset URL.
+
+Shared controls and page-specific exceptions are listed in [Component guidelines](COMPONENT_GUIDELINES.md).

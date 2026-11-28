@@ -19,3 +19,9 @@
 - Loading: skeletons with same dimensions where possible.
 - Empty: clear message, neutral dashed/surface container.
 - Error: status-error bg/border/text, not color-only when actionable.
+
+## Form and dialog patterns
+
+Use the shared `InputField` label with password-manager autocomplete values for authentication. Field errors are linked to input descriptions. Error messages that apply to an entire form use an alert. Use a native select for ordinary single-choice filters and a persistent label or accessible name.
+
+The shell uses native modal dialogs for the navigation drawer and game-version picker. Legacy overlay components that use Motion share `useDialogFocus` for Escape, Tab, scroll lock and focus restoration. Forward the dialog ref and give the dialog a name and a programmatically focusable container.

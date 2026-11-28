@@ -18,3 +18,9 @@ Defined in `TYPE_TOKENS` (`src/lib/utils.ts`): accent, ink, softDark/Light, bord
 
 ## Legacy aliases
 `--primary`, `--secondary`, `--accent-*`, `--glow-*` kept for compatibility; `--glow-*` neutralized to none.
+
+## Action and contextual usage
+
+Use `--action-bg`, `--action-hover`, `--action-pressed` and `--brand-on` for filled primary actions. Use `--interactive-text` on neutral and soft selected surfaces. `--danger-bg` supports white foreground text on destructive actions. Status foregrounds pair with their corresponding soft backgrounds.
+
+Game-version values in `src/App.tsx` and Pokémon type values in `src/lib/utils.ts` represent domain colors. These literals drive badges, chart categories and contextual swatches. They are legitimate palette definitions. Remaining legacy literals in route modules, including some tracker, calculator, editor and walkthrough states, require review and are tracked in the final report.
