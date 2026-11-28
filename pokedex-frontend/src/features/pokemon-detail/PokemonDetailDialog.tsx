@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Heart, Zap, Scale, Ruler, Sparkles } from 'lucide-react';
+import { X, Heart, Ruler, Scale, Sparkles, ChevronRight } from 'lucide-react';
 import { usePokemonDetail } from '../../hooks/usePokemon';
 import { useTeamStore } from '../../lib/teamStore';
-import { formatSpeciesId, TYPE_COLORS, cn, getTypeBadgeStyle } from '../../lib/utils';
+import { formatSpeciesId, cn, getTypeBadgeStyle } from '../../lib/utils';
 import { StatsSection } from './StatsSection';
 import { EvolutionChain } from './EvolutionChain';
 import { PokedexVoice } from './PokedexVoice';
@@ -18,285 +18,290 @@ interface PokemonDetailDialogProps {
   onSelect?: (id: number) => void;
 }
 
-function getBackgroundColor(type: string | undefined): string {
-  const typeLower = (type || "normal").toLowerCase();
-  switch (typeLower) {
-    case "grass": return "#c3deb0";
-    case "fire": return "#f2ad7c";
-    case "water": return "#6cbce5";
-    case "bug": return "#d2e59b";
-    case "normal": return "#e2e2df";
-    case "poison": return "#dbb5e7";
-    case "electric": return "#fdf0a6";
-    case "ground": return "#ecd0a1";
-    case "fairy": return "#f6c4d7";
-    case "fighting": return "#dfa1a1";
-    case "psychic": return "#f8b8cc";
-    case "rock": return "#dcd3bd";
-    case "steel": return "#cfd8dc";
-    case "ice": return "#b2ebf2";
-    case "ghost": return "#c2b7e0";
-    case "dragon": return "#9fa8da";
-    case "dark": return "#bcaaa4";
-    case "flying": return "#c5cae9";
-    default: return "#f5f5f7";
-  }
-}
+type SectionId = 'overview' | 'stats' | 'evolution' | 'abilities' | 'moves' | 'matchups' | 'locations' | 'forms';
 
 export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, onClose, onSelect }) => {
   const { selectedVersion, team, addMember, removeMember, isShinyMode } = useTeamStore();
   const [showShiny, setShowShiny] = useState(isShinyMode);
+  const [activeSection, setActiveSection] = useState<SectionId>('overview');
   const { mode } = useColorMode();
   const isDark = mode === 'dark';
-  
-  const { pokemon: p, loading } = usePokemonDetail(id, selectedVersion);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const lastActiveRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    setShowShiny(isShinyMode);
-  }, [id, isShinyMode]);
+  const { pokemon: p, loading, error } = usePokemonDetail(id, selectedVersion);
+
+  useEffect(() => { setShowShiny(isShinyMode); }, [id, isShinyMode]);
+  useEffect(() => { setActiveSection('overview'); }, [id]);
 
   useEffect(() => {
     if (!id) return;
+    lastActiveRef.current = document.activeElement as HTMLElement;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') { e.preventDefault(); onClose(); }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     };
     window.addEventListener('keydown', onKeyDown);
+    const t = setTimeout(() => closeBtnRef.current?.focus(), 0);
     return () => {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener('keydown', onKeyDown);
+      clearTimeout(t);
+      lastActiveRef.current?.focus?.();
     };
   }, [id, onClose]);
 
-  if (!id) return null;
+  const matchupGroups = useMemo(() => {
+    const list = p?.matchups || [];
+    return {
+      weaknesses: list.filter((m: any) => m.multiplier > 1).sort((a: any, b: any) => b.multiplier - a.multiplier),
+      resistances: list.filter((m: any) => m.multiplier > 0 && m.multiplier < 1).sort((a: any, b: any) => a.multiplier - b.multiplier),
+      immunities: list.filter((m: any) => m.multiplier === 0),
+    };
+  }, [p]);
 
+  if (!id) return null;
   const inTeam = team.some(m => m.id === id);
-  const accentColor = p ? (TYPE_COLORS[p.types[0]] || '#6366f1') : '#6366f1';
-  const primaryType = p?.types?.[0] || "normal";
-  const detailBgColor = getBackgroundColor(primaryType);
-  const isMega = p?.name.toLowerCase().includes('mega') || p?.category?.toLowerCase().includes('mega');
+  const primaryType = p?.types?.[0] || 'normal';
+  const displayImage = showShiny && p?.shinyImage ? p.shinyImage : p?.image;
+  const hasForms = (p?.megaEvolutions?.length || 0) + (p?.alternativeForms?.length || 0) > 0;
+  const hasLocations = (p?.locations?.length || 0) > 0 || (p?.gameVersions?.length || 0) > 0;
+
+  const sections: { id: SectionId; label: string; show: boolean }[] = [
+    { id: 'overview', label: 'Overview', show: true },
+    { id: 'stats', label: 'Stats', show: !!p?.stats?.length },
+    { id: 'evolution', label: 'Evolution', show: (p?.evolutions?.length || 0) > 0 },
+    { id: 'abilities', label: 'Abilities', show: (p?.abilities?.length || 0) > 0 },
+    { id: 'moves', label: 'Moves', show: (p?.moves?.length || 0) > 0 },
+    { id: 'matchups', label: 'Matchups', show: (p?.matchups?.length || 0) > 0 },
+    { id: 'locations', label: 'Locations', show: hasLocations },
+    { id: 'forms', label: 'Forms', show: hasForms },
+  ];
+  const visibleSections = sections.filter(s => s.show);
 
   return (
     <AnimatePresence>
       {id && (
         <div className={styles.overlay} onClick={onClose}>
-          {loading ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className={styles.dialog}
-              onClick={(e) => e.stopPropagation()}
-              style={{ justifyContent: 'center', alignItems: 'center' }}
-            >
-              <div className={styles.loader}>
-                Loading Database...
+          <motion.div
+            ref={dialogRef}
+            initial={false}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className={styles.dialog}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={p ? `${p.name} details` : 'Pokemon details'}
+          >
+            {loading ? (
+              <div className={styles.loadingState} aria-busy="true">
+                <div className={styles.loader}>Loading Pokémon details...</div>
               </div>
-            </motion.div>
-          ) : (
-            p && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                className={styles.dialog}
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-                aria-label={p ? `${p.name} details` : 'Pokemon details'}
-              >
-                {/* Header / Image Section */}
-                <div 
-                  className={styles.leftPanel}
-                  style={{ 
-                    background: isDark 
-                      ? `radial-gradient(circle at 50% 45%, ${accentColor}3d 0%, rgba(15, 23, 42, 0.35) 60%, rgba(8, 9, 15, 0.95) 100%)` 
-                      : `linear-gradient(135deg, ${detailBgColor} 0%, ${detailBgColor}dd 100%)`
-                  }}
-                >
-                  {/* Decorative background circle */}
-                  <div 
-                    className={styles.bgCircle}
-                    style={{ backgroundColor: `${accentColor}${isDark ? '20' : '30'}` }}
-                  />
-
-                  <div className={styles.headerActions}>
-                    <span className={styles.speciesId} style={!isDark ? { color: '#5c6c94' } : undefined}>
-                      {formatSpeciesId(p.speciesId || id)}
-                    </span>
-                    <div className={styles.buttons}>
-                      <button 
+            ) : error || !p ? (
+              <div className={styles.loadingState} style={{ position: 'relative' }}>
+                <button type="button" onClick={onClose} className={styles.iconBtn} aria-label="Close details" style={{ position: 'absolute', top: 16, right: 16 }}>
+                  <X size={18} />
+                </button>
+                <div className={styles.loader}>{error ? 'Unable to load Pokémon details.' : 'Pokémon not found.'}</div>
+              </div>
+            ) : (
+              <>
+                <aside className={styles.leftPanel} data-type={primaryType.toLowerCase()}>
+                  <div className={styles.leftTop}>
+                    <span className={styles.speciesId}>{formatSpeciesId(p.speciesId || id)}</span>
+                    <div className={styles.headerActions}>
+                      <button
+                        type="button"
                         onClick={() => setShowShiny(!showShiny)}
-                        className={`${styles.actionBtn} ${showShiny ? styles.shinyActive : ''}`}
-                        title="Toggle Shiny View"
-                        style={!isDark ? { color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' } : undefined}
+                        className={cn(styles.iconBtn, showShiny && styles.iconBtnActive)}
+                        aria-label={showShiny ? 'Show normal artwork' : 'Show shiny artwork'}
+                        aria-pressed={showShiny}
+                        title={showShiny ? 'Show normal' : 'Show shiny'}
                       >
                         <Sparkles size={16} />
                       </button>
-                      <button 
-                        onClick={onClose} 
-                        className={styles.actionBtn} 
-                        title="Close Dialog"
-                        style={!isDark ? { color: '#141926', borderColor: 'rgba(20, 25, 38, 0.15)' } : undefined}
-                      >
-                        <X size={20} />
+                      <button ref={closeBtnRef} type="button" onClick={onClose} className={styles.iconBtn} aria-label="Close details">
+                        <X size={18} />
                       </button>
                     </div>
                   </div>
 
-                  <div className={styles.heroContent}>
-                    <motion.div
-                      key={showShiny ? 'shiny' : 'default'}
-                      initial={{ opacity: 0, rotate: -10, scale: 0.7 }}
-                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                      transition={{ type: "spring", bounce: 0.5, duration: 0.6 }}
-                      className={styles.imageWrapper}
-                    >
-                      {isMega && (
-                        <motion.div 
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                          className={styles.megaRing}
-                          style={{ borderColor: accentColor }}
-                        />
-                      )}
+                  <div className={styles.hero}>
+                    <div className={styles.artStage}>
+                      <div className={styles.artGlow} />
                       <img
-                        src={showShiny && p.shinyImage ? p.shinyImage : p.image}
+                        src={displayImage}
                         alt={p.name}
                         className={styles.pokemonImage}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/images/placeholder.png';
-                        }}
+                        onError={(e) => { const img = e.target as HTMLImageElement; img.onerror = null; img.style.opacity = '0'; }}
                       />
-                    </motion.div>
-
-                    <div className={styles.nameBlock}>
-                      <h2 className={styles.pokemonName} style={!isDark ? { color: '#141926' } : undefined}>
-                        {p.name}
-                      </h2>
+                    </div>
+                    <div className={styles.identity}>
+                      <p className={styles.categoryText}>{p.category || 'Pokémon'}</p>
+                      <h2 className={styles.pokemonName}>{p.name}</h2>
                       <div className={styles.typeContainer}>
-                        {p.types.map(t => (
-                          <span 
-                            key={t}
-                            className={styles.typeBadge}
-                            style={getTypeBadgeStyle(t, isDark)}
-                          >
-                            {t}
-                          </span>
+                        {p.types.map((t: string) => (
+                          <span key={t} className={styles.typeBadge} style={getTypeBadgeStyle(t, isDark)}>{t}</span>
                         ))}
                       </div>
-                      {p.category && (
-                        <p className={styles.categoryText} style={!isDark ? { color: '#3e4a68' } : undefined}>
-                          {p.category}
-                        </p>
-                      )}
                     </div>
                   </div>
 
+                  <div className={styles.quickFacts}>
+                    <div className={styles.factItem}><Ruler size={14} /><span>{(p.height / 10).toFixed(1)} m</span></div>
+                    <div className={styles.factItem}><Scale size={14} /><span>{(p.weight / 10).toFixed(1)} kg</span></div>
+                  </div>
+
                   <div className={styles.teamBtnWrapper}>
-                    <Button
-                      variant={inTeam ? 'outline' : 'primary'}
-                      size="lg"
-                      onClick={() => inTeam ? removeMember(id) : addMember(p)}
-                      style={{ width: '100%' }}
-                    >
+                    <Button variant={inTeam ? 'outline' : 'primary'} size="lg" onClick={() => inTeam ? removeMember(id) : addMember(p)} style={{ width: '100%' }}>
                       <Heart size={16} fill={inTeam ? 'currentColor' : 'none'} />
                       {inTeam ? 'Remove from Team' : 'Add to Team'}
                     </Button>
                   </div>
-                </div>
+                </aside>
 
-                {/* Scrollable Content Section */}
-                <div className={styles.rightPanel}>
-                  {/* Physical Traits */}
-                  <div className={styles.traitsGrid}>
-                    <div className={styles.traitCard}>
-                      <Ruler size={16} className={`${styles.traitIcon} ${styles.heightIcon}`} />
-                      <span className={styles.traitLabel}>Height</span>
-                      <span className={styles.traitValue}>{(p.height / 10).toFixed(1)} m</span>
-                    </div>
-                    <div className={styles.traitCard}>
-                      <Scale size={16} className={`${styles.traitIcon} ${styles.weightIcon}`} />
-                      <span className={styles.traitLabel}>Weight</span>
-                      <span className={styles.traitValue}>{(p.weight / 10).toFixed(1)} kg</span>
-                    </div>
-                    <div className={styles.traitCard}>
-                      <Zap size={16} className={`${styles.traitIcon} ${styles.abilityIcon}`} />
-                      <span className={styles.traitLabel}>Abilities</span>
-                      <div className={styles.abilitiesList}>
-                        {p.abilities.map(a => (
-                          <span key={a} className={styles.abilityText}>
-                            {a.replace('-', ' ')}
-                          </span>
-                        ))}
+                <section className={styles.rightPanel}>
+                  <nav className={styles.sectionNav} aria-label="Pokemon detail sections">
+                    {visibleSections.map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        className={cn(styles.sectionTab, activeSection === s.id && styles.sectionTabActive)}
+                        onClick={() => setActiveSection(s.id)}
+                        aria-current={activeSection === s.id ? 'true' : undefined}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </nav>
+
+                  <div className={styles.sectionContent}>
+                    {activeSection === 'overview' && (
+                      <div className={styles.sectionStack}>
+                        <PokedexVoice description={p.description} accentColor="var(--brand)" cry={p.cry} />
+                        <div className={styles.infoGrid}>
+                          <div className={styles.infoCard}><span className={styles.infoLabel}>Height</span><span className={styles.infoValue}>{(p.height / 10).toFixed(1)} m</span></div>
+                          <div className={styles.infoCard}><span className={styles.infoLabel}>Weight</span><span className={styles.infoValue}>{(p.weight / 10).toFixed(1)} kg</span></div>
+                          <div className={styles.infoCard}><span className={styles.infoLabel}>Base Stat Total</span><span className={styles.infoValue}>{p.stats?.reduce((a: number, s: any) => a + s.value, 0) || 0}</span></div>
+                        </div>
+                        <div className={styles.panelCard}>
+                          <h3 className={styles.panelTitle}>Abilities</h3>
+                          <div className={styles.abilitiesList}>
+                            {(p.abilities || []).map((a: string) => (
+                              <span key={a} className={styles.abilityChip}>{a.replace(/-/g, ' ')}</span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    )}
 
-                  <PokedexVoice description={p.description} accentColor={accentColor} cry={p.cry} />
+                    {activeSection === 'stats' && <StatsSection stats={p.stats || []} />}
 
-                  {/* Base Stats */}
-                  <StatsSection stats={p.stats} />
-                  
-                  {/* Type Matchups */}
-                  <div className={styles.matchupsSection}>
-                    <h4 className={styles.sectionTitle}>
-                      Matchups
-                    </h4>
-                    <div className={styles.matchupsList}>
-                      {p.matchups.filter(m => m.multiplier !== 1).map(m => (
-                        <span 
-                          key={m.type}
-                          className={`${styles.matchupBadge} ${m.multiplier > 1 ? styles.weak : styles.strong}`}
-                        >
-                          {m.type} {m.multiplier}x
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Evolution Chain */}
-                  <EvolutionChain evolutions={p.evolutions} currentId={p.id} onSelect={onSelect || (() => {})} />
+                    {activeSection === 'evolution' && (
+                      <div className={styles.sectionStack}>
+                        {(p.evolutions?.length || 0) <= 1 ? (
+                          <div className={styles.panelCard}><p className={styles.mutedText}>This Pokémon does not evolve.</p></div>
+                        ) : (
+                          <EvolutionChain evolutions={p.evolutions} currentId={p.id} onSelect={onSelect || (() => {})} />
+                        )}
+                      </div>
+                    )}
 
-                  {/* Varieties (Mega/Form) */}
-                  {(p.megaEvolutions?.length > 0 || p.alternativeForms?.length > 0) && (
-                    <div className={styles.formsSection}>
-                      <h4 className={styles.sectionTitle}>
-                        Forms & Megas
-                      </h4>
-                      <div className={styles.formsGrid}>
-                        {[...(p.megaEvolutions || []), ...(p.alternativeForms || [])].map(form => (
-                          <motion.button
-                            key={form.id}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => onSelect?.(form.id)}
-                            className={styles.formCard}
-                          >
-                            <div className={styles.formIconBg}>
+                    {activeSection === 'abilities' && (
+                      <div className={styles.panelCard}>
+                        <h3 className={styles.panelTitle}>Abilities</h3>
+                        <div className={styles.abilityCards}>
+                          {(p.abilities || []).map((a: string) => (
+                            <div key={a} className={styles.abilityCard}>
+                              <div className={styles.abilityName}>{a.replace(/-/g, ' ')}</div>
+                              <p className={styles.mutedText}>Ability details are shown based on available game data.</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeSection === 'moves' && <MoveList moves={p.moves || []} />}
+
+                    {activeSection === 'matchups' && (
+                      <div className={styles.sectionStack}>
+                        <div className={styles.panelCard}>
+                          <h3 className={styles.panelTitle}>Weaknesses</h3>
+                          <div className={styles.matchupsList}>
+                            {matchupGroups.weaknesses.length ? matchupGroups.weaknesses.map((m: any) => (
+                              <span key={m.type} className={cn(styles.matchupBadge, styles.matchupWeak)}>{m.type} <strong>{m.multiplier}×</strong></span>
+                            )) : <span className={styles.mutedText}>No weaknesses.</span>}
+                          </div>
+                        </div>
+                        <div className={styles.panelCard}>
+                          <h3 className={styles.panelTitle}>Resistances</h3>
+                          <div className={styles.matchupsList}>
+                            {matchupGroups.resistances.length ? matchupGroups.resistances.map((m: any) => (
+                              <span key={m.type} className={cn(styles.matchupBadge, styles.matchupResist)}>{m.type} <strong>{m.multiplier}×</strong></span>
+                            )) : <span className={styles.mutedText}>No resistances.</span>}
+                          </div>
+                        </div>
+                        <div className={styles.panelCard}>
+                          <h3 className={styles.panelTitle}>Immunities</h3>
+                          <div className={styles.matchupsList}>
+                            {matchupGroups.immunities.length ? matchupGroups.immunities.map((m: any) => (
+                              <span key={m.type} className={cn(styles.matchupBadge, styles.matchupImmune)}>{m.type} <strong>0×</strong></span>
+                            )) : <span className={styles.mutedText}>No immunities.</span>}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeSection === 'locations' && (
+                      <div className={styles.panelCard}>
+                        <h3 className={styles.panelTitle}>Locations</h3>
+                        {selectedVersion && <p className={styles.mutedText} style={{ marginBottom: 12 }}>Version context: <strong>{selectedVersion.replace(/-/g, ' ')}</strong></p>}
+                        {p.locations?.length ? (
+                          <div className={styles.locationList}>
+                            {p.locations.map((loc: string) => (
+                              <span key={loc} className={styles.locationChip}>{loc.replace(/-/g, ' ')}</span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className={styles.mutedText}>No location data available for this Pokémon in the selected version context.</p>
+                        )}
+                      </div>
+                    )}
+
+                    {activeSection === 'forms' && hasForms && (
+                      <div className={styles.panelCard}>
+                        <h3 className={styles.panelTitle}>Forms & Variants</h3>
+                        <div className={styles.formsGrid}>
+                          {[...(p.megaEvolutions || []), ...(p.alternativeForms || [])].map((form: any) => (
+                            <button key={form.id} type="button" className={styles.formCard} onClick={() => onSelect?.(form.id)}>
                               <img src={form.image} alt={form.name} className={styles.formIcon} />
-                            </div>
-                            <div>
-                              <p className={styles.formLabel}>
-                                {form.isMega ? 'Mega Form' : 'Alt Form'}
-                              </p>
-                              <p className={styles.formName}>
-                                {form.name.replace('-', ' ')}
-                              </p>
-                            </div>
-                          </motion.button>
-                        ))}
+                              <div className={styles.formMeta}>
+                                <span className={styles.formLabel}>{form.isMega ? 'Mega' : 'Form'}</span>
+                                <span className={styles.formName}>{form.name.replace(/-/g, ' ')}</span>
+                              </div>
+                              <ChevronRight size={16} className={styles.formArrow} />
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-
-                  <MoveList moves={p.moves} />
-                </div>
-              </motion.div>
-            )
-          )}
+                    )}
+                  </div>
+                </section>
+              </>
+            )}
+          </motion.div>
         </div>
       )}
     </AnimatePresence>
