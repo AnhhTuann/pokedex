@@ -1,34 +1,25 @@
+@use "../page-heading" as heading;
 @import "../variables";
 
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 0;
 
-  @media (max-width: $breakpoint-sm) {
-    padding: 24px 16px;
-  }
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 40px;
+  text-align: left;
+  margin-bottom: var(--space-6);
 
   .title {
-    font-size: 36px;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    text-transform: uppercase;
+    @include heading.title;
     margin-bottom: 8px;
   }
 
   .subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-    font-weight: 500;
-    max-width: 480px;
-    margin: 0 auto;
+    @include heading.description;
+    margin: 8px 0 16px;
   }
 }
 
@@ -87,7 +78,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .filterBtn {
@@ -134,7 +125,6 @@
   border-radius: var(--radius-xl);
   background-color: var(--bg-paper-glow);
   border: 1px solid var(--border-main);
-  backdrop-filter: blur(8px);
   transition: var(--transition-normal);
 
   &:hover {
@@ -230,13 +220,13 @@
   &.likes {
     background-color: rgba(16, 185, 129, 0.06);
     border-color: rgba(16, 185, 129, 0.12);
-    .flavorText { color: #34d399; }
+    .flavorText { color: var(--status-success); }
   }
 
   &.hates {
     background-color: rgba(239, 68, 68, 0.06);
     border-color: rgba(239, 68, 68, 0.12);
-    .flavorText { color: #f87171; }
+    .flavorText { color: var(--status-error); }
   }
 
   .flavorText {
@@ -320,5 +310,16 @@
     font-size: 13px;
     font-weight: 500;
     margin-top: 4px;
+  }
+}
+
+.filterBtn {
+  min-height: 36px;
+  border-radius: var(--radius-md);
+
+  &[aria-pressed="true"] {
+    color: var(--interactive-text);
+    background: var(--brand-soft);
+    border-color: currentColor;
   }
 }

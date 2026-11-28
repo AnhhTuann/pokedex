@@ -44,6 +44,18 @@
     --brand-soft: #FCE8ED;
     --brand-soft-strong: #F7D4DD;
     --brand-on: #FFFFFF;
+    --action-bg: var(--brand-strong);
+    --action-hover: var(--brand);
+    --action-pressed: var(--brand-pressed);
+    --interactive-text: var(--status-selected);
+    --danger-bg: #A92740;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
     --focus-color: #C72B4B;
     --focus-ring: 0 0 0 3px rgba(199, 43, 75, 0.18);
 
@@ -217,7 +229,7 @@
     --accent-yellow: var(--status-warning);
     --accent-orange: #FB923C;
     --accent-ink: #101114;
-    --primary-action: #D84060;
+    --primary-action: var(--action-bg);
     --secondary-action: var(--secondary);
     --accent-tint: color-mix(in srgb, var(--brand) 14%, var(--bg-paper));
     --primary-gradient: var(--brand);

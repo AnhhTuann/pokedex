@@ -1,44 +1,33 @@
+@use "../page-heading" as heading;
 @import "../variables";
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 0;
 
-  @media (max-width: $breakpoint-sm) {
-    padding: 24px 16px;
-  }
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 40px;
+  text-align: left;
+  margin-bottom: var(--space-6);
 
   .title {
-    font-size: 36px;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    text-transform: uppercase;
+    @include heading.title;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
     margin-bottom: 8px;
 
     .headerIcon {
-      color: #8b5cf6;
+      color: var(--interactive-text);
       font-size: 38px;
     }
   }
 
   .subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    max-width: 480px;
-    margin: 0 auto;
-    margin-bottom: 32px;
+    @include heading.description;
+    margin: 8px 0 16px;
   }
 }
 
@@ -48,13 +37,12 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  max-width: 550px;
-  margin: 0 auto;
+  max-width: 720px;
+  margin: 0;
   padding: 20px;
   border-radius: var(--radius-2xl);
   background-color: var(--bg-paper-glow);
   border: 1px solid var(--border-main);
-  backdrop-filter: blur(10px);
   box-shadow: var(--shadow-sm);
 
   @media (max-width: $breakpoint-sm) {
@@ -97,8 +85,8 @@
 
       &:focus {
         outline: none;
-        border-color: #8b5cf6;
-        box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        border-color: var(--interactive-text);
+        box-shadow: var(--focus-ring);
       }
     }
 
@@ -152,15 +140,14 @@
   color: var(--text-secondary);
   margin-bottom: 8px;
 
-  .cyan { color: #06b6d4; }
-  .yellow { color: #eab308; }
+  .cyan { color: var(--status-info); }
+  .yellow { color: var(--status-warning); }
 }
 
 .card {
   border-radius: var(--radius-2xl);
   background-color: var(--bg-paper-glow);
   border: 1px solid var(--border-main);
-  backdrop-filter: blur(10px);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -178,8 +165,8 @@
     display: block;
     margin-bottom: 12px;
 
-    &.red { color: #f87171; }
-    &.green { color: #34d399; }
+    &.red { color: var(--status-error); }
+    &.green { color: var(--status-success); }
     &.muted { color: var(--text-secondary); }
   }
 

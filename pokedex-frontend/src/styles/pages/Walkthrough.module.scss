@@ -1,10 +1,11 @@
+@use "../page-heading" as heading;
 @import "../variables";
 @import "../mixins";
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 0;
 }
 
 .header {
@@ -16,12 +17,7 @@
   gap: 16px;
 
   .title {
-    font-family: $font-display;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: -1px;
-    text-transform: uppercase;
-    color: var(--primary);
+    @include heading.title;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -65,8 +61,8 @@
   transition: all 0.2s;
 
   &.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    background: var(--brand-soft);
+    color: var(--interactive-text);
   }
 }
 
@@ -92,7 +88,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: minmax(220px, 285px) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 
@@ -452,4 +448,50 @@
     color: var(--text-secondary);
     font-weight: 600;
   }
+}
+
+.readingPane {
+  max-width: 88ch;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 40px);
+
+  :global(.walkthrough-content) {
+    overflow-wrap: anywhere;
+
+    :is(h2, h3) { scroll-margin-top: 84px; }
+    img { max-width: 100%; height: auto; }
+    table { display: block; max-width: 100%; overflow-x: auto; }
+  }
+}
+
+.chaptersToggle { display: none; }
+
+.chaptersError {
+  padding: 16px;
+  color: var(--status-error);
+}
+
+@media (max-width: $breakpoint-md) {
+  .chaptersToggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    min-height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-top: 1px solid var(--border-main);
+    background: var(--bg-paper);
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  .chaptersToggle[aria-expanded="true"] svg { transform: rotate(90deg); }
+  .chaptersPanel[data-expanded="false"] { display: none; }
+}
+
+.tocItem {
+  display: block;
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }

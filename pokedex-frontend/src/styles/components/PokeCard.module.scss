@@ -267,3 +267,11 @@
   .pokeCard, .pokemonImage, .favoriteBtn { transition: none !important; }
   .pokeCard:hover, .pokeCard:hover .pokemonImage { transform: none !important; }
 }
+
+.artworkFallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--collectible-title);
+}

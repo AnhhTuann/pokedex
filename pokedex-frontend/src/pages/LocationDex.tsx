@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../hooks/useDialogFocus';
 import React, { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'motion/react';
@@ -13,7 +14,7 @@ import {
   Fish,
   MapPin
 } from 'lucide-react';
-import { GENERATION_VERSIONS, VERSION_COLORS } from '../App';
+import { GENERATION_VERSIONS, VERSION_COLORS, getContrastTextColor } from '../App';
 import { TYPE_COLORS } from '../lib/utils';
 import styles from '../styles/pages/LocationDex.module.scss';
 
@@ -78,6 +79,7 @@ export default function LocationDex() {
   // Version Selection State
   const [selectedVersion, setSelectedVersion] = useState<string>('platinum');
   const [versionModalOpen, setVersionModalOpen] = useState(false);
+  const versionDialogRef = useDialogFocus(versionModalOpen, () => setVersionModalOpen(false));
 
   // Search & Filtering States
   const [searchTerm, setSearchTerm] = useState('');
@@ -155,13 +157,10 @@ export default function LocationDex() {
         <button
           className={styles.versionBadgeBtn}
           onClick={() => setVersionModalOpen(true)}
-          style={{
-            borderColor: VERSION_COLORS[selectedVersion] || '#ec4899',
-            boxShadow: `0 8px 24px ${(VERSION_COLORS[selectedVersion] || '#ec4899')}44`,
-            backgroundColor: VERSION_COLORS[selectedVersion] || '#ec4899',
-          }}
+          aria-haspopup="dialog"
+          aria-expanded={versionModalOpen}
         >
-          <Filter size={14} />
+          <span className={styles.versionDot} style={{ background: VERSION_COLORS[selectedVersion] }} aria-hidden="true" />
           Version: {selectedVersion.replace(/-/g, ' ')}
         </button>
       </div>
@@ -176,6 +175,7 @@ export default function LocationDex() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search routes or areas..."
+          aria-label="Search routes or areas"
           className={styles.searchInput}
           style={{
             '--primary': VERSION_COLORS[selectedVersion] || '#ec4899',
@@ -267,11 +267,16 @@ export default function LocationDex() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
               className={styles.modalContent}
+              ref={versionDialogRef}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Select location game version"
               onClick={(e) => e.stopPropagation()}
             >
               <div className={styles.modalHeader}>
                 <span className={styles.modalTitle}>Select Game Version</span>
-                <button className={styles.closeBtn} onClick={() => setVersionModalOpen(false)}>
+                <button className={styles.closeBtn} aria-label="Close version selector" onClick={() => setVersionModalOpen(false)}>
                   <X size={18} />
                 </button>
               </div>
@@ -296,15 +301,7 @@ export default function LocationDex() {
                               vColor = '#555555';
                             }
 
-                            const getContrastColor = (color: string) => {
-                              const c = color.toLowerCase();
-                              if (c === '#eab308' || c === '#fbbf24' || c === '#a5f3fc' || c === '#e5e7eb' || c === '#ffffff') {
-                                  return '#0f172a';
-                              }
-                              return '#ffffff';
-                            };
-
-                            const contrastColor = getContrastColor(vColor);
+                            const contrastColor = getContrastTextColor(vColor);
 
                             return (
                               <button

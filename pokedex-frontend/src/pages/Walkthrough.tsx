@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import DOMPurify from 'dompurify';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useIsAdmin } from '../hooks/useIsAdmin';
 import { BookOpen, ChevronRight, ChevronLeft, Settings, Loader } from 'lucide-react';
 import { VERSION_COLORS } from '../App';
 import styles from '../styles/pages/Walkthrough.module.scss';
@@ -36,12 +37,13 @@ const GAME_OPTIONS = [
 ];
 
 export default function Walkthrough() {
-  const navigate = useNavigate();
+  const { isAdmin } = useIsAdmin();
+  const [chaptersOpen, setChaptersOpen] = useState(false);
   const [gameVersion, setGameVersion] = useState('emerald');
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [selectedChapterId, setSelectedChapterId] = useState<number | null>(null);
 
-  const { data, loading } = useQuery(GET_WALKTHROUGHS, { variables: { gameVersion, language } });
+  const { data, loading, error, refetch } = useQuery(GET_WALKTHROUGHS, { variables: { gameVersion, language } });
   const chapters = data?.getWalkthroughs || [];
 
   useEffect(() => {
@@ -68,8 +70,6 @@ export default function Walkthrough() {
   const prevChapter = activeIndex > 0 ? chapters[activeIndex - 1] : null;
   const nextChapter = activeIndex >= 0 && activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
 
-  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' });
-
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -84,15 +84,17 @@ export default function Walkthrough() {
           {/* Language Toggle */}
           <div className={styles.langToggle}>
             {(['vi','en'] as const).map(l => (
-              <button key={l} onClick={() => setLanguage(l)}
+              <button key={l} aria-pressed={language === l} onClick={() => setLanguage(l)}
                 className={`${styles.langBtn} ${language === l ? styles.active : ''}`}>
-                {l==='vi'?'🇻🇳 VI':'🇬🇧 EN'}
+                {l === 'vi' ? 'Tiếng Việt' : 'English'}
               </button>
             ))}
           </div>
-          <button onClick={() => navigate('/admin/walkthrough')} className={styles.cmsBtn}>
-            <Settings size={15}/> CMS Editor 🛠️
-          </button>
+          {isAdmin && (
+            <Link to="/admin/walkthrough" className={styles.cmsBtn}>
+              <Settings size={15} /> CMS editor
+            </Link>
+          )}
         </div>
       </div>
 
@@ -100,10 +102,10 @@ export default function Walkthrough() {
         {/* Left Panel */}
         <div className={styles.leftPanel}>
           <div style={{ padding:'20px 20px 16px' }}>
-            <span className={styles.panelTitle}>Select Version</span>
+            <label htmlFor="guide-version" className={styles.panelTitle}>Game version</label>
             <div className={styles.selectWrapper}>
-              <span className={styles.selectColorBadge} style={{ background:gameColor, boxShadow:`0 0 10px ${gameColor}` }}/>
-              <select value={gameVersion} onChange={e => setGameVersion(e.target.value)} className={styles.selectField}>
+              <span className={styles.selectColorBadge} style={{ background:gameColor }}/>
+              <select id="guide-version" value={gameVersion} onChange={e => setGameVersion(e.target.value)} className={styles.selectField}>
                 {GAME_OPTIONS.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
               </select>
             </div>
@@ -111,6 +113,10 @@ export default function Walkthrough() {
 
           <div style={{ height:1,background:'var(--border-main)',margin:'0 20px' }}/>
 
+          <button type="button" className={styles.chaptersToggle} aria-expanded={chaptersOpen} aria-controls="walkthrough-chapters" onClick={() => setChaptersOpen(!chaptersOpen)}>
+            Chapters <ChevronRight size={16} />
+          </button>
+          <div id="walkthrough-chapters" className={styles.chaptersPanel} data-expanded={chaptersOpen}>
           <div style={{ padding:'16px 20px 4px' }}>
             <span className={styles.panelTitle}>Chapters List</span>
           </div>
@@ -118,6 +124,11 @@ export default function Walkthrough() {
           {loading ? (
             <div style={{ padding:'40px 20px',display:'flex',justifyContent:'center' }}>
               <Loader size={28} color={gameColor} style={{ animation:'spin 0.8s linear infinite' }}/>
+            </div>
+          ) : error ? (
+            <div className={styles.chaptersError}>
+              <p role="alert">Could not load walkthrough chapters.</p>
+              <button type="button" onClick={() => void refetch()}>Try again</button>
             </div>
           ) : chapters.length === 0 ? (
             <div style={{ padding:'40px 20px',textAlign:'center',opacity:0.5 }}>
@@ -130,10 +141,10 @@ export default function Walkthrough() {
               {chapters.map((ch: any) => {
                 const isActive = selectedChapterId === ch.id;
                 return (
-                  <button key={ch.id} onClick={() => setSelectedChapterId(ch.id)}
+                  <button key={ch.id} onClick={() => { setSelectedChapterId(ch.id); setChaptersOpen(false); }} aria-current={isActive ? "true" : undefined}
                     className={`${styles.chapterBtn} ${isActive ? styles.active : ''}`}
-                    style={{ 
-                      border: isActive ? `1px solid ${gameColor}50` : undefined, 
+                    style={{
+                      border: isActive ? `1px solid ${gameColor}50` : undefined,
                       background: isActive ? `${gameColor}15` : undefined,
                       color: isActive ? gameColor : undefined
                     }}>
@@ -145,24 +156,25 @@ export default function Walkthrough() {
               })}
             </div>
           )}
+          </div>
         </div>
 
         {/* Right Panel */}
         <div className={styles.rightPanel}>
-          <div style={{ padding:'32px 40px' }}>
+          <article className={styles.readingPane} lang={language}>
             {activeChapter ? (
               <div>
                 {/* Cover Image */}
                 {activeChapter.coverImage && (
                   <div className={styles.coverImageWrapper}>
-                    <img src={activeChapter.coverImage} className={styles.coverImage}/>
+                    <img src={activeChapter.coverImage} alt="" className={styles.coverImage}/>
                     <div className={styles.coverGradient}/>
                   </div>
                 )}
 
                 {/* Chapter Header */}
                 <div className={styles.chapterMeta}>
-                  <span className={styles.orderBadge} style={{ background:`${gameColor}20`, border:`1px solid ${gameColor}40`, color:gameColor }}>
+                  <span className={styles.orderBadge} style={{ background:`${gameColor}20`, border:`1px solid ${gameColor}40`, color:"var(--text-primary)" }}>
                     Chapter {activeChapter.order}
                   </span>
                   <h2 className={styles.chapterTitle}>{activeChapter.chapterTitle}</h2>
@@ -177,15 +189,14 @@ export default function Walkthrough() {
                 {/* TOC */}
                 {toc.length > 0 && (
                   <div className={styles.toc} style={{ background:`${gameColor}08`, border:`1px solid ${gameColor}20` }}>
-                    <span className={styles.tocTitle} style={{ color:gameColor }}>Nội dung chính</span>
+                    <span className={styles.tocTitle}>{language === 'vi' ? 'Nội dung chính' : 'On this page'}</span>
                     <div className={styles.tocList}>
                       {toc.map(item => (
-                        <div key={item.id} onClick={() => scrollTo(item.id)}
+                        <a key={item.id} href={`#${item.id}`}
                           className={`${styles.tocItem} ${item.level === 3 ? styles.level3 : ''}`}
-                          onMouseEnter={e => { (e.target as HTMLElement).style.color=gameColor; }}
-                          onMouseLeave={e => { (e.target as HTMLElement).style.color='var(--text-secondary)'; }}>
-                          • {item.text}
-                        </div>
+                          >
+                          {item.text}
+                        </a>
                       ))}
                     </div>
                   </div>
@@ -234,7 +245,7 @@ export default function Walkthrough() {
                 <p className={styles.emptyStateText}>Chọn một chương hướng dẫn ở danh sách bên trái.</p>
               </div>
             )}
-          </div>
+          </article>
         </div>
       </div>
 
@@ -248,17 +259,17 @@ export default function Walkthrough() {
         .walkthrough-content strong { color:var(--text-primary);font-weight:800; }
         .walkthrough-content ul,.walkthrough-content ol { margin-bottom:1.35rem;padding-left:1.6rem;color:var(--text-secondary);line-height:1.85; }
         .walkthrough-content li { margin-bottom:0.35rem; }
-        
+
         /* Premium Card style tables */
         .walkthrough-content table { width:100%;border-collapse:separate;border-spacing:0;margin:2rem 0;font-size:0.95rem;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);box-shadow:0 12px 36px rgba(0,0,0,0.2);backdrop-filter:blur(10px); }
         .walkthrough-content th { background:${gameColor}18;color:var(--text-primary);font-weight:900;padding:16px 20px;text-align:left;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.8px;border-bottom:2px solid ${gameColor}40; }
         .walkthrough-content td { padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:middle;transition:all 0.2s; }
         .walkthrough-content tbody tr:last-child td { border-bottom: none; }
         .walkthrough-content tbody tr:hover td { background:${gameColor}08;color:var(--text-primary); }
-        
+
         .walkthrough-content img { max-width:64px;display:inline-block;vertical-align:middle;margin:0 6px;transition:all 0.3s cubic-bezier(0.25, 1, 0.5, 1);filter:drop-shadow(0 6px 10px rgba(0,0,0,0.2)); }
         .walkthrough-content img:hover { transform:scale(1.25) translateY(-4px);filter:drop-shadow(0 12px 18px ${gameColor}70); }
-        
+
         .walkthrough-content blockquote { border-left:4px solid ${gameColor};padding:16px 24px;margin:24px 0;background:linear-gradient(90deg, ${gameColor}0c, transparent);border-radius:0 12px 12px 0;color:var(--text-secondary);font-style:italic; }
       `}</style>
     </div>

@@ -9,9 +9,12 @@ export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElem
 }
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ className, label, error, icon, id, ...props }, ref) => {
+  ({ className, label, error, icon, id, "aria-describedby": describedBy, ...props }, ref) => {
     const generatedId = React.useId();
     const inputId = id || generatedId;
+
+    const errorId = error ? `${inputId}-error` : undefined;
+    const description = [describedBy, errorId].filter(Boolean).join(" ") || undefined;
 
     return (
       <div className={styles.wrapper}>
@@ -31,10 +34,12 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               error && styles.inputError,
               className
             )}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={description}
             {...props}
           />
         </div>
-        {error && <p className={styles.errorMessage}>{error}</p>}
+        {error && <p id={errorId} className={styles.errorMessage}>{error}</p>}
       </div>
     );
   }

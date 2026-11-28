@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 import { useAuthStore } from '../lib/authStore';
-import styles from '../styles/components/common/Card.module.scss';
-import inputStyles from '../styles/components/common/InputField.module.scss';
-import buttonStyles from '../styles/components/common/Button.module.scss';
+import styles from '../styles/pages/Account.module.scss';
+import { Button } from '../components/common/Button';
+import { InputField } from '../components/common/InputField';
+import { CircleDot } from 'lucide-react';
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {
@@ -45,53 +46,26 @@ export default function Login() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-      <div className={styles.card} style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}>Login</h2>
-        
-        {errorMsg && (
-          <div style={{ padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', borderRadius: '8px', marginBottom: '1rem', textAlign: 'center' }}>
-            {errorMsg}
-          </div>
-        )}
+    <div className={styles.authPage}>
+      <section className={styles.authPanel} aria-labelledby="account-title">
+        <header className={styles.authHeader}>
+          <div className={styles.accountMark} aria-hidden="true"><CircleDot size={26} /></div>
+          <h1 id="account-title">Sign in</h1>
+          <p>Open your trainer profile.</p>
+        </header>
 
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', opacity: 0.8 }}>Username</label>
-            <input
-              type="text"
-              className={inputStyles.input}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
+        {errorMsg && <p className={styles.error} role="alert">{errorMsg}</p>}
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', opacity: 0.8 }}>Password</label>
-            <input
-              type="password"
-              className={inputStyles.input}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className={buttonStyles.button} 
-            disabled={loading}
-            style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }}
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
+        <form onSubmit={handleLogin} className={styles.form} aria-busy={loading}>
+          <InputField label="Username" name="username" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} required />
+          <InputField label="Password" name="password" type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required />
+          <Button type="submit" size="lg" isLoading={loading}>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </Button>
         </form>
 
-        <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', opacity: 0.8 }}>
-          Don't have an account? <Link to="/register" style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 'bold' }}>Register</Link>
-        </p>
-      </div>
+        <p className={styles.authFooter}>New to Elite Pokédex? <Link to="/register">Create an account</Link></p>
+      </section>
     </div>
   );
 }

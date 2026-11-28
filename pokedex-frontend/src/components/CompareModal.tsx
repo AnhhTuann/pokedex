@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { useDialogFocus } from '../hooks/useDialogFocus';
+import React from 'react';
 import { X } from 'lucide-react';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON_DETAIL } from './PokeDetail';
@@ -20,14 +21,7 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
   const { data: d1, loading: l1 } = useQuery(GET_POKEMON_DETAIL, { variables: { id: ids[0] }, skip: !ids[0] });
   const { data: d2, loading: l2 } = useQuery(GET_POKEMON_DETAIL, { variables: { id: ids[1] }, skip: !ids[1] });
 
-  useEffect(() => {
-    if (ids.length < 2) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKeyDown);
-    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKeyDown); };
-  }, [ids.length, onClose]);
+  const dialogRef = useDialogFocus(ids.length >= 2, onClose);
 
   if (ids.length < 2) return null;
   const p1 = d1?.pokemon;
@@ -54,7 +48,7 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
           transition={{ duration: 0.2 }}
           onClick={e => e.stopPropagation()}
           className={styles.modalCard}
-          role="dialog"
+          ref={dialogRef} tabIndex={-1} role="dialog"
           aria-modal="true"
           aria-label="Pokemon comparison"
         >

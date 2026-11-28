@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -74,7 +75,7 @@ export default function NatureDex() {
       {/* ── Header ── */}
       <div className={styles.header}>
         <h1 className={styles.title}>
-          🌸 Nature Dex
+          Nature Dex
         </h1>
         <p className={styles.subtitle}>
           All 25 natures — stat multipliers, flavor preferences, and top Pokémon picks.
@@ -85,12 +86,13 @@ export default function NatureDex() {
       <div className={styles.controls}>
         {/* Search */}
         <div className={styles.searchWrapper}>
-          <span className={styles.searchIcon}>🔍</span>
+          <Search size={16} className={styles.searchIcon} aria-hidden="true" />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search nature or stat..."
+            aria-label="Search natures or stats"
             className={styles.searchInput}
           />
         </div>
@@ -105,12 +107,7 @@ export default function NatureDex() {
                 key={f}
                 onClick={() => setFilter(f)}
                 className={styles.filterBtn}
-                style={isActive ? {
-                  backgroundColor: style?.color ?? (f === 'Neutral' ? '#64748b' : 'var(--primary)'),
-                  borderColor: 'transparent',
-                  color: '#ffffff',
-                  boxShadow: `0 4px 14px ${style?.color ?? 'var(--primary)'}44`,
-                } : {}}
+                aria-pressed={isActive}
               >
                 {f === 'Neutral' ? '— Neutral' : (style ? `${style.label} ↑` : f)}
               </button>

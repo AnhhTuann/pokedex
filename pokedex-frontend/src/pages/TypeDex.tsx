@@ -102,9 +102,10 @@ export default function TypeDex() {
         <div className={styles.selectorCard}>
           {/* Primary Type Selection */}
           <div className={styles.selectGroup}>
-            <span className={styles.label}>Primary Type</span>
+            <label htmlFor="primary-battle-type" className={styles.label}>Primary type</label>
             <div className={styles.selectWrapper}>
               <select
+                id="primary-battle-type"
                 value={primaryType}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -113,7 +114,6 @@ export default function TypeDex() {
                 }}
                 style={{
                   borderColor: TYPE_COLORS[primaryType],
-                  boxShadow: `0 0 12px ${TYPE_COLORS[primaryType]}25`
                 }}
               >
                 {TYPE_LIST.map((type) => (
@@ -127,14 +127,14 @@ export default function TypeDex() {
 
           {/* Secondary Type Selection */}
           <div className={styles.selectGroup}>
-            <span className={styles.label}>Secondary Type</span>
+            <label htmlFor="secondary-battle-type" className={styles.label}>Secondary type</label>
             <div className={styles.selectWrapper}>
               <select
+                id="secondary-battle-type"
                 value={secondaryType}
                 onChange={(e) => setSecondaryType(e.target.value)}
                 style={secondaryType !== 'none' ? {
                   borderColor: TYPE_COLORS[secondaryType],
-                  boxShadow: `0 0 12px ${TYPE_COLORS[secondaryType]}25`
                 } : {}}
               >
                 <option value="none">None</option>

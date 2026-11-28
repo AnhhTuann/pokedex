@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../hooks/useDialogFocus';
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import {
@@ -197,8 +198,6 @@ const TrackerCard = React.memo<TrackerCardProps>(({
 
 // ── MAIN CATCH TRACKER COMPONENT ──
 export default function CatchTracker() {
-  const { mode } = useColorMode();
-  const isDark = mode === 'dark';
 
   // Zustand Store variables
   const caughtPokemonIds = useCatchStore(state => state.caughtPokemonIds);
@@ -259,7 +258,9 @@ export default function CatchTracker() {
 
   // Confirmations
   const [confirmMarkAllOpen, setConfirmMarkAllOpen] = useState(false);
+  const markAllRef = useDialogFocus(confirmMarkAllOpen, () => setConfirmMarkAllOpen(false));
   const [confirmResetOpen, setConfirmResetOpen] = useState(false);
+  const resetRef = useDialogFocus(confirmResetOpen, () => setConfirmResetOpen(false));
 
   // Caching sets for performance
   const caughtSet = useMemo(() => new Set(caughtPokemonIds), [caughtPokemonIds]);
@@ -363,7 +364,7 @@ export default function CatchTracker() {
     <div className={styles.container}>
       
       {/* Progress Header Card */}
-      <div className={`${styles.progressCard} ${isDark ? styles.dark : styles.light}`}>
+      <div className={styles.progressCard}>
         <div className={styles.trackerHeader}>
           <div>
             <h1 className={styles.title}>
@@ -407,7 +408,7 @@ export default function CatchTracker() {
             <div className={styles.progressItem}>
               <div className={styles.labelRow}>
                 <span className={styles.label}>
-                  <CheckCircle2 size={13} style={{ color: '#10b981' }} />
+                  <CheckCircle2 size={13} style={{ color: 'var(--status-success)' }} />
                   Regular Dex Progress
                 </span>
                 <span className={styles.value} style={{ color: 'var(--primary)' }}>
@@ -445,7 +446,7 @@ export default function CatchTracker() {
               <div className={styles.progressItem}>
                 <div className={styles.labelRow}>
                   <span className={styles.label}>
-                    <CheckCircle2 size={13} style={{ color: '#10b981' }} />
+                    <CheckCircle2 size={13} style={{ color: 'var(--status-success)' }} />
                     Regional Regular Dex
                   </span>
                   <span className={styles.value} style={{ color: '#06b6d4' }}>
@@ -713,7 +714,7 @@ export default function CatchTracker() {
           borderRadius: 12,
           backgroundColor: 'rgba(239, 68, 68, 0.08)',
           border: '1px solid rgba(239, 68, 68, 0.3)',
-          color: '#ef4444',
+          color: 'var(--status-error)',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
@@ -775,7 +776,7 @@ export default function CatchTracker() {
       {/* Confirm Mark All Dialog Backdrop Overlay */}
       {confirmMarkAllOpen && (
         <div className={styles.modalOverlay} onClick={() => setConfirmMarkAllOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} ref={markAllRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Mark all as caught" onClick={(e) => e.stopPropagation()}>
             <h2 className={styles.modalTitle}>
               <CheckSquare style={{ color: 'var(--primary)' }} />
               Mark All as Caught?
@@ -798,9 +799,9 @@ export default function CatchTracker() {
       {/* Confirm Reset Dialog Backdrop Overlay */}
       {confirmResetOpen && (
         <div className={styles.modalOverlay} onClick={() => setConfirmResetOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} ref={resetRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Reset catching progress" onClick={(e) => e.stopPropagation()}>
             <h2 className={styles.modalTitle}>
-              <RotateCcw style={{ color: '#ef4444' }} />
+              <RotateCcw style={{ color: 'var(--status-error)' }} />
               Reset All Catching Progress?
             </h2>
             <p className={styles.modalDesc}>

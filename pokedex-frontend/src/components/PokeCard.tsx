@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { Heart, Check } from "lucide-react";
+import React, { useState } from "react";
+import { Heart, Check, ImageOff } from "lucide-react";
 import { Card } from "./common/Card";
 import { PokemonListItem } from "../types";
 import { useMyPokedex } from "../lib/MyPokedexContext";
 import { useTeamStore } from "../lib/teamStore";
 import { formatSpeciesId, cn, getTypeBadgeStyle, getTypeBadgeColor } from "../lib/utils";
 import { useColorMode } from "../main";
-import { extractDominantColor } from "../lib/colorExtractor";
 import styles from "../styles/components/PokeCard.module.scss";
 
 interface PokeCardProps {
@@ -19,25 +17,19 @@ interface PokeCardProps {
 }
 
 export default function PokeCard({
-  pokemon, onClick, index, isCompareMode, isSelectedForCompare,
+  pokemon, onClick, isCompareMode, isSelectedForCompare,
 }: PokeCardProps) {
   const { isFavorite, toggleFavorite } = useMyPokedex();
-  const { isShinyMode } = useTeamStore();
+  const isShinyMode = useTeamStore(state => state.isShinyMode);
   const { mode } = useColorMode();
   const isDark = mode === "dark";
   const isFav = isFavorite(pokemon.id);
   const primaryType = pokemon.types?.[0] || "normal";
-  const [accent, setAccent] = useState<string>(getTypeBadgeColor(primaryType));
+  const accent = getTypeBadgeColor(primaryType);
   const imageUrl = isShinyMode && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image;
-
-  useEffect(() => {
-    let active = true;
-    extractDominantColor(imageUrl, primaryType).then((rgb) => {
-      if (!active) return;
-      setAccent(rgb ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : getTypeBadgeColor(primaryType));
-    });
-    return () => { active = false; };
-  }, [imageUrl, primaryType]);
+  const [failedImage, setFailedImage] = useState<string>();
+  const [failedFallback, setFailedFallback] = useState<string>();
+  const displayedImage = failedImage === imageUrl ? pokemon.image : imageUrl;
 
   const isMega = !!pokemon.isMega || pokemon.name.toLowerCase().includes("-mega");
   const displayName = pokemon.isMega && pokemon.name.startsWith("Mega ")
@@ -48,13 +40,7 @@ export default function PokeCard({
     : formatSpeciesId(pokemon.speciesId || pokemon.id);
 
   return (
-    <motion.div
-      layoutId={`pokemon-card-${pokemon.id}`}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: Math.min(index * 0.015, 0.18) }}
-      className={styles.cardWrapper}
-    >
+    <div className={styles.cardWrapper}>
       <Card
         padding="none"
         className={cn(styles.pokeCard, isSelectedForCompare && styles.selectedCompare, isCompareMode && !isSelectedForCompare && styles.faded)}
@@ -89,15 +75,23 @@ export default function PokeCard({
         >
           <div className={styles.imageContainer}>
             <div className={styles.pokeballMotif} aria-hidden="true" />
-            <img
-              src={imageUrl}
-              alt={pokemon.name}
-              loading="lazy"
-              width={112}
-              height={112}
-              className={styles.pokemonImage}
-              onError={(e) => { const img = e.target as HTMLImageElement; img.onerror = null; img.style.opacity = '0'; }}
-            />
+            {displayedImage && displayedImage !== failedFallback ? (
+              <img
+                src={displayedImage}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={112}
+                height={112}
+                className={styles.pokemonImage}
+                onError={() => {
+                  if (displayedImage === pokemon.image) setFailedFallback(displayedImage);
+                  else setFailedImage(displayedImage);
+                }}
+              />
+            ) : (
+              <span className={styles.artworkFallback} role="img" aria-label="Artwork unavailable"><ImageOff size={24} /></span>
+            )}
             {isMega && <div className={styles.megaBadge}>Mega</div>}
           </div>
 
@@ -112,6 +106,6 @@ export default function PokeCard({
           </div>
         </button>
       </Card>
-    </motion.div>
+    </div>
   );
 }

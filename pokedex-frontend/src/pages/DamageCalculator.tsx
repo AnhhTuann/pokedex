@@ -633,7 +633,7 @@ export default function DamageCalculator() {
       <div className={styles.headerRow}>
         <Swords className={styles.headerIcon} />
         <div>
-          <h1 className={styles.headerTitle}>BATTLE DAMAGE CALCULATOR</h1>
+          <h1 className={styles.headerTitle}>Battle Damage Calculator</h1>
           <p className={styles.headerSub}>
             Simulate competitive damage rolls, stats distributions, items, screens, and weather multipliers!
           </p>

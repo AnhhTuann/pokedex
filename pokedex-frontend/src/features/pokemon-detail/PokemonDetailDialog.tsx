@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Heart, Ruler, Scale, Sparkles, ChevronRight } from 'lucide-react';
 import { usePokemonDetail } from '../../hooks/usePokemon';
@@ -26,40 +27,12 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
   const { mode } = useColorMode();
   const isDark = mode === 'dark';
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const lastActiveRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useDialogFocus(Boolean(id), onClose);
 
   const { pokemon: p, loading, error } = usePokemonDetail(id, selectedVersion);
 
   useEffect(() => { setShowShiny(isShinyMode); }, [id, isShinyMode]);
   useEffect(() => { setActiveSection('overview'); }, [id]);
-
-  useEffect(() => {
-    if (!id) return;
-    lastActiveRef.current = document.activeElement as HTMLElement;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { e.preventDefault(); onClose(); }
-      if (e.key === 'Tab' && dialogRef.current) {
-        const focusables = dialogRef.current.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (!focusables.length) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    const t = setTimeout(() => closeBtnRef.current?.focus(), 0);
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener('keydown', onKeyDown);
-      clearTimeout(t);
-      lastActiveRef.current?.focus?.();
-    };
-  }, [id, onClose]);
 
   const matchupGroups = useMemo(() => {
     const list = p?.matchups || [];
@@ -95,6 +68,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
         <div className={styles.overlay} onClick={onClose}>
           <motion.div
             ref={dialogRef}
+            tabIndex={-1}
             initial={false}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 8 }}
@@ -107,7 +81,8 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
           >
             {loading ? (
               <div className={styles.loadingState} aria-busy="true">
-                <div className={styles.loader}>Loading Pokémon details...</div>
+                <button type="button" onClick={onClose} className={styles.iconBtn} aria-label="Close details"><X size={18} /></button>
+                <div className={styles.loader} role="status">Loading Pokémon details…</div>
               </div>
             ) : error || !p ? (
               <div className={styles.loadingState} style={{ position: 'relative' }}>
@@ -132,7 +107,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                       >
                         <Sparkles size={16} />
                       </button>
-                      <button ref={closeBtnRef} type="button" onClick={onClose} className={styles.iconBtn} aria-label="Close details">
+                      <button  type="button" onClick={onClose} className={styles.iconBtn} aria-label="Close details">
                         <X size={18} />
                       </button>
                     </div>

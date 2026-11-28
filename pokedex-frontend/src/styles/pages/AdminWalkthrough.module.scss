@@ -1,10 +1,11 @@
+@use "../page-heading" as heading;
 @import "../variables";
 @import "../mixins";
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 0;
 }
 
 .header {
@@ -16,10 +17,7 @@
   gap: 16px;
 
   .title {
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: -1px;
-    color: var(--primary);
+    @include heading.title;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -38,8 +36,8 @@
   padding: 10px 20px;
   border-radius: var(--radius-md);
   border: none;
-  background: var(--primary);
-  color: #fff;
+  background: var(--action-bg);
+  color: var(--brand-on);
   font-weight: 800;
   font-size: 13px;
   cursor: pointer;
@@ -54,7 +52,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 
@@ -259,7 +257,7 @@
 
   &.delete {
     background: rgba(239, 68, 68, 0.12);
-    color: #ef4444;
+    color: var(--status-error);
 
     &:hover {
       background: rgba(239, 68, 68, 0.2);

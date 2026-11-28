@@ -1,3 +1,4 @@
+import { useDialogFocus } from '../hooks/useDialogFocus';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
@@ -24,14 +25,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
   const teamMember = team.find(p => p.id === pokemonId);
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    if (!pokemonId) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKeyDown);
-    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKeyDown); };
-  }, [pokemonId, onClose]);
+  const dialogRef = useDialogFocus(Boolean(pokemonId), onClose);
 
   const { data, loading } = useQuery(GET_POKEMON_MOVES, { variables: { id: pokemonId }, fetchPolicy: 'cache-first' });
   const pokemon = data?.pokemon;
@@ -75,7 +69,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={`${teamMember?.name || 'Pokemon'} moveset`}>
+      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()} ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={`${teamMember?.name || 'Pokemon'} moveset`}>
         <div className={styles.header}>
           <div className={styles.headerLeft}>
             <div className={styles.avatarBox}>
