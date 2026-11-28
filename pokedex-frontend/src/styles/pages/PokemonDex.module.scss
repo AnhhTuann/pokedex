@@ -141,7 +141,7 @@
 }
 
 .activeZaTab {
-  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+  background: $primary-gradient;
   color: white !important;
   box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
 }
@@ -161,19 +161,19 @@
   margin-bottom: 24px;
   padding: 16px;
   border-radius: $radius-md;
-  background-color: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  background-color: rgba(var(--secondary-rgb), 0.08);
+  border: 1px solid rgba(var(--secondary-rgb), 0.2);
   color: $primary;
   font-weight: 700;
   text-align: center;
-  animation: pulseGlow 3s ease-in-out infinite;
+  animation: none;
 }
 
 // ─── Layout Fluid Grid ────────────────────────────────────
 .pokemonGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 16px;
   
   @include respond-to(lg) {
     grid-template-columns: repeat(3, 1fr);
@@ -264,7 +264,7 @@
 }
 
 .activeDexTab {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  background: var(--primary-gradient) !important;
   color: white !important;
   box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.45);
   border-color: rgba(255, 255, 255, 0.1) !important;
