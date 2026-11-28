@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import {
@@ -27,7 +27,7 @@ import { useTeamStore } from '../lib/teamStore';
 import { useIsAdmin } from '../hooks/useIsAdmin';
 import GameModal from './GameModal';
 import UpdateNotifier from './UpdateNotifier';
-import { VERSION_COLORS, GENERATION_VERSIONS, getVersionDisplayName, getVersionColorStyle } from '../App';
+import { VERSION_COLORS, GENERATION_VERSIONS, getVersionDisplayName, getVersionColorStyle, getContrastTextColor } from '../App';
 import styles from '../styles/components/MainLayout.module.scss';
 
 const PokeballIcon = ({ className, size = 24 }: { className?: string; size?: number }) => (
@@ -87,19 +87,11 @@ function hexToRgb(hex: string): string {
   return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
 }
 
-function getContrastColor(color: string) {
-  const c = color.toLowerCase();
-  if (['#eab308', '#fbbf24', '#a5f3fc', '#e5e7eb', '#f3f4f6', '#ffffff', '#facc15', '#a9b0b3', '#f5c518', '#d4af37'].includes(c)) {
-    return '#0f172a';
-  }
-  return '#ffffff';
-}
-
 function getLightModeInactiveColor(gameName: string, vColor: string): string {
   const nameLower = gameName.toLowerCase();
   if (nameLower === 'yellow' || nameLower === 'lets-go-pikachu') return '#92700c';
   if (nameLower === 'gold' || nameLower === 'heartgold') return '#8a6d18';
-  if (['silver', 'platinum', 'white', 'white-2', 'soulsilver'].includes(nameLower)) return '#475569';
+  if (['silver', 'platinum', 'white', 'white-2', 'soulsilver', 'crystal', 'pearl'].includes(nameLower)) return '#475569';
   return vColor;
 }
 
@@ -117,6 +109,15 @@ export default function MainLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [versionDialogOpen, setVersionDialogOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
+
+  useEffect(() => {
+    if (!versionDialogOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setVersionDialogOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
+  }, [versionDialogOpen]);
 
   const allNavItems = NAV_GROUPS.flatMap((g) => g.items);
   if (isAdmin) {
@@ -263,7 +264,7 @@ export default function MainLayout() {
                     aria-expanded={versionDialogOpen}
                     style={{
                       background: isPair ? 'transparent' : resolvedBg,
-                      color: getContrastColor(resolvedBg),
+                      color: getContrastTextColor(resolvedBg),
                       boxShadow: isDark ? 'none' : '0 1px 2px rgba(0,0,0,0.08)',
                       borderRadius: '999px',
                       overflow: 'hidden',
@@ -273,10 +274,10 @@ export default function MainLayout() {
                   >
                     {isPair ? (
                       <div style={{ display: 'flex', width: '100%', alignItems: 'stretch', minWidth: 220, position: 'relative' }}>
-                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC1, padding: '0 8px', color: getContrastColor(resolvedC1) }}>
+                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC1, padding: '0 8px', color: getContrastTextColor(resolvedC1) }}>
                           <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{game1Label.toUpperCase()}</span>
                         </div>
-                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC2, padding: '0 8px', color: getContrastColor(resolvedC2) }}>
+                        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', background: resolvedC2, padding: '0 8px', color: getContrastTextColor(resolvedC2) }}>
                           <span style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{game2Label.toUpperCase()}</span>
                         </div>
                         <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, backgroundColor: 'rgba(255,255,255,0.25)', transform: 'translateX(-50%)' }} />
@@ -340,11 +341,16 @@ export default function MainLayout() {
         <div className={styles.modalOverlay} onClick={() => setVersionDialogOpen(false)} role="dialog" aria-modal="true" aria-label="Select game version">
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>
-                <Gamepad2 size={22} />
-                <span>Select Game Version</span>
-              </h2>
-              <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)} aria-label="Close">
+              <div>
+                <h2 className={styles.modalTitle}>
+                  <Gamepad2 size={22} />
+                  <span>Select Game Version</span>
+                </h2>
+                <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text-secondary)' }}>
+                  Current: <strong style={{ color: 'var(--text-primary)' }}>{getVersionDisplayName(selectedVersion)}</strong>
+                </p>
+              </div>
+              <button className={styles.modalCloseBtn} onClick={() => setVersionDialogOpen(false)} aria-label="Close version selector">
                 <X size={20} />
               </button>
             </div>
@@ -354,6 +360,7 @@ export default function MainLayout() {
                 <button
                   onClick={() => { setSelectedVersion('ALL'); setVersionDialogOpen(false); }}
                   className={cn(styles.allVersionsBtn, selectedVersion !== 'ALL' && styles.unselected)}
+                  aria-pressed={selectedVersion === 'ALL'}
                 >
                   All Versions
                 </button>
@@ -376,12 +383,14 @@ export default function MainLayout() {
                               const isActive = selectedVersion.toLowerCase() === game.name.toLowerCase();
                               let vColor = VERSION_COLORS[game.name] || '#6366f1';
                               if (vColor.toLowerCase() === '#000000' || vColor === 'black' || vColor === '#000') vColor = '#555555';
-                              const contrastColor = getContrastColor(vColor);
+                              const contrastColor = getContrastTextColor(vColor);
                               return (
                                 <button
                                   key={game.name}
                                   onClick={() => { setSelectedVersion(game.name); setVersionDialogOpen(false); }}
                                   className={cn(styles.gameButton, isActive && styles.gameButtonActive)}
+                                  aria-pressed={isActive}
+                                  aria-label={`${game.label}${isActive ? ' (selected)' : ''}`}
                                   style={{
                                     background: isActive ? vColor : (isDark ? 'var(--bg-elevated)' : `rgba(${hexToRgb(vColor)}, 0.08)`),
                                     borderColor: isActive ? vColor : (isDark ? 'var(--border-main)' : `rgba(${hexToRgb(vColor)}, 0.22)`),

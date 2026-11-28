@@ -18,7 +18,7 @@ import { PokemonListItem } from '../types';
 import { useTeamStore } from '../lib/teamStore';
 import { useCatchStore } from '../lib/catchStore';
 import { VERSION_COLORS, GENERATION_VERSIONS, getRegionAndGame } from '../App';
-import PokeDetail from '../components/PokeDetail';
+import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDialog';
 import { formatSpeciesId, TYPE_COLORS, cn } from '../lib/utils';
 import { useColorMode } from '../main';
 import { extractDominantColor, getExtractedColors, addOpacityToColor } from '../lib/colorExtractor';
@@ -820,11 +820,7 @@ export default function CatchTracker() {
 
       {/* Stats Detail Modal drawer */}
       {selectedId !== null && (
-        <PokeDetail
-          pokemonId={selectedId}
-          onClose={() => setSelectedId(null)}
-          onSelectPokemonId={setSelectedId}
-        />
+        <PokemonDetailDialog id={selectedId} onClose={() => setSelectedId(null)} onSelect={setSelectedId} />
       )}
     </div>
   );

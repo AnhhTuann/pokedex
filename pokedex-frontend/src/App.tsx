@@ -211,11 +211,38 @@ export function getRegionAndGame(versionName: string) {
 
 function hexToRgb(hex: string): string {
   let c = hex.substring(1);
-  if (c.length === 3) {
-    c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
-  }
+  if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
   const num = parseInt(c, 16);
   return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+}
+
+function srgbToLinear(v: number): number {
+  const s = v / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+}
+
+function luminance(hex: string): number {
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+  const num = parseInt(c, 16);
+  const r = srgbToLinear((num >> 16) & 255);
+  const g = srgbToLinear((num >> 8) & 255);
+  const b = srgbToLinear(num & 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrastRatio(a: string, b: string): number {
+  const l1 = luminance(a);
+  const l2 = luminance(b);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+export function getContrastTextColor(bgHex: string): string {
+  const white = '#ffffff';
+  const dark = '#0f172a';
+  return contrastRatio(bgHex, dark) >= contrastRatio(bgHex, white) ? dark : white;
 }
 
 export function getVersionDisplayName(versionName: string): string {
@@ -241,59 +268,39 @@ export function getVersionDisplayName(versionName: string): string {
 export function getVersionColorStyle(versionName: string) {
   const nameLower = versionName.toLowerCase();
   if (nameLower === 'all') {
-    return {
-      bg: '#4b5563',
-      text: '#ffffff',
-      shadow: 'rgba(75, 85, 99, 0.3)',
-      isGradient: false
-    };
+    return { bg: '#4b5563', text: '#ffffff', shadow: 'rgba(75, 85, 99, 0.3)', isGradient: false as const };
   }
-  
+
   for (const g of GENERATION_VERSIONS) {
     for (const row of g.rows) {
       if (row.type === 'pair') {
-        const hasGame = row.games.some(g => g.name.toLowerCase() === nameLower);
+        const hasGame = row.games.some(gm => gm.name.toLowerCase() === nameLower);
         if (hasGame) {
           const c1 = VERSION_COLORS[row.games[0].name] || '#6366f1';
           const c2 = VERSION_COLORS[row.games[1].name] || '#6366f1';
+          const white = '#ffffff';
+          const dark = '#0f172a';
+          const minWhite = Math.min(contrastRatio(c1, white), contrastRatio(c2, white));
+          const minDark = Math.min(contrastRatio(c1, dark), contrastRatio(c2, dark));
+          const text = minDark >= minWhite ? dark : white;
           return {
             bg: `linear-gradient(90deg, ${c1} 50%, ${c2} 50%)`,
-            text: '#ffffff',
-            shadow: `rgba(${hexToRgb(c1)}, 0.3)`,
-            isGradient: true,
-            c1,
-            c2
+            text, shadow: `rgba(${hexToRgb(c1)}, 0.28)`,
+            isGradient: true as const, c1, c2
           };
         }
       } else {
-        const game = row.games.find(g => g.name.toLowerCase() === nameLower);
+        const game = row.games.find(gm => gm.name.toLowerCase() === nameLower);
         if (game) {
           const c = VERSION_COLORS[game.name] || '#6366f1';
-          
-          let contrastColor = '#ffffff';
-          const cLower = c.toLowerCase();
-          if (cLower === '#eab308' || cLower === '#fbbf24' || cLower === '#a5f3fc' || cLower === '#e5e7eb' || cLower === '#ffffff') {
-            contrastColor = '#0f172a';
-          }
-          
-          return {
-            bg: c,
-            text: contrastColor,
-            shadow: `rgba(${hexToRgb(c)}, 0.4)`,
-            isGradient: false
-          };
+          return { bg: c, text: getContrastTextColor(c), shadow: `rgba(${hexToRgb(c)}, 0.35)`, isGradient: false as const };
         }
       }
     }
   }
-  
+
   const c = VERSION_COLORS[versionName] || '#6366f1';
-  return {
-    bg: c,
-    text: '#ffffff',
-    shadow: `rgba(${hexToRgb(c)}, 0.4)`,
-    isGradient: false
-  };
+  return { bg: c, text: getContrastTextColor(c), shadow: `rgba(${hexToRgb(c)}, 0.35)`, isGradient: false as const };
 }
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
