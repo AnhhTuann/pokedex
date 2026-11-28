@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON_DETAIL } from './PokeDetail';
@@ -7,13 +7,24 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   ResponsiveContainer, Legend, Tooltip,
 } from 'recharts';
+import { getTypeBadgeStyle } from '../lib/utils';
+import { useColorMode } from '../main';
 import styles from '../styles/components/CompareModal.module.scss';
 
 interface CompareModalProps { ids: number[]; onClose: () => void; }
 
 export default function CompareModal({ ids, onClose }: CompareModalProps) {
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
   const { data: d1 } = useQuery(GET_POKEMON_DETAIL, { variables: { id: ids[0] }, skip: !ids[0] });
   const { data: d2 } = useQuery(GET_POKEMON_DETAIL, { variables: { id: ids[1] }, skip: !ids[1] });
+
+  useEffect(() => {
+    if (ids.length < 2) return;
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [ids.length, onClose]);
 
   if (ids.length < 2) return null;
   const p1 = d1?.pokemon;
@@ -39,11 +50,14 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
           transition={{ type: 'spring', damping: 24, stiffness: 200 }}
           onClick={e => e.stopPropagation()}
           className={styles.modalCard}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Pokemon comparison"
         >
           {/* Header */}
           <div className={styles.header}>
-            <span className={styles.title}>⚔️ Head-to-Head Comparison</span>
-            <button onClick={onClose} className={styles.closeBtn}>
+            <span className={styles.title}>Head-to-Head Comparison</span>
+            <button onClick={onClose} className={styles.closeBtn} aria-label="Close comparison">
               <X size={16}/>
             </button>
           </div>
@@ -58,7 +72,7 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
               <span className={`${styles.pokemonName} ${styles.p1}`}>{p1.name}</span>
               <div className={styles.typesRow}>
                 {p1.types.map((t: string) => (
-                  <span key={t} className={`${styles.typeBadge} ${styles.p1}`}>{t}</span>
+                  <span key={t} className={styles.typeBadge} style={getTypeBadgeStyle(t, isDark)}>{t}</span>
                 ))}
               </div>
               {/* Stats */}
@@ -99,7 +113,7 @@ export default function CompareModal({ ids, onClose }: CompareModalProps) {
               <span className={`${styles.pokemonName} ${styles.p2}`}>{p2.name}</span>
               <div className={styles.typesRow}>
                 {p2.types.map((t: string) => (
-                  <span key={t} className={`${styles.typeBadge} ${styles.p2}`}>{t}</span>
+                  <span key={t} className={styles.typeBadge} style={getTypeBadgeStyle(t, isDark)}>{t}</span>
                 ))}
               </div>
               {/* Stats */}

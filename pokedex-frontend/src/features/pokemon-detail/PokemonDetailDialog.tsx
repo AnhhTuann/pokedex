@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Heart, Zap, Scale, Ruler, Sparkles } from 'lucide-react';
 import { usePokemonDetail } from '../../hooks/usePokemon';
 import { useTeamStore } from '../../lib/teamStore';
-import { formatSpeciesId, TYPE_COLORS, cn } from '../../lib/utils';
+import { formatSpeciesId, TYPE_COLORS, cn, getTypeBadgeStyle } from '../../lib/utils';
 import { StatsSection } from './StatsSection';
 import { EvolutionChain } from './EvolutionChain';
 import { PokedexVoice } from './PokedexVoice';
@@ -56,16 +56,18 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
   }, [id, isShinyMode]);
 
   useEffect(() => {
-    // Disable body scroll when modal is open
-    if (id) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
+    if (!id) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
     };
-  }, [id]);
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [id, onClose]);
 
   if (!id) return null;
 
@@ -101,6 +103,9 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                 transition={{ duration: 0.25, ease: 'easeOut' }}
                 className={styles.dialog}
                 onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label={p ? `${p.name} details` : 'Pokemon details'}
               >
                 {/* Header / Image Section */}
                 <div 
@@ -176,7 +181,7 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
                           <span 
                             key={t}
                             className={styles.typeBadge}
-                            style={{ backgroundColor: TYPE_COLORS[t] }}
+                            style={getTypeBadgeStyle(t, isDark)}
                           >
                             {t}
                           </span>
@@ -192,12 +197,12 @@ export const PokemonDetailDialog: React.FC<PokemonDetailDialogProps> = ({ id, on
 
                   <div className={styles.teamBtnWrapper}>
                     <Button
-                      className="w-full rounded-2xl py-6 font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 group"
                       variant={inTeam ? 'outline' : 'primary'}
+                      size="lg"
                       onClick={() => inTeam ? removeMember(id) : addMember(p)}
-                      style={!inTeam ? { backgroundColor: accentColor, boxShadow: `0 8px 24px ${accentColor}33` } : {}}
+                      style={{ width: '100%' }}
                     >
-                      <Heart size={16} className={cn(inTeam ? "fill-red-500 text-red-500" : "group-hover:scale-125 transition-transform")} />
+                      <Heart size={16} fill={inTeam ? 'currentColor' : 'none'} />
                       {inTeam ? 'Remove from Team' : 'Add to Team'}
                     </Button>
                   </div>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { useTeamStore } from '../lib/teamStore';
 import { X, Sparkles, Save, Flame, Target, Shield, CheckCircle } from 'lucide-react';
-import { TYPE_COLORS } from '../lib/utils';
+import { TYPE_COLORS, getTypeBadgeStyle } from '../lib/utils';
+import { useColorMode } from '../main';
 import styles from '../styles/components/MovesModal.module.scss';
 
 const GET_POKEMON_MOVES = gql`
@@ -21,7 +22,16 @@ interface MovesModalProps {
 
 export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
   const { team, setMoves } = useTeamStore();
+  const { mode } = useColorMode();
+  const isDark = mode === 'dark';
   const teamMember = team.find(p => p.id === pokemonId);
+
+  useEffect(() => {
+    if (!pokemonId) return;
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [pokemonId, onClose]);
   
   const { data, loading } = useQuery(GET_POKEMON_MOVES, {
     variables: { id: pokemonId },
@@ -90,7 +100,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()}>
+      <div className={styles.dialogPaper} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={`${teamMember?.name || 'Pokemon'} moveset`}>
         {/* Header */}
         <div className={styles.header}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -106,7 +116,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
               <span className={styles.subtitle}>Select up to 4 moves</span>
             </div>
           </div>
-          <button onClick={onClose} className={styles.closeBtn}>
+          <button onClick={onClose} className={styles.closeBtn} aria-label="Close moveset dialog">
             <X size={18} />
           </button>
         </div>
@@ -187,7 +197,7 @@ export default function MovesModal({ pokemonId, onClose }: MovesModalProps) {
                           {m.name.replace('-', ' ')}
                           {isStab && <span className={styles.stabChip}>STAB</span>}
                         </span>
-                        <span className={styles.typeChip} style={{ background: moveColor }}>{m.type}</span>
+                        <span className={styles.typeChip} style={getTypeBadgeStyle(m.type, isDark)}>{m.type}</span>
                       </div>
                       {isSelected && <CheckCircle size={18} color="var(--primary)" />}
                     </div>

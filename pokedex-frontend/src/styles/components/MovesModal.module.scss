@@ -214,20 +214,20 @@
 
 .saveBtn {
   border-radius: var(--radius-sm);
-  font-weight: 850;
+  font-weight: 700;
   padding: 10px 24px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
+  background: var(--brand-strong);
+  color: var(--brand-on);
+  border: 1px solid var(--brand-strong);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: var(--transition-normal);
+  transition: background-color $transition-fast, border-color $transition-fast;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.35);
+    background: var(--brand);
+    border-color: var(--brand);
   }
 }
 

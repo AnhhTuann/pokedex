@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { Sparkles, Heart, Scale } from 'lucide-react';
+import { Sparkles, Heart, Scale, X } from 'lucide-react';
 import PokeCard from '../components/PokeCard';
 import SearchBar from '../components/SearchBar';
 import { PokemonDetailDialog } from '../features/pokemon-detail/PokemonDetailDialog';
 import CompareModal from '../components/CompareModal';
 import { useMyPokedex } from '../lib/MyPokedexContext';
 import { useTeamStore } from '../lib/teamStore';
-import { getRegionAndGame, getGameGeneration } from '../App';
+import { getRegionAndGame, getGameGeneration, getVersionDisplayName } from '../App';
 import { usePokemonList } from '../hooks/usePokemon';
 import { Button } from '../components/common/Button';
 import { cn } from '../lib/utils';
@@ -78,6 +78,16 @@ export default function PokemonDex() {
 
   const hasMore = pokemonList.length > 0 && pokemonList.length < totalCount;
   const isInitialLoad = loading && pokemonList.length === 0;
+  const hasActiveFilters = Boolean(search || typeFilter || genFilter || showFavorites);
+  const versionLabel = selectedVersion === 'ALL' ? 'All Versions' : getVersionDisplayName(selectedVersion);
+
+  const clearFilters = () => {
+    setSearch('');
+    setTypeFilter('');
+    setGenFilter(null);
+    setViewMode('all');
+    setCompareIds([]);
+  };
 
   const loadMore = () => {
     fetchMore({ variables: { offset: pokemonList.length } });
@@ -85,6 +95,25 @@ export default function PokemonDex() {
 
   return (
     <div className={styles.container}>
+      <header className={styles.pageHeader}>
+        <div>
+          <p className={styles.pageEyebrow}>Encyclopedia</p>
+          <h1 className={styles.pageTitle}>Pokédex</h1>
+          <p className={styles.pageDescription}>
+            Explore Pokémon, forms, and regional entries with filters built for quick discovery.
+          </p>
+        </div>
+        <div className={styles.pageStats}>
+          <div className={styles.statPill}>
+            <span className={styles.statLabel}>Results</span>
+            <span className={styles.statValue}>{totalCount}</span>
+          </div>
+          <div className={styles.statPill}>
+            <span className={styles.statLabel}>Version</span>
+            <span className={styles.statValue}>{versionLabel}</span>
+          </div>
+        </div>
+      </header>
       
       {/* Search & Filter Section */}
       <div className={styles.searchWrapper}>
@@ -93,6 +122,20 @@ export default function PokemonDex() {
           typeValue={typeFilter} onTypeChange={setTypeFilter}
           genValue={genFilter}   onGenChange={setGenFilter}
         />
+        {hasActiveFilters && (
+          <div className={styles.activeFilters}>
+            <div className={styles.filterChips}>
+              {search && <span className={styles.filterChip}>Search: {search}</span>}
+              {typeFilter && <span className={styles.filterChip}>Type: {typeFilter}</span>}
+              {genFilter && <span className={styles.filterChip}>Gen {genFilter}</span>}
+              {showFavorites && <span className={styles.filterChip}>Favorites</span>}
+            </div>
+            <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
+              <X size={14} />
+              Clear filters
+            </button>
+          </div>
+        )}
       </div>
 
       {/* View Mode Toggle */}
